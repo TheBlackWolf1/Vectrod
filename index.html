@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vectrod — SVG to Font Converter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --ease: cubic-bezier(.22,.68,0,1.2);
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-smooth: cubic-bezier(.4,0,.2,1);
+}
+
+[data-theme="dark"] {
+  --bg:       #060912;
+  --bg2:      #0a0e1a;
+  --bg3:      #0d1220;
+  --surface:  rgba(255,255,255,.035);
+  --border:   rgba(255,255,255,.07);
+  --border-hi: rgba(0,255,136,.25);
+  --text:     #e8f0ff;
+  --muted:    rgba(232,240,255,.38);
+  --g1:       #00ff88;   /* electric green */
+  --g2:       #00c8ff;   /* cyan */
+  --orange:   #ff6b00;   /* burnt orange */
+  --orange2:  #ffaa00;   /* amber */
+  --success:  #00ff88;
+  --danger:   #ff4455;
+  --glow-g:   rgba(0,255,136,.12);
+  --glow-o:   rgba(255,107,0,.12);
+}
+
+[data-theme="light"] {
+  --bg:       #f0f4ff;
+  --bg2:      #e8eeff;
+  --bg3:      #dde5ff;
+  --surface:  rgba(255,255,255,.7);
+  --border:   rgba(0,40,120,.1);
+  --border-hi: rgba(0,160,80,.3);
+  --text:     #0a1230;
+  --muted:    rgba(10,18,48,.4);
+  --g1:       #00a855;
+  --g2:       #0080cc;
+  --orange:   #d45200;
+  --orange2:  #c88000;
+  --success:  #00a855;
+  --danger:   #cc1122;
+  --glow-g:   rgba(0,168,85,.1);
+  --glow-o:   rgba(212,82,0,.1);
+}
+
+/* ═══════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background .4s, color .4s;
+}
+
+/* ═══════════════════════════════════════════
+   BACKGROUND
+═══════════════════════════════════════════ */
+.bg-canvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.bg-noise {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: .4;
+}
+[data-theme="dark"] .bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,136,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,136,.03) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+[data-theme="light"] .bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,80,200,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,80,200,.04) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+.orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(100px); pointer-events: none;
+}
+.orb-1 {
+  width: 700px; height: 700px;
+  top: -250px; left: -200px;
+  background: radial-gradient(circle, rgba(0,255,136,.18) 0%, transparent 65%);
+  animation: drift1 18s ease-in-out infinite alternate;
+}
+.orb-2 {
+  width: 500px; height: 500px;
+  bottom: -100px; right: -150px;
+  background: radial-gradient(circle, rgba(255,107,0,.2) 0%, transparent 65%);
+  animation: drift2 22s ease-in-out infinite alternate;
+}
+.orb-3 {
+  width: 400px; height: 400px;
+  top: 35%; left: 55%;
+  background: radial-gradient(circle, rgba(0,200,255,.12) 0%, transparent 65%);
+  animation: drift1 26s ease-in-out infinite alternate-reverse;
+}
+@keyframes drift1 { from{transform:translate(0,0)} to{transform:translate(50px,40px)} }
+@keyframes drift2 { from{transform:translate(0,0)} to{transform:translate(-40px,30px)} }
+
+/* ═══════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════ */
+.wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 120px; }
+
+/* ═══════════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════════ */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 72px;
+  animation: slideDown .7s var(--ease-out) both;
+}
+
+.logo-wrap { display: flex; align-items: baseline; gap: 10px; }
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: .08em;
+  background: linear-gradient(90deg, var(--g1) 0%, var(--g2) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 12px rgba(0,255,136,.4));
+}
+.logo-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: .2em;
+  color: var(--orange);
+  text-transform: uppercase;
+  border: 1px solid var(--orange);
+  padding: 2px 7px; border-radius: 4px;
+  opacity: .8;
+}
+
+.nav-right { display: flex; align-items: center; gap: 6px; }
+.nav-btn {
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; font-weight: 500; letter-spacing: .12em;
+  padding: 8px 14px; border-radius: 8px;
+  cursor: pointer; transition: all .25s var(--ease);
+}
+.nav-btn:hover { border-color: var(--g1); color: var(--g1); }
+.nav-btn.active {
+  background: var(--g1); color: #000;
+  border-color: transparent;
+  -webkit-text-fill-color: #000;
+  box-shadow: 0 0 16px rgba(0,255,136,.3);
+}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero {
+  margin-bottom: 60px;
+  animation: slideDown .7s var(--ease-out) .08s both;
+}
+
+.hero-kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: .2em;
+  color: var(--g1); text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.kicker-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--g1);
+  box-shadow: 0 0 10px var(--g1);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 9vw, 96px);
+  line-height: .9; letter-spacing: .04em;
+  margin-bottom: 22px;
+}
+.h1-white { color: var(--text); }
+.h1-green {
+  background: linear-gradient(90deg, var(--g1), var(--g2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(0,255,136,.35));
+}
+.h1-orange {
+  color: var(--orange);
+  -webkit-text-fill-color: var(--orange);
+  filter: drop-shadow(0 0 16px rgba(255,107,0,.3));
+}
+
+.hero-desc {
+  font-size: 15px; font-weight: 500;
+  color: var(--muted);
+  max-width: 460px; line-height: 1.75;
+}
+.hero-desc strong { color: var(--text); font-weight: 700; }
+
+/* ═══════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════ */
+.tab-bar {
+  display: flex; gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+  animation: slideUp .6s var(--ease-out) .12s both;
+}
+.tab {
+  background: none; border: none;
+  color: var(--muted);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px; font-weight: 700;
+  padding: 14px 24px; cursor: pointer;
+  transition: all .25s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px; letter-spacing: .02em;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--g1); border-bottom-color: var(--g1); }
+
+/* ═══════════════════════════════════════════
+   PANELS
+═══════════════════════════════════════════ */
+.panel { display: none; }
+.panel.active { display: block; animation: slideUp .4s var(--ease-out); }
+
+/* ═══════════════════════════════════════════
+   GLASS CARD
+═══════════════════════════════════════════ */
+.card {
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 14px;
+  transition: border-color .3s, box-shadow .3s;
+  position: relative; overflow: hidden;
+}
+.card::after {
+  content: '';
+  position: absolute; inset: 0; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(0,255,136,.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+.card:hover {
+  border-color: var(--border-hi);
+  box-shadow: 0 0 40px var(--glow-g), inset 0 1px 0 rgba(0,255,136,.1);
+}
+
+.card-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--g1); margin-bottom: 18px;
+  display: flex; align-items: center; gap: 12px;
+}
+.card-num::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-hi), transparent); }
+
+/* ═══════════════════════════════════════════
+   DROPZONE
+═══════════════════════════════════════════ */
+.drop {
+  border: 1.5px dashed var(--border);
+  border-radius: 12px;
+  padding: 48px 28px;
+  text-align: center; cursor: pointer;
+  transition: all .3s var(--ease);
+  position: relative; overflow: hidden;
+  background: var(--bg3);
+}
+.drop::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, var(--glow-g) 0%, transparent 70%);
+  opacity: 0; transition: opacity .3s;
+}
+.drop:hover::before, .drop.over::before { opacity: 1; }
+.drop:hover, .drop.over { border-color: var(--g1); border-style: solid; }
+.drop.done { border-color: var(--success); border-style: solid; }
+.drop input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+
+.drop-icon {
+  display: block; font-size: 38px; margin-bottom: 14px;
+  animation: iconGlow 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px var(--g1));
+}
+@keyframes iconGlow {
+  0%,100% { filter: drop-shadow(0 0 6px var(--g1)); }
+  50%      { filter: drop-shadow(0 0 22px var(--g1)); }
+}
+.drop-head { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+.drop-sub  { font-size: 13px; color: var(--muted); }
+.drop-name { margin-top: 10px; font-size: 12px; font-family: 'DM Mono', monospace; color: var(--success); font-weight: 500; }
+
+.svg-thumb {
+  display: none; margin-top: 14px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: #fff; height: 148px; overflow: hidden; position: relative;
+}
+.svg-thumb.show { display: block; animation: slideUp .3s var(--ease-out); }
+.svg-thumb img { width: 100%; height: 100%; object-fit: contain; }
+.thumb-badge {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
+  color: var(--g1); font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: .14em;
+  padding: 3px 8px; border-radius: 20px;
+}
+
+/* ═══════════════════════════════════════════
+   FORM
+═══════════════════════════════════════════ */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.fg { margin-bottom: 20px; }
+
+.flabel {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: .16em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 9px;
+}
+.finput {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; font-weight: 600;
+  padding: 13px 16px; outline: none;
+  transition: border-color .25s, box-shadow .25s;
+}
+.finput:focus { border-color: var(--g1); box-shadow: 0 0 0 3px var(--glow-g); }
+.finput::placeholder { color: var(--muted); font-weight: 400; }
+
+/* CHECKBOXES */
+.cks { display: flex; gap: 8px; flex-wrap: wrap; }
+.ck-lbl {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600;
+  padding: 9px 16px; border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  cursor: pointer; transition: all .2s;
+  user-select: none;
+}
+.ck-lbl:hover { border-color: var(--g1); }
+.ck-lbl.on { border-color: var(--g1); background: var(--glow-g); color: var(--g1); }
+.ck-lbl input { display: none; }
+.ck-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--border); transition: all .2s; flex-shrink: 0;
+}
+.ck-lbl.on .ck-dot { background: var(--g1); box-shadow: 0 0 8px var(--g1); }
+
+/* CHAR BOX */
+.char-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+.char-reset {
+  background: none; border: none; cursor: pointer;
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .1em;
+  color: var(--muted); transition: color .2s;
+}
+.char-reset:hover { color: var(--danger); }
+.char-box {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px; line-height: 2.3; word-break: break-all;
+  max-height: 118px; overflow-y: auto;
+}
+.char-box::-webkit-scrollbar { width: 4px; }
+.char-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.char-box span {
+  display: inline-block; padding: 2px 6px; margin: 2px;
+  border: 1px solid var(--border); border-radius: 5px;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  cursor: grab; transition: all .15s; user-select: none;
+  background: var(--surface);
+}
+.char-box span:hover { border-color: var(--danger); color: var(--danger); }
+.char-box span.drag-on { border-color: var(--g1); transform: scale(1.08); }
+.char-box span.drag-ing { opacity: .25; }
+.char-note { margin-top: 8px; font-size: 11px; color: var(--muted); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════
+   GENERATE BUTTON
+═══════════════════════════════════════════ */
+.btn-gen {
+  width: 100%; padding: 18px;
+  background: linear-gradient(90deg, var(--g1) 0%, var(--g2) 100%);
+  border: none; border-radius: 12px; color: #000;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: .12em;
+  cursor: pointer; transition: all .3s var(--ease);
+  position: relative; overflow: hidden;
+  box-shadow: 0 6px 30px rgba(0,255,136,.25);
+}
+.btn-gen::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+  transform: translateX(-100%);
+  transition: transform .5s;
+}
+.btn-gen:hover:not(:disabled)::before { transform: translateX(100%); }
+.btn-gen:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(0,255,136,.4);
+}
+.btn-gen:active:not(:disabled) { transform: translateY(0); }
+.btn-gen:disabled { opacity: .35; cursor: not-allowed; transform: none !important; }
+
+.btn-sec {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--muted); font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; font-weight: 600; padding: 8px 16px;
+  cursor: pointer; transition: all .2s;
+}
+.btn-sec:hover { border-color: var(--g1); color: var(--g1); }
+
+/* ═══════════════════════════════════════════
+   PROGRESS
+═══════════════════════════════════════════ */
+.prog { display: none; margin-top: 18px; }
+.prog.show { display: block; animation: slideUp .3s var(--ease-out); }
+.prog-track {
+  height: 3px; background: var(--bg3);
+  border-radius: 10px; overflow: hidden; margin-bottom: 14px;
+}
+.prog-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--g1), var(--g2));
+  border-radius: 10px;
+  transition: width .4s var(--ease-out);
+  box-shadow: 0 0 10px var(--g1);
+}
+.prog-log {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  line-height: 2; max-height: 96px; overflow-y: auto;
+}
+.prog-log::-webkit-scrollbar { width: 3px; }
+.prog-log::-webkit-scrollbar-thumb { background: var(--border); }
+.ll { animation: fadeIn .2s ease forwards; }
+.ll.ok  { color: var(--success); }
+.ll.err { color: var(--danger); }
+.ll.hi  { color: var(--g1); }
+
+/* ═══════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════ */
+.stats { display: none; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 14px; }
+.stats.show { display: grid; animation: slideUp .35s var(--ease-out); }
+.stat {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px 20px; position: relative; overflow: hidden;
+}
+.stat::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--g1), var(--g2));
+}
+.sn {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; line-height: 1;
+  background: linear-gradient(90deg, var(--g1), var(--g2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2px;
+}
+.sl { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .14em; color: var(--muted); text-transform: uppercase; }
+
+/* ═══════════════════════════════════════════
+   RESULT
+═══════════════════════════════════════════ */
+.result {
+  display: none;
+  background: var(--surface); backdrop-filter: blur(16px);
+  border: 1px solid var(--border-hi); border-radius: 14px;
+  padding: 22px 26px; margin-top: 14px;
+  position: relative; overflow: hidden;
+}
+.result::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--success), transparent);
+}
+.result.show { display: block; animation: slideUp .35s var(--ease-out); }
+.result-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: .18em;
+  color: var(--success); text-transform: uppercase; margin-bottom: 16px;
+}
+.dl-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn-dl {
+  flex: 1; min-width: 130px;
+  background: rgba(0,255,136,.07);
+  border: 1px solid rgba(0,255,136,.25);
+  border-radius: 10px; color: var(--success);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px; font-weight: 700;
+  padding: 14px 18px; cursor: pointer;
+  transition: all .25s; text-align: center;
+  text-decoration: none; display: inline-flex;
+  align-items: center; justify-content: center; gap: 7px;
+}
+.btn-dl:hover {
+  background: rgba(0,255,136,.15);
+  border-color: var(--success);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0,255,136,.15);
+}
+
+/* ═══════════════════════════════════════════
+   PREVIEW
+═══════════════════════════════════════════ */
+.prev-box {
+  display: none;
+  background: var(--surface); backdrop-filter: blur(20px);
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 26px; margin-top: 14px;
+}
+.prev-box.show { display: block; animation: slideUp .35s var(--ease-out); }
+.prev-row {
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap; margin-bottom: 14px;
+}
+.prev-inp {
+  flex: 1; min-width: 180px;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; font-weight: 600; padding: 10px 14px; outline: none;
+  transition: border-color .25s, box-shadow .25s;
+}
+.prev-inp:focus { border-color: var(--g1); box-shadow: 0 0 0 3px var(--glow-g); }
+.sz-row { display: flex; gap: 4px; }
+.sz {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 7px;
+  color: var(--muted); font-family: 'DM Mono', monospace;
+  font-size: 10px; font-weight: 500; padding: 6px 10px;
+  cursor: pointer; transition: all .2s;
+}
+.sz.on, .sz:hover { border-color: var(--g1); color: var(--g1); background: var(--glow-g); }
+.bg-row { display: flex; gap: 6px; }
+.bg-dot {
+  width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+  border: 2px solid var(--border); transition: all .2s; flex-shrink: 0;
+}
+.bg-dot:hover { transform: scale(1.18); border-color: var(--g1); }
+.prev-stage {
+  min-height: 100px; display: flex; align-items: center;
+  padding: 22px; border-radius: 10px;
+  background: #fff; color: #000; overflow: hidden;
+  transition: background .3s, color .3s;
+}
+.prev-stage span {
+  font-family: 'PreviewFont', serif;
+  line-height: 1.3; word-break: break-all;
+}
+
+/* ═══════════════════════════════════════════
+   OPTIMIZER
+═══════════════════════════════════════════ */
+.opt-note {
+  background: linear-gradient(135deg, rgba(0,255,136,.05), rgba(0,200,255,.03));
+  border: 1px solid var(--border-hi); border-radius: 10px;
+  padding: 15px 18px; margin-bottom: 20px;
+  font-size: 13px; color: var(--muted); line-height: 1.7;
+}
+.opt-note strong { color: var(--text); font-weight: 700; }
+.opt-res {
+  display: none; background: var(--surface);
+  border: 1px solid var(--border-hi); border-radius: 14px;
+  padding: 22px 26px; margin-top: 14px;
+}
+.opt-res.show { display: block; animation: slideUp .3s var(--ease-out); }
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════ */
+@keyframes slideDown { from{opacity:0;transform:translateY(-18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes slideUp   { from{opacity:0;transform:translateY(14px)}  to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn    { from{opacity:0} to{opacity:1} }
+
+@media(max-width:620px) {
+  .card{padding:18px} .form-row{grid-template-columns:1fr}
+  .cks,.prev-row{flex-direction:column}
+  .stats.show{grid-template-columns:1fr}
+  .hero h1{font-size:48px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-canvas">
+  <div class="bg-grid"></div>
+  <div class="bg-noise"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo-wrap">
+      <div class="logo">Vectrod</div>
+      <span class="logo-tag">v2.0</span>
+    </div>
+    <div class="nav-right">
+      <button class="nav-btn" id="themeBtn" onclick="toggleTheme()">☀ Light</button>
+      <button class="nav-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+      <button class="nav-btn" id="btnTR" onclick="setLang('tr')">TR</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-kicker">
+      <span class="kicker-dot"></span>
+      <span data-i18n="kicker">SVG to Professional Font</span>
+    </div>
+    <h1>
+      <span class="h1-white">CONVERT</span><br>
+      <span class="h1-green">SVG</span>
+      <span class="h1-white"> TO </span>
+      <span class="h1-orange">FONT</span>
+    </h1>
+    <p class="hero-desc" data-i18n="heroSub">Upload your SVG with characters in order. Get a <strong>professional TTF + OTF</strong> font in seconds — no design software needed.</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('c')" data-i18n="tab1">SVG → Font</button>
+    <button class="tab" onclick="switchTab('o')" data-i18n="tab2">SVG Optimizer</button>
+  </div>
+
+  <!-- ███ CONVERTER ███ -->
+  <div class="panel active" id="panel-c">
+
+    <div class="card" style="animation:slideUp .6s var(--ease-out) .1s both">
+      <div class="card-num" data-i18n="s1">01 — Upload SVG</div>
+      <div class="drop" id="dz">
+        <input type="file" id="svgFile" accept=".svg"/>
+        <span class="drop-icon">◈</span>
+        <div class="drop-head" data-i18n="dh">Drag & drop your SVG here</div>
+        <div class="drop-sub" data-i18n="ds">or click to browse — SVG files only</div>
+        <div class="drop-name" id="dzN"></div>
+      </div>
+      <div class="svg-thumb" id="svgThumb">
+        <span class="thumb-badge">SVG PREVIEW</span>
+        <img id="thumbImg" src="" alt=""/>
+      </div>
+    </div>
+
+    <div class="card" style="animation:slideUp .6s var(--ease-out) .16s both">
+      <div class="card-num" data-i18n="s2">02 — Settings</div>
+      <div class="form-row">
+        <div class="fg" style="margin-bottom:0">
+          <label class="flabel" data-i18n="lName">Font Name</label>
+          <input type="text" class="finput" id="fontName" placeholder="MyCustomFont" value="CustomFont"/>
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label class="flabel" data-i18n="lVar">Variants</label>
+          <div class="cks">
+            <label class="ck-lbl on"><input type="checkbox" checked id="ckR"/><span class="ck-dot"></span>Regular</label>
+            <label class="ck-lbl"><input type="checkbox" id="ckB"/><span class="ck-dot"></span>Bold</label>
+            <label class="ck-lbl"><input type="checkbox" id="ckI"/><span class="ck-dot"></span>Italic</label>
+          </div>
+        </div>
+      </div>
+      <div class="fg" style="margin-top:18px;margin-bottom:0">
+        <div class="char-top">
+          <label class="flabel" style="margin-bottom:0" data-i18n="lCh">Character Order <small style="text-transform:none;letter-spacing:0;color:var(--muted);font-size:10px" data-i18n="lChSub">(drag to reorder · click to remove)</small></label>
+          <button class="char-reset" onclick="resetChars()" data-i18n="bReset">↺ Reset</button>
+        </div>
+        <div class="char-box" id="charBox"></div>
+        <p class="char-note" data-i18n="chNote">Each SVG object maps to a character in this order, left-to-right, top-to-bottom.</p>
+      </div>
+    </div>
+
+    <div class="card" style="animation:slideUp .6s var(--ease-out) .22s both">
+      <div class="card-num" data-i18n="s3">03 — Generate</div>
+      <button class="btn-gen" id="btnConvert" onclick="startConvert()">
+        <span data-i18n="btnGen">GENERATE FONT</span>
+      </button>
+      <div class="prog" id="prog">
+        <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+        <div class="prog-log" id="progLog"></div>
+      </div>
+    </div>
+
+    <div class="stats" id="stats">
+      <div class="stat"><div class="sn" id="sG">—</div><div class="sl" data-i18n="stG">Glyphs</div></div>
+      <div class="stat"><div class="sn" id="sS">—</div><div class="sl" data-i18n="stS">File Size</div></div>
+      <div class="stat"><div class="sn" id="sT">—</div><div class="sl" data-i18n="stT">Seconds</div></div>
+    </div>
+
+    <div class="result" id="result">
+      <div class="result-tag" data-i18n="resTag">✓ Font Ready — Download</div>
+      <div class="dl-row" id="dlRow"></div>
+    </div>
+
+    <div class="prev-box" id="prevBox">
+      <div class="card-num" style="margin-bottom:16px" data-i18n="s4">04 — Preview</div>
+      <div class="prev-row">
+        <input class="prev-inp" id="prevInp" placeholder="AaBbCc 123..." oninput="updatePrev()"/>
+        <div class="sz-row">
+          <button class="sz on" onclick="setSz(32)">32</button>
+          <button class="sz" onclick="setSz(48)">48</button>
+          <button class="sz" onclick="setSz(64)">64</button>
+          <button class="sz" onclick="setSz(96)">96</button>
+        </div>
+        <div class="bg-row">
+          <div class="bg-dot" style="background:#fff" onclick="setPrevBg('#fff','#000')"></div>
+          <div class="bg-dot" style="background:#111" onclick="setPrevBg('#111','#fff')"></div>
+          <div class="bg-dot" style="background:#888" onclick="setPrevBg('#888','#000')"></div>
+        </div>
+      </div>
+      <div class="prev-stage" id="prevStage">
+        <span id="prevSpan" style="font-size:32px">AaBbCc 123</span>
+      </div>
+    </div>
+
+  </div><!-- /panel-c -->
+
+  <!-- ███ OPTIMIZER ███ -->
+  <div class="panel" id="panel-o">
+    <div class="card" style="animation:slideUp .5s var(--ease-out) both">
+      <div class="card-num" data-i18n="optNum">SVG Optimizer</div>
+      <div class="opt-note">
+        <strong data-i18n="optT">What does this do?</strong><br>
+        <span data-i18n="optB">Converts text elements to paths, removes metadata, and cleans up SVG structure. Get a clean, font-ready version of your file.</span>
+      </div>
+      <div class="drop" id="dzO">
+        <input type="file" id="svgFileO" accept=".svg"/>
+        <span class="drop-icon">◈</span>
+        <div class="drop-head" data-i18n="dh">Drag & drop your SVG here</div>
+        <div class="drop-sub" data-i18n="ds">or click to browse — SVG files only</div>
+        <div class="drop-name" id="dzON"></div>
+      </div>
+      <div style="margin-top:18px">
+        <label class="flabel" style="margin-bottom:12px" data-i18n="optOpts">Options</label>
+        <div class="cks">
+          <label class="ck-lbl on"><input type="checkbox" checked id="ckTxt"/><span class="ck-dot"></span><span data-i18n="oTxt">Text → Paths</span></label>
+          <label class="ck-lbl on"><input type="checkbox" checked id="ckFlat"/><span class="ck-dot"></span><span data-i18n="oFlat">Flatten Transforms</span></label>
+          <label class="ck-lbl on"><input type="checkbox" checked id="ckCln"/><span class="ck-dot"></span><span data-i18n="oCln">Clean Metadata</span></label>
+        </div>
+      </div>
+      <button class="btn-gen" style="margin-top:22px" id="btnOpt" onclick="startOpt()">
+        <span data-i18n="btnOpt">OPTIMIZE SVG</span>
+      </button>
+      <div class="prog" id="progO">
+        <div class="prog-track"><div class="prog-fill" id="progFillO"></div></div>
+        <div class="prog-log" id="progLogO"></div>
+      </div>
+    </div>
+    <div class="opt-res" id="optRes">
+      <div class="result-tag" data-i18n="optOK">✓ Optimized SVG Ready</div>
+      <div class="dl-row" id="optDl"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// i18n
+const T = {
+  en: {
+    kicker:'SVG to Professional Font',
+    heroSub:'Upload your SVG with characters in order. Get a professional TTF + OTF font in seconds — no design software needed.',
+    tab1:'SVG → Font', tab2:'SVG Optimizer',
+    s1:'01 — Upload SVG', dh:'Drag & drop your SVG here', ds:'or click to browse — SVG files only',
+    s2:'02 — Settings', lName:'Font Name', lVar:'Variants',
+    lCh:'Character Order', lChSub:'(drag to reorder · click to remove)', bReset:'↺ Reset',
+    chNote:'Each SVG object maps to a character in this order, left-to-right, top-to-bottom.',
+    s3:'03 — Generate', btnGen:'GENERATE FONT',
+    stG:'Glyphs', stS:'File Size', stT:'Seconds',
+    resTag:'✓ Font Ready — Download', s4:'04 — Preview',
+    optNum:'SVG Optimizer', optT:'What does this do?',
+    optB:'Converts text elements to paths, removes metadata, and cleans up SVG structure. Get a clean, font-ready version of your file.',
+    optOpts:'Options', oTxt:'Text → Paths', oFlat:'Flatten Transforms', oCln:'Clean Metadata',
+    btnOpt:'OPTIMIZE SVG', optOK:'✓ Optimized SVG Ready',
+  },
+  tr: {
+    kicker:'SVG\'den Profesyonel Font',
+    heroSub:'Karakterleri sıralı SVG dosyanı yükle. Saniyeler içinde TTF + OTF font al — tasarım programı gerekmez.',
+    tab1:'SVG → Font', tab2:'SVG Optimize',
+    s1:'01 — SVG Yükle', dh:'SVG dosyasını buraya sürükle', ds:'veya tıkla seç',
+    s2:'02 — Ayarlar', lName:'Font Adı', lVar:'Varyantlar',
+    lCh:'Karakter Sırası', lChSub:'(sürükle sırala · tıkla kaldır)', bReset:'↺ Sıfırla',
+    chNote:"SVG'deki her nesne soldan sağa, yukarıdan aşağıya bu sırayla karakterlere atanır.",
+    s3:'03 — Oluştur', btnGen:'FONT OLUŞTUR',
+    stG:'Glyph', stS:'Dosya Boyutu', stT:'Saniye',
+    resTag:'✓ Font Hazır — İndir', s4:'04 — Önizleme',
+    optNum:'SVG Optimize', optT:'Bu ne yapar?',
+    optB:"Text elementleri path'e çevirir, metadata siler, SVG yapısını temizler.",
+    optOpts:'Seçenekler', oTxt:'Text → Path', oFlat:'Transform Düzleştir', oCln:'Metadata Temizle',
+    btnOpt:'SVG OPTİMİZE ET', optOK:'✓ Optimize SVG Hazır',
+  }
+};
+let lang='en';
+function setLang(l){
+  lang=l;
+  document.getElementById('btnEN').classList.toggle('active',l==='en');
+  document.getElementById('btnTR').classList.toggle('active',l==='tr');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(T[l][k])el.textContent=T[l][k];});
+  document.getElementById('prevInp').placeholder=l==='tr'?'Önizlemek için yazın...':'AaBbCc 123...';
+}
+
+function toggleTheme(){
+  const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  document.getElementById('themeBtn').textContent=n==='dark'?'☀ Light':'☾ Dark';
+}
+
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['c','o'][i]===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+}
+
+document.querySelectorAll('.ck-lbl input').forEach(cb=>{
+  cb.addEventListener('change',function(){this.closest('.ck-lbl').classList.toggle('on',this.checked);});
+});
+
+const DEFS=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+  'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+  '0','1','2','3','4','5','6','7','8','9','.',',','!','?',';',':','\'','"','(',')','–','_','/','@','#','$','%','&','*','+','=',' ',
+  'Ç','Ğ','İ','Ö','Ş','Ü','ç','ğ','ı','ö','ş','ü'];
+let chars=[...DEFS],dragSrc=null;
+
+function renderChars(){
+  const el=document.getElementById('charBox');
+  el.innerHTML=chars.map((c,i)=>`<span draggable="true" data-i="${i}" onclick="removeChar(${i})">${c===' '?'·':c}</span>`).join('');
+  el.querySelectorAll('span').forEach(s=>{
+    s.addEventListener('dragstart',()=>{dragSrc=+s.dataset.i;s.classList.add('drag-ing');});
+    s.addEventListener('dragend',()=>{s.classList.remove('drag-ing');dragSrc=null;renderChars();});
+    s.addEventListener('dragover',e=>{e.preventDefault();s.classList.add('drag-on');});
+    s.addEventListener('dragleave',()=>s.classList.remove('drag-on'));
+    s.addEventListener('drop',e=>{
+      e.preventDefault();const to=+s.dataset.i;
+      if(dragSrc===null||dragSrc===to)return;
+      const t=chars[dragSrc];chars.splice(dragSrc,1);chars.splice(to,0,t);renderChars();
+    });
+  });
+}
+function removeChar(i){chars.splice(i,1);renderChars();}
+function resetChars(){chars=[...DEFS];renderChars();}
+renderChars();
+
+let svgFile=null,svgFileO=null,genFiles=[],t0=0;
+
+function setupDrop(dId,iId,cb){
+  const dz=document.getElementById(dId);
+  document.getElementById(iId).addEventListener('change',function(){if(this.files[0])cb(this.files[0]);});
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');if(e.dataTransfer.files[0])cb(e.dataTransfer.files[0]);});
+}
+setupDrop('dz','svgFile',f=>{
+  if(!f.name.endsWith('.svg')){alert('Please select an SVG file.');return;}
+  svgFile=f;
+  document.getElementById('dzN').textContent='✓ '+f.name;
+  document.getElementById('dz').classList.add('done');
+  const r=new FileReader();
+  r.onload=e=>{
+    const b=new Blob([e.target.result],{type:'image/svg+xml'});
+    document.getElementById('thumbImg').src=URL.createObjectURL(b);
+    document.getElementById('svgThumb').classList.add('show');
+  };r.readAsText(f);
+});
+setupDrop('dzO','svgFileO',f=>{
+  if(!f.name.endsWith('.svg')){alert('Please select an SVG file.');return;}
+  svgFileO=f;document.getElementById('dzON').textContent='✓ '+f.name;
+  document.getElementById('dzO').classList.add('done');
+});
+
+function addLog(m,t='',lid='progLog'){
+  const el=document.getElementById(lid);
+  const d=document.createElement('div');d.className='ll '+t;d.textContent=m;
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+function setBar(p,id='progFill'){document.getElementById(id).style.width=p+'%';}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+async function startConvert(){
+  if(!svgFile){alert(lang==='tr'?'Lütfen SVG yükleyin.':'Please upload an SVG file first.');return;}
+  const name=document.getElementById('fontName').value.trim()||'CustomFont';
+  const variants=[];
+  if(document.getElementById('ckR').checked)variants.push({bold:false,italic:false});
+  if(document.getElementById('ckB').checked)variants.push({bold:true,italic:false});
+  if(document.getElementById('ckI').checked)variants.push({bold:false,italic:true});
+  if(!variants.length){alert('Select at least one variant.');return;}
+
+  const btn=document.getElementById('btnConvert');btn.disabled=true;
+  document.getElementById('prog').classList.add('show');
+  document.getElementById('progLog').innerHTML='';
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('prevBox').classList.remove('show');
+  document.getElementById('stats').classList.remove('show');
+  setBar(0);genFiles=[];let lastUrl=null;t0=Date.now();
+
+  addLog('[START] Reading SVG...','hi');
+
+  for(let vi=0;vi<variants.length;vi++){
+    const v=variants[vi];
+    const s=v.bold&&v.italic?'Bold Italic':v.bold?'Bold':v.italic?'Italic':'Regular';
+    addLog(`\n[FONT] ${name} ${s}...`,'hi');
+    setBar(10+vi/variants.length*75);
+    const fd=new FormData();
+    fd.append('svg',svgFile);fd.append('font_name',name);
+    fd.append('bold',v.bold?'1':'0');fd.append('italic',v.italic?'1':'0');
+    fd.append('char_order',JSON.stringify(chars));
+    try{
+      addLog('  → Processing glyphs...');await sleep(60);
+      const res=await fetch('/convert',{method:'POST',body:fd});
+      if(res.ok){
+        const data=await res.json();
+        if(data.success){
+          data.files.forEach(f=>{
+            addLog(`  ✓ ${f.filename} (${(f.size/1024).toFixed(1)} KB)`,'ok');
+            genFiles.push(f);
+            if(f.filename.endsWith('.ttf')&&!lastUrl)lastUrl=f.url;
+          });
+        }else addLog('  ✗ '+data.error,'err');
+      }else addLog('  ✗ Server error','err');
+    }catch(e){addLog('  ✗ Connection error','err');}
+    setBar(10+(vi+1)/variants.length*85);
+  }
+
+  const el=((Date.now()-t0)/1000).toFixed(1);
+  setBar(100);addLog('\n[DONE] ✓','ok');
+  btn.disabled=false;
+  btn.querySelector('[data-i18n]').textContent=T[lang].btnGen;
+
+  if(genFiles.length){
+    const kb=(genFiles.reduce((a,f)=>a+f.size,0)/1024).toFixed(0);
+    document.getElementById('sG').textContent=chars.length;
+    document.getElementById('sS').textContent=kb+'KB';
+    document.getElementById('sT').textContent=el;
+    document.getElementById('stats').classList.add('show');
+    document.getElementById('dlRow').innerHTML=genFiles
+      .filter(f=>f.filename.endsWith('.ttf')||f.filename.endsWith('.otf'))
+      .map(f=>`<a class="btn-dl" href="${f.url}" download="${f.filename}">⬇ ${f.filename}</a>`).join('');
+    document.getElementById('result').classList.add('show');
+    if(lastUrl)loadPrev(lastUrl);
+  }
+}
+
+async function loadPrev(url){
+  try{
+    const buf=await(await fetch(url)).arrayBuffer();
+    const ff=new FontFace('PreviewFont',buf);await ff.load();document.fonts.add(ff);
+    document.getElementById('prevBox').classList.add('show');
+    document.getElementById('prevInp').value='AaBbCc 123';
+    updatePrev();
+  }catch(e){console.log(e);}
+}
+function updatePrev(){document.getElementById('prevSpan').textContent=document.getElementById('prevInp').value||'AaBbCc 123';}
+function setSz(px){document.getElementById('prevSpan').style.fontSize=px+'px';document.querySelectorAll('.sz').forEach(b=>b.classList.toggle('on',b.textContent==px));}
+function setPrevBg(bg,fg){const s=document.getElementById('prevStage');s.style.background=bg;s.style.color=fg;}
+
+async function startOpt(){
+  if(!svgFileO){alert('Please upload an SVG file first.');return;}
+  const btn=document.getElementById('btnOpt');btn.disabled=true;
+  document.getElementById('progO').classList.add('show');
+  document.getElementById('progLogO').innerHTML='';
+  document.getElementById('optRes').classList.remove('show');
+  setBar(0,'progFillO');
+  addLog('[START] Reading SVG...','hi','progLogO');await sleep(60);
+  const fd=new FormData();
+  fd.append('svg',svgFileO);fd.append('clean_ids',document.getElementById('ckCln').checked?'1':'0');
+  try{
+    setBar(40,'progFillO');addLog('  → Optimizing...','','progLogO');
+    const res=await fetch('/optimize',{method:'POST',body:fd});
+    if(res.ok){
+      const data=await res.json();
+      if(data.success){
+        setBar(100,'progFillO');
+        addLog(`  ✓ ${data.original_size} → ${data.optimized_size}`,'ok','progLogO');
+        addLog('\n[DONE] ✓','ok','progLogO');
+        document.getElementById('optDl').innerHTML=`<a class="btn-dl" href="${data.url}" download="${data.filename}">⬇ ${data.filename}</a>`;
+        document.getElementById('optRes').classList.add('show');
+      }else addLog('  ✗ '+data.error,'err','progLogO');
+    }else addLog('  ✗ Server error','err','progLogO');
+  }catch(e){addLog('  ✗ Connection error','err','progLogO');}
+  btn.disabled=false;
+  btn.querySelector('[data-i18n]').textContent=T[lang].btnOpt;
+}
+</script>
+</body>
+</html>
