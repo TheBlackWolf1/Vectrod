@@ -3,767 +3,562 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vectrod — SVG to Font Converter</title>
+<title>Vectrod — SVG to Professional Font</title>
+<meta name="description" content="Convert any SVG to professional TTF & OTF fonts. Free, fast, powerful.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   DESIGN TOKENS
-═══════════════════════════════════════════ */
-:root {
-  --ease: cubic-bezier(.22,.68,0,1.2);
-  --ease-out: cubic-bezier(.16,1,.3,1);
-  --ease-smooth: cubic-bezier(.4,0,.2,1);
+/* ═══════════════ TOKENS ═══════════════ */
+:root{--ease:cubic-bezier(.22,.68,0,1.2);--ease-out:cubic-bezier(.16,1,.3,1)}
+
+[data-theme="dark"]{
+  --bg:#02030d;--bg2:#050615;--bg3:#080918;
+  --sf:rgba(255,255,255,.032);--sf2:rgba(255,255,255,.06);
+  --br:rgba(255,255,255,.07);--br-hi:rgba(240,192,96,.2);
+  --tx:#ede8ff;--mt:rgba(237,232,255,.38);
+  --gold:#f0c060;--gold2:#ffe090;--gold3:#c09040;
+  --purple:#8844ee;--purple2:#aa77ff;--purple3:#6622cc;
+  --blue:#3388ff;--blue2:#66aaff;
+  --green:#22dd99;--green2:#55ffbb;
+  --danger:#ff4455;--ok:#22dd99;
+  --gG:rgba(34,221,153,.1);--gP:rgba(136,68,238,.14);--gO:rgba(240,192,96,.1);
+}
+[data-theme="light"]{
+  --bg:#f5f3ff;--bg2:#ede9ff;--bg3:#e5e0ff;
+  --sf:rgba(255,255,255,.75);--sf2:rgba(255,255,255,.95);
+  --br:rgba(60,20,180,.1);--br-hi:rgba(180,120,0,.25);
+  --tx:#08051e;--mt:rgba(8,5,30,.42);
+  --gold:#9a6600;--gold2:#b87800;--gold3:#7a5000;
+  --purple:#5520bb;--purple2:#7744dd;--purple3:#3808aa;
+  --blue:#1155dd;--blue2:#3377ee;
+  --green:#008855;--green2:#00aa66;
+  --danger:#cc1122;--ok:#008855;
+  --gG:rgba(0,136,85,.08);--gP:rgba(85,32,187,.1);--gO:rgba(154,102,0,.08);
 }
 
-[data-theme="dark"] {
-  --bg:       #060912;
-  --bg2:      #0a0e1a;
-  --bg3:      #0d1220;
-  --surface:  rgba(255,255,255,.035);
-  --border:   rgba(255,255,255,.07);
-  --border-hi: rgba(0,255,136,.25);
-  --text:     #e8f0ff;
-  --muted:    rgba(232,240,255,.38);
-  --g1:       #00ff88;   /* electric green */
-  --g2:       #00c8ff;   /* cyan */
-  --orange:   #ff6b00;   /* burnt orange */
-  --orange2:  #ffaa00;   /* amber */
-  --success:  #00ff88;
-  --danger:   #ff4455;
-  --glow-g:   rgba(0,255,136,.12);
-  --glow-o:   rgba(255,107,0,.12);
+/* ═══════════════ RESET ═══════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--tx);
+  font-family:'Outfit',sans-serif;font-size:15px;line-height:1.6;
+  min-height:100vh;overflow-x:hidden;
+  transition:background .4s,color .4s;
 }
 
-[data-theme="light"] {
-  --bg:       #f0f4ff;
-  --bg2:      #e8eeff;
-  --bg3:      #dde5ff;
-  --surface:  rgba(255,255,255,.7);
-  --border:   rgba(0,40,120,.1);
-  --border-hi: rgba(0,160,80,.3);
-  --text:     #0a1230;
-  --muted:    rgba(10,18,48,.4);
-  --g1:       #00a855;
-  --g2:       #0080cc;
-  --orange:   #d45200;
-  --orange2:  #c88000;
-  --success:  #00a855;
-  --danger:   #cc1122;
-  --glow-g:   rgba(0,168,85,.1);
-  --glow-o:   rgba(212,82,0,.1);
-}
+/* ═══════════════ CURSOR ═══════════════ */
+.cur{position:fixed;width:10px;height:10px;border-radius:50%;
+  background:var(--gold);pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s}
+.cur-ring{position:fixed;width:32px;height:32px;border-radius:50%;
+  border:1px solid rgba(240,192,96,.35);pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);transition:none}
+body:hover .cur{opacity:1}
 
-/* ═══════════════════════════════════════════
-   RESET
-═══════════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-  transition: background .4s, color .4s;
-}
+/* ═══════════════ BACKGROUND ═══════════════ */
+.bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(136,68,238,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(136,68,238,.035) 1px,transparent 1px);
+  background-size:56px 56px;animation:gridDrift 50s linear infinite}
+@keyframes gridDrift{to{background-position:56px 56px}}
+.orb{position:absolute;border-radius:50%;filter:blur(110px);animation:orbFloat ease-in-out infinite alternate}
+.o1{width:900px;height:900px;top:-350px;left:-250px;
+  background:radial-gradient(circle,rgba(136,68,238,.22) 0%,transparent 65%);animation-duration:22s}
+.o2{width:700px;height:700px;bottom:-250px;right:-200px;
+  background:radial-gradient(circle,rgba(240,192,96,.18) 0%,transparent 65%);animation-duration:28s;animation-delay:-9s}
+.o3{width:550px;height:550px;top:38%;left:48%;
+  background:radial-gradient(circle,rgba(34,221,153,.12) 0%,transparent 65%);animation-duration:32s;animation-delay:-16s}
+.o4{width:420px;height:420px;top:15%;right:8%;
+  background:radial-gradient(circle,rgba(51,136,255,.1) 0%,transparent 65%);animation-duration:20s;animation-delay:-4s}
+@keyframes orbFloat{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,45px) scale(1.12)}}
+.particles{position:absolute;inset:0}
+.particle{position:absolute;border-radius:50%;animation:pFloat linear infinite;opacity:0}
+@keyframes pFloat{0%{opacity:0;transform:translateY(110vh)}10%,90%{opacity:1}100%{opacity:0;transform:translateY(-80px)}}
 
-/* ═══════════════════════════════════════════
-   BACKGROUND
-═══════════════════════════════════════════ */
-.bg-canvas {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-}
-.bg-noise {
-  position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity: .4;
-}
-[data-theme="dark"] .bg-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(0,255,136,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,136,.03) 1px, transparent 1px);
-  background-size: 52px 52px;
-}
-[data-theme="light"] .bg-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(0,80,200,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,80,200,.04) 1px, transparent 1px);
-  background-size: 52px 52px;
-}
-.orb {
-  position: absolute; border-radius: 50%;
-  filter: blur(100px); pointer-events: none;
-}
-.orb-1 {
-  width: 700px; height: 700px;
-  top: -250px; left: -200px;
-  background: radial-gradient(circle, rgba(0,255,136,.18) 0%, transparent 65%);
-  animation: drift1 18s ease-in-out infinite alternate;
-}
-.orb-2 {
-  width: 500px; height: 500px;
-  bottom: -100px; right: -150px;
-  background: radial-gradient(circle, rgba(255,107,0,.2) 0%, transparent 65%);
-  animation: drift2 22s ease-in-out infinite alternate;
-}
-.orb-3 {
-  width: 400px; height: 400px;
-  top: 35%; left: 55%;
-  background: radial-gradient(circle, rgba(0,200,255,.12) 0%, transparent 65%);
-  animation: drift1 26s ease-in-out infinite alternate-reverse;
-}
-@keyframes drift1 { from{transform:translate(0,0)} to{transform:translate(50px,40px)} }
-@keyframes drift2 { from{transform:translate(0,0)} to{transform:translate(-40px,30px)} }
+/* ═══════════════ LAYOUT ═══════════════ */
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:38px 24px 140px}
 
-/* ═══════════════════════════════════════════
-   LAYOUT
-═══════════════════════════════════════════ */
-.wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 120px; }
+/* ═══════════════ TOPBAR ═══════════════ */
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:86px;animation:slideDown .8s var(--ease-out) both}
+.logo{display:flex;align-items:center;gap:14px}
+.logo-svg{width:48px;height:48px;flex-shrink:0}
+.logo-text-wrap{}
+.logo-name{
+  font-family:'Cinzel',serif;font-size:24px;font-weight:900;letter-spacing:.14em;
+  background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 25%,var(--purple2) 55%,var(--blue2) 80%,var(--green2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 22px rgba(240,192,96,.28));
+}
+.logo-tagline{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.22em;
+  color:var(--mt);text-transform:uppercase;margin-top:1px}
+.nav-r{display:flex;align-items:center;gap:7px}
+.nbtn{background:var(--sf);backdrop-filter:blur(16px);border:1px solid var(--br);
+  color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;
+  padding:8px 16px;border-radius:100px;cursor:pointer;transition:all .25s}
+.nbtn:hover{border-color:var(--gold);color:var(--gold)}
+.nbtn.active{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;
+  -webkit-text-fill-color:#000;border-color:transparent;box-shadow:0 0 18px var(--gO)}
 
-/* ═══════════════════════════════════════════
-   TOPBAR
-═══════════════════════════════════════════ */
-.topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 72px;
-  animation: slideDown .7s var(--ease-out) both;
+/* ═══════════════ HERO ═══════════════ */
+.hero{text-align:center;margin-bottom:80px;animation:slideDown .8s var(--ease-out) .1s both}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;
+  color:var(--gold);text-transform:uppercase;
+  border:1px solid rgba(240,192,96,.22);padding:6px 18px;border-radius:100px;
+  background:rgba(240,192,96,.05);backdrop-filter:blur(10px);margin-bottom:30px}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 10px var(--gold);animation:bdotPulse 2.2s ease-in-out infinite}
+@keyframes bdotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(46px,8.5vw,96px);
+  font-weight:900;line-height:.9;letter-spacing:.04em;margin-bottom:26px}
+.h1a{display:block;color:var(--tx);opacity:.88}
+.h1b{
+  display:block;
+  background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 20%,var(--purple2) 50%,var(--blue2) 75%,var(--green2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 28px rgba(136,68,238,.3));
+  animation:h1shimmer 5s ease-in-out infinite;
 }
+@keyframes h1shimmer{0%,100%{filter:drop-shadow(0 0 28px rgba(136,68,238,.3))}50%{filter:drop-shadow(0 0 48px rgba(240,192,96,.35))}}
+.hero-sub{font-size:16px;color:var(--mt);max-width:530px;margin:0 auto 36px;line-height:1.8;font-weight:400}
+.hero-sub strong{color:var(--tx);font-weight:700}
+.hstats{display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap}
+.hst{text-align:center}
+.hst-n{font-family:'Cinzel',serif;font-size:26px;font-weight:700;
+  background:linear-gradient(135deg,var(--gold),var(--purple2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hst-l{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--mt);text-transform:uppercase;margin-top:2px}
+.hst-div{width:1px;height:36px;background:var(--br)}
 
-.logo-wrap { display: flex; align-items: baseline; gap: 10px; }
-.logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px; letter-spacing: .08em;
-  background: linear-gradient(90deg, var(--g1) 0%, var(--g2) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 12px rgba(0,255,136,.4));
-}
-.logo-tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: .2em;
-  color: var(--orange);
-  text-transform: uppercase;
-  border: 1px solid var(--orange);
-  padding: 2px 7px; border-radius: 4px;
-  opacity: .8;
-}
+/* ═══════════════ HOW TO ═══════════════ */
+.how{margin-bottom:56px;animation:slideUp .7s var(--ease-out) .14s both}
+.how-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;
+  color:var(--purple2);text-transform:uppercase;text-align:center;margin-bottom:22px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.step{background:var(--sf);backdrop-filter:blur(16px);border:1px solid var(--br);
+  border-radius:18px;padding:22px;text-align:center;
+  transition:all .3s var(--ease);position:relative;overflow:hidden}
+.step::before{content:'';position:absolute;inset:0;border-radius:18px;
+  background:linear-gradient(135deg,var(--gO),transparent);opacity:0;transition:opacity .3s}
+.step:hover::before{opacity:1}
+.step:hover{border-color:rgba(240,192,96,.18);transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(136,68,238,.08)}
+.step-n{font-family:'Cinzel',serif;font-size:34px;font-weight:900;
+  background:linear-gradient(135deg,var(--gold),var(--purple2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:10px;line-height:1}
+.step-t{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:5px}
+.step-d{font-size:12px;color:var(--mt);line-height:1.55}
 
-.nav-right { display: flex; align-items: center; gap: 6px; }
-.nav-btn {
-  background: var(--surface);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; font-weight: 500; letter-spacing: .12em;
-  padding: 8px 14px; border-radius: 8px;
-  cursor: pointer; transition: all .25s var(--ease);
-}
-.nav-btn:hover { border-color: var(--g1); color: var(--g1); }
-.nav-btn.active {
-  background: var(--g1); color: #000;
-  border-color: transparent;
-  -webkit-text-fill-color: #000;
-  box-shadow: 0 0 16px rgba(0,255,136,.3);
-}
+/* ═══════════════ TABS ═══════════════ */
+.tabs-row{margin-bottom:28px;animation:slideUp .7s var(--ease-out) .2s both}
+.tabs{display:inline-flex;background:var(--sf);backdrop-filter:blur(20px);
+  border:1px solid var(--br);border-radius:100px;padding:4px;gap:2px}
+.tab{background:none;border:none;color:var(--mt);font-family:'Outfit',sans-serif;
+  font-size:13px;font-weight:600;letter-spacing:.02em;
+  padding:11px 26px;border-radius:100px;cursor:pointer;transition:all .25s}
+.tab:hover{color:var(--tx)}
+.tab.active{
+  background:linear-gradient(90deg,var(--gold3),var(--purple),var(--blue));
+  color:#fff;-webkit-text-fill-color:#fff;
+  box-shadow:0 4px 20px rgba(136,68,238,.3)}
 
-/* ═══════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════ */
-.hero {
-  margin-bottom: 60px;
-  animation: slideDown .7s var(--ease-out) .08s both;
-}
+/* ═══════════════ PANELS ═══════════════ */
+.panel{display:none}
+.panel.active{display:block;animation:slideUp .4s var(--ease-out)}
 
-.hero-kicker {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px; letter-spacing: .2em;
-  color: var(--g1); text-transform: uppercase;
-  margin-bottom: 22px;
-}
-.kicker-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--g1);
-  box-shadow: 0 0 10px var(--g1);
-  animation: blink 2s ease-in-out infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+/* ═══════════════ CARD ═══════════════ */
+.card{background:var(--sf);backdrop-filter:blur(24px);border:1px solid var(--br);
+  border-radius:22px;padding:32px;margin-bottom:14px;
+  transition:border-color .3s,box-shadow .3s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(240,192,96,.35),rgba(136,68,238,.35),transparent);
+  opacity:0;transition:opacity .3s}
+.card:hover::before{opacity:1}
+.card:hover{border-color:rgba(240,192,96,.13);
+  box-shadow:0 8px 48px rgba(136,68,238,.07),0 0 80px rgba(240,192,96,.04)}
+.clabel{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:22px;
+  display:flex;align-items:center;gap:10px}
+.clabel::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(240,192,96,.3),transparent)}
 
-.hero h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(52px, 9vw, 96px);
-  line-height: .9; letter-spacing: .04em;
-  margin-bottom: 22px;
-}
-.h1-white { color: var(--text); }
-.h1-green {
-  background: linear-gradient(90deg, var(--g1), var(--g2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 20px rgba(0,255,136,.35));
-}
-.h1-orange {
-  color: var(--orange);
-  -webkit-text-fill-color: var(--orange);
-  filter: drop-shadow(0 0 16px rgba(255,107,0,.3));
-}
+/* TOOLTIP */
+.tip-w{display:inline-flex;align-items:center;gap:7px;position:relative}
+.tip-i{width:17px;height:17px;border-radius:50%;background:var(--sf2);border:1px solid var(--br);
+  color:var(--mt);font-size:10px;font-weight:700;
+  display:inline-flex;align-items:center;justify-content:center;cursor:help;transition:all .2s;flex-shrink:0}
+.tip-i:hover{border-color:var(--gold);color:var(--gold);box-shadow:0 0 12px var(--gO)}
+.tip-box{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);
+  background:#07081a;border:1px solid rgba(240,192,96,.2);border-radius:12px;
+  padding:12px 16px;font-size:12px;color:var(--tx);line-height:1.55;
+  width:260px;z-index:200;pointer-events:none;opacity:0;transition:opacity .2s;
+  box-shadow:0 10px 40px rgba(0,0,0,.5)}
+[data-theme="light"] .tip-box{background:#fff;border-color:rgba(130,80,0,.15)}
+.tip-w:hover .tip-box{opacity:1}
 
-.hero-desc {
-  font-size: 15px; font-weight: 500;
-  color: var(--muted);
-  max-width: 460px; line-height: 1.75;
-}
-.hero-desc strong { color: var(--text); font-weight: 700; }
+/* ═══════════════ DROP ═══════════════ */
+.drop{border:1.5px dashed var(--br);border-radius:18px;padding:54px 28px;
+  text-align:center;cursor:pointer;transition:all .3s var(--ease);position:relative;overflow:hidden;background:var(--bg3)}
+.drop::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,var(--gO) 0%,transparent 65%);opacity:0;transition:opacity .3s;pointer-events:none}
+.drop:hover::after,.drop.over::after{opacity:1}
+.drop:hover,.drop.over{border-color:var(--gold);border-style:solid}
+.drop.done{border-color:var(--ok)}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.dicon{display:block;font-size:46px;margin-bottom:18px;
+  animation:diconFloat 3.5s ease-in-out infinite;
+  filter:drop-shadow(0 0 10px var(--gold))}
+@keyframes diconFloat{0%,100%{transform:translateY(0);filter:drop-shadow(0 0 10px var(--gold))}
+  50%{transform:translateY(-8px);filter:drop-shadow(0 0 24px var(--purple2))}}
+.dhead{font-size:16px;font-weight:700;color:var(--tx);margin-bottom:6px}
+.dsub{font-size:13px;color:var(--mt)}
+.dname{margin-top:11px;font-family:'DM Mono',monospace;font-size:12px;color:var(--ok);font-weight:500}
+.thumb{display:none;margin-top:16px;border-radius:14px;overflow:hidden;
+  border:1px solid var(--br);background:#fff;height:150px;position:relative}
+.thumb.show{display:block;animation:slideUp .3s var(--ease-out)}
+.thumb img{width:100%;height:100%;object-fit:contain}
+.thumb-badge{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);
+  backdrop-filter:blur(8px);color:var(--gold);font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:.14em;padding:3px 8px;border-radius:100px}
 
-/* ═══════════════════════════════════════════
-   TABS
-═══════════════════════════════════════════ */
-.tab-bar {
-  display: flex; gap: 0;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 32px;
-  animation: slideUp .6s var(--ease-out) .12s both;
-}
-.tab {
-  background: none; border: none;
-  color: var(--muted);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px; font-weight: 700;
-  padding: 14px 24px; cursor: pointer;
-  transition: all .25s;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px; letter-spacing: .02em;
-}
-.tab:hover { color: var(--text); }
-.tab.active { color: var(--g1); border-bottom-color: var(--g1); }
+/* ═══════════════ FORM ═══════════════ */
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.fg{margin-bottom:20px}
+.flbl{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;
+  color:var(--mt);text-transform:uppercase;margin-bottom:9px}
+.finp{width:100%;background:var(--bg3);border:1px solid var(--br);border-radius:12px;
+  color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;
+  padding:13px 16px;outline:none;transition:border-color .25s,box-shadow .25s}
+.finp:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gO)}
+.finp::placeholder{color:var(--mt);font-weight:400}
+.cks{display:flex;gap:8px;flex-wrap:wrap}
+.ck{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;
+  padding:9px 16px;border-radius:100px;border:1px solid var(--br);background:var(--bg3);
+  cursor:pointer;transition:all .2s;user-select:none}
+.ck:hover{border-color:var(--gold)}
+.ck.on{border-color:var(--gold);background:var(--gO);color:var(--gold)}
+.ck input{display:none}
+.ckd{width:7px;height:7px;border-radius:50%;background:var(--br);transition:all .2s;flex-shrink:0}
+.ck.on .ckd{background:var(--gold);box-shadow:0 0 9px var(--gold)}
+.char-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.char-rst{background:none;border:none;cursor:pointer;font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:.1em;color:var(--mt);transition:color .2s}
+.char-rst:hover{color:var(--danger)}
+.charbox{background:var(--bg3);border:1px solid var(--br);border-radius:12px;
+  padding:12px;line-height:2.4;word-break:break-all;max-height:120px;overflow-y:auto}
+.charbox::-webkit-scrollbar{width:4px}
+.charbox::-webkit-scrollbar-thumb{background:var(--br);border-radius:2px}
+.charbox span{display:inline-block;padding:2px 7px;margin:2px;
+  border:1px solid var(--br);border-radius:6px;font-family:'DM Mono',monospace;font-size:11px;
+  cursor:grab;transition:all .15s;user-select:none;background:var(--sf)}
+.charbox span:hover{border-color:var(--danger);color:var(--danger)}
+.charbox span.don{border-color:var(--gold);transform:scale(1.1);background:var(--gO)}
+.charbox span.ding{opacity:.2}
+.char-note{margin-top:8px;font-size:11px;color:var(--mt);line-height:1.6}
 
-/* ═══════════════════════════════════════════
-   PANELS
-═══════════════════════════════════════════ */
-.panel { display: none; }
-.panel.active { display: block; animation: slideUp .4s var(--ease-out); }
+/* ═══════════════ BTN GEN ═══════════════ */
+.btn-gen{width:100%;padding:20px;
+  background:linear-gradient(90deg,var(--gold3) 0%,var(--purple) 40%,var(--blue) 75%,var(--green) 100%);
+  background-size:200% auto;
+  border:none;border-radius:16px;color:#fff;-webkit-text-fill-color:#fff;
+  font-family:'Cinzel',serif;font-size:19px;font-weight:700;letter-spacing:.1em;
+  cursor:pointer;transition:all .35s var(--ease);position:relative;overflow:hidden;
+  box-shadow:0 8px 32px rgba(136,68,238,.28)}
+.btn-gen::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+  transform:translateX(-100%);transition:transform .6s}
+.btn-gen:hover:not(:disabled)::before{transform:translateX(100%)}
+.btn-gen:hover:not(:disabled){background-position:right center;transform:translateY(-2px);
+  box-shadow:0 14px 44px rgba(136,68,238,.38),0 0 60px rgba(240,192,96,.12)}
+.btn-gen:active:not(:disabled){transform:translateY(0)}
+.btn-gen:disabled{opacity:.32;cursor:not-allowed;transform:none!important}
 
-/* ═══════════════════════════════════════════
-   GLASS CARD
-═══════════════════════════════════════════ */
-.card {
-  background: var(--surface);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 30px;
-  margin-bottom: 14px;
-  transition: border-color .3s, box-shadow .3s;
-  position: relative; overflow: hidden;
-}
-.card::after {
-  content: '';
-  position: absolute; inset: 0; border-radius: 16px;
-  background: linear-gradient(135deg, rgba(0,255,136,.03) 0%, transparent 50%);
-  pointer-events: none;
-}
-.card:hover {
-  border-color: var(--border-hi);
-  box-shadow: 0 0 40px var(--glow-g), inset 0 1px 0 rgba(0,255,136,.1);
-}
+/* ═══════════════ PROGRESS ═══════════════ */
+.prog{display:none;margin-top:20px}
+.prog.show{display:block;animation:slideUp .3s var(--ease-out)}
+.ptrack{height:3px;background:var(--bg3);border-radius:100px;overflow:hidden;margin-bottom:14px}
+.pfill{height:100%;width:0%;
+  background:linear-gradient(90deg,var(--gold),var(--purple),var(--blue),var(--green));
+  border-radius:100px;transition:width .4s var(--ease-out);box-shadow:0 0 12px var(--purple)}
+.plog{font-family:'DM Mono',monospace;font-size:11px;color:var(--mt);
+  line-height:2;max-height:96px;overflow-y:auto}
+.plog::-webkit-scrollbar{width:3px}
+.plog::-webkit-scrollbar-thumb{background:var(--br)}
+.ll{animation:fadeIn .2s ease}
+.ll.ok{color:var(--ok)}.ll.er{color:var(--danger)}.ll.hi{color:var(--gold)}
 
-.card-num {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; font-weight: 500;
-  letter-spacing: .22em; text-transform: uppercase;
-  color: var(--g1); margin-bottom: 18px;
-  display: flex; align-items: center; gap: 12px;
-}
-.card-num::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-hi), transparent); }
+/* ═══════════════ STATS ═══════════════ */
+.stats{display:none;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.stats.show{display:grid;animation:slideUp .35s var(--ease-out)}
+.stat{background:var(--sf);border:1px solid var(--br);border-radius:18px;padding:18px 20px;position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--purple),var(--blue))}
+.sn{font-family:'Cinzel',serif;font-size:34px;font-weight:700;line-height:1;
+  background:linear-gradient(135deg,var(--gold),var(--purple2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.sl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--mt);text-transform:uppercase}
 
-/* ═══════════════════════════════════════════
-   DROPZONE
-═══════════════════════════════════════════ */
-.drop {
-  border: 1.5px dashed var(--border);
-  border-radius: 12px;
-  padding: 48px 28px;
-  text-align: center; cursor: pointer;
-  transition: all .3s var(--ease);
-  position: relative; overflow: hidden;
-  background: var(--bg3);
-}
-.drop::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at center, var(--glow-g) 0%, transparent 70%);
-  opacity: 0; transition: opacity .3s;
-}
-.drop:hover::before, .drop.over::before { opacity: 1; }
-.drop:hover, .drop.over { border-color: var(--g1); border-style: solid; }
-.drop.done { border-color: var(--success); border-style: solid; }
-.drop input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+/* ═══════════════ RESULT ═══════════════ */
+.result{display:none;background:var(--sf);border:1px solid rgba(34,221,153,.2);
+  border-radius:18px;padding:22px 26px;margin-top:14px;position:relative;overflow:hidden}
+.result::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--ok),transparent)}
+.result.show{display:block;animation:slideUp .35s var(--ease-out)}
+.rtag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;
+  color:var(--ok);text-transform:uppercase;margin-bottom:16px}
+.dlrow{display:flex;gap:10px;flex-wrap:wrap}
+.btndl{flex:1;min-width:130px;background:rgba(34,221,153,.07);
+  border:1px solid rgba(34,221,153,.25);border-radius:12px;color:var(--ok);
+  font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;
+  padding:14px 18px;cursor:pointer;transition:all .25s;
+  text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btndl:hover{background:rgba(34,221,153,.15);border-color:var(--ok);
+  transform:translateY(-1px);box-shadow:0 6px 22px rgba(34,221,153,.14)}
 
-.drop-icon {
-  display: block; font-size: 38px; margin-bottom: 14px;
-  animation: iconGlow 3s ease-in-out infinite;
-  filter: drop-shadow(0 0 8px var(--g1));
-}
-@keyframes iconGlow {
-  0%,100% { filter: drop-shadow(0 0 6px var(--g1)); }
-  50%      { filter: drop-shadow(0 0 22px var(--g1)); }
-}
-.drop-head { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
-.drop-sub  { font-size: 13px; color: var(--muted); }
-.drop-name { margin-top: 10px; font-size: 12px; font-family: 'DM Mono', monospace; color: var(--success); font-weight: 500; }
+/* ═══════════════ PREVIEW ═══════════════ */
+.prevbox{display:none;background:var(--sf);border:1px solid var(--br);
+  border-radius:22px;padding:28px;margin-top:14px}
+.prevbox.show{display:block;animation:slideUp .35s var(--ease-out)}
+.prev-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.prev-inp{flex:1;min-width:180px;background:var(--bg3);border:1px solid var(--br);
+  border-radius:12px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;
+  padding:10px 14px;outline:none;transition:border-color .25s,box-shadow .25s}
+.prev-inp:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gO)}
+.szrow{display:flex;gap:4px}
+.sz{background:var(--bg3);border:1px solid var(--br);border-radius:8px;
+  color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;font-weight:500;
+  padding:6px 10px;cursor:pointer;transition:all .2s}
+.sz.on,.sz:hover{border-color:var(--gold);color:var(--gold);background:var(--gO)}
+.bgrow{display:flex;gap:6px}
+.bgd{width:22px;height:22px;border-radius:50%;cursor:pointer;
+  border:2px solid var(--br);transition:all .2s}
+.bgd:hover{transform:scale(1.18);border-color:var(--gold)}
+.prev-stage{min-height:110px;display:flex;align-items:center;padding:24px;
+  border-radius:14px;background:#fff;color:#000;overflow:hidden;transition:background .3s,color .3s}
+.prev-stage span{font-family:'PreviewFont',serif;line-height:1.3;word-break:break-all}
 
-.svg-thumb {
-  display: none; margin-top: 14px;
-  border: 1px solid var(--border); border-radius: 10px;
-  background: #fff; height: 148px; overflow: hidden; position: relative;
-}
-.svg-thumb.show { display: block; animation: slideUp .3s var(--ease-out); }
-.svg-thumb img { width: 100%; height: 100%; object-fit: contain; }
-.thumb-badge {
-  position: absolute; top: 8px; right: 8px;
-  background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
-  color: var(--g1); font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: .14em;
-  padding: 3px 8px; border-radius: 20px;
-}
+/* ═══════════════ GALLERY ═══════════════ */
+.gallery{display:none;background:var(--sf);border:1px solid var(--br);
+  border-radius:22px;padding:28px;margin-top:14px}
+.gallery.show{display:block;animation:slideUp .35s var(--ease-out)}
+.gal-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;
+  color:var(--purple2);text-transform:uppercase;margin-bottom:20px;
+  display:flex;align-items:center;gap:10px}
+.gal-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(136,68,238,.3),transparent)}
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:12px}
+.gal-item{background:var(--bg3);border:1px solid var(--br);border-radius:14px;
+  padding:14px;cursor:pointer;transition:all .2s;position:relative}
+.gal-item:hover{border-color:var(--purple2);transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(136,68,238,.1)}
+.gal-name{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:6px;font-family:'DM Mono',monospace}
+.gal-prev{font-size:22px;color:var(--mt);line-height:1.2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.gal-date{font-size:10px;color:var(--mt);margin-top:6px;font-family:'DM Mono',monospace}
+.gal-del{position:absolute;top:8px;right:8px;background:none;border:none;
+  color:var(--mt);font-size:13px;cursor:pointer;transition:color .2s;padding:2px}
+.gal-del:hover{color:var(--danger)}
+.gal-empty{font-size:13px;color:var(--mt);text-align:center;padding:20px;font-style:italic}
 
-/* ═══════════════════════════════════════════
-   FORM
-═══════════════════════════════════════════ */
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-.fg { margin-bottom: 20px; }
+/* ═══════════════ OPTIMIZER ═══════════════ */
+.opt-note{background:linear-gradient(135deg,rgba(240,192,96,.05),rgba(136,68,238,.04));
+  border:1px solid rgba(240,192,96,.14);border-radius:14px;
+  padding:16px 20px;margin-bottom:22px;font-size:13px;color:var(--mt);line-height:1.7}
+.opt-note strong{color:var(--tx);font-weight:700}
+.opt-res{display:none;background:var(--sf);border:1px solid rgba(34,221,153,.2);
+  border-radius:18px;padding:22px 26px;margin-top:14px}
+.opt-res.show{display:block;animation:slideUp .3s var(--ease-out)}
 
-.flabel {
-  display: block;
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: .16em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 9px;
-}
-.finput {
-  width: 100%;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--text);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 14px; font-weight: 600;
-  padding: 13px 16px; outline: none;
-  transition: border-color .25s, box-shadow .25s;
-}
-.finput:focus { border-color: var(--g1); box-shadow: 0 0 0 3px var(--glow-g); }
-.finput::placeholder { color: var(--muted); font-weight: 400; }
+/* ═══════════════ ANIMATIONS ═══════════════ */
+@keyframes slideDown{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* CHECKBOXES */
-.cks { display: flex; gap: 8px; flex-wrap: wrap; }
-.ck-lbl {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 13px; font-weight: 600;
-  padding: 9px 16px; border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--bg3);
-  cursor: pointer; transition: all .2s;
-  user-select: none;
-}
-.ck-lbl:hover { border-color: var(--g1); }
-.ck-lbl.on { border-color: var(--g1); background: var(--glow-g); color: var(--g1); }
-.ck-lbl input { display: none; }
-.ck-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--border); transition: all .2s; flex-shrink: 0;
-}
-.ck-lbl.on .ck-dot { background: var(--g1); box-shadow: 0 0 8px var(--g1); }
-
-/* CHAR BOX */
-.char-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
-.char-reset {
-  background: none; border: none; cursor: pointer;
-  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .1em;
-  color: var(--muted); transition: color .2s;
-}
-.char-reset:hover { color: var(--danger); }
-.char-box {
-  background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
-  padding: 12px; line-height: 2.3; word-break: break-all;
-  max-height: 118px; overflow-y: auto;
-}
-.char-box::-webkit-scrollbar { width: 4px; }
-.char-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.char-box span {
-  display: inline-block; padding: 2px 6px; margin: 2px;
-  border: 1px solid var(--border); border-radius: 5px;
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  cursor: grab; transition: all .15s; user-select: none;
-  background: var(--surface);
-}
-.char-box span:hover { border-color: var(--danger); color: var(--danger); }
-.char-box span.drag-on { border-color: var(--g1); transform: scale(1.08); }
-.char-box span.drag-ing { opacity: .25; }
-.char-note { margin-top: 8px; font-size: 11px; color: var(--muted); line-height: 1.6; }
-
-/* ═══════════════════════════════════════════
-   GENERATE BUTTON
-═══════════════════════════════════════════ */
-.btn-gen {
-  width: 100%; padding: 18px;
-  background: linear-gradient(90deg, var(--g1) 0%, var(--g2) 100%);
-  border: none; border-radius: 12px; color: #000;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px; letter-spacing: .12em;
-  cursor: pointer; transition: all .3s var(--ease);
-  position: relative; overflow: hidden;
-  box-shadow: 0 6px 30px rgba(0,255,136,.25);
-}
-.btn-gen::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
-  transform: translateX(-100%);
-  transition: transform .5s;
-}
-.btn-gen:hover:not(:disabled)::before { transform: translateX(100%); }
-.btn-gen:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 40px rgba(0,255,136,.4);
-}
-.btn-gen:active:not(:disabled) { transform: translateY(0); }
-.btn-gen:disabled { opacity: .35; cursor: not-allowed; transform: none !important; }
-
-.btn-sec {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-  color: var(--muted); font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12px; font-weight: 600; padding: 8px 16px;
-  cursor: pointer; transition: all .2s;
-}
-.btn-sec:hover { border-color: var(--g1); color: var(--g1); }
-
-/* ═══════════════════════════════════════════
-   PROGRESS
-═══════════════════════════════════════════ */
-.prog { display: none; margin-top: 18px; }
-.prog.show { display: block; animation: slideUp .3s var(--ease-out); }
-.prog-track {
-  height: 3px; background: var(--bg3);
-  border-radius: 10px; overflow: hidden; margin-bottom: 14px;
-}
-.prog-fill {
-  height: 100%; width: 0%;
-  background: linear-gradient(90deg, var(--g1), var(--g2));
-  border-radius: 10px;
-  transition: width .4s var(--ease-out);
-  box-shadow: 0 0 10px var(--g1);
-}
-.prog-log {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px; color: var(--muted);
-  line-height: 2; max-height: 96px; overflow-y: auto;
-}
-.prog-log::-webkit-scrollbar { width: 3px; }
-.prog-log::-webkit-scrollbar-thumb { background: var(--border); }
-.ll { animation: fadeIn .2s ease forwards; }
-.ll.ok  { color: var(--success); }
-.ll.err { color: var(--danger); }
-.ll.hi  { color: var(--g1); }
-
-/* ═══════════════════════════════════════════
-   STATS
-═══════════════════════════════════════════ */
-.stats { display: none; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 14px; }
-.stats.show { display: grid; animation: slideUp .35s var(--ease-out); }
-.stat {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
-  padding: 18px 20px; position: relative; overflow: hidden;
-}
-.stat::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--g1), var(--g2));
-}
-.sn {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 36px; line-height: 1;
-  background: linear-gradient(90deg, var(--g1), var(--g2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 2px;
-}
-.sl { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .14em; color: var(--muted); text-transform: uppercase; }
-
-/* ═══════════════════════════════════════════
-   RESULT
-═══════════════════════════════════════════ */
-.result {
-  display: none;
-  background: var(--surface); backdrop-filter: blur(16px);
-  border: 1px solid var(--border-hi); border-radius: 14px;
-  padding: 22px 26px; margin-top: 14px;
-  position: relative; overflow: hidden;
-}
-.result::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--success), transparent);
-}
-.result.show { display: block; animation: slideUp .35s var(--ease-out); }
-.result-tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: .18em;
-  color: var(--success); text-transform: uppercase; margin-bottom: 16px;
-}
-.dl-row { display: flex; gap: 10px; flex-wrap: wrap; }
-.btn-dl {
-  flex: 1; min-width: 130px;
-  background: rgba(0,255,136,.07);
-  border: 1px solid rgba(0,255,136,.25);
-  border-radius: 10px; color: var(--success);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px; font-weight: 700;
-  padding: 14px 18px; cursor: pointer;
-  transition: all .25s; text-align: center;
-  text-decoration: none; display: inline-flex;
-  align-items: center; justify-content: center; gap: 7px;
-}
-.btn-dl:hover {
-  background: rgba(0,255,136,.15);
-  border-color: var(--success);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(0,255,136,.15);
-}
-
-/* ═══════════════════════════════════════════
-   PREVIEW
-═══════════════════════════════════════════ */
-.prev-box {
-  display: none;
-  background: var(--surface); backdrop-filter: blur(20px);
-  border: 1px solid var(--border); border-radius: 16px;
-  padding: 26px; margin-top: 14px;
-}
-.prev-box.show { display: block; animation: slideUp .35s var(--ease-out); }
-.prev-row {
-  display: flex; align-items: center; gap: 10px;
-  flex-wrap: wrap; margin-bottom: 14px;
-}
-.prev-inp {
-  flex: 1; min-width: 180px;
-  background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
-  color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 14px; font-weight: 600; padding: 10px 14px; outline: none;
-  transition: border-color .25s, box-shadow .25s;
-}
-.prev-inp:focus { border-color: var(--g1); box-shadow: 0 0 0 3px var(--glow-g); }
-.sz-row { display: flex; gap: 4px; }
-.sz {
-  background: var(--bg3); border: 1px solid var(--border); border-radius: 7px;
-  color: var(--muted); font-family: 'DM Mono', monospace;
-  font-size: 10px; font-weight: 500; padding: 6px 10px;
-  cursor: pointer; transition: all .2s;
-}
-.sz.on, .sz:hover { border-color: var(--g1); color: var(--g1); background: var(--glow-g); }
-.bg-row { display: flex; gap: 6px; }
-.bg-dot {
-  width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
-  border: 2px solid var(--border); transition: all .2s; flex-shrink: 0;
-}
-.bg-dot:hover { transform: scale(1.18); border-color: var(--g1); }
-.prev-stage {
-  min-height: 100px; display: flex; align-items: center;
-  padding: 22px; border-radius: 10px;
-  background: #fff; color: #000; overflow: hidden;
-  transition: background .3s, color .3s;
-}
-.prev-stage span {
-  font-family: 'PreviewFont', serif;
-  line-height: 1.3; word-break: break-all;
-}
-
-/* ═══════════════════════════════════════════
-   OPTIMIZER
-═══════════════════════════════════════════ */
-.opt-note {
-  background: linear-gradient(135deg, rgba(0,255,136,.05), rgba(0,200,255,.03));
-  border: 1px solid var(--border-hi); border-radius: 10px;
-  padding: 15px 18px; margin-bottom: 20px;
-  font-size: 13px; color: var(--muted); line-height: 1.7;
-}
-.opt-note strong { color: var(--text); font-weight: 700; }
-.opt-res {
-  display: none; background: var(--surface);
-  border: 1px solid var(--border-hi); border-radius: 14px;
-  padding: 22px 26px; margin-top: 14px;
-}
-.opt-res.show { display: block; animation: slideUp .3s var(--ease-out); }
-
-/* ═══════════════════════════════════════════
-   ANIMATIONS
-═══════════════════════════════════════════ */
-@keyframes slideDown { from{opacity:0;transform:translateY(-18px)} to{opacity:1;transform:translateY(0)} }
-@keyframes slideUp   { from{opacity:0;transform:translateY(14px)}  to{opacity:1;transform:translateY(0)} }
-@keyframes fadeIn    { from{opacity:0} to{opacity:1} }
-
-@media(max-width:620px) {
-  .card{padding:18px} .form-row{grid-template-columns:1fr}
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media(max-width:640px){
+  .card{padding:20px;border-radius:16px}
+  .frow{grid-template-columns:1fr}
   .cks,.prev-row{flex-direction:column}
   .stats.show{grid-template-columns:1fr}
-  .hero h1{font-size:48px}
+  .steps{grid-template-columns:1fr}
+  .hstats{gap:18px}.hst-div{display:none}
+  h1{font-size:40px!important}
 }
-
-/* ═══ AI PANEL ═══ */
-.ai-hero {
-  text-align: center; padding: 32px 20px 28px;
-  position: relative; margin-bottom: 28px;
-}
-.ai-glow-ring {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -55%);
-  width: 160px; height: 160px; border-radius: 50%;
-  background: radial-gradient(circle, var(--glow-g) 0%, transparent 70%);
-  animation: pulse 3s ease-in-out infinite;
-}
-@keyframes pulse { 0%,100%{transform:translate(-50%,-55%) scale(1)} 50%{transform:translate(-50%,-55%) scale(1.3)} }
-.ai-icon {
-  font-size: 52px; line-height: 1; margin-bottom: 14px;
-  background: linear-gradient(135deg, var(--g1), var(--g2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 20px rgba(0,255,136,.4));
-  animation: iconGlow 2s ease-in-out infinite;
-  position: relative; z-index: 1;
-}
-.ai-desc {
-  font-size: 14px; color: var(--muted); max-width: 420px;
-  margin: 0 auto; line-height: 1.7; position: relative; z-index: 1;
-}
-.ai-textarea {
-  width: 100%;
-  background: var(--bg3); border: 1px solid var(--border); border-radius: 12px;
-  color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 14px; font-weight: 500;
-  padding: 16px; outline: none; resize: vertical; min-height: 100px;
-  transition: border-color .25s, box-shadow .25s; line-height: 1.6;
-}
-.ai-textarea:focus { border-color: var(--g1); box-shadow: 0 0 0 3px var(--glow-g); }
-.ai-textarea::placeholder { color: var(--muted); font-weight: 400; }
-.prompt-examples {
-  margin-top: 10px; display: flex; align-items: center;
-  gap: 8px; flex-wrap: wrap;
-}
-.prompt-examples span {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: .1em; color: var(--muted); text-transform: uppercase;
-}
-.eg-btn {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 100px;
-  color: var(--muted); font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12px; font-weight: 600; padding: 5px 12px;
-  cursor: pointer; transition: all .2s;
-}
-.eg-btn:hover { border-color: var(--g1); color: var(--g1); background: var(--glow-g); }
 </style>
 </head>
 <body>
 
-<div class="bg-canvas">
+<!-- Cursor -->
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<!-- BG -->
+<div class="bg-scene">
   <div class="bg-grid"></div>
-  <div class="bg-noise"></div>
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+  <div class="orb o1"></div><div class="orb o2"></div>
+  <div class="orb o3"></div><div class="orb o4"></div>
+  <div class="particles" id="ptcl"></div>
 </div>
 
 <div class="wrap">
 
   <!-- TOPBAR -->
   <div class="topbar">
-    <div class="logo-wrap">
-      <div class="logo">Vectrod</div>
-      <span class="logo-tag">v2.0</span>
+    <div class="logo">
+      <svg class="logo-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#f0c060"/>
+            <stop offset="35%" stop-color="#aa77ff"/>
+            <stop offset="70%" stop-color="#3388ff"/>
+            <stop offset="100%" stop-color="#22dd99"/>
+          </linearGradient>
+          <linearGradient id="lg2" x1="0" y1="0" x2="48" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#f0c060"/>
+            <stop offset="100%" stop-color="#aa77ff"/>
+          </linearGradient>
+        </defs>
+        <!-- Outer diamond frame -->
+        <path d="M24 2 L44 24 L24 46 L4 24 Z" stroke="url(#lg1)" stroke-width="1.5" fill="none" opacity=".5"/>
+        <!-- V shape main -->
+        <path d="M8 10 L24 38 L40 10 L35 10 L24 30 L13 10 Z" fill="url(#lg1)"/>
+        <!-- Top diamond accent -->
+        <path d="M24 2 L28 9 L24 13 L20 9 Z" fill="#f0c060"/>
+        <!-- Bottom accent line -->
+        <rect x="16" y="40" width="16" height="2.5" rx="1.25" fill="url(#lg2)" opacity=".7"/>
+        <!-- Side dots -->
+        <circle cx="4" cy="24" r="2" fill="#aa77ff" opacity=".6"/>
+        <circle cx="44" cy="24" r="2" fill="#22dd99" opacity=".6"/>
+      </svg>
+      <div class="logo-text-wrap">
+        <div class="logo-name">VECTROD</div>
+        <div class="logo-tagline">SVG → Font Converter</div>
+      </div>
     </div>
-    <div class="nav-right">
-      <button class="nav-btn" id="themeBtn" onclick="toggleTheme()">☀ Light</button>
-      <button class="nav-btn active" id="btnEN" onclick="setLang('en')">EN</button>
-      <button class="nav-btn" id="btnTR" onclick="setLang('tr')">TR</button>
+    <div class="nav-r">
+      <button class="nbtn" id="themeBtn" onclick="toggleTheme()">☀ Light</button>
+      <button class="nbtn active" id="btnEN" onclick="setLang('en')">EN</button>
+      <button class="nbtn" id="btnTR" onclick="setLang('tr')">TR</button>
     </div>
   </div>
 
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-kicker">
-      <span class="kicker-dot"></span>
-      <span data-i18n="kicker">SVG to Professional Font</span>
-    </div>
+    <div class="hero-badge"><span class="bdot"></span><span data-i18n="badge">Free Professional Font Converter</span></div>
     <h1>
-      <span class="h1-white">CONVERT</span><br>
-      <span class="h1-green">SVG</span>
-      <span class="h1-white"> TO </span>
-      <span class="h1-orange">FONT</span>
+      <span class="h1a" data-i18n="h1a">TURN YOUR</span>
+      <span class="h1b" data-i18n="h1b">SVG INTO FONT</span>
     </h1>
-    <p class="hero-desc" data-i18n="heroSub">Upload your SVG with characters in order. Get a <strong>professional TTF + OTF</strong> font in seconds — no design software needed.</p>
+    <p class="hero-sub" data-i18n="heroSub">Convert any SVG into a <strong>professional TTF & OTF font</strong> in seconds. No design software, no subscriptions — completely free.</p>
+    <div class="hstats">
+      <div class="hst"><div class="hst-n">86+</div><div class="hst-l" data-i18n="hs1">Glyphs</div></div>
+      <div class="hst-div"></div>
+      <div class="hst"><div class="hst-n">&lt;60s</div><div class="hst-l" data-i18n="hs2">Convert Time</div></div>
+      <div class="hst-div"></div>
+      <div class="hst"><div class="hst-n">TTF+OTF</div><div class="hst-l" data-i18n="hs3">Output</div></div>
+      <div class="hst-div"></div>
+      <div class="hst"><div class="hst-n">100%</div><div class="hst-l" data-i18n="hs4">Free</div></div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how">
+    <div class="how-label" data-i18n="howTitle">How It Works</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">01</div>
+        <div class="step-t" data-i18n="s1t">Design Your Characters</div>
+        <div class="step-d" data-i18n="s1d">Create each character as a separate object in Canva, Illustrator, or any design tool. Arrange them left-to-right. Export as SVG.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">02</div>
+        <div class="step-t" data-i18n="s2t">Upload & Configure</div>
+        <div class="step-d" data-i18n="s2d">Upload your SVG file, name your font, and set the character order. Our engine auto-detects every glyph.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">03</div>
+        <div class="step-t" data-i18n="s3t">Download & Install</div>
+        <div class="step-d" data-i18n="s3d">Get your TTF and OTF font files instantly. Install on any system, use in any app — yours forever.</div>
+      </div>
+    </div>
   </div>
 
   <!-- TABS -->
-  <div class="tab-bar">
-    <button class="tab active" onclick="switchTab('c')" data-i18n="tab1">SVG → Font</button>
-    <button class="tab" onclick="switchTab('a')" data-i18n="tabAI">✦ AI Font</button>
-    <button class="tab" onclick="switchTab('o')" data-i18n="tab2">SVG Optimizer</button>
+  <div class="tabs-row">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('c')" data-i18n="tab1">SVG → Font</button>
+      <button class="tab" onclick="switchTab('o')" data-i18n="tab2">SVG Optimizer</button>
+    </div>
   </div>
 
   <!-- ███ CONVERTER ███ -->
   <div class="panel active" id="panel-c">
 
-    <div class="card" style="animation:slideUp .6s var(--ease-out) .1s both">
-      <div class="card-num" data-i18n="s1">01 — Upload SVG</div>
+    <div class="card" style="animation:slideUp .6s var(--ease-out) .08s both">
+      <div class="clabel">
+        <span data-i18n="ul1">01 — Upload SVG</span>
+        <div class="tip-w">
+          <div class="tip-i">?</div>
+          <div class="tip-box" data-i18n="tt1">In Canva: Design each character as a separate object → File → Download → SVG. Each object = one character. Order them left-to-right, top-to-bottom.</div>
+        </div>
+      </div>
       <div class="drop" id="dz">
         <input type="file" id="svgFile" accept=".svg"/>
-        <span class="drop-icon">◈</span>
-        <div class="drop-head" data-i18n="dh">Drag & drop your SVG here</div>
-        <div class="drop-sub" data-i18n="ds">or click to browse — SVG files only</div>
-        <div class="drop-name" id="dzN"></div>
+        <span class="dicon">◈</span>
+        <div class="dhead" data-i18n="dh">Drag & drop your SVG here</div>
+        <div class="dsub" data-i18n="ds">or click to browse — SVG files only</div>
+        <div class="dname" id="dzN"></div>
       </div>
-      <div class="svg-thumb" id="svgThumb">
+      <div class="thumb" id="svgThumb">
         <span class="thumb-badge">SVG PREVIEW</span>
         <img id="thumbImg" src="" alt=""/>
       </div>
     </div>
 
-    <div class="card" style="animation:slideUp .6s var(--ease-out) .16s both">
-      <div class="card-num" data-i18n="s2">02 — Settings</div>
-      <div class="form-row">
+    <div class="card" style="animation:slideUp .6s var(--ease-out) .14s both">
+      <div class="clabel">
+        <span data-i18n="ul2">02 — Settings</span>
+        <div class="tip-w">
+          <div class="tip-i">?</div>
+          <div class="tip-box" data-i18n="tt2">Font name is what appears in apps like Word or Photoshop. Choose Regular for standard use. Bold and Italic create separate font files from the same SVG.</div>
+        </div>
+      </div>
+      <div class="frow">
         <div class="fg" style="margin-bottom:0">
-          <label class="flabel" data-i18n="lName">Font Name</label>
-          <input type="text" class="finput" id="fontName" placeholder="MyCustomFont" value="CustomFont"/>
+          <label class="flbl" data-i18n="lName">Font Name</label>
+          <input type="text" class="finp" id="fontName" placeholder="MyCustomFont" value="CustomFont"/>
         </div>
         <div class="fg" style="margin-bottom:0">
-          <label class="flabel" data-i18n="lVar">Variants</label>
+          <label class="flbl" data-i18n="lVar">Variants</label>
           <div class="cks">
-            <label class="ck-lbl on"><input type="checkbox" checked id="ckR"/><span class="ck-dot"></span>Regular</label>
-            <label class="ck-lbl"><input type="checkbox" id="ckB"/><span class="ck-dot"></span>Bold</label>
-            <label class="ck-lbl"><input type="checkbox" id="ckI"/><span class="ck-dot"></span>Italic</label>
+            <label class="ck on"><input type="checkbox" checked id="ckR"/><span class="ckd"></span>Regular</label>
+            <label class="ck"><input type="checkbox" id="ckB"/><span class="ckd"></span>Bold</label>
+            <label class="ck"><input type="checkbox" id="ckI"/><span class="ckd"></span>Italic</label>
           </div>
         </div>
       </div>
-      <div class="fg" style="margin-top:18px;margin-bottom:0">
+      <div class="fg" style="margin-top:20px;margin-bottom:0">
         <div class="char-top">
-          <label class="flabel" style="margin-bottom:0" data-i18n="lCh">Character Order <small style="text-transform:none;letter-spacing:0;color:var(--muted);font-size:10px" data-i18n="lChSub">(drag to reorder · click to remove)</small></label>
-          <button class="char-reset" onclick="resetChars()" data-i18n="bReset">↺ Reset</button>
+          <div class="tip-w">
+            <label class="flbl" style="margin-bottom:0" data-i18n="lCh">Character Order</label>
+            <div class="tip-i">?</div>
+            <div class="tip-box" data-i18n="tt3">This must match the order of characters in your SVG file. The first object in your SVG = first character here. Drag to reorder, click to remove.</div>
+          </div>
+          <button class="char-rst" onclick="resetChars()" data-i18n="bReset">↺ Reset</button>
         </div>
-        <div class="char-box" id="charBox"></div>
+        <div class="charbox" id="charBox"></div>
         <p class="char-note" data-i18n="chNote">Each SVG object maps to a character in this order, left-to-right, top-to-bottom.</p>
       </div>
     </div>
 
-    <div class="card" style="animation:slideUp .6s var(--ease-out) .22s both">
-      <div class="card-num" data-i18n="s3">03 — Generate</div>
+    <div class="card" style="animation:slideUp .6s var(--ease-out) .2s both">
+      <div class="clabel" data-i18n="ul3">03 — Generate</div>
       <button class="btn-gen" id="btnConvert" onclick="startConvert()">
-        <span data-i18n="btnGen">GENERATE FONT</span>
+        <span data-i18n="btnGen">✦ GENERATE FONT</span>
       </button>
       <div class="prog" id="prog">
-        <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
-        <div class="prog-log" id="progLog"></div>
+        <div class="ptrack"><div class="pfill" id="progFill"></div></div>
+        <div class="plog" id="progLog"></div>
       </div>
     </div>
 
@@ -774,24 +569,24 @@ body {
     </div>
 
     <div class="result" id="result">
-      <div class="result-tag" data-i18n="resTag">✓ Font Ready — Download</div>
-      <div class="dl-row" id="dlRow"></div>
+      <div class="rtag" data-i18n="resTag">✓ Font Ready — Download</div>
+      <div class="dlrow" id="dlRow"></div>
     </div>
 
-    <div class="prev-box" id="prevBox">
-      <div class="card-num" style="margin-bottom:16px" data-i18n="s4">04 — Preview</div>
+    <div class="prevbox" id="prevBox">
+      <div class="clabel" style="margin-bottom:16px" data-i18n="ul4">04 — Preview</div>
       <div class="prev-row">
         <input class="prev-inp" id="prevInp" placeholder="AaBbCc 123..." oninput="updatePrev()"/>
-        <div class="sz-row">
+        <div class="szrow">
           <button class="sz on" onclick="setSz(32)">32</button>
           <button class="sz" onclick="setSz(48)">48</button>
           <button class="sz" onclick="setSz(64)">64</button>
           <button class="sz" onclick="setSz(96)">96</button>
         </div>
-        <div class="bg-row">
-          <div class="bg-dot" style="background:#fff" onclick="setPrevBg('#fff','#000')"></div>
-          <div class="bg-dot" style="background:#111" onclick="setPrevBg('#111','#fff')"></div>
-          <div class="bg-dot" style="background:#888" onclick="setPrevBg('#888','#000')"></div>
+        <div class="bgrow">
+          <div class="bgd" style="background:#fff" onclick="setPB('#fff','#000')"></div>
+          <div class="bgd" style="background:#111" onclick="setPB('#111','#fff')"></div>
+          <div class="bgd" style="background:#444" onclick="setPB('#444','#fff')"></div>
         </div>
       </div>
       <div class="prev-stage" id="prevStage">
@@ -799,171 +594,105 @@ body {
       </div>
     </div>
 
-  </div><!-- /panel-c -->
-
-
-  <!-- ███ AI FONT ███ -->
-  <div class="panel" id="panel-a">
-
-    <div class="card" style="animation:slideUp .6s var(--ease-out) .1s both">
-      <div class="card-num" data-i18n="aiTitle">✦ AI Font Generator</div>
-
-      <div class="ai-hero">
-        <div class="ai-glow-ring"></div>
-        <div class="ai-icon">✦</div>
-        <p class="ai-desc" data-i18n="aiDesc">Describe your font in words. Our AI will generate every character and build a complete, downloadable font.</p>
-      </div>
-
-      <div class="fg" style="margin-bottom:18px">
-        <label class="flabel" data-i18n="aiPromptLabel">Font Name</label>
-        <input type="text" class="finput" id="aiFontName" placeholder="MyAIFont" value="AIFont"/>
-      </div>
-
-      <div class="fg">
-        <label class="flabel" data-i18n="aiPromptLabel2">Describe your font</label>
-        <textarea class="ai-textarea" id="aiPrompt" placeholder="e.g. Bold, geometric, modern sans-serif with sharp corners — like a tech startup logo..."></textarea>
-        <div class="prompt-examples">
-          <span data-i18n="examples">Examples:</span>
-          <button class="eg-btn" onclick="setPrompt(this)">Bold geometric</button>
-          <button class="eg-btn" onclick="setPrompt(this)">Thin elegant serif</button>
-          <button class="eg-btn" onclick="setPrompt(this)">Playful rounded</button>
-          <button class="eg-btn" onclick="setPrompt(this)">Gothic dark</button>
-          <button class="eg-btn" onclick="setPrompt(this)">Minimal monospace</button>
-        </div>
-      </div>
-
-      <button class="btn-gen" id="btnAI" onclick="startAI()">
-        <span data-i18n="btnAI">✦ GENERATE WITH AI</span>
-      </button>
-
-      <div class="prog" id="progAI">
-        <div class="prog-track"><div class="prog-fill" id="progFillAI"></div></div>
-        <div class="prog-log" id="progLogAI"></div>
-      </div>
+    <div class="gallery" id="gallery">
+      <div class="gal-title" data-i18n="galTitle">Your Font Gallery</div>
+      <div class="gal-grid" id="galGrid"></div>
     </div>
 
-    <div class="stats" id="statsAI">
-      <div class="stat"><div class="sn" id="sAIG">—</div><div class="sl" data-i18n="stG">Glyphs</div></div>
-      <div class="stat"><div class="sn" id="sAIS">—</div><div class="sl" data-i18n="stS">File Size</div></div>
-      <div class="stat"><div class="sn" id="sAIT">—</div><div class="sl" data-i18n="stT">Seconds</div></div>
-    </div>
-
-    <div class="result" id="resultAI">
-      <div class="result-tag" data-i18n="resTag">✓ Font Ready — Download</div>
-      <div class="dl-row" id="dlRowAI"></div>
-    </div>
-
-    <div class="prev-box" id="prevBoxAI">
-      <div class="card-num" style="margin-bottom:16px">Preview</div>
-      <div class="prev-row">
-        <input class="prev-inp" id="prevInpAI" placeholder="AaBbCc 123..." oninput="updatePrevAI()"/>
-        <div class="sz-row">
-          <button class="sz on" onclick="setSzAI(32)">32</button>
-          <button class="sz" onclick="setSzAI(48)">48</button>
-          <button class="sz" onclick="setSzAI(64)">64</button>
-          <button class="sz" onclick="setSzAI(96)">96</button>
-        </div>
-        <div class="bg-row">
-          <div class="bg-dot" style="background:#fff" onclick="setPrevBgAI('#fff','#000')"></div>
-          <div class="bg-dot" style="background:#111" onclick="setPrevBgAI('#111','#fff')"></div>
-          <div class="bg-dot" style="background:#888" onclick="setPrevBgAI('#888','#000')"></div>
-        </div>
-      </div>
-      <div class="prev-stage" id="prevStageAI">
-        <span id="prevSpanAI" style="font-size:32px;font-family:AIPreviewFont,serif">AaBbCc 123</span>
-      </div>
-    </div>
-
-  </div><!-- /panel-a -->
+  </div>
 
   <!-- ███ OPTIMIZER ███ -->
   <div class="panel" id="panel-o">
     <div class="card" style="animation:slideUp .5s var(--ease-out) both">
-      <div class="card-num" data-i18n="optNum">SVG Optimizer</div>
+      <div class="clabel">
+        <span data-i18n="optLbl">SVG Optimizer</span>
+        <div class="tip-w">
+          <div class="tip-i">?</div>
+          <div class="tip-box" data-i18n="ttOpt">Use this BEFORE converting if you get errors or missing glyphs. It converts text elements to paths and cleans SVG structure so the converter can read everything correctly.</div>
+        </div>
+      </div>
       <div class="opt-note">
-        <strong data-i18n="optT">What does this do?</strong><br>
-        <span data-i18n="optB">Converts text elements to paths, removes metadata, and cleans up SVG structure. Get a clean, font-ready version of your file.</span>
+        <strong data-i18n="optT">When should you use this?</strong><br>
+        <span data-i18n="optB">If your SVG was made with text elements (not converted to paths), has complex transforms, or the converter is missing some characters — run the optimizer first, then convert.</span>
       </div>
       <div class="drop" id="dzO">
         <input type="file" id="svgFileO" accept=".svg"/>
-        <span class="drop-icon">◈</span>
-        <div class="drop-head" data-i18n="dh">Drag & drop your SVG here</div>
-        <div class="drop-sub" data-i18n="ds">or click to browse — SVG files only</div>
-        <div class="drop-name" id="dzON"></div>
+        <span class="dicon">◈</span>
+        <div class="dhead" data-i18n="dh">Drag & drop your SVG here</div>
+        <div class="dsub" data-i18n="ds">or click to browse — SVG files only</div>
+        <div class="dname" id="dzON"></div>
       </div>
       <div style="margin-top:18px">
-        <label class="flabel" style="margin-bottom:12px" data-i18n="optOpts">Options</label>
+        <label class="flbl" style="margin-bottom:12px" data-i18n="optOpts">Options</label>
         <div class="cks">
-          <label class="ck-lbl on"><input type="checkbox" checked id="ckTxt"/><span class="ck-dot"></span><span data-i18n="oTxt">Text → Paths</span></label>
-          <label class="ck-lbl on"><input type="checkbox" checked id="ckFlat"/><span class="ck-dot"></span><span data-i18n="oFlat">Flatten Transforms</span></label>
-          <label class="ck-lbl on"><input type="checkbox" checked id="ckCln"/><span class="ck-dot"></span><span data-i18n="oCln">Clean Metadata</span></label>
+          <label class="ck on"><input type="checkbox" checked id="ckTxt"/><span class="ckd"></span><span data-i18n="oTxt">Text → Paths</span></label>
+          <label class="ck on"><input type="checkbox" checked id="ckFlat"/><span class="ckd"></span><span data-i18n="oFlat">Flatten Transforms</span></label>
+          <label class="ck on"><input type="checkbox" checked id="ckCln"/><span class="ckd"></span><span data-i18n="oCln">Clean Metadata</span></label>
         </div>
       </div>
       <button class="btn-gen" style="margin-top:22px" id="btnOpt" onclick="startOpt()">
-        <span data-i18n="btnOpt">OPTIMIZE SVG</span>
+        <span data-i18n="btnOpt">✦ OPTIMIZE SVG</span>
       </button>
       <div class="prog" id="progO">
-        <div class="prog-track"><div class="prog-fill" id="progFillO"></div></div>
-        <div class="prog-log" id="progLogO"></div>
+        <div class="ptrack"><div class="pfill" id="progFillO"></div></div>
+        <div class="plog" id="progLogO"></div>
       </div>
     </div>
     <div class="opt-res" id="optRes">
-      <div class="result-tag" data-i18n="optOK">✓ Optimized SVG Ready</div>
-      <div class="dl-row" id="optDl"></div>
+      <div class="rtag" data-i18n="optOK">✓ Optimized SVG Ready</div>
+      <div class="dlrow" id="optDl"></div>
     </div>
   </div>
 
 </div>
 
 <script>
-// i18n
-const T = {
-  en: {
-    kicker:'SVG to Professional Font',
-    heroSub:'Upload your SVG with characters in order. Get a professional TTF + OTF font in seconds — no design software needed.',
-    tab1:'SVG → Font', tab2:'SVG Optimizer',
-    s1:'01 — Upload SVG', dh:'Drag & drop your SVG here', ds:'or click to browse — SVG files only',
-    s2:'02 — Settings', lName:'Font Name', lVar:'Variants',
-    lCh:'Character Order', lChSub:'(drag to reorder · click to remove)', bReset:'↺ Reset',
-    chNote:'Each SVG object maps to a character in this order, left-to-right, top-to-bottom.',
-    s3:'03 — Generate', btnGen:'GENERATE FONT',
-    stG:'Glyphs', stS:'File Size', stT:'Seconds',
-    resTag:'✓ Font Ready — Download', s4:'04 — Preview',
-    optNum:'SVG Optimizer', optT:'What does this do?',
-    optB:'Converts text elements to paths, removes metadata, and cleans up SVG structure. Get a clean, font-ready version of your file.',
-    optOpts:'Options', oTxt:'Text → Paths', oFlat:'Flatten Transforms', oCln:'Clean Metadata',
-    btnOpt:'OPTIMIZE SVG', optOK:'✓ Optimized SVG Ready',
-    tabAI:'✦ AI Font',
-    aiTitle:'✦ AI Font Generator',
-    aiDesc:'Describe your font in words. Our AI will generate every character and build a complete, downloadable font.',
-    aiPromptLabel:'Font Name',
-    aiPromptLabel2:'Describe your font',
-    examples:'Examples:',
-    btnAI:'✦ GENERATE WITH AI',
-  },
-  tr: {
-    kicker:'SVG\'den Profesyonel Font',
-    heroSub:'Karakterleri sıralı SVG dosyanı yükle. Saniyeler içinde TTF + OTF font al — tasarım programı gerekmez.',
-    tab1:'SVG → Font', tab2:'SVG Optimize',
-    s1:'01 — SVG Yükle', dh:'SVG dosyasını buraya sürükle', ds:'veya tıkla seç',
-    s2:'02 — Ayarlar', lName:'Font Adı', lVar:'Varyantlar',
-    lCh:'Karakter Sırası', lChSub:'(sürükle sırala · tıkla kaldır)', bReset:'↺ Sıfırla',
-    chNote:"SVG'deki her nesne soldan sağa, yukarıdan aşağıya bu sırayla karakterlere atanır.",
-    s3:'03 — Oluştur', btnGen:'FONT OLUŞTUR',
-    stG:'Glyph', stS:'Dosya Boyutu', stT:'Saniye',
-    resTag:'✓ Font Hazır — İndir', s4:'04 — Önizleme',
-    optNum:'SVG Optimize', optT:'Bu ne yapar?',
-    optB:"Text elementleri path'e çevirir, metadata siler, SVG yapısını temizler.",
-    optOpts:'Seçenekler', oTxt:'Text → Path', oFlat:'Transform Düzleştir', oCln:'Metadata Temizle',
-    btnOpt:'SVG OPTİMİZE ET', optOK:'✓ Optimize SVG Hazır',
-    tabAI:'✦ AI Font',
-    aiTitle:'✦ AI Font Üretici',
-    aiDesc:'Fontunu kelimelerle anlat. AI her karakteri çizecek ve tam bir font üretecek.',
-    aiPromptLabel:'Font Adı',
-    aiPromptLabel2:'Fontunu tanımla',
-    examples:'Örnekler:',
-    btnAI:'✦ AI İLE ÜRET',
-  }
+// ── i18n ──────────────────────────────────────────────────────────────────────
+const T={
+en:{badge:'Free Professional Font Converter',h1a:'TURN YOUR',h1b:'SVG INTO FONT',
+  heroSub:'Convert any SVG into a professional TTF & OTF font in seconds. No design software, no subscriptions — completely free.',
+  hs1:'Glyphs',hs2:'Convert Time',hs3:'Output',hs4:'Free',
+  howTitle:'How It Works',
+  s1t:'Design Your Characters',s1d:'Create each character as a separate object in Canva or any design tool. Arrange left-to-right. Export as SVG.',
+  s2t:'Upload & Configure',s2d:'Upload your SVG, name your font, set character order. Our engine auto-detects every glyph.',
+  s3t:'Download & Install',s3d:'Get TTF and OTF instantly. Install on any system, use in any app — yours forever.',
+  tab1:'SVG → Font',tab2:'SVG Optimizer',
+  ul1:'01 — Upload SVG',tt1:'In Canva: Design each character as separate object → File → Download → SVG. Each object = one character.',
+  dh:'Drag & drop your SVG here',ds:'or click to browse — SVG files only',
+  ul2:'02 — Settings',tt2:'Font name appears in Word, Photoshop etc. Regular = standard. Bold/Italic create separate font files.',
+  lName:'Font Name',lVar:'Variants',
+  lCh:'Character Order',tt3:'Must match order of characters in your SVG (left-to-right, top-to-bottom). Drag to reorder, click to remove.',
+  bReset:'↺ Reset',chNote:'Each SVG object maps to a character in this order, left-to-right, top-to-bottom.',
+  ul3:'03 — Generate',btnGen:'✦ GENERATE FONT',
+  stG:'Glyphs',stS:'File Size',stT:'Seconds',
+  resTag:'✓ Font Ready — Download',ul4:'04 — Preview',
+  galTitle:'Your Font Gallery',
+  optLbl:'SVG Optimizer',ttOpt:'Use before converting if you get errors. Converts text to paths and cleans SVG structure.',
+  optT:'When should you use this?',optB:'If your SVG has text elements or complex transforms, optimize first then convert.',
+  optOpts:'Options',oTxt:'Text → Paths',oFlat:'Flatten Transforms',oCln:'Clean Metadata',
+  btnOpt:'✦ OPTIMIZE SVG',optOK:'✓ Optimized SVG Ready'},
+tr:{badge:'Ücretsiz Profesyonel Font Dönüştürücü',h1a:'SVG\'NİZİ',h1b:'FONTA ÇEVİRİN',
+  heroSub:'Herhangi bir SVG\'yi saniyeler içinde profesyonel TTF ve OTF fonta dönüştürün. Program yok, abonelik yok — tamamen ücretsiz.',
+  hs1:'Glyph',hs2:'Dönüşüm Süresi',hs3:'Çıktı',hs4:'Ücretsiz',
+  howTitle:'Nasıl Çalışır',
+  s1t:'Karakterleri Tasarla',s1d:'Her karakteri Canva\'da ayrı nesne olarak oluştur. Soldan sağa sırala. SVG olarak dışa aktar.',
+  s2t:'Yükle ve Ayarla',s2d:'SVG\'yi yükle, font adını ve karakter sırasını ayarla. Motor her glyph\'i otomatik algılar.',
+  s3t:'İndir ve Kur',s3d:'TTF ve OTF dosyalarını anında al. Her sisteme kur, her uygulamada kullan.',
+  tab1:'SVG → Font',tab2:'SVG Optimize',
+  ul1:'01 — SVG Yükle',tt1:'Canva\'da: Her karakteri ayrı nesne olarak tasarla → Dosya → İndir → SVG. Her nesne = bir karakter.',
+  dh:'SVG dosyasını buraya sürükle',ds:'veya tıkla seç — sadece SVG',
+  ul2:'02 — Ayarlar',tt2:'Font adı Word, Photoshop gibi programlarda görünür. Regular standart kullanım içindir.',
+  lName:'Font Adı',lVar:'Varyantlar',
+  lCh:'Karakter Sırası',tt3:'SVG\'deki karakter sırasıyla eşleşmeli. Sürükle sırala, tıkla kaldır.',
+  bReset:'↺ Sıfırla',chNote:'SVG\'deki her nesne bu sırayla karakterlere atanır.',
+  ul3:'03 — Oluştur',btnGen:'✦ FONT OLUŞTUR',
+  stG:'Glyph',stS:'Dosya Boyutu',stT:'Saniye',
+  resTag:'✓ Font Hazır — İndir',ul4:'04 — Önizleme',
+  galTitle:'Font Galeriniz',
+  optLbl:'SVG Optimize',ttOpt:'Hata alıyorsanız dönüştürmeden önce kullanın. Text elementleri path\'e çevirir.',
+  optT:'Ne zaman kullanmalı?',optB:'SVG\'nde text elementleri veya karmaşık transform\'lar varsa önce optimize et.',
+  optOpts:'Seçenekler',oTxt:'Text → Path',oFlat:'Transform Düzleştir',oCln:'Metadata Temizle',
+  btnOpt:'✦ SVG OPTİMİZE ET',optOK:'✓ Optimize SVG Hazır'}
 };
 let lang='en';
 function setLang(l){
@@ -973,50 +702,45 @@ function setLang(l){
   document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(T[l][k])el.textContent=T[l][k];});
   document.getElementById('prevInp').placeholder=l==='tr'?'Önizlemek için yazın...':'AaBbCc 123...';
 }
-
 function toggleTheme(){
   const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',n);
   document.getElementById('themeBtn').textContent=n==='dark'?'☀ Light':'☾ Dark';
 }
-
 function switchTab(id){
   document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['c','o'][i]===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
 }
-
-document.querySelectorAll('.ck-lbl input').forEach(cb=>{
-  cb.addEventListener('change',function(){this.closest('.ck-lbl').classList.toggle('on',this.checked);});
+document.querySelectorAll('.ck input').forEach(cb=>{
+  cb.addEventListener('change',function(){this.closest('.ck').classList.toggle('on',this.checked);});
 });
 
+// ── Char Order ────────────────────────────────────────────────────────────────
 const DEFS=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
   'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
   '0','1','2','3','4','5','6','7','8','9','.',',','!','?',';',':','\'','"','(',')','–','_','/','@','#','$','%','&','*','+','=',' ',
   'Ç','Ğ','İ','Ö','Ş','Ü','ç','ğ','ı','ö','ş','ü'];
 let chars=[...DEFS],dragSrc=null;
-
 function renderChars(){
   const el=document.getElementById('charBox');
-  el.innerHTML=chars.map((c,i)=>`<span draggable="true" data-i="${i}" onclick="removeChar(${i})">${c===' '?'·':c}</span>`).join('');
+  el.innerHTML=chars.map((c,i)=>`<span draggable="true" data-i="${i}" onclick="rmChar(${i})">${c===' '?'·':c}</span>`).join('');
   el.querySelectorAll('span').forEach(s=>{
-    s.addEventListener('dragstart',()=>{dragSrc=+s.dataset.i;s.classList.add('drag-ing');});
-    s.addEventListener('dragend',()=>{s.classList.remove('drag-ing');dragSrc=null;renderChars();});
-    s.addEventListener('dragover',e=>{e.preventDefault();s.classList.add('drag-on');});
-    s.addEventListener('dragleave',()=>s.classList.remove('drag-on'));
-    s.addEventListener('drop',e=>{
-      e.preventDefault();const to=+s.dataset.i;
+    s.addEventListener('dragstart',()=>{dragSrc=+s.dataset.i;s.classList.add('ding');});
+    s.addEventListener('dragend',()=>{s.classList.remove('ding');dragSrc=null;renderChars();});
+    s.addEventListener('dragover',e=>{e.preventDefault();s.classList.add('don');});
+    s.addEventListener('dragleave',()=>s.classList.remove('don'));
+    s.addEventListener('drop',e=>{e.preventDefault();const to=+s.dataset.i;
       if(dragSrc===null||dragSrc===to)return;
-      const t=chars[dragSrc];chars.splice(dragSrc,1);chars.splice(to,0,t);renderChars();
-    });
+      const t=chars[dragSrc];chars.splice(dragSrc,1);chars.splice(to,0,t);renderChars();});
   });
 }
-function removeChar(i){chars.splice(i,1);renderChars();}
+function rmChar(i){chars.splice(i,1);renderChars();}
 function resetChars(){chars=[...DEFS];renderChars();}
 renderChars();
 
+// ── Drops ─────────────────────────────────────────────────────────────────────
 let svgFile=null,svgFileO=null,genFiles=[],t0=0;
-
 function setupDrop(dId,iId,cb){
   const dz=document.getElementById(dId);
   document.getElementById(iId).addEventListener('change',function(){if(this.files[0])cb(this.files[0]);});
@@ -1026,15 +750,13 @@ function setupDrop(dId,iId,cb){
 }
 setupDrop('dz','svgFile',f=>{
   if(!f.name.endsWith('.svg')){alert('Please select an SVG file.');return;}
-  svgFile=f;
-  document.getElementById('dzN').textContent='✓ '+f.name;
+  svgFile=f;document.getElementById('dzN').textContent='✓ '+f.name;
   document.getElementById('dz').classList.add('done');
   const r=new FileReader();
-  r.onload=e=>{
-    const b=new Blob([e.target.result],{type:'image/svg+xml'});
+  r.onload=e=>{const b=new Blob([e.target.result],{type:'image/svg+xml'});
     document.getElementById('thumbImg').src=URL.createObjectURL(b);
-    document.getElementById('svgThumb').classList.add('show');
-  };r.readAsText(f);
+    document.getElementById('svgThumb').classList.add('show');};
+  r.readAsText(f);
 });
 setupDrop('dzO','svgFileO',f=>{
   if(!f.name.endsWith('.svg')){alert('Please select an SVG file.');return;}
@@ -1042,6 +764,7 @@ setupDrop('dzO','svgFileO',f=>{
   document.getElementById('dzO').classList.add('done');
 });
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
 function addLog(m,t='',lid='progLog'){
   const el=document.getElementById(lid);
   const d=document.createElement('div');d.className='ll '+t;d.textContent=m;
@@ -1050,6 +773,7 @@ function addLog(m,t='',lid='progLog'){
 function setBar(p,id='progFill'){document.getElementById(id).style.width=p+'%';}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
+// ── Convert ───────────────────────────────────────────────────────────────────
 async function startConvert(){
   if(!svgFile){alert(lang==='tr'?'Lütfen SVG yükleyin.':'Please upload an SVG file first.');return;}
   const name=document.getElementById('fontName').value.trim()||'CustomFont';
@@ -1058,22 +782,16 @@ async function startConvert(){
   if(document.getElementById('ckB').checked)variants.push({bold:true,italic:false});
   if(document.getElementById('ckI').checked)variants.push({bold:false,italic:true});
   if(!variants.length){alert('Select at least one variant.');return;}
-
   const btn=document.getElementById('btnConvert');btn.disabled=true;
   document.getElementById('prog').classList.add('show');
   document.getElementById('progLog').innerHTML='';
-  document.getElementById('result').classList.remove('show');
-  document.getElementById('prevBox').classList.remove('show');
-  document.getElementById('stats').classList.remove('show');
+  ['result','prevBox','stats'].forEach(id=>document.getElementById(id).classList.remove('show'));
   setBar(0);genFiles=[];let lastUrl=null;t0=Date.now();
-
   addLog('[START] Reading SVG...','hi');
-
   for(let vi=0;vi<variants.length;vi++){
     const v=variants[vi];
-    const s=v.bold&&v.italic?'Bold Italic':v.bold?'Bold':v.italic?'Italic':'Regular';
-    addLog(`\n[FONT] ${name} ${s}...`,'hi');
-    setBar(10+vi/variants.length*75);
+    const st=v.bold&&v.italic?'Bold Italic':v.bold?'Bold':v.italic?'Italic':'Regular';
+    addLog(`\n[FONT] ${name} ${st}...`,'hi');setBar(10+vi/variants.length*75);
     const fd=new FormData();
     fd.append('svg',svgFile);fd.append('font_name',name);
     fd.append('bold',v.bold?'1':'0');fd.append('italic',v.italic?'1':'0');
@@ -1081,25 +799,18 @@ async function startConvert(){
     try{
       addLog('  → Processing glyphs...');await sleep(60);
       const res=await fetch('/convert',{method:'POST',body:fd});
-      if(res.ok){
-        const data=await res.json();
-        if(data.success){
-          data.files.forEach(f=>{
-            addLog(`  ✓ ${f.filename} (${(f.size/1024).toFixed(1)} KB)`,'ok');
-            genFiles.push(f);
-            if(f.filename.endsWith('.ttf')&&!lastUrl)lastUrl=f.url;
-          });
-        }else addLog('  ✗ '+data.error,'err');
-      }else addLog('  ✗ Server error','err');
-    }catch(e){addLog('  ✗ Connection error','err');}
+      if(res.ok){const data=await res.json();
+        if(data.success){data.files.forEach(f=>{
+          addLog(`  ✓ ${f.filename} (${(f.size/1024).toFixed(1)} KB)`,'ok');
+          genFiles.push(f);if(f.filename.endsWith('.ttf')&&!lastUrl)lastUrl=f.url;
+        });}else addLog('  ✗ '+data.error,'er');}
+      else addLog('  ✗ Server error','er');
+    }catch(e){addLog('  ✗ Connection error','er');}
     setBar(10+(vi+1)/variants.length*85);
   }
-
   const el=((Date.now()-t0)/1000).toFixed(1);
   setBar(100);addLog('\n[DONE] ✓','ok');
-  btn.disabled=false;
-  btn.querySelector('[data-i18n]').textContent=T[lang].btnGen;
-
+  btn.disabled=false;btn.querySelector('[data-i18n]').textContent=T[lang].btnGen;
   if(genFiles.length){
     const kb=(genFiles.reduce((a,f)=>a+f.size,0)/1024).toFixed(0);
     document.getElementById('sG').textContent=chars.length;
@@ -1108,25 +819,58 @@ async function startConvert(){
     document.getElementById('stats').classList.add('show');
     document.getElementById('dlRow').innerHTML=genFiles
       .filter(f=>f.filename.endsWith('.ttf')||f.filename.endsWith('.otf'))
-      .map(f=>`<a class="btn-dl" href="${f.url}" download="${f.filename}">⬇ ${f.filename}</a>`).join('');
+      .map(f=>`<a class="btndl" href="${f.url}" download="${f.filename}">⬇ ${f.filename}</a>`).join('');
     document.getElementById('result').classList.add('show');
-    if(lastUrl)loadPrev(lastUrl);
+    if(lastUrl){loadPrev(lastUrl);saveGallery(name,lastUrl);}
   }
 }
 
+// ── Preview ───────────────────────────────────────────────────────────────────
 async function loadPrev(url){
-  try{
-    const buf=await(await fetch(url)).arrayBuffer();
+  try{const buf=await(await fetch(url)).arrayBuffer();
     const ff=new FontFace('PreviewFont',buf);await ff.load();document.fonts.add(ff);
     document.getElementById('prevBox').classList.add('show');
-    document.getElementById('prevInp').value='AaBbCc 123';
-    updatePrev();
-  }catch(e){console.log(e);}
+    document.getElementById('prevInp').value='AaBbCc 123';updatePrev();}
+  catch(e){}
 }
 function updatePrev(){document.getElementById('prevSpan').textContent=document.getElementById('prevInp').value||'AaBbCc 123';}
 function setSz(px){document.getElementById('prevSpan').style.fontSize=px+'px';document.querySelectorAll('.sz').forEach(b=>b.classList.toggle('on',b.textContent==px));}
-function setPrevBg(bg,fg){const s=document.getElementById('prevStage');s.style.background=bg;s.style.color=fg;}
+function setPB(bg,fg){const s=document.getElementById('prevStage');s.style.background=bg;s.style.color=fg;}
 
+// ── Gallery ───────────────────────────────────────────────────────────────────
+const GK='vectrod_gal',TTL=7*24*60*60*1000;
+function saveGallery(name,url){
+  try{
+    let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>Date.now()-x.ts<TTL);
+    g.unshift({name,url,ts:Date.now(),id:Math.random().toString(36).slice(2)});
+    if(g.length>12)g=g.slice(0,12);
+    localStorage.setItem(GK,JSON.stringify(g));renderGallery();
+  }catch(e){}
+}
+function renderGallery(){
+  try{
+    let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>Date.now()-x.ts<TTL);
+    const el=document.getElementById('gallery');const grid=document.getElementById('galGrid');
+    if(!g.length){el.classList.remove('show');return;}
+    el.classList.add('show');
+    grid.innerHTML=g.map(x=>`
+      <div class="gal-item" onclick="reloadFont('${x.url}')">
+        <button class="gal-del" onclick="event.stopPropagation();delGal('${x.id}')">✕</button>
+        <div class="gal-name">${x.name}</div>
+        <div class="gal-prev" style="font-family:'GF_${x.id}',serif">AaBb</div>
+        <div class="gal-date">${new Date(x.ts).toLocaleDateString()}</div>
+      </div>`).join('');
+    g.forEach(x=>{fetch(x.url).then(r=>r.arrayBuffer()).then(buf=>{
+      const ff=new FontFace(`GF_${x.id}`,buf);ff.load().then(f=>document.fonts.add(f));}).catch(()=>{});});
+  }catch(e){}
+}
+function delGal(id){
+  try{let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>x.id!==id);localStorage.setItem(GK,JSON.stringify(g));renderGallery();}catch(e){}
+}
+function reloadFont(url){loadPrev(url);document.getElementById('panel-c').scrollIntoView({behavior:'smooth'});}
+renderGallery();
+
+// ── Optimize ──────────────────────────────────────────────────────────────────
 async function startOpt(){
   if(!svgFileO){alert('Please upload an SVG file first.');return;}
   const btn=document.getElementById('btnOpt');btn.disabled=true;
@@ -1135,143 +879,45 @@ async function startOpt(){
   document.getElementById('optRes').classList.remove('show');
   setBar(0,'progFillO');
   addLog('[START] Reading SVG...','hi','progLogO');await sleep(60);
-  const fd=new FormData();
-  fd.append('svg',svgFileO);fd.append('clean_ids',document.getElementById('ckCln').checked?'1':'0');
+  const fd=new FormData();fd.append('svg',svgFileO);fd.append('clean_ids',document.getElementById('ckCln').checked?'1':'0');
   try{
     setBar(40,'progFillO');addLog('  → Optimizing...','','progLogO');
     const res=await fetch('/optimize',{method:'POST',body:fd});
-    if(res.ok){
-      const data=await res.json();
-      if(data.success){
-        setBar(100,'progFillO');
+    if(res.ok){const data=await res.json();
+      if(data.success){setBar(100,'progFillO');
         addLog(`  ✓ ${data.original_size} → ${data.optimized_size}`,'ok','progLogO');
         addLog('\n[DONE] ✓','ok','progLogO');
-        document.getElementById('optDl').innerHTML=`<a class="btn-dl" href="${data.url}" download="${data.filename}">⬇ ${data.filename}</a>`;
+        document.getElementById('optDl').innerHTML=`<a class="btndl" href="${data.url}" download="${data.filename}">⬇ ${data.filename}</a>`;
         document.getElementById('optRes').classList.add('show');
-      }else addLog('  ✗ '+data.error,'err','progLogO');
-    }else addLog('  ✗ Server error','err','progLogO');
-  }catch(e){addLog('  ✗ Connection error','err','progLogO');}
-  btn.disabled=false;
-  btn.querySelector('[data-i18n]').textContent=T[lang].btnOpt;
+      }else addLog('  ✗ '+data.error,'er','progLogO');
+    }else addLog('  ✗ Server error','er','progLogO');
+  }catch(e){addLog('  ✗ Connection error','er','progLogO');}
+  btn.disabled=false;btn.querySelector('[data-i18n]').textContent=T[lang].btnOpt;
 }
 
-// ── AI Font ───────────────────────────────────────────────────────────────────
-function setPrompt(btn) {
-  const prompts = {
-    'Bold geometric': 'Bold, geometric, modern sans-serif with sharp angular corners. Strong and powerful, like a tech company logo.',
-    'Thin elegant serif': 'Thin, elegant serif font with refined details. Luxury and sophisticated, like a high-end fashion brand.',
-    'Playful rounded': 'Playful, rounded, friendly font with soft curves. Fun and approachable, suitable for kids or casual brands.',
-    'Gothic dark': 'Gothic, dark, heavy blackletter style with dramatic thick strokes. Medieval and powerful.',
-    'Minimal monospace': 'Clean minimal monospace font. Code-friendly, technical, precise with consistent stroke width.',
-  };
-  document.getElementById('aiPrompt').value = prompts[btn.textContent] || btn.textContent;
-}
+// ── Custom Cursor ─────────────────────────────────────────────────────────────
+const cur=document.getElementById('cur'),ring=document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+document.querySelectorAll('button,a,.drop,.ck,.step').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';});
+});
 
-let aiGenFiles = [], aiT0 = 0;
-
-async function startAI() {
-  const prompt = document.getElementById('aiPrompt').value.trim();
-  const fontName = document.getElementById('aiFontName').value.trim() || 'AIFont';
-
-  if (!prompt) {
-    alert(lang === 'tr' ? 'Lütfen fontu tanımlayın.' : 'Please describe your font first.');
-    return;
+// ── Particles ─────────────────────────────────────────────────────────────────
+(function(){
+  const c=document.getElementById('ptcl');
+  const cols=['#f0c060','#aa77ff','#3388ff','#22dd99','#ff88cc'];
+  for(let i=0;i<35;i++){
+    const p=document.createElement('div');p.className='particle';
+    const size=1+Math.random()*2.5;
+    p.style.cssText=`left:${Math.random()*100}%;width:${size}px;height:${size}px;
+      background:${cols[Math.floor(Math.random()*cols.length)]};
+      animation-duration:${9+Math.random()*18}s;animation-delay:${-Math.random()*25}s`;
+    c.appendChild(p);
   }
-
-  const btn = document.getElementById('btnAI');
-  btn.disabled = true;
-  document.getElementById('progAI').classList.add('show');
-  document.getElementById('progLogAI').innerHTML = '';
-  document.getElementById('resultAI').classList.remove('show');
-  document.getElementById('prevBoxAI').classList.remove('show');
-  document.getElementById('statsAI').classList.remove('show');
-  setBar(0, 'progFillAI');
-  aiGenFiles = []; aiT0 = Date.now();
-
-  addLog('[AI] Starting font generation...', 'hi', 'progLogAI');
-  addLog(`  Prompt: "${prompt.substring(0,60)}..."`, '', 'progLogAI');
-
-  try {
-    const res = await fetch('/ai-generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, font_name: fontName })
-    });
-
-    // Simüle progress
-    let pct = 10;
-    const progInterval = setInterval(() => {
-      pct = Math.min(pct + 2, 90);
-      setBar(pct, 'progFillAI');
-      if (pct === 20) addLog('  → Analyzing style...', '', 'progLogAI');
-      if (pct === 35) addLog('  → Drawing A-Z glyphs...', '', 'progLogAI');
-      if (pct === 50) addLog('  → Drawing a-z glyphs...', '', 'progLogAI');
-      if (pct === 65) addLog('  → Drawing 0-9 & symbols...', '', 'progLogAI');
-      if (pct === 80) addLog('  → Building font structure...', '', 'progLogAI');
-    }, 400);
-
-    if (res.ok) {
-      const data = await res.json();
-      clearInterval(progInterval);
-      setBar(100, 'progFillAI');
-
-      if (data.success) {
-        const elapsed = ((Date.now() - aiT0) / 1000).toFixed(1);
-        addLog(`
-  ✓ Font generated in ${elapsed}s`, 'ok', 'progLogAI');
-        addLog('[DONE] ✓', 'ok', 'progLogAI');
-
-        const totalKB = (data.files.reduce((a,f) => a+f.size, 0)/1024).toFixed(0);
-        document.getElementById('sAIG').textContent = '86';
-        document.getElementById('sAIS').textContent = totalKB + 'KB';
-        document.getElementById('sAIT').textContent = elapsed;
-        document.getElementById('statsAI').classList.add('show');
-
-        document.getElementById('dlRowAI').innerHTML = data.files
-          .filter(f => f.filename.endsWith('.ttf') || f.filename.endsWith('.otf'))
-          .map(f => `<a class="btn-dl" href="${f.url}" download="${f.filename}">⬇ ${f.filename}</a>`).join('');
-        document.getElementById('resultAI').classList.add('show');
-
-        const ttfFile = data.files.find(f => f.filename.endsWith('.ttf'));
-        if (ttfFile) loadAIPreview(ttfFile.url);
-      } else {
-        clearInterval(progInterval);
-        addLog('  ✗ ' + data.error, 'err', 'progLogAI');
-      }
-    } else {
-      clearInterval(progInterval);
-      addLog('  ✗ Server error', 'err', 'progLogAI');
-    }
-  } catch(e) {
-    addLog('  ✗ Connection error', 'err', 'progLogAI');
-  }
-
-  btn.disabled = false;
-  btn.querySelector('[data-i18n]').textContent = T[lang].btnAI;
-}
-
-async function loadAIPreview(url) {
-  try {
-    const buf = await (await fetch(url)).arrayBuffer();
-    const ff = new FontFace('AIPreviewFont', buf);
-    await ff.load();
-    document.fonts.add(ff);
-    document.getElementById('prevBoxAI').classList.add('show');
-    document.getElementById('prevInpAI').value = 'AaBbCc 123';
-    updatePrevAI();
-  } catch(e) { console.log('AI Preview error:', e); }
-}
-function updatePrevAI() {
-  document.getElementById('prevSpanAI').textContent = document.getElementById('prevInpAI').value || 'AaBbCc 123';
-}
-function setSzAI(px) {
-  document.getElementById('prevSpanAI').style.fontSize = px + 'px';
-  document.querySelectorAll('#prevBoxAI .sz').forEach(b => b.classList.toggle('on', b.textContent == px));
-}
-function setPrevBgAI(bg, fg) {
-  const s = document.getElementById('prevStageAI');
-  s.style.background = bg; s.style.color = fg;
-}
+})();
 </script>
 </body>
 </html>
