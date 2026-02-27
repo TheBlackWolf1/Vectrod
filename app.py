@@ -166,6 +166,8 @@ class Handler(BaseHTTPRequestHandler):
             self.handle_convert()
         elif path == '/optimize':
             self.handle_optimize()
+        elif path == '/ai-generate':
+            self.handle_ai_generate()
         else:
             self.send_error(404)
 
@@ -174,6 +176,60 @@ class Handler(BaseHTTPRequestHandler):
         ctype = self.headers.get('Content-Type', '')
         body = self.rfile.read(length)
         return parse_multipart(body, ctype)
+
+
+    def handle_ai_generate(self):
+        """AI ile prompt'tan font üret"""
+        try:
+            length = int(self.headers.get('Content-Length', 0))
+            body = self.rfile.read(length)
+            data = json.loads(body.decode('utf-8'))
+
+            prompt = data.get('prompt', '').strip()
+            font_name = data.get('font_name', 'AIFont').strip() or 'AIFont'
+
+            if not prompt:
+                self.json_resp({'success': False, 'error': 'Prompt required'}, 400)
+                return
+
+            sid, sp = new_session()
+            out_dir = os.path.join(sp, 'output')
+            os.makedirs(out_dir, exist_ok=True)
+
+            print(f"\n[AI-GENERATE] session={sid[:8]} prompt=\"{prompt[:60]}\" font={font_name}")
+
+            from ai_font import generate_ai_font
+
+            def progress(msg, pct=None):
+                print(f"  [AI] {msg}" + (f" ({pct}%)" if pct else ""))
+
+            ttf_path, otf_path = generate_ai_font(
+                prompt=prompt,
+                font_name=font_name,
+                output_dir=out_dir,
+                progress_callback=progress
+            )
+
+            if not ttf_path:
+                self.json_resp({'success': False, 'error': 'Font generation failed'}, 500)
+                return
+
+            result_files = []
+            for fp in [ttf_path, otf_path]:
+                if fp and os.path.exists(fp):
+                    fname = os.path.basename(fp)
+                    result_files.append({
+                        'filename': fname,
+                        'size': os.path.getsize(fp),
+                        'url': f'/download/{sid}/{fname}'
+                    })
+
+            self.json_resp({'success': True, 'files': result_files, 'session': sid})
+
+        except Exception as e:
+            import traceback
+            print(f"[AI-GENERATE ERROR] {e}\n{traceback.format_exc()}")
+            self.json_resp({'success': False, 'error': str(e)}, 500)
 
     def handle_convert(self):
         try:
