@@ -611,6 +611,58 @@ body {
   .stats.show{grid-template-columns:1fr}
   .hero h1{font-size:48px}
 }
+
+/* ═══ AI PANEL ═══ */
+.ai-hero {
+  text-align: center; padding: 32px 20px 28px;
+  position: relative; margin-bottom: 28px;
+}
+.ai-glow-ring {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -55%);
+  width: 160px; height: 160px; border-radius: 50%;
+  background: radial-gradient(circle, var(--glow-g) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{transform:translate(-50%,-55%) scale(1)} 50%{transform:translate(-50%,-55%) scale(1.3)} }
+.ai-icon {
+  font-size: 52px; line-height: 1; margin-bottom: 14px;
+  background: linear-gradient(135deg, var(--g1), var(--g2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(0,255,136,.4));
+  animation: iconGlow 2s ease-in-out infinite;
+  position: relative; z-index: 1;
+}
+.ai-desc {
+  font-size: 14px; color: var(--muted); max-width: 420px;
+  margin: 0 auto; line-height: 1.7; position: relative; z-index: 1;
+}
+.ai-textarea {
+  width: 100%;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 12px;
+  color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; font-weight: 500;
+  padding: 16px; outline: none; resize: vertical; min-height: 100px;
+  transition: border-color .25s, box-shadow .25s; line-height: 1.6;
+}
+.ai-textarea:focus { border-color: var(--g1); box-shadow: 0 0 0 3px var(--glow-g); }
+.ai-textarea::placeholder { color: var(--muted); font-weight: 400; }
+.prompt-examples {
+  margin-top: 10px; display: flex; align-items: center;
+  gap: 8px; flex-wrap: wrap;
+}
+.prompt-examples span {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: .1em; color: var(--muted); text-transform: uppercase;
+}
+.eg-btn {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 100px;
+  color: var(--muted); font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; font-weight: 600; padding: 5px 12px;
+  cursor: pointer; transition: all .2s;
+}
+.eg-btn:hover { border-color: var(--g1); color: var(--g1); background: var(--glow-g); }
 </style>
 </head>
 <body>
@@ -656,6 +708,7 @@ body {
   <!-- TABS -->
   <div class="tab-bar">
     <button class="tab active" onclick="switchTab('c')" data-i18n="tab1">SVG → Font</button>
+    <button class="tab" onclick="switchTab('a')" data-i18n="tabAI">✦ AI Font</button>
     <button class="tab" onclick="switchTab('o')" data-i18n="tab2">SVG Optimizer</button>
   </div>
 
@@ -748,6 +801,81 @@ body {
 
   </div><!-- /panel-c -->
 
+
+  <!-- ███ AI FONT ███ -->
+  <div class="panel" id="panel-a">
+
+    <div class="card" style="animation:slideUp .6s var(--ease-out) .1s both">
+      <div class="card-num" data-i18n="aiTitle">✦ AI Font Generator</div>
+
+      <div class="ai-hero">
+        <div class="ai-glow-ring"></div>
+        <div class="ai-icon">✦</div>
+        <p class="ai-desc" data-i18n="aiDesc">Describe your font in words. Our AI will generate every character and build a complete, downloadable font.</p>
+      </div>
+
+      <div class="fg" style="margin-bottom:18px">
+        <label class="flabel" data-i18n="aiPromptLabel">Font Name</label>
+        <input type="text" class="finput" id="aiFontName" placeholder="MyAIFont" value="AIFont"/>
+      </div>
+
+      <div class="fg">
+        <label class="flabel" data-i18n="aiPromptLabel2">Describe your font</label>
+        <textarea class="ai-textarea" id="aiPrompt" placeholder="e.g. Bold, geometric, modern sans-serif with sharp corners — like a tech startup logo..."></textarea>
+        <div class="prompt-examples">
+          <span data-i18n="examples">Examples:</span>
+          <button class="eg-btn" onclick="setPrompt(this)">Bold geometric</button>
+          <button class="eg-btn" onclick="setPrompt(this)">Thin elegant serif</button>
+          <button class="eg-btn" onclick="setPrompt(this)">Playful rounded</button>
+          <button class="eg-btn" onclick="setPrompt(this)">Gothic dark</button>
+          <button class="eg-btn" onclick="setPrompt(this)">Minimal monospace</button>
+        </div>
+      </div>
+
+      <button class="btn-gen" id="btnAI" onclick="startAI()">
+        <span data-i18n="btnAI">✦ GENERATE WITH AI</span>
+      </button>
+
+      <div class="prog" id="progAI">
+        <div class="prog-track"><div class="prog-fill" id="progFillAI"></div></div>
+        <div class="prog-log" id="progLogAI"></div>
+      </div>
+    </div>
+
+    <div class="stats" id="statsAI">
+      <div class="stat"><div class="sn" id="sAIG">—</div><div class="sl" data-i18n="stG">Glyphs</div></div>
+      <div class="stat"><div class="sn" id="sAIS">—</div><div class="sl" data-i18n="stS">File Size</div></div>
+      <div class="stat"><div class="sn" id="sAIT">—</div><div class="sl" data-i18n="stT">Seconds</div></div>
+    </div>
+
+    <div class="result" id="resultAI">
+      <div class="result-tag" data-i18n="resTag">✓ Font Ready — Download</div>
+      <div class="dl-row" id="dlRowAI"></div>
+    </div>
+
+    <div class="prev-box" id="prevBoxAI">
+      <div class="card-num" style="margin-bottom:16px">Preview</div>
+      <div class="prev-row">
+        <input class="prev-inp" id="prevInpAI" placeholder="AaBbCc 123..." oninput="updatePrevAI()"/>
+        <div class="sz-row">
+          <button class="sz on" onclick="setSzAI(32)">32</button>
+          <button class="sz" onclick="setSzAI(48)">48</button>
+          <button class="sz" onclick="setSzAI(64)">64</button>
+          <button class="sz" onclick="setSzAI(96)">96</button>
+        </div>
+        <div class="bg-row">
+          <div class="bg-dot" style="background:#fff" onclick="setPrevBgAI('#fff','#000')"></div>
+          <div class="bg-dot" style="background:#111" onclick="setPrevBgAI('#111','#fff')"></div>
+          <div class="bg-dot" style="background:#888" onclick="setPrevBgAI('#888','#000')"></div>
+        </div>
+      </div>
+      <div class="prev-stage" id="prevStageAI">
+        <span id="prevSpanAI" style="font-size:32px;font-family:AIPreviewFont,serif">AaBbCc 123</span>
+      </div>
+    </div>
+
+  </div><!-- /panel-a -->
+
   <!-- ███ OPTIMIZER ███ -->
   <div class="panel" id="panel-o">
     <div class="card" style="animation:slideUp .5s var(--ease-out) both">
@@ -805,6 +933,13 @@ const T = {
     optB:'Converts text elements to paths, removes metadata, and cleans up SVG structure. Get a clean, font-ready version of your file.',
     optOpts:'Options', oTxt:'Text → Paths', oFlat:'Flatten Transforms', oCln:'Clean Metadata',
     btnOpt:'OPTIMIZE SVG', optOK:'✓ Optimized SVG Ready',
+    tabAI:'✦ AI Font',
+    aiTitle:'✦ AI Font Generator',
+    aiDesc:'Describe your font in words. Our AI will generate every character and build a complete, downloadable font.',
+    aiPromptLabel:'Font Name',
+    aiPromptLabel2:'Describe your font',
+    examples:'Examples:',
+    btnAI:'✦ GENERATE WITH AI',
   },
   tr: {
     kicker:'SVG\'den Profesyonel Font',
@@ -821,6 +956,13 @@ const T = {
     optB:"Text elementleri path'e çevirir, metadata siler, SVG yapısını temizler.",
     optOpts:'Seçenekler', oTxt:'Text → Path', oFlat:'Transform Düzleştir', oCln:'Metadata Temizle',
     btnOpt:'SVG OPTİMİZE ET', optOK:'✓ Optimize SVG Hazır',
+    tabAI:'✦ AI Font',
+    aiTitle:'✦ AI Font Üretici',
+    aiDesc:'Fontunu kelimelerle anlat. AI her karakteri çizecek ve tam bir font üretecek.',
+    aiPromptLabel:'Font Adı',
+    aiPromptLabel2:'Fontunu tanımla',
+    examples:'Örnekler:',
+    btnAI:'✦ AI İLE ÜRET',
   }
 };
 let lang='en';
@@ -1011,6 +1153,124 @@ async function startOpt(){
   }catch(e){addLog('  ✗ Connection error','err','progLogO');}
   btn.disabled=false;
   btn.querySelector('[data-i18n]').textContent=T[lang].btnOpt;
+}
+
+// ── AI Font ───────────────────────────────────────────────────────────────────
+function setPrompt(btn) {
+  const prompts = {
+    'Bold geometric': 'Bold, geometric, modern sans-serif with sharp angular corners. Strong and powerful, like a tech company logo.',
+    'Thin elegant serif': 'Thin, elegant serif font with refined details. Luxury and sophisticated, like a high-end fashion brand.',
+    'Playful rounded': 'Playful, rounded, friendly font with soft curves. Fun and approachable, suitable for kids or casual brands.',
+    'Gothic dark': 'Gothic, dark, heavy blackletter style with dramatic thick strokes. Medieval and powerful.',
+    'Minimal monospace': 'Clean minimal monospace font. Code-friendly, technical, precise with consistent stroke width.',
+  };
+  document.getElementById('aiPrompt').value = prompts[btn.textContent] || btn.textContent;
+}
+
+let aiGenFiles = [], aiT0 = 0;
+
+async function startAI() {
+  const prompt = document.getElementById('aiPrompt').value.trim();
+  const fontName = document.getElementById('aiFontName').value.trim() || 'AIFont';
+
+  if (!prompt) {
+    alert(lang === 'tr' ? 'Lütfen fontu tanımlayın.' : 'Please describe your font first.');
+    return;
+  }
+
+  const btn = document.getElementById('btnAI');
+  btn.disabled = true;
+  document.getElementById('progAI').classList.add('show');
+  document.getElementById('progLogAI').innerHTML = '';
+  document.getElementById('resultAI').classList.remove('show');
+  document.getElementById('prevBoxAI').classList.remove('show');
+  document.getElementById('statsAI').classList.remove('show');
+  setBar(0, 'progFillAI');
+  aiGenFiles = []; aiT0 = Date.now();
+
+  addLog('[AI] Starting font generation...', 'hi', 'progLogAI');
+  addLog(`  Prompt: "${prompt.substring(0,60)}..."`, '', 'progLogAI');
+
+  try {
+    const res = await fetch('/ai-generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, font_name: fontName })
+    });
+
+    // Simüle progress
+    let pct = 10;
+    const progInterval = setInterval(() => {
+      pct = Math.min(pct + 2, 90);
+      setBar(pct, 'progFillAI');
+      if (pct === 20) addLog('  → Analyzing style...', '', 'progLogAI');
+      if (pct === 35) addLog('  → Drawing A-Z glyphs...', '', 'progLogAI');
+      if (pct === 50) addLog('  → Drawing a-z glyphs...', '', 'progLogAI');
+      if (pct === 65) addLog('  → Drawing 0-9 & symbols...', '', 'progLogAI');
+      if (pct === 80) addLog('  → Building font structure...', '', 'progLogAI');
+    }, 400);
+
+    if (res.ok) {
+      const data = await res.json();
+      clearInterval(progInterval);
+      setBar(100, 'progFillAI');
+
+      if (data.success) {
+        const elapsed = ((Date.now() - aiT0) / 1000).toFixed(1);
+        addLog(`
+  ✓ Font generated in ${elapsed}s`, 'ok', 'progLogAI');
+        addLog('[DONE] ✓', 'ok', 'progLogAI');
+
+        const totalKB = (data.files.reduce((a,f) => a+f.size, 0)/1024).toFixed(0);
+        document.getElementById('sAIG').textContent = '86';
+        document.getElementById('sAIS').textContent = totalKB + 'KB';
+        document.getElementById('sAIT').textContent = elapsed;
+        document.getElementById('statsAI').classList.add('show');
+
+        document.getElementById('dlRowAI').innerHTML = data.files
+          .filter(f => f.filename.endsWith('.ttf') || f.filename.endsWith('.otf'))
+          .map(f => `<a class="btn-dl" href="${f.url}" download="${f.filename}">⬇ ${f.filename}</a>`).join('');
+        document.getElementById('resultAI').classList.add('show');
+
+        const ttfFile = data.files.find(f => f.filename.endsWith('.ttf'));
+        if (ttfFile) loadAIPreview(ttfFile.url);
+      } else {
+        clearInterval(progInterval);
+        addLog('  ✗ ' + data.error, 'err', 'progLogAI');
+      }
+    } else {
+      clearInterval(progInterval);
+      addLog('  ✗ Server error', 'err', 'progLogAI');
+    }
+  } catch(e) {
+    addLog('  ✗ Connection error', 'err', 'progLogAI');
+  }
+
+  btn.disabled = false;
+  btn.querySelector('[data-i18n]').textContent = T[lang].btnAI;
+}
+
+async function loadAIPreview(url) {
+  try {
+    const buf = await (await fetch(url)).arrayBuffer();
+    const ff = new FontFace('AIPreviewFont', buf);
+    await ff.load();
+    document.fonts.add(ff);
+    document.getElementById('prevBoxAI').classList.add('show');
+    document.getElementById('prevInpAI').value = 'AaBbCc 123';
+    updatePrevAI();
+  } catch(e) { console.log('AI Preview error:', e); }
+}
+function updatePrevAI() {
+  document.getElementById('prevSpanAI').textContent = document.getElementById('prevInpAI').value || 'AaBbCc 123';
+}
+function setSzAI(px) {
+  document.getElementById('prevSpanAI').style.fontSize = px + 'px';
+  document.querySelectorAll('#prevBoxAI .sz').forEach(b => b.classList.toggle('on', b.textContent == px));
+}
+function setPrevBgAI(bg, fg) {
+  const s = document.getElementById('prevStageAI');
+  s.style.background = bg; s.style.color = fg;
 }
 </script>
 </body>
