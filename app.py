@@ -116,6 +116,12 @@ class Handler(BaseHTTPRequestHandler):
         if path in ('/', '/index.html'):
             self.serve_static('index.html', 'text/html')
 
+        elif path == '/fonts':
+            self.serve_static('fonts.html', 'text/html')
+
+        elif path == '/api/fonts':
+            self.handle_fonts_api()
+
         elif path.startswith('/download/'):
             # /download/{session_id}/{filename}
             parts = path[10:].split('/', 1)
@@ -131,6 +137,30 @@ class Handler(BaseHTTPRequestHandler):
             self.send_error(404)
         else:
             self.send_error(404)
+
+    def handle_fonts_api(self):
+        """Backend proxy for Google Fonts API — avoids CORS issues"""
+        import urllib.request, urllib.error, json as _json
+        GKEY = 'AIzaSyAkLMad9aRgv6wEAyYhe4xUrzHlyfvJu_o'
+        try:
+            url = f'https://www.googleapis.com/webfonts/v1/webfonts?key={GKEY}&sort=popularity'
+            req = urllib.request.Request(url, headers={'User-Agent': 'Vectrod/1.0'})
+            with urllib.request.urlopen(req, timeout=15) as r:
+                raw = r.read()
+            data = _json.loads(raw)
+            fonts = []
+            for i, f in enumerate(data.get('items', [])):
+                fonts.append({
+                    'family': f['family'],
+                    'category': f['category'],
+                    'variants': f.get('variants', []),
+                    'files': f.get('files', {}),
+                    'pop': i
+                })
+            self.json_resp({'success': True, 'fonts': fonts, 'total': len(fonts)})
+        except Exception as e:
+            print(f'[FONTS API ERROR] {e}')
+            self.json_resp({'success': False, 'error': str(e)}, 500)
 
     def serve_static(self, filename, mime):
         filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
@@ -172,6 +202,8 @@ class Handler(BaseHTTPRequestHandler):
             self.handle_png_to_svg()
         elif path == '/ai-generate':
             self.handle_ai_generate()
+        elif path == '/fonts':
+            self.serve_fonts_page()
         else:
             self.send_error(404)
 
