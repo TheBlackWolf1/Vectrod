@@ -97,6 +97,19 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 .nbtn{background:var(--sf);backdrop-filter:blur(16px);border:1px solid var(--br);color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;padding:8px 16px;border-radius:100px;cursor:pointer;transition:all .25s}
 .nbtn:hover{border-color:var(--gold);color:var(--gold)}
 .nbtn.active{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;box-shadow:0 0 18px var(--gO)}
+/* Free Fonts CTA Button */
+.btn-free-fonts{position:relative;display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:100px;background:linear-gradient(90deg,var(--purple3),var(--purple),var(--blue));border:none;cursor:pointer;text-decoration:none;overflow:hidden;box-shadow:0 0 20px rgba(136,68,238,.35);animation:bffPulse 3s ease-in-out infinite}
+.btn-free-fonts::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);animation:bffShine 2.5s ease-in-out infinite}
+@keyframes bffShine{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
+@keyframes bffPulse{0%,100%{box-shadow:0 0 20px rgba(136,68,238,.35),0 0 0 0 rgba(136,68,238,.2)}50%{box-shadow:0 0 32px rgba(136,68,238,.5),0 0 0 6px rgba(136,68,238,.0)}}
+.btn-free-fonts:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 6px 32px rgba(136,68,238,.5)}
+.bff-glow{position:absolute;inset:-2px;border-radius:100px;background:linear-gradient(90deg,var(--gold),var(--purple),var(--blue),var(--green),var(--gold));background-size:300% auto;animation:bffGlow 3s linear infinite;opacity:.6;z-index:-1}
+@keyframes bffGlow{to{background-position:300% center}}
+.bff-icon{font-size:13px;color:#fff;-webkit-text-fill-color:#fff;animation:bffSpin 4s ease-in-out infinite}
+@keyframes bffSpin{0%,100%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.2)}}
+.bff-text{font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;color:#fff;-webkit-text-fill-color:#fff;letter-spacing:.04em;white-space:nowrap}
+.bff-badge{background:var(--gold);color:#000;-webkit-text-fill-color:#000;font-family:'DM Mono',monospace;font-size:8px;font-weight:900;letter-spacing:.1em;padding:2px 6px;border-radius:100px;animation:bffBadge 1.5s ease-in-out infinite}
+@keyframes bffBadge{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
 .hero{text-align:center;margin-bottom:68px;animation:slideDown .8s var(--ease-out) .1s both}
 .hero-badge{display:inline-flex;align-items:center;gap:9px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;border:1px solid rgba(240,192,96,.22);padding:6px 18px;border-radius:100px;background:rgba(240,192,96,.05);backdrop-filter:blur(10px);margin-bottom:28px}
 .bdot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:bdotPulse 2.2s ease-in-out infinite}
@@ -306,6 +319,12 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:48px 2
       <div><div class="logo-name">VECTROD</div><div class="logo-sub">Free SVG → Font Converter</div></div>
     </a>
     <div class="nav-r">
+      <a class="btn-free-fonts" href="/fonts" aria-label="Browse 1500+ free fonts">
+        <span class="bff-glow"></span>
+        <span class="bff-icon">✦</span>
+        <span class="bff-text">1500+ Free Fonts</span>
+        <span class="bff-badge">NEW</span>
+      </a>
       <button class="nbtn" id="themeBtn" onclick="toggleTheme()">☀ Light</button>
       <button class="nbtn active" id="btnEN" onclick="setLang('en')">EN</button>
       <button class="nbtn" id="btnTR" onclick="setLang('tr')">TR</button>
