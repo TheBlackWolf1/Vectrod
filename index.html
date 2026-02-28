@@ -3,18 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vectrod — SVG to Professional Font</title>
-<meta name="description" content="Convert any SVG to professional TTF & OTF fonts. Free, fast, powerful.">
+<title>Vectrod — Free SVG to Font Converter | TTF & OTF Generator</title>
+<meta name="description" content="Convert any SVG file into a professional TTF or OTF font online for free. No signup, no software. Also convert PNG to SVG and turn handwriting into fonts.">
+<meta name="keywords" content="svg to font, svg to ttf, svg to otf, free font converter, custom font maker, canva font, handwriting to font, png to svg, font generator online, ttf generator">
+<meta name="author" content="Vectrod">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://vectrod.com/">
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://vectrod.com/"/>
+<meta property="og:title" content="Vectrod — Free SVG to Font Converter"/>
+<meta property="og:description" content="Turn your SVG designs into professional TTF & OTF fonts instantly. Free, no signup, works with Canva."/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Vectrod — Free SVG to Font Converter"/>
+<meta name="twitter:description" content="Convert SVG to TTF/OTF font online for free. No signup needed."/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Vectrod","url":"https://vectrod.com","description":"Free online SVG to font converter. Convert SVG designs to TTF and OTF fonts instantly.","applicationCategory":"DesignApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════ TOKENS ═══════════════ */
 :root{--ease:cubic-bezier(.22,.68,0,1.2);--ease-out:cubic-bezier(.16,1,.3,1)}
-
 [data-theme="dark"]{
   --bg:#02030d;--bg2:#050615;--bg3:#080918;
-  --sf:rgba(255,255,255,.032);--sf2:rgba(255,255,255,.06);
-  --br:rgba(255,255,255,.07);--br-hi:rgba(240,192,96,.2);
+  --sf:rgba(255,255,255,.032);--sf2:rgba(255,255,255,.07);--br:rgba(255,255,255,.07);
   --tx:#ede8ff;--mt:rgba(237,232,255,.38);
   --gold:#f0c060;--gold2:#ffe090;--gold3:#c09040;
   --purple:#8844ee;--purple2:#aa77ff;--purple3:#6622cc;
@@ -24,9 +35,8 @@
   --gG:rgba(34,221,153,.1);--gP:rgba(136,68,238,.14);--gO:rgba(240,192,96,.1);
 }
 [data-theme="light"]{
-  --bg:#f5f3ff;--bg2:#ede9ff;--bg3:#e5e0ff;
-  --sf:rgba(255,255,255,.75);--sf2:rgba(255,255,255,.95);
-  --br:rgba(60,20,180,.1);--br-hi:rgba(180,120,0,.25);
+  --bg:#f5f3ff;--bg2:#ede9ff;--bg3:#e0dcff;
+  --sf:rgba(255,255,255,.8);--sf2:rgba(255,255,255,.95);--br:rgba(60,20,180,.1);
   --tx:#08051e;--mt:rgba(8,5,30,.42);
   --gold:#9a6600;--gold2:#b87800;--gold3:#7a5000;
   --purple:#5520bb;--purple2:#7744dd;--purple3:#3808aa;
@@ -35,404 +45,235 @@
   --danger:#cc1122;--ok:#008855;
   --gG:rgba(0,136,85,.08);--gP:rgba(85,32,187,.1);--gO:rgba(154,102,0,.08);
 }
-
-/* ═══════════════ RESET ═══════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg);color:var(--tx);
-  font-family:'Outfit',sans-serif;font-size:15px;line-height:1.6;
-  min-height:100vh;overflow-x:hidden;
-  transition:background .4s,color .4s;
-}
-
-/* ═══════════════ CURSOR ═══════════════ */
-.cur{position:fixed;width:10px;height:10px;border-radius:50%;
-  background:var(--gold);pointer-events:none;z-index:9999;
-  transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s}
-.cur-ring{position:fixed;width:32px;height:32px;border-radius:50%;
-  border:1px solid rgba(240,192,96,.35);pointer-events:none;z-index:9998;
-  transform:translate(-50%,-50%);transition:none}
-body:hover .cur{opacity:1}
-
-/* ═══════════════ BACKGROUND ═══════════════ */
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden;transition:background .4s,color .4s}
+.cur{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--gold);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s}
+.cur-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid rgba(240,192,96,.35);pointer-events:none;z-index:9998;transform:translate(-50%,-50%)}
 .bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.bg-grid{position:absolute;inset:0;
-  background-image:linear-gradient(rgba(136,68,238,.035) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(136,68,238,.035) 1px,transparent 1px);
-  background-size:56px 56px;animation:gridDrift 50s linear infinite}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(136,68,238,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(136,68,238,.035) 1px,transparent 1px);background-size:56px 56px;animation:gridDrift 50s linear infinite}
 @keyframes gridDrift{to{background-position:56px 56px}}
 .orb{position:absolute;border-radius:50%;filter:blur(110px);animation:orbFloat ease-in-out infinite alternate}
-.o1{width:900px;height:900px;top:-350px;left:-250px;
-  background:radial-gradient(circle,rgba(136,68,238,.22) 0%,transparent 65%);animation-duration:22s}
-.o2{width:700px;height:700px;bottom:-250px;right:-200px;
-  background:radial-gradient(circle,rgba(240,192,96,.18) 0%,transparent 65%);animation-duration:28s;animation-delay:-9s}
-.o3{width:550px;height:550px;top:38%;left:48%;
-  background:radial-gradient(circle,rgba(34,221,153,.12) 0%,transparent 65%);animation-duration:32s;animation-delay:-16s}
-.o4{width:420px;height:420px;top:15%;right:8%;
-  background:radial-gradient(circle,rgba(51,136,255,.1) 0%,transparent 65%);animation-duration:20s;animation-delay:-4s}
+.o1{width:900px;height:900px;top:-350px;left:-250px;background:radial-gradient(circle,rgba(136,68,238,.22) 0%,transparent 65%);animation-duration:22s}
+.o2{width:700px;height:700px;bottom:-250px;right:-200px;background:radial-gradient(circle,rgba(240,192,96,.18) 0%,transparent 65%);animation-duration:28s;animation-delay:-9s}
+.o3{width:550px;height:550px;top:38%;left:48%;background:radial-gradient(circle,rgba(34,221,153,.12) 0%,transparent 65%);animation-duration:32s;animation-delay:-16s}
 @keyframes orbFloat{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,45px) scale(1.12)}}
 .particles{position:absolute;inset:0}
 .particle{position:absolute;border-radius:50%;animation:pFloat linear infinite;opacity:0}
 @keyframes pFloat{0%{opacity:0;transform:translateY(110vh)}10%,90%{opacity:1}100%{opacity:0;transform:translateY(-80px)}}
-
-/* ═══════════════ LAYOUT ═══════════════ */
 .wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:38px 24px 140px}
-
-/* ═══════════════ TOPBAR ═══════════════ */
-.topbar{display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:86px;animation:slideDown .8s var(--ease-out) both}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:72px;animation:slideDown .8s var(--ease-out) both}
 .logo{display:flex;align-items:center;gap:14px}
-.logo-svg{width:48px;height:48px;flex-shrink:0}
-.logo-text-wrap{}
-.logo-name{
-  font-family:'Cinzel',serif;font-size:24px;font-weight:900;letter-spacing:.14em;
-  background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 25%,var(--purple2) 55%,var(--blue2) 80%,var(--green2) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 22px rgba(240,192,96,.28));
-}
-.logo-tagline{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.22em;
-  color:var(--mt);text-transform:uppercase;margin-top:1px}
+.logo-svg{width:46px;height:46px;flex-shrink:0}
+.logo-name{font-family:'Cinzel',serif;font-size:23px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 25%,var(--purple2) 55%,var(--blue2) 80%,var(--green2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 22px rgba(240,192,96,.28))}
+.logo-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.22em;color:var(--mt);text-transform:uppercase;margin-top:1px}
 .nav-r{display:flex;align-items:center;gap:7px}
-.nbtn{background:var(--sf);backdrop-filter:blur(16px);border:1px solid var(--br);
-  color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;
-  padding:8px 16px;border-radius:100px;cursor:pointer;transition:all .25s}
+.nbtn{background:var(--sf);backdrop-filter:blur(16px);border:1px solid var(--br);color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;padding:8px 16px;border-radius:100px;cursor:pointer;transition:all .25s}
 .nbtn:hover{border-color:var(--gold);color:var(--gold)}
-.nbtn.active{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;
-  -webkit-text-fill-color:#000;border-color:transparent;box-shadow:0 0 18px var(--gO)}
-
-/* ═══════════════ HERO ═══════════════ */
-.hero{text-align:center;margin-bottom:80px;animation:slideDown .8s var(--ease-out) .1s both}
-.hero-badge{display:inline-flex;align-items:center;gap:9px;
-  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;
-  color:var(--gold);text-transform:uppercase;
-  border:1px solid rgba(240,192,96,.22);padding:6px 18px;border-radius:100px;
-  background:rgba(240,192,96,.05);backdrop-filter:blur(10px);margin-bottom:30px}
-.bdot{width:6px;height:6px;border-radius:50%;background:var(--gold);
-  box-shadow:0 0 10px var(--gold);animation:bdotPulse 2.2s ease-in-out infinite}
+.nbtn.active{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;box-shadow:0 0 18px var(--gO)}
+.hero{text-align:center;margin-bottom:68px;animation:slideDown .8s var(--ease-out) .1s both}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;border:1px solid rgba(240,192,96,.22);padding:6px 18px;border-radius:100px;background:rgba(240,192,96,.05);backdrop-filter:blur(10px);margin-bottom:28px}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:bdotPulse 2.2s ease-in-out infinite}
 @keyframes bdotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
-.hero h1{font-family:'Cinzel',serif;font-size:clamp(46px,8.5vw,96px);
-  font-weight:900;line-height:.9;letter-spacing:.04em;margin-bottom:26px}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(44px,8vw,92px);font-weight:900;line-height:.9;letter-spacing:.04em;margin-bottom:22px}
 .h1a{display:block;color:var(--tx);opacity:.88}
-.h1b{
-  display:block;
-  background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 20%,var(--purple2) 50%,var(--blue2) 75%,var(--green2) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 28px rgba(136,68,238,.3));
-  animation:h1shimmer 5s ease-in-out infinite;
-}
+.h1b{display:block;background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 20%,var(--purple2) 50%,var(--blue2) 75%,var(--green2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 28px rgba(136,68,238,.3));animation:h1shimmer 5s ease-in-out infinite}
 @keyframes h1shimmer{0%,100%{filter:drop-shadow(0 0 28px rgba(136,68,238,.3))}50%{filter:drop-shadow(0 0 48px rgba(240,192,96,.35))}}
-.hero-sub{font-size:16px;color:var(--mt);max-width:530px;margin:0 auto 36px;line-height:1.8;font-weight:400}
+.hero-sub{font-size:16px;color:var(--mt);max-width:530px;margin:0 auto 30px;line-height:1.8}
 .hero-sub strong{color:var(--tx);font-weight:700}
 .hstats{display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap}
-.hst{text-align:center}
-.hst-n{font-family:'Cinzel',serif;font-size:26px;font-weight:700;
-  background:linear-gradient(135deg,var(--gold),var(--purple2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hst-n{font-family:'Cinzel',serif;font-size:26px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hst-l{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--mt);text-transform:uppercase;margin-top:2px}
 .hst-div{width:1px;height:36px;background:var(--br)}
-
-/* ═══════════════ HOW TO ═══════════════ */
-.how{margin-bottom:56px;animation:slideUp .7s var(--ease-out) .14s both}
-.how-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;
-  color:var(--purple2);text-transform:uppercase;text-align:center;margin-bottom:22px}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.step{background:var(--sf);backdrop-filter:blur(16px);border:1px solid var(--br);
-  border-radius:18px;padding:22px;text-align:center;
-  transition:all .3s var(--ease);position:relative;overflow:hidden}
-.step::before{content:'';position:absolute;inset:0;border-radius:18px;
-  background:linear-gradient(135deg,var(--gO),transparent);opacity:0;transition:opacity .3s}
-.step:hover::before{opacity:1}
-.step:hover{border-color:rgba(240,192,96,.18);transform:translateY(-3px);
-  box-shadow:0 12px 40px rgba(136,68,238,.08)}
-.step-n{font-family:'Cinzel',serif;font-size:34px;font-weight:900;
-  background:linear-gradient(135deg,var(--gold),var(--purple2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin-bottom:10px;line-height:1}
-.step-t{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:5px}
-.step-d{font-size:12px;color:var(--mt);line-height:1.55}
-
-/* ═══════════════ TABS ═══════════════ */
-.tabs-row{margin-bottom:28px;animation:slideUp .7s var(--ease-out) .2s both}
-.tabs{display:inline-flex;background:var(--sf);backdrop-filter:blur(20px);
-  border:1px solid var(--br);border-radius:100px;padding:4px;gap:2px}
-.tab{background:none;border:none;color:var(--mt);font-family:'Outfit',sans-serif;
-  font-size:13px;font-weight:600;letter-spacing:.02em;
-  padding:11px 26px;border-radius:100px;cursor:pointer;transition:all .25s}
+.tabs-row{margin-bottom:28px;animation:slideUp .7s var(--ease-out) .18s both}
+.tabs{display:inline-flex;background:var(--sf);backdrop-filter:blur(20px);border:1px solid var(--br);border-radius:100px;padding:4px;gap:2px;flex-wrap:wrap}
+.tab{background:none;border:none;color:var(--mt);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.02em;padding:11px 22px;border-radius:100px;cursor:pointer;transition:all .25s}
 .tab:hover{color:var(--tx)}
-.tab.active{
-  background:linear-gradient(90deg,var(--gold3),var(--purple),var(--blue));
-  color:#fff;-webkit-text-fill-color:#fff;
-  box-shadow:0 4px 20px rgba(136,68,238,.3)}
-
-/* ═══════════════ PANELS ═══════════════ */
+.tab.active{background:linear-gradient(90deg,var(--gold3),var(--purple),var(--blue));color:#fff;-webkit-text-fill-color:#fff;box-shadow:0 4px 20px rgba(136,68,238,.3)}
 .panel{display:none}
 .panel.active{display:block;animation:slideUp .4s var(--ease-out)}
-
-/* ═══════════════ CARD ═══════════════ */
-.card{background:var(--sf);backdrop-filter:blur(24px);border:1px solid var(--br);
-  border-radius:22px;padding:32px;margin-bottom:14px;
-  transition:border-color .3s,box-shadow .3s;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(240,192,96,.35),rgba(136,68,238,.35),transparent);
-  opacity:0;transition:opacity .3s}
+.card{background:var(--sf);backdrop-filter:blur(24px);border:1px solid var(--br);border-radius:22px;padding:32px;margin-bottom:14px;transition:border-color .3s,box-shadow .3s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(240,192,96,.35),rgba(136,68,238,.35),transparent);opacity:0;transition:opacity .3s}
 .card:hover::before{opacity:1}
-.card:hover{border-color:rgba(240,192,96,.13);
-  box-shadow:0 8px 48px rgba(136,68,238,.07),0 0 80px rgba(240,192,96,.04)}
-.clabel{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;
-  color:var(--gold);text-transform:uppercase;margin-bottom:22px;
-  display:flex;align-items:center;gap:10px}
+.card:hover{border-color:rgba(240,192,96,.13);box-shadow:0 8px 48px rgba(136,68,238,.07)}
+.clabel{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
 .clabel::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(240,192,96,.3),transparent)}
-
-/* TOOLTIP */
 .tip-w{display:inline-flex;align-items:center;gap:7px;position:relative}
-.tip-i{width:17px;height:17px;border-radius:50%;background:var(--sf2);border:1px solid var(--br);
-  color:var(--mt);font-size:10px;font-weight:700;
-  display:inline-flex;align-items:center;justify-content:center;cursor:help;transition:all .2s;flex-shrink:0}
-.tip-i:hover{border-color:var(--gold);color:var(--gold);box-shadow:0 0 12px var(--gO)}
-.tip-box{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);
-  background:#07081a;border:1px solid rgba(240,192,96,.2);border-radius:12px;
-  padding:12px 16px;font-size:12px;color:var(--tx);line-height:1.55;
-  width:260px;z-index:200;pointer-events:none;opacity:0;transition:opacity .2s;
-  box-shadow:0 10px 40px rgba(0,0,0,.5)}
-[data-theme="light"] .tip-box{background:#fff;border-color:rgba(130,80,0,.15)}
+.tip-i{width:17px;height:17px;border-radius:50%;background:var(--sf2);border:1px solid var(--br);color:var(--mt);font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:help;transition:all .2s;flex-shrink:0}
+.tip-i:hover{border-color:var(--gold);color:var(--gold)}
+.tip-box{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);background:#07081a;border:1px solid rgba(240,192,96,.2);border-radius:12px;padding:12px 16px;font-size:12px;color:var(--tx);line-height:1.55;width:260px;z-index:200;pointer-events:none;opacity:0;transition:opacity .2s;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+[data-theme="light"] .tip-box{background:#fff}
 .tip-w:hover .tip-box{opacity:1}
-
-/* ═══════════════ DROP ═══════════════ */
-.drop{border:1.5px dashed var(--br);border-radius:18px;padding:54px 28px;
-  text-align:center;cursor:pointer;transition:all .3s var(--ease);position:relative;overflow:hidden;background:var(--bg3)}
-.drop::after{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at center,var(--gO) 0%,transparent 65%);opacity:0;transition:opacity .3s;pointer-events:none}
-.drop:hover::after,.drop.over::after{opacity:1}
+.drop{border:1.5px dashed var(--br);border-radius:18px;padding:52px 28px;text-align:center;cursor:pointer;transition:all .3s var(--ease);position:relative;overflow:hidden;background:var(--bg3)}
+.drop::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,var(--gO) 0%,transparent 65%);opacity:0;transition:opacity .3s;pointer-events:none}
+.drop:hover::after,.drop.over::after,.drop-img::after{opacity:1}
 .drop:hover,.drop.over{border-color:var(--gold);border-style:solid}
+.drop-img:hover,.drop-img.over{border-color:var(--purple2) !important}
+.drop-img::after{background:radial-gradient(ellipse at center,var(--gP) 0%,transparent 65%) !important}
 .drop.done{border-color:var(--ok)}
 .drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.dicon{display:block;font-size:46px;margin-bottom:18px;
-  animation:diconFloat 3.5s ease-in-out infinite;
-  filter:drop-shadow(0 0 10px var(--gold))}
-@keyframes diconFloat{0%,100%{transform:translateY(0);filter:drop-shadow(0 0 10px var(--gold))}
-  50%{transform:translateY(-8px);filter:drop-shadow(0 0 24px var(--purple2))}}
+.dicon{display:block;font-size:44px;margin-bottom:16px;animation:diconFloat 3.5s ease-in-out infinite;filter:drop-shadow(0 0 10px var(--gold))}
+@keyframes diconFloat{0%,100%{transform:translateY(0);filter:drop-shadow(0 0 10px var(--gold))}50%{transform:translateY(-8px);filter:drop-shadow(0 0 24px var(--purple2))}}
 .dhead{font-size:16px;font-weight:700;color:var(--tx);margin-bottom:6px}
 .dsub{font-size:13px;color:var(--mt)}
 .dname{margin-top:11px;font-family:'DM Mono',monospace;font-size:12px;color:var(--ok);font-weight:500}
-.thumb{display:none;margin-top:16px;border-radius:14px;overflow:hidden;
-  border:1px solid var(--br);background:#fff;height:150px;position:relative}
+.thumb{display:none;margin-top:16px;border-radius:14px;overflow:hidden;border:1px solid var(--br);background:#fff;height:150px;position:relative}
 .thumb.show{display:block;animation:slideUp .3s var(--ease-out)}
 .thumb img{width:100%;height:100%;object-fit:contain}
-.thumb-badge{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);
-  backdrop-filter:blur(8px);color:var(--gold);font-family:'DM Mono',monospace;
-  font-size:9px;letter-spacing:.14em;padding:3px 8px;border-radius:100px}
-
-/* ═══════════════ FORM ═══════════════ */
+.thumb-badge{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);color:var(--gold);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;padding:3px 8px;border-radius:100px}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
 .fg{margin-bottom:20px}
-.flbl{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;
-  color:var(--mt);text-transform:uppercase;margin-bottom:9px}
-.finp{width:100%;background:var(--bg3);border:1px solid var(--br);border-radius:12px;
-  color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;
-  padding:13px 16px;outline:none;transition:border-color .25s,box-shadow .25s}
+.flbl{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;color:var(--mt);text-transform:uppercase;margin-bottom:9px}
+.finp{width:100%;background:var(--bg3);border:1px solid var(--br);border-radius:12px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:13px 16px;outline:none;transition:border-color .25s,box-shadow .25s}
 .finp:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gO)}
 .finp::placeholder{color:var(--mt);font-weight:400}
 .cks{display:flex;gap:8px;flex-wrap:wrap}
-.ck{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;
-  padding:9px 16px;border-radius:100px;border:1px solid var(--br);background:var(--bg3);
-  cursor:pointer;transition:all .2s;user-select:none}
+.ck{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:9px 16px;border-radius:100px;border:1px solid var(--br);background:var(--bg3);cursor:pointer;transition:all .2s;user-select:none}
 .ck:hover{border-color:var(--gold)}
 .ck.on{border-color:var(--gold);background:var(--gO);color:var(--gold)}
 .ck input{display:none}
 .ckd{width:7px;height:7px;border-radius:50%;background:var(--br);transition:all .2s;flex-shrink:0}
 .ck.on .ckd{background:var(--gold);box-shadow:0 0 9px var(--gold)}
 .char-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
-.char-rst{background:none;border:none;cursor:pointer;font-family:'DM Mono',monospace;
-  font-size:10px;letter-spacing:.1em;color:var(--mt);transition:color .2s}
+.char-rst{background:none;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--mt);transition:color .2s}
 .char-rst:hover{color:var(--danger)}
-.charbox{background:var(--bg3);border:1px solid var(--br);border-radius:12px;
-  padding:12px;line-height:2.4;word-break:break-all;max-height:120px;overflow-y:auto}
-.charbox::-webkit-scrollbar{width:4px}
-.charbox::-webkit-scrollbar-thumb{background:var(--br);border-radius:2px}
-.charbox span{display:inline-block;padding:2px 7px;margin:2px;
-  border:1px solid var(--br);border-radius:6px;font-family:'DM Mono',monospace;font-size:11px;
-  cursor:grab;transition:all .15s;user-select:none;background:var(--sf)}
+.charbox{background:var(--bg3);border:1px solid var(--br);border-radius:12px;padding:12px;line-height:2.4;word-break:break-all;max-height:120px;overflow-y:auto}
+.charbox span{display:inline-block;padding:2px 7px;margin:2px;border:1px solid var(--br);border-radius:6px;font-family:'DM Mono',monospace;font-size:11px;cursor:grab;transition:all .15s;user-select:none;background:var(--sf)}
 .charbox span:hover{border-color:var(--danger);color:var(--danger)}
-.charbox span.don{border-color:var(--gold);transform:scale(1.1);background:var(--gO)}
+.charbox span.don{border-color:var(--gold);transform:scale(1.1)}
 .charbox span.ding{opacity:.2}
 .char-note{margin-top:8px;font-size:11px;color:var(--mt);line-height:1.6}
-
-/* ═══════════════ BTN GEN ═══════════════ */
-.btn-gen{width:100%;padding:20px;
-  background:linear-gradient(90deg,var(--gold3) 0%,var(--purple) 40%,var(--blue) 75%,var(--green) 100%);
-  background-size:200% auto;
-  border:none;border-radius:16px;color:#fff;-webkit-text-fill-color:#fff;
-  font-family:'Cinzel',serif;font-size:19px;font-weight:700;letter-spacing:.1em;
-  cursor:pointer;transition:all .35s var(--ease);position:relative;overflow:hidden;
-  box-shadow:0 8px 32px rgba(136,68,238,.28)}
-.btn-gen::before{content:'';position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
-  transform:translateX(-100%);transition:transform .6s}
+.btn-gen{width:100%;padding:20px;background:linear-gradient(90deg,var(--gold3) 0%,var(--purple) 40%,var(--blue) 75%,var(--green) 100%);background-size:200% auto;border:none;border-radius:16px;color:#fff;-webkit-text-fill-color:#fff;font-family:'Cinzel',serif;font-size:18px;font-weight:700;letter-spacing:.1em;cursor:pointer;transition:all .35s var(--ease);position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(136,68,238,.28)}
+.btn-gen::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-100%);transition:transform .6s}
 .btn-gen:hover:not(:disabled)::before{transform:translateX(100%)}
-.btn-gen:hover:not(:disabled){background-position:right center;transform:translateY(-2px);
-  box-shadow:0 14px 44px rgba(136,68,238,.38),0 0 60px rgba(240,192,96,.12)}
+.btn-gen:hover:not(:disabled){background-position:right center;transform:translateY(-2px);box-shadow:0 14px 44px rgba(136,68,238,.38)}
 .btn-gen:active:not(:disabled){transform:translateY(0)}
 .btn-gen:disabled{opacity:.32;cursor:not-allowed;transform:none!important}
-
-/* ═══════════════ PROGRESS ═══════════════ */
 .prog{display:none;margin-top:20px}
 .prog.show{display:block;animation:slideUp .3s var(--ease-out)}
 .ptrack{height:3px;background:var(--bg3);border-radius:100px;overflow:hidden;margin-bottom:14px}
-.pfill{height:100%;width:0%;
-  background:linear-gradient(90deg,var(--gold),var(--purple),var(--blue),var(--green));
-  border-radius:100px;transition:width .4s var(--ease-out);box-shadow:0 0 12px var(--purple)}
-.plog{font-family:'DM Mono',monospace;font-size:11px;color:var(--mt);
-  line-height:2;max-height:96px;overflow-y:auto}
-.plog::-webkit-scrollbar{width:3px}
-.plog::-webkit-scrollbar-thumb{background:var(--br)}
-.ll{animation:fadeIn .2s ease}
-.ll.ok{color:var(--ok)}.ll.er{color:var(--danger)}.ll.hi{color:var(--gold)}
-
-/* ═══════════════ STATS ═══════════════ */
+.pfill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--purple),var(--blue),var(--green));border-radius:100px;transition:width .4s var(--ease-out);box-shadow:0 0 12px var(--purple)}
+.plog{font-family:'DM Mono',monospace;font-size:11px;color:var(--mt);line-height:2;max-height:96px;overflow-y:auto}
+.ll{animation:fadeIn .2s ease}.ll.ok{color:var(--ok)}.ll.er{color:var(--danger)}.ll.hi{color:var(--gold)}
 .stats{display:none;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
 .stats.show{display:grid;animation:slideUp .35s var(--ease-out)}
 .stat{background:var(--sf);border:1px solid var(--br);border-radius:18px;padding:18px 20px;position:relative;overflow:hidden}
-.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--gold),var(--purple),var(--blue))}
-.sn{font-family:'Cinzel',serif;font-size:34px;font-weight:700;line-height:1;
-  background:linear-gradient(135deg,var(--gold),var(--purple2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--purple),var(--blue))}
+.sn{font-family:'Cinzel',serif;font-size:34px;font-weight:700;line-height:1;background:linear-gradient(135deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
 .sl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--mt);text-transform:uppercase}
-
-/* ═══════════════ RESULT ═══════════════ */
-.result{display:none;background:var(--sf);border:1px solid rgba(34,221,153,.2);
-  border-radius:18px;padding:22px 26px;margin-top:14px;position:relative;overflow:hidden}
-.result::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--ok),transparent)}
+.result{display:none;background:var(--sf);border:1px solid rgba(34,221,153,.2);border-radius:18px;padding:22px 26px;margin-top:14px;position:relative;overflow:hidden}
+.result::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--ok),transparent)}
 .result.show{display:block;animation:slideUp .35s var(--ease-out)}
-.rtag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;
-  color:var(--ok);text-transform:uppercase;margin-bottom:16px}
+.rtag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--ok);text-transform:uppercase;margin-bottom:16px}
 .dlrow{display:flex;gap:10px;flex-wrap:wrap}
-.btndl{flex:1;min-width:130px;background:rgba(34,221,153,.07);
-  border:1px solid rgba(34,221,153,.25);border-radius:12px;color:var(--ok);
-  font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;
-  padding:14px 18px;cursor:pointer;transition:all .25s;
-  text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}
-.btndl:hover{background:rgba(34,221,153,.15);border-color:var(--ok);
-  transform:translateY(-1px);box-shadow:0 6px 22px rgba(34,221,153,.14)}
-
-/* ═══════════════ PREVIEW ═══════════════ */
-.prevbox{display:none;background:var(--sf);border:1px solid var(--br);
-  border-radius:22px;padding:28px;margin-top:14px}
+.btndl{flex:1;min-width:130px;background:rgba(34,221,153,.07);border:1px solid rgba(34,221,153,.25);border-radius:12px;color:var(--ok);font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:14px 18px;cursor:pointer;transition:all .25s;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btndl:hover{background:rgba(34,221,153,.15);border-color:var(--ok);transform:translateY(-1px)}
+.prevbox{display:none;background:var(--sf);border:1px solid var(--br);border-radius:22px;padding:28px;margin-top:14px}
 .prevbox.show{display:block;animation:slideUp .35s var(--ease-out)}
 .prev-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.prev-inp{flex:1;min-width:180px;background:var(--bg3);border:1px solid var(--br);
-  border-radius:12px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;
-  padding:10px 14px;outline:none;transition:border-color .25s,box-shadow .25s}
+.prev-inp{flex:1;min-width:180px;background:var(--bg3);border:1px solid var(--br);border-radius:12px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:10px 14px;outline:none;transition:border-color .25s,box-shadow .25s}
 .prev-inp:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gO)}
 .szrow{display:flex;gap:4px}
-.sz{background:var(--bg3);border:1px solid var(--br);border-radius:8px;
-  color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;font-weight:500;
-  padding:6px 10px;cursor:pointer;transition:all .2s}
+.sz{background:var(--bg3);border:1px solid var(--br);border-radius:8px;color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;font-weight:500;padding:6px 10px;cursor:pointer;transition:all .2s}
 .sz.on,.sz:hover{border-color:var(--gold);color:var(--gold);background:var(--gO)}
 .bgrow{display:flex;gap:6px}
-.bgd{width:22px;height:22px;border-radius:50%;cursor:pointer;
-  border:2px solid var(--br);transition:all .2s}
+.bgd{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid var(--br);transition:all .2s}
 .bgd:hover{transform:scale(1.18);border-color:var(--gold)}
-.prev-stage{min-height:110px;display:flex;align-items:center;padding:24px;
-  border-radius:14px;background:#fff;color:#000;overflow:hidden;transition:background .3s,color .3s}
+.prev-stage{min-height:110px;display:flex;align-items:center;padding:24px;border-radius:14px;background:#fff;color:#000;overflow:hidden;transition:background .3s,color .3s}
 .prev-stage span{font-family:'PreviewFont',serif;line-height:1.3;word-break:break-all}
-
-/* ═══════════════ GALLERY ═══════════════ */
-.gallery{display:none;background:var(--sf);border:1px solid var(--br);
-  border-radius:22px;padding:28px;margin-top:14px}
+.gallery{display:none;background:var(--sf);border:1px solid var(--br);border-radius:22px;padding:28px;margin-top:14px}
 .gallery.show{display:block;animation:slideUp .35s var(--ease-out)}
-.gal-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;
-  color:var(--purple2);text-transform:uppercase;margin-bottom:20px;
-  display:flex;align-items:center;gap:10px}
+.gal-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--purple2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
 .gal-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(136,68,238,.3),transparent)}
-.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:12px}
-.gal-item{background:var(--bg3);border:1px solid var(--br);border-radius:14px;
-  padding:14px;cursor:pointer;transition:all .2s;position:relative}
-.gal-item:hover{border-color:var(--purple2);transform:translateY(-2px);
-  box-shadow:0 8px 28px rgba(136,68,238,.1)}
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.gal-item{background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:14px;cursor:pointer;transition:all .2s;position:relative}
+.gal-item:hover{border-color:var(--purple2);transform:translateY(-2px)}
 .gal-name{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:6px;font-family:'DM Mono',monospace}
 .gal-prev{font-size:22px;color:var(--mt);line-height:1.2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .gal-date{font-size:10px;color:var(--mt);margin-top:6px;font-family:'DM Mono',monospace}
-.gal-del{position:absolute;top:8px;right:8px;background:none;border:none;
-  color:var(--mt);font-size:13px;cursor:pointer;transition:color .2s;padding:2px}
+.gal-del{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--mt);font-size:13px;cursor:pointer;transition:color .2s;padding:2px}
 .gal-del:hover{color:var(--danger)}
-.gal-empty{font-size:13px;color:var(--mt);text-align:center;padding:20px;font-style:italic}
 
-/* ═══════════════ OPTIMIZER ═══════════════ */
-.opt-note{background:linear-gradient(135deg,rgba(240,192,96,.05),rgba(136,68,238,.04));
-  border:1px solid rgba(240,192,96,.14);border-radius:14px;
-  padding:16px 20px;margin-bottom:22px;font-size:13px;color:var(--mt);line-height:1.7}
-.opt-note strong{color:var(--tx);font-weight:700}
-.opt-res{display:none;background:var(--sf);border:1px solid rgba(34,221,153,.2);
-  border-radius:18px;padding:22px 26px;margin-top:14px}
-.opt-res.show{display:block;animation:slideUp .3s var(--ease-out)}
+/* CANVA GUIDE */
+.guide-top{text-align:center;padding:20px 0 32px}
+.guide-icon{font-size:48px;margin-bottom:12px;filter:drop-shadow(0 0 18px var(--gold))}
+.guide-top h2{font-family:'Cinzel',serif;font-size:26px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.guide-top p{font-size:14px;color:var(--mt);max-width:480px;margin:0 auto;line-height:1.7}
+.gsteps{display:flex;flex-direction:column;gap:12px}
+.gstep{display:flex;gap:20px;align-items:flex-start;background:var(--sf);border:1px solid var(--br);border-radius:18px;padding:22px 24px;transition:all .3s}
+.gstep:hover{border-color:rgba(240,192,96,.2);transform:translateX(4px)}
+.gstep-n{font-family:'Cinzel',serif;font-size:32px;font-weight:900;line-height:1;background:linear-gradient(135deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;min-width:44px}
+.gstep-t{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:5px}
+.gstep-d{font-size:13px;color:var(--mt);line-height:1.65}
+.gstep-tip{margin-top:10px;background:var(--gO);border:1px solid rgba(240,192,96,.18);border-radius:9px;padding:9px 13px;font-size:12px;color:var(--gold);line-height:1.5}
+.guide-mistakes{background:linear-gradient(135deg,rgba(136,68,238,.07),rgba(51,136,255,.05));border:1px solid rgba(136,68,238,.15);border-radius:16px;padding:20px 24px;margin-top:12px}
+.guide-mistakes h4{font-size:14px;font-weight:700;color:var(--purple2);margin-bottom:12px}
+.guide-mistakes ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.guide-mistakes li{font-size:13px;color:var(--mt);line-height:1.5;display:flex;gap:10px}
+.guide-mistakes li::before{content:'✦';color:var(--gold);font-size:10px;flex-shrink:0;margin-top:3px}
 
-/* ═══════════════ ANIMATIONS ═══════════════ */
+/* PNG TO SVG */
+.p2s-top{text-align:center;padding:18px 0 28px}
+.p2s-icon{font-size:48px;margin-bottom:12px;filter:drop-shadow(0 0 18px var(--purple2))}
+.p2s-top h2{font-family:'Cinzel',serif;font-size:24px;font-weight:700;background:linear-gradient(90deg,var(--purple2),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.p2s-top p{font-size:14px;color:var(--mt);max-width:480px;margin:0 auto;line-height:1.7}
+.p2s-usecases{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.p2s-uc{background:var(--sf);border:1px solid var(--br);border-radius:14px;padding:16px;text-align:center}
+.p2s-uc-icon{font-size:28px;margin-bottom:8px;display:block}
+.p2s-uc-t{font-size:12px;font-weight:700;color:var(--tx);margin-bottom:3px}
+.p2s-uc-d{font-size:11px;color:var(--mt);line-height:1.5}
+.svg-result-preview{display:none;margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid rgba(34,221,153,.2);background:#fff;height:180px;position:relative}
+.svg-result-preview.show{display:block;animation:slideUp .3s var(--ease-out)}
+.svg-result-preview img{width:100%;height:100%;object-fit:contain}
+.svg-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);color:var(--ok);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;padding:3px 8px;border-radius:100px}
+.p2s-also{background:linear-gradient(135deg,rgba(240,192,96,.06),rgba(136,68,238,.05));border:1px solid rgba(240,192,96,.15);border-radius:14px;padding:16px 20px;margin-top:14px;font-size:13px;color:var(--mt);line-height:1.7}
+.p2s-also strong{color:var(--tx);font-weight:700}
+.p2s-also a{color:var(--gold);cursor:pointer;text-decoration:none;font-weight:600}
+.p2s-also a:hover{text-decoration:underline}
+
 @keyframes slideDown{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-/* ═══════════════ RESPONSIVE ═══════════════ */
 @media(max-width:640px){
-  .card{padding:20px;border-radius:16px}
-  .frow{grid-template-columns:1fr}
-  .cks,.prev-row{flex-direction:column}
+  .card,.gstep{padding:18px}
+  .frow,.p2s-usecases{grid-template-columns:1fr}
   .stats.show{grid-template-columns:1fr}
-  .steps{grid-template-columns:1fr}
-  .hstats{gap:18px}.hst-div{display:none}
   h1{font-size:40px!important}
+  .gstep{flex-direction:column;gap:8px}
+  .hst-div{display:none}.hstats{gap:18px}
+  .tabs{border-radius:16px}
 }
 </style>
 </head>
 <body>
 
-<!-- Cursor -->
 <div class="cur" id="cur"></div>
 <div class="cur-ring" id="curRing"></div>
-
-<!-- BG -->
 <div class="bg-scene">
   <div class="bg-grid"></div>
-  <div class="orb o1"></div><div class="orb o2"></div>
-  <div class="orb o3"></div><div class="orb o4"></div>
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
   <div class="particles" id="ptcl"></div>
 </div>
 
 <div class="wrap">
 
-  <!-- TOPBAR -->
   <div class="topbar">
     <div class="logo">
-      <svg class="logo-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="logo-svg" viewBox="0 0 46 46" fill="none">
         <defs>
-          <linearGradient id="lg1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#f0c060"/>
-            <stop offset="35%" stop-color="#aa77ff"/>
-            <stop offset="70%" stop-color="#3388ff"/>
-            <stop offset="100%" stop-color="#22dd99"/>
-          </linearGradient>
-          <linearGradient id="lg2" x1="0" y1="0" x2="48" y2="0" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#f0c060"/>
-            <stop offset="100%" stop-color="#aa77ff"/>
+          <linearGradient id="lg1" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#f0c060"/><stop offset="35%" stop-color="#aa77ff"/>
+            <stop offset="70%" stop-color="#3388ff"/><stop offset="100%" stop-color="#22dd99"/>
           </linearGradient>
         </defs>
-        <!-- Outer diamond frame -->
-        <path d="M24 2 L44 24 L24 46 L4 24 Z" stroke="url(#lg1)" stroke-width="1.5" fill="none" opacity=".5"/>
-        <!-- V shape main -->
-        <path d="M8 10 L24 38 L40 10 L35 10 L24 30 L13 10 Z" fill="url(#lg1)"/>
-        <!-- Top diamond accent -->
-        <path d="M24 2 L28 9 L24 13 L20 9 Z" fill="#f0c060"/>
-        <!-- Bottom accent line -->
-        <rect x="16" y="40" width="16" height="2.5" rx="1.25" fill="url(#lg2)" opacity=".7"/>
-        <!-- Side dots -->
-        <circle cx="4" cy="24" r="2" fill="#aa77ff" opacity=".6"/>
-        <circle cx="44" cy="24" r="2" fill="#22dd99" opacity=".6"/>
+        <path d="M23 2 L42 23 L23 44 L4 23 Z" stroke="url(#lg1)" stroke-width="1.5" fill="none" opacity=".4"/>
+        <path d="M7 10 L23 38 L39 10 L34 10 L23 30 L12 10 Z" fill="url(#lg1)"/>
+        <path d="M23 2 L27 9 L23 13 L19 9 Z" fill="#f0c060"/>
+        <rect x="15" y="40" width="16" height="2.5" rx="1.25" fill="url(#lg1)" opacity=".7"/>
       </svg>
-      <div class="logo-text-wrap">
+      <div>
         <div class="logo-name">VECTROD</div>
-        <div class="logo-tagline">SVG → Font Converter</div>
+        <div class="logo-sub">SVG → Font Converter</div>
       </div>
     </div>
     <div class="nav-r">
@@ -442,64 +283,48 @@ body:hover .cur{opacity:1}
     </div>
   </div>
 
-  <!-- HERO -->
   <div class="hero">
     <div class="hero-badge"><span class="bdot"></span><span data-i18n="badge">Free Professional Font Converter</span></div>
     <h1>
       <span class="h1a" data-i18n="h1a">TURN YOUR</span>
       <span class="h1b" data-i18n="h1b">SVG INTO FONT</span>
     </h1>
-    <p class="hero-sub" data-i18n="heroSub">Convert any SVG into a <strong>professional TTF & OTF font</strong> in seconds. No design software, no subscriptions — completely free.</p>
+    <p class="hero-sub" data-i18n="heroSub">Convert any SVG into a <strong>professional TTF & OTF font</strong> in seconds. No software, no signup — completely free.</p>
     <div class="hstats">
-      <div class="hst"><div class="hst-n">86+</div><div class="hst-l" data-i18n="hs1">Glyphs</div></div>
+      <div><div class="hst-n">86+</div><div class="hst-l">Glyphs</div></div>
       <div class="hst-div"></div>
-      <div class="hst"><div class="hst-n">&lt;60s</div><div class="hst-l" data-i18n="hs2">Convert Time</div></div>
+      <div><div class="hst-n">&lt;60s</div><div class="hst-l">Convert Time</div></div>
       <div class="hst-div"></div>
-      <div class="hst"><div class="hst-n">TTF+OTF</div><div class="hst-l" data-i18n="hs3">Output</div></div>
+      <div><div class="hst-n">TTF+OTF</div><div class="hst-l">Output</div></div>
       <div class="hst-div"></div>
-      <div class="hst"><div class="hst-n">100%</div><div class="hst-l" data-i18n="hs4">Free</div></div>
+      <div><div class="hst-n">100%</div><div class="hst-l">Free</div></div>
     </div>
   </div>
 
-  <!-- HOW IT WORKS -->
-  <div class="how">
-    <div class="how-label" data-i18n="howTitle">How It Works</div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-n">01</div>
-        <div class="step-t" data-i18n="s1t">Design Your Characters</div>
-        <div class="step-d" data-i18n="s1d">Create each character as a separate object in Canva, Illustrator, or any design tool. Arrange them left-to-right. Export as SVG.</div>
-      </div>
-      <div class="step">
-        <div class="step-n">02</div>
-        <div class="step-t" data-i18n="s2t">Upload & Configure</div>
-        <div class="step-d" data-i18n="s2d">Upload your SVG file, name your font, and set the character order. Our engine auto-detects every glyph.</div>
-      </div>
-      <div class="step">
-        <div class="step-n">03</div>
-        <div class="step-t" data-i18n="s3t">Download & Install</div>
-        <div class="step-d" data-i18n="s3d">Get your TTF and OTF font files instantly. Install on any system, use in any app — yours forever.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TABS -->
   <div class="tabs-row">
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('c')" data-i18n="tab1">SVG → Font</button>
-      <button class="tab" onclick="switchTab('o')" data-i18n="tab2">SVG Optimizer</button>
+      <button class="tab active" onclick="switchTab('c')">⚡ SVG → Font</button>
+      <button class="tab" onclick="switchTab('p')">🖼 PNG → SVG</button>
+      <button class="tab" onclick="switchTab('g')">✦ Canva Guide</button>
     </div>
   </div>
 
-  <!-- ███ CONVERTER ███ -->
+  <!-- ████ SVG TO FONT ████ -->
   <div class="panel active" id="panel-c">
+
+    <div style="background:linear-gradient(90deg,rgba(34,221,153,.07),rgba(136,68,238,.06));border:1px solid rgba(34,221,153,.18);border-radius:14px;padding:14px 20px;margin-bottom:14px;display:flex;align-items:center;gap:12px;animation:slideUp .5s var(--ease-out) .05s both">
+      <span style="font-size:18px">✓</span>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--ok)" data-i18n="autoTitle">Auto-Optimize Enabled</div>
+        <div style="font-size:12px;color:var(--mt)" data-i18n="autoDesc">SVG is automatically cleaned and optimized before conversion. No extra steps needed.</div>
+      </div>
+    </div>
 
     <div class="card" style="animation:slideUp .6s var(--ease-out) .08s both">
       <div class="clabel">
         <span data-i18n="ul1">01 — Upload SVG</span>
-        <div class="tip-w">
-          <div class="tip-i">?</div>
-          <div class="tip-box" data-i18n="tt1">In Canva: Design each character as a separate object → File → Download → SVG. Each object = one character. Order them left-to-right, top-to-bottom.</div>
+        <div class="tip-w"><div class="tip-i">?</div>
+          <div class="tip-box" data-i18n="tt1">In Canva: Design each character as a separate object → File → Download → SVG. Not sure how? Check the Canva Guide tab!</div>
         </div>
       </div>
       <div class="drop" id="dz">
@@ -509,18 +334,14 @@ body:hover .cur{opacity:1}
         <div class="dsub" data-i18n="ds">or click to browse — SVG files only</div>
         <div class="dname" id="dzN"></div>
       </div>
-      <div class="thumb" id="svgThumb">
-        <span class="thumb-badge">SVG PREVIEW</span>
-        <img id="thumbImg" src="" alt=""/>
-      </div>
+      <div class="thumb" id="svgThumb"><span class="thumb-badge">SVG PREVIEW</span><img id="thumbImg" src="" alt=""/></div>
     </div>
 
     <div class="card" style="animation:slideUp .6s var(--ease-out) .14s both">
       <div class="clabel">
         <span data-i18n="ul2">02 — Settings</span>
-        <div class="tip-w">
-          <div class="tip-i">?</div>
-          <div class="tip-box" data-i18n="tt2">Font name is what appears in apps like Word or Photoshop. Choose Regular for standard use. Bold and Italic create separate font files from the same SVG.</div>
+        <div class="tip-w"><div class="tip-i">?</div>
+          <div class="tip-box" data-i18n="tt2">Font name appears in Word, Photoshop etc. Bold/Italic create separate font files from the same shapes.</div>
         </div>
       </div>
       <div class="frow">
@@ -537,12 +358,12 @@ body:hover .cur{opacity:1}
           </div>
         </div>
       </div>
-      <div class="fg" style="margin-top:20px;margin-bottom:0">
+      <div style="margin-top:20px">
         <div class="char-top">
           <div class="tip-w">
             <label class="flbl" style="margin-bottom:0" data-i18n="lCh">Character Order</label>
             <div class="tip-i">?</div>
-            <div class="tip-box" data-i18n="tt3">This must match the order of characters in your SVG file. The first object in your SVG = first character here. Drag to reorder, click to remove.</div>
+            <div class="tip-box" data-i18n="tt3">Must match the order of objects in your SVG (left-to-right, top-to-bottom). Drag to reorder, click a character to remove it.</div>
           </div>
           <button class="char-rst" onclick="resetChars()" data-i18n="bReset">↺ Reset</button>
         </div>
@@ -554,7 +375,7 @@ body:hover .cur{opacity:1}
     <div class="card" style="animation:slideUp .6s var(--ease-out) .2s both">
       <div class="clabel" data-i18n="ul3">03 — Generate</div>
       <button class="btn-gen" id="btnConvert" onclick="startConvert()">
-        <span data-i18n="btnGen">✦ GENERATE FONT</span>
+        <span data-i18n="btnGen">⚡ GENERATE FONT INSTANTLY</span>
       </button>
       <div class="prog" id="prog">
         <div class="ptrack"><div class="pfill" id="progFill"></div></div>
@@ -574,7 +395,7 @@ body:hover .cur{opacity:1}
     </div>
 
     <div class="prevbox" id="prevBox">
-      <div class="clabel" style="margin-bottom:16px" data-i18n="ul4">04 — Preview</div>
+      <div class="clabel" style="margin-bottom:16px" data-i18n="ul4">04 — Preview Your Font</div>
       <div class="prev-row">
         <input class="prev-inp" id="prevInp" placeholder="AaBbCc 123..." oninput="updatePrev()"/>
         <div class="szrow">
@@ -586,7 +407,7 @@ body:hover .cur{opacity:1}
         <div class="bgrow">
           <div class="bgd" style="background:#fff" onclick="setPB('#fff','#000')"></div>
           <div class="bgd" style="background:#111" onclick="setPB('#111','#fff')"></div>
-          <div class="bgd" style="background:#444" onclick="setPB('#444','#fff')"></div>
+          <div class="bgd" style="background:#555" onclick="setPB('#555','#fff')"></div>
         </div>
       </div>
       <div class="prev-stage" id="prevStage">
@@ -595,104 +416,220 @@ body:hover .cur{opacity:1}
     </div>
 
     <div class="gallery" id="gallery">
-      <div class="gal-title" data-i18n="galTitle">Your Font Gallery</div>
+      <div class="gal-title" data-i18n="galTitle">Your Font Gallery — Last 7 Days</div>
       <div class="gal-grid" id="galGrid"></div>
     </div>
 
   </div>
 
-  <!-- ███ OPTIMIZER ███ -->
-  <div class="panel" id="panel-o">
+  <!-- ████ PNG TO SVG ████ -->
+  <div class="panel" id="panel-p">
     <div class="card" style="animation:slideUp .5s var(--ease-out) both">
-      <div class="clabel">
-        <span data-i18n="optLbl">SVG Optimizer</span>
-        <div class="tip-w">
-          <div class="tip-i">?</div>
-          <div class="tip-box" data-i18n="ttOpt">Use this BEFORE converting if you get errors or missing glyphs. It converts text elements to paths and cleans SVG structure so the converter can read everything correctly.</div>
+      <div class="p2s-top">
+        <div class="p2s-icon">🖼</div>
+        <h2 data-i18n="p2sTitle">PNG / JPG → SVG Converter</h2>
+        <p data-i18n="p2sSubtitle">Convert any image to a scalable SVG vector file. Perfect for preparing handwriting or sketches for font conversion.</p>
+      </div>
+      <div class="p2s-usecases">
+        <div class="p2s-uc">
+          <span class="p2s-uc-icon">✎</span>
+          <div class="p2s-uc-t" data-i18n="uc1t">Handwriting</div>
+          <div class="p2s-uc-d" data-i18n="uc1d">Convert handwritten characters to SVG, then use SVG → Font</div>
+        </div>
+        <div class="p2s-uc">
+          <span class="p2s-uc-icon">◈</span>
+          <div class="p2s-uc-t" data-i18n="uc2t">Logos & Icons</div>
+          <div class="p2s-uc-d" data-i18n="uc2d">Turn PNG logos into scalable vector files</div>
+        </div>
+        <div class="p2s-uc">
+          <span class="p2s-uc-icon">✦</span>
+          <div class="p2s-uc-t" data-i18n="uc3t">Sketches</div>
+          <div class="p2s-uc-d" data-i18n="uc3d">Convert hand-drawn sketches to editable vectors</div>
         </div>
       </div>
-      <div class="opt-note">
-        <strong data-i18n="optT">When should you use this?</strong><br>
-        <span data-i18n="optB">If your SVG was made with text elements (not converted to paths), has complex transforms, or the converter is missing some characters — run the optimizer first, then convert.</span>
+
+      <div class="clabel" data-i18n="p2sUpload">Upload Image</div>
+      <div class="drop drop-img" id="dzP">
+        <input type="file" id="pngFile" accept="image/*"/>
+        <span class="dicon" style="filter:drop-shadow(0 0 10px var(--purple2));animation-name:none">🖼</span>
+        <div class="dhead" data-i18n="p2sDh">Drag & drop your image here</div>
+        <div class="dsub" data-i18n="p2sDs">PNG, JPG, WEBP — any image format</div>
+        <div class="dname" id="dzPN"></div>
       </div>
-      <div class="drop" id="dzO">
-        <input type="file" id="svgFileO" accept=".svg"/>
-        <span class="dicon">◈</span>
-        <div class="dhead" data-i18n="dh">Drag & drop your SVG here</div>
-        <div class="dsub" data-i18n="ds">or click to browse — SVG files only</div>
-        <div class="dname" id="dzON"></div>
+
+      <div class="thumb" id="pngThumb" style="margin-top:14px">
+        <span class="thumb-badge" style="color:var(--purple2)">IMAGE PREVIEW</span>
+        <img id="pngThumbImg" src="" alt=""/>
       </div>
+
       <div style="margin-top:18px">
-        <label class="flbl" style="margin-bottom:12px" data-i18n="optOpts">Options</label>
+        <label class="flbl" style="margin-bottom:12px" data-i18n="p2sOpts">Options</label>
         <div class="cks">
-          <label class="ck on"><input type="checkbox" checked id="ckTxt"/><span class="ckd"></span><span data-i18n="oTxt">Text → Paths</span></label>
-          <label class="ck on"><input type="checkbox" checked id="ckFlat"/><span class="ckd"></span><span data-i18n="oFlat">Flatten Transforms</span></label>
-          <label class="ck on"><input type="checkbox" checked id="ckCln"/><span class="ckd"></span><span data-i18n="oCln">Clean Metadata</span></label>
+          <label class="ck on" id="ckDark"><input type="checkbox" checked/><span class="ckd"></span><span data-i18n="p2oDark">Dark on Light (default)</span></label>
+          <label class="ck" id="ckLight"><input type="checkbox"/><span class="ckd"></span><span data-i18n="p2oLight">Light on Dark (invert)</span></label>
         </div>
       </div>
-      <button class="btn-gen" style="margin-top:22px" id="btnOpt" onclick="startOpt()">
-        <span data-i18n="btnOpt">✦ OPTIMIZE SVG</span>
+
+      <button class="btn-gen" style="margin-top:22px;background:linear-gradient(90deg,var(--purple3),var(--purple),var(--blue))" id="btnP2S" onclick="startP2S()">
+        <span data-i18n="btnP2S">🖼 CONVERT TO SVG</span>
       </button>
-      <div class="prog" id="progO">
-        <div class="ptrack"><div class="pfill" id="progFillO"></div></div>
-        <div class="plog" id="progLogO"></div>
+
+      <div class="prog" id="progP">
+        <div class="ptrack"><div class="pfill" id="progFillP"></div></div>
+        <div class="plog" id="progLogP"></div>
       </div>
-    </div>
-    <div class="opt-res" id="optRes">
-      <div class="rtag" data-i18n="optOK">✓ Optimized SVG Ready</div>
-      <div class="dlrow" id="optDl"></div>
+
+      <div class="result" id="resultP">
+        <div class="rtag" data-i18n="p2sReady">✓ SVG Ready — Download</div>
+        <div class="dlrow" id="dlRowP"></div>
+      </div>
+
+      <div class="svg-result-preview" id="svgResultPrev">
+        <span class="svg-badge">SVG RESULT</span>
+        <img id="svgResultImg" src="" alt=""/>
+      </div>
+
+      <div class="p2s-also">
+        <strong data-i18n="p2sAlsoTitle">🚀 Next Step:</strong>
+        <span data-i18n="p2sAlsoDesc"> Download your SVG, then go to the </span>
+        <a onclick="switchTab('c')" data-i18n="p2sAlsoLink">SVG → Font converter</a>
+        <span data-i18n="p2sAlsoDesc2"> to turn it into a real installable font!</span>
+      </div>
+
     </div>
   </div>
 
-</div>
+  <!-- ████ CANVA GUIDE ████ -->
+  <div class="panel" id="panel-g">
+    <div class="card" style="animation:slideUp .5s var(--ease-out) both">
+      <div class="guide-top">
+        <div class="guide-icon">✦</div>
+        <h2 data-i18n="guideTitle">How to Make a Font in Canva</h2>
+        <p data-i18n="guideSubtitle">Step-by-step guide to designing your font in Canva and converting it with Vectrod. No experience needed.</p>
+      </div>
+      <div class="gsteps">
+        <div class="gstep">
+          <div class="gstep-n">01</div>
+          <div>
+            <div class="gstep-t" data-i18n="gs1t">Open a New Canva Design</div>
+            <div class="gstep-d" data-i18n="gs1d">Go to canva.com and create a new design with custom size <strong>5000 × 500 px</strong>. This gives you space to place all characters side by side.</div>
+            <div class="gstep-tip">💡 <span data-i18n="gs1tip">Wide canvas = easy ordering. Place A, B, C... from left to right.</span></div>
+          </div>
+        </div>
+        <div class="gstep">
+          <div class="gstep-n">02</div>
+          <div>
+            <div class="gstep-t" data-i18n="gs2t">Draw Each Character as a Separate Object</div>
+            <div class="gstep-d" data-i18n="gs2d">Design every letter, number, and symbol as its own element. Place them in order from left to right. Use shapes, lines, or drawings — any style works.</div>
+            <div class="gstep-tip">⚠️ <span data-i18n="gs2tip">Each character MUST be a separate object, not grouped with others. If you used text, convert it: right-click → Flatten.</span></div>
+          </div>
+        </div>
+        <div class="gstep">
+          <div class="gstep-n">03</div>
+          <div>
+            <div class="gstep-t" data-i18n="gs3t">Keep Heights Consistent</div>
+            <div class="gstep-d" data-i18n="gs3d">All characters should be roughly the same height. Use Canva's alignment tools to keep them on the same baseline — this makes your font look professional.</div>
+            <div class="gstep-tip">💡 <span data-i18n="gs3tip">Select all → Position → Align middle. This aligns all characters vertically.</span></div>
+          </div>
+        </div>
+        <div class="gstep">
+          <div class="gstep-n">04</div>
+          <div>
+            <div class="gstep-t" data-i18n="gs4t">Export as SVG</div>
+            <div class="gstep-d" data-i18n="gs4d">Click <strong>File → Download → SVG</strong>. Do NOT select "Flatten". SVG preserves all vector shapes perfectly for font generation.</div>
+            <div class="gstep-tip">⚠️ <span data-i18n="gs4tip">PNG or JPG will not work. You need SVG format. If your Canva plan doesn't support SVG, use the PNG → SVG tab first.</span></div>
+          </div>
+        </div>
+        <div class="gstep">
+          <div class="gstep-n">05</div>
+          <div>
+            <div class="gstep-t" data-i18n="gs5t">Upload to Vectrod & Download Your Font</div>
+            <div class="gstep-d" data-i18n="gs5d">Switch to the <strong>SVG → Font</strong> tab, upload your file, name your font, and click Generate. Your TTF and OTF files are ready in seconds.</div>
+            <div class="gstep-tip">🎉 <span data-i18n="gs5tip">Install on your computer and use in Word, Photoshop, Canva, or anywhere that supports custom fonts!</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="guide-mistakes">
+        <h4 data-i18n="gmTitle">Common Mistakes to Avoid</h4>
+        <ul>
+          <li data-i18n="gm1">Don't group multiple characters — each must be a separate Canva element</li>
+          <li data-i18n="gm2">Don't use gradients or transparency — solid filled shapes work best</li>
+          <li data-i18n="gm3">Don't forget to convert text to paths before exporting</li>
+          <li data-i18n="gm4">Make sure characters are in the correct left-to-right order</li>
+          <li data-i18n="gm5">Keep your SVG file under 10MB for best results</li>
+        </ul>
+      </div>
+      <button class="btn-gen" style="margin-top:20px" onclick="switchTab('c')">
+        <span>⚡ Start Converting Now</span>
+      </button>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
 
 <script>
 // ── i18n ──────────────────────────────────────────────────────────────────────
 const T={
 en:{badge:'Free Professional Font Converter',h1a:'TURN YOUR',h1b:'SVG INTO FONT',
-  heroSub:'Convert any SVG into a professional TTF & OTF font in seconds. No design software, no subscriptions — completely free.',
-  hs1:'Glyphs',hs2:'Convert Time',hs3:'Output',hs4:'Free',
-  howTitle:'How It Works',
-  s1t:'Design Your Characters',s1d:'Create each character as a separate object in Canva or any design tool. Arrange left-to-right. Export as SVG.',
-  s2t:'Upload & Configure',s2d:'Upload your SVG, name your font, set character order. Our engine auto-detects every glyph.',
-  s3t:'Download & Install',s3d:'Get TTF and OTF instantly. Install on any system, use in any app — yours forever.',
-  tab1:'SVG → Font',tab2:'SVG Optimizer',
-  ul1:'01 — Upload SVG',tt1:'In Canva: Design each character as separate object → File → Download → SVG. Each object = one character.',
+  heroSub:'Convert any SVG into a professional TTF & OTF font in seconds. No software, no signup — completely free.',
+  autoTitle:'Auto-Optimize Enabled',autoDesc:'SVG is automatically cleaned before conversion. No extra steps needed.',
+  ul1:'01 — Upload SVG',tt1:'In Canva: design each character as a separate object → File → Download → SVG. Not sure? See Canva Guide!',
   dh:'Drag & drop your SVG here',ds:'or click to browse — SVG files only',
-  ul2:'02 — Settings',tt2:'Font name appears in Word, Photoshop etc. Regular = standard. Bold/Italic create separate font files.',
-  lName:'Font Name',lVar:'Variants',
-  lCh:'Character Order',tt3:'Must match order of characters in your SVG (left-to-right, top-to-bottom). Drag to reorder, click to remove.',
-  bReset:'↺ Reset',chNote:'Each SVG object maps to a character in this order, left-to-right, top-to-bottom.',
-  ul3:'03 — Generate',btnGen:'✦ GENERATE FONT',
-  stG:'Glyphs',stS:'File Size',stT:'Seconds',
-  resTag:'✓ Font Ready — Download',ul4:'04 — Preview',
-  galTitle:'Your Font Gallery',
-  optLbl:'SVG Optimizer',ttOpt:'Use before converting if you get errors. Converts text to paths and cleans SVG structure.',
-  optT:'When should you use this?',optB:'If your SVG has text elements or complex transforms, optimize first then convert.',
-  optOpts:'Options',oTxt:'Text → Paths',oFlat:'Flatten Transforms',oCln:'Clean Metadata',
-  btnOpt:'✦ OPTIMIZE SVG',optOK:'✓ Optimized SVG Ready'},
+  ul2:'02 — Settings',tt2:'Font name appears in Word, Photoshop etc. Bold/Italic create separate files.',
+  lName:'Font Name',lVar:'Variants',lCh:'Character Order',
+  tt3:'Must match order of objects in your SVG. Drag to reorder, click to remove.',
+  bReset:'↺ Reset',chNote:'Each SVG object maps to a character, left-to-right, top-to-bottom.',
+  ul3:'03 — Generate',btnGen:'⚡ GENERATE FONT INSTANTLY',
+  stG:'Glyphs',stS:'File Size',stT:'Seconds',resTag:'✓ Font Ready — Download',ul4:'04 — Preview Your Font',
+  galTitle:'Your Font Gallery — Last 7 Days',
+  p2sTitle:'PNG / JPG → SVG Converter',p2sSubtitle:'Convert any image to scalable SVG. Perfect for handwriting and sketches before font conversion.',
+  uc1t:'Handwriting',uc1d:'Convert handwritten characters to SVG, then use SVG → Font',
+  uc2t:'Logos & Icons',uc2d:'Turn PNG logos into scalable vector files',
+  uc3t:'Sketches',uc3d:'Convert hand-drawn sketches to editable vectors',
+  p2sUpload:'Upload Image',p2sDh:'Drag & drop your image here',p2sDs:'PNG, JPG, WEBP — any image format',
+  p2sOpts:'Options',p2oDark:'Dark on Light (default)',p2oLight:'Light on Dark (invert)',
+  btnP2S:'🖼 CONVERT TO SVG',p2sReady:'✓ SVG Ready — Download',
+  p2sAlsoTitle:'🚀 Next Step:',p2sAlsoDesc:' Download your SVG, then go to the ',
+  p2sAlsoLink:'SVG → Font converter',p2sAlsoDesc2:' to turn it into a real font!',
+  guideTitle:'How to Make a Font in Canva',guideSubtitle:'Step-by-step guide to designing your font in Canva and converting it with Vectrod.',
+  gs1t:'Open a New Canva Design',gs1d:'Create a design with custom size 5000 × 500 px to place all characters side by side.',gs1tip:'Wide canvas = easy ordering. Place A, B, C... from left to right.',
+  gs2t:'Draw Each Character Separately',gs2d:'Design every letter as its own element, in left-to-right order.',gs2tip:'Each character MUST be a separate object. Convert text: right-click → Flatten.',
+  gs3t:'Keep Heights Consistent',gs3d:'All characters same height. Use alignment tools for a professional look.',gs3tip:'Select all → Position → Align middle.',
+  gs4t:'Export as SVG',gs4d:'File → Download → SVG. Do NOT select Flatten.',gs4tip:'PNG/JPG won\'t work. Need SVG. No SVG in Canva plan? Use the PNG → SVG tab first.',
+  gs5t:'Upload to Vectrod & Download',gs5d:'SVG → Font tab, upload, name your font, click Generate. Done!',gs5tip:'Install on your computer and use in Word, Photoshop, Canva anywhere!',
+  gmTitle:'Common Mistakes to Avoid',
+  gm1:'Don\'t group multiple characters — each must be separate',gm2:'Don\'t use gradients — solid fills work best',
+  gm3:'Convert text to paths before exporting',gm4:'Characters must be in correct left-to-right order',gm5:'Keep SVG under 10MB'},
 tr:{badge:'Ücretsiz Profesyonel Font Dönüştürücü',h1a:'SVG\'NİZİ',h1b:'FONTA ÇEVİRİN',
-  heroSub:'Herhangi bir SVG\'yi saniyeler içinde profesyonel TTF ve OTF fonta dönüştürün. Program yok, abonelik yok — tamamen ücretsiz.',
-  hs1:'Glyph',hs2:'Dönüşüm Süresi',hs3:'Çıktı',hs4:'Ücretsiz',
-  howTitle:'Nasıl Çalışır',
-  s1t:'Karakterleri Tasarla',s1d:'Her karakteri Canva\'da ayrı nesne olarak oluştur. Soldan sağa sırala. SVG olarak dışa aktar.',
-  s2t:'Yükle ve Ayarla',s2d:'SVG\'yi yükle, font adını ve karakter sırasını ayarla. Motor her glyph\'i otomatik algılar.',
-  s3t:'İndir ve Kur',s3d:'TTF ve OTF dosyalarını anında al. Her sisteme kur, her uygulamada kullan.',
-  tab1:'SVG → Font',tab2:'SVG Optimize',
-  ul1:'01 — SVG Yükle',tt1:'Canva\'da: Her karakteri ayrı nesne olarak tasarla → Dosya → İndir → SVG. Her nesne = bir karakter.',
+  heroSub:'Herhangi bir SVG\'yi saniyeler içinde TTF ve OTF fonta dönüştürün. Program yok, üye ol yok — tamamen ücretsiz.',
+  autoTitle:'Otomatik Optimizasyon Aktif',autoDesc:'SVG dönüştürmeden önce otomatik temizlenir. Ekstra adım gerekmez.',
+  ul1:'01 — SVG Yükle',tt1:'Canva\'da her karakteri ayrı nesne olarak yap → Dosya → İndir → SVG. Nasıl? Canva Rehberi sekmesine bak!',
   dh:'SVG dosyasını buraya sürükle',ds:'veya tıkla seç — sadece SVG',
-  ul2:'02 — Ayarlar',tt2:'Font adı Word, Photoshop gibi programlarda görünür. Regular standart kullanım içindir.',
-  lName:'Font Adı',lVar:'Varyantlar',
-  lCh:'Karakter Sırası',tt3:'SVG\'deki karakter sırasıyla eşleşmeli. Sürükle sırala, tıkla kaldır.',
+  ul2:'02 — Ayarlar',tt2:'Font adı Word, Photoshop\'ta görünür. Bold/Italic ayrı dosya oluşturur.',
+  lName:'Font Adı',lVar:'Varyantlar',lCh:'Karakter Sırası',
+  tt3:'SVG\'deki nesne sırasıyla eşleşmeli. Sürükle sırala, tıkla kaldır.',
   bReset:'↺ Sıfırla',chNote:'SVG\'deki her nesne bu sırayla karakterlere atanır.',
-  ul3:'03 — Oluştur',btnGen:'✦ FONT OLUŞTUR',
-  stG:'Glyph',stS:'Dosya Boyutu',stT:'Saniye',
-  resTag:'✓ Font Hazır — İndir',ul4:'04 — Önizleme',
-  galTitle:'Font Galeriniz',
-  optLbl:'SVG Optimize',ttOpt:'Hata alıyorsanız dönüştürmeden önce kullanın. Text elementleri path\'e çevirir.',
-  optT:'Ne zaman kullanmalı?',optB:'SVG\'nde text elementleri veya karmaşık transform\'lar varsa önce optimize et.',
-  optOpts:'Seçenekler',oTxt:'Text → Path',oFlat:'Transform Düzleştir',oCln:'Metadata Temizle',
-  btnOpt:'✦ SVG OPTİMİZE ET',optOK:'✓ Optimize SVG Hazır'}
+  ul3:'03 — Oluştur',btnGen:'⚡ ANINDA FONT OLUŞTUR',
+  stG:'Glyph',stS:'Dosya Boyutu',stT:'Saniye',resTag:'✓ Font Hazır — İndir',ul4:'04 — Fontunu Önizle',
+  galTitle:'Font Galeriniz — Son 7 Gün',
+  p2sTitle:'PNG / JPG → SVG Dönüştürücü',p2sSubtitle:'Herhangi bir görseli ölçeklenebilir SVG\'ye çevir. El yazısı ve eskizleri font için hazırla.',
+  uc1t:'El Yazısı',uc1d:'El yazılı karakterleri SVG\'ye çevir, sonra SVG → Font kullan',
+  uc2t:'Logo ve İkonlar',uc2d:'PNG logoları ölçeklenebilir vektör dosyasına dönüştür',
+  uc3t:'Eskizler',uc3d:'El çizimi eskizleri düzenlenebilir vektöre çevir',
+  p2sUpload:'Görsel Yükle',p2sDh:'Görselini buraya sürükle',p2sDs:'PNG, JPG, WEBP — her format',
+  p2sOpts:'Seçenekler',p2oDark:'Koyu üzerine açık (varsayılan)',p2oLight:'Açık üzerine koyu (ters çevir)',
+  btnP2S:'🖼 SVG\'YE DÖNÜŞTÜR',p2sReady:'✓ SVG Hazır — İndir',
+  p2sAlsoTitle:'🚀 Sonraki Adım:',p2sAlsoDesc:' SVG\'ni indir, ardından ',
+  p2sAlsoLink:'SVG → Font dönüştürücü',p2sAlsoDesc2:'ye giderek gerçek bir fonta çevir!',
+  guideTitle:'Canva\'da Font Nasıl Yapılır',guideSubtitle:'Canva\'da font tasarlayıp Vectrod ile dönüştürmek için adım adım rehber.',
+  gs1t:'Yeni Canva Tasarımı Aç',gs1d:'5000 × 500 px özel boyutta tasarım oluştur. Karakterleri yan yana koyacaksın.',gs1tip:'Geniş yatay kanvas = kolay sıralama. A, B, C... soldan sağa yerleştir.',
+  gs2t:'Her Karakteri Ayrı Çiz',gs2d:'Her harfi, rakamı ve sembolü ayrı nesne olarak tasarla.',gs2tip:'Her karakter AYRI nesne olmalı. Text kullandıysan: sağ tık → Düzleştir.',
+  gs3t:'Yükseklikleri Tutarlı Tut',gs3d:'Tüm karakterler aynı yükseklikte olmalı. Hizalama araçları kullan.',gs3tip:'Hepsini seç → Pozisyon → Ortaya hizala.',
+  gs4t:'SVG Olarak Dışa Aktar',gs4d:'Dosya → İndir → SVG. Düzleştirme seçme.',gs4tip:'PNG/JPG çalışmaz. SVG gerekli. Canva planında SVG yoksa önce PNG → SVG sekmesi.',
+  gs5t:'Vectrod\'a Yükle ve İndir',gs5d:'SVG → Font sekmesi, dosyayı yükle, font adını yaz, oluştur. Bitti!',gs5tip:'Bilgisayarına kur, Word, Photoshop, Canva\'da kullan!',
+  gmTitle:'Sık Yapılan Hatalar',
+  gm1:'Birden fazla karakteri gruplama — her biri ayrı element olmalı',gm2:'Gradient kullanma — düz renkler en iyi sonucu verir',
+  gm3:'Dışa aktarmadan önce text\'leri path\'e çevir',gm4:'Karakterlerin doğru sırada olduğundan emin ol',gm5:'SVG dosyasını 10MB altında tut'}
 };
 let lang='en';
 function setLang(l){
@@ -700,7 +637,6 @@ function setLang(l){
   document.getElementById('btnEN').classList.toggle('active',l==='en');
   document.getElementById('btnTR').classList.toggle('active',l==='tr');
   document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(T[l][k])el.textContent=T[l][k];});
-  document.getElementById('prevInp').placeholder=l==='tr'?'Önizlemek için yazın...':'AaBbCc 123...';
 }
 function toggleTheme(){
   const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
@@ -708,15 +644,13 @@ function toggleTheme(){
   document.getElementById('themeBtn').textContent=n==='dark'?'☀ Light':'☾ Dark';
 }
 function switchTab(id){
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['c','o'][i]===id));
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['c','p','g'][i]===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
 }
-document.querySelectorAll('.ck input').forEach(cb=>{
-  cb.addEventListener('change',function(){this.closest('.ck').classList.toggle('on',this.checked);});
-});
+document.querySelectorAll('.ck input').forEach(cb=>{cb.addEventListener('change',function(){this.closest('.ck').classList.toggle('on',this.checked);});});
 
-// ── Char Order ────────────────────────────────────────────────────────────────
+// ── Char Order ─────────────────────────────────────────────────────────────────
 const DEFS=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
   'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
   '0','1','2','3','4','5','6','7','8','9','.',',','!','?',';',':','\'','"','(',')','–','_','/','@','#','$','%','&','*','+','=',' ',
@@ -739,8 +673,8 @@ function rmChar(i){chars.splice(i,1);renderChars();}
 function resetChars(){chars=[...DEFS];renderChars();}
 renderChars();
 
-// ── Drops ─────────────────────────────────────────────────────────────────────
-let svgFile=null,svgFileO=null,genFiles=[],t0=0;
+// ── Drops ──────────────────────────────────────────────────────────────────────
+let svgFile=null,pngFile=null,genFiles=[],t0=0;
 function setupDrop(dId,iId,cb){
   const dz=document.getElementById(dId);
   document.getElementById(iId).addEventListener('change',function(){if(this.files[0])cb(this.files[0]);});
@@ -758,13 +692,15 @@ setupDrop('dz','svgFile',f=>{
     document.getElementById('svgThumb').classList.add('show');};
   r.readAsText(f);
 });
-setupDrop('dzO','svgFileO',f=>{
-  if(!f.name.endsWith('.svg')){alert('Please select an SVG file.');return;}
-  svgFileO=f;document.getElementById('dzON').textContent='✓ '+f.name;
-  document.getElementById('dzO').classList.add('done');
+setupDrop('dzP','pngFile',f=>{
+  pngFile=f;document.getElementById('dzPN').textContent='✓ '+f.name;
+  document.getElementById('dzP').classList.add('done');
+  const r=new FileReader();
+  r.onload=e=>{document.getElementById('pngThumbImg').src=e.target.result;document.getElementById('pngThumb').classList.add('show');};
+  r.readAsDataURL(f);
 });
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Helpers ────────────────────────────────────────────────────────────────────
 function addLog(m,t='',lid='progLog'){
   const el=document.getElementById(lid);
   const d=document.createElement('div');d.className='ll '+t;d.textContent=m;
@@ -773,7 +709,7 @@ function addLog(m,t='',lid='progLog'){
 function setBar(p,id='progFill'){document.getElementById(id).style.width=p+'%';}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-// ── Convert ───────────────────────────────────────────────────────────────────
+// ── Convert ────────────────────────────────────────────────────────────────────
 async function startConvert(){
   if(!svgFile){alert(lang==='tr'?'Lütfen SVG yükleyin.':'Please upload an SVG file first.');return;}
   const name=document.getElementById('fontName').value.trim()||'CustomFont';
@@ -787,137 +723,106 @@ async function startConvert(){
   document.getElementById('progLog').innerHTML='';
   ['result','prevBox','stats'].forEach(id=>document.getElementById(id).classList.remove('show'));
   setBar(0);genFiles=[];let lastUrl=null;t0=Date.now();
-  addLog('[START] Reading SVG...','hi');
+  addLog('[START] Auto-optimizing SVG...','hi');await sleep(80);setBar(10);
   for(let vi=0;vi<variants.length;vi++){
     const v=variants[vi];
     const st=v.bold&&v.italic?'Bold Italic':v.bold?'Bold':v.italic?'Italic':'Regular';
-    addLog(`\n[FONT] ${name} ${st}...`,'hi');setBar(10+vi/variants.length*75);
-    const fd=new FormData();
-    fd.append('svg',svgFile);fd.append('font_name',name);
-    fd.append('bold',v.bold?'1':'0');fd.append('italic',v.italic?'1':'0');
-    fd.append('char_order',JSON.stringify(chars));
+    addLog(`\n[FONT] Generating ${name} ${st}...`,'hi');
+    const fd=new FormData();fd.append('svg',svgFile);fd.append('font_name',name);
+    fd.append('bold',v.bold?'1':'0');fd.append('italic',v.italic?'1':'0');fd.append('char_order',JSON.stringify(chars));
     try{
-      addLog('  → Processing glyphs...');await sleep(60);
-      const res=await fetch('/convert',{method:'POST',body:fd});
+      addLog('  → Processing glyphs...');await sleep(50);
+      const res=await fetch('/convert-auto',{method:'POST',body:fd});
       if(res.ok){const data=await res.json();
-        if(data.success){data.files.forEach(f=>{
-          addLog(`  ✓ ${f.filename} (${(f.size/1024).toFixed(1)} KB)`,'ok');
-          genFiles.push(f);if(f.filename.endsWith('.ttf')&&!lastUrl)lastUrl=f.url;
-        });}else addLog('  ✗ '+data.error,'er');}
-      else addLog('  ✗ Server error','er');
+        if(data.success){
+          if(data.auto_optimized)addLog('  ✓ SVG auto-optimized','ok');
+          data.files.forEach(f=>{addLog(`  ✓ ${f.filename} (${(f.size/1024).toFixed(1)} KB)`,'ok');genFiles.push(f);if(f.filename.endsWith('.ttf')&&!lastUrl)lastUrl=f.url;});
+        }else addLog('  ✗ '+data.error,'er');
+      }else addLog('  ✗ Server error','er');
     }catch(e){addLog('  ✗ Connection error','er');}
     setBar(10+(vi+1)/variants.length*85);
   }
-  const el=((Date.now()-t0)/1000).toFixed(1);
-  setBar(100);addLog('\n[DONE] ✓','ok');
+  const el=((Date.now()-t0)/1000).toFixed(1);setBar(100);addLog('\n[DONE] ✓ Font generated!','ok');
   btn.disabled=false;btn.querySelector('[data-i18n]').textContent=T[lang].btnGen;
   if(genFiles.length){
     const kb=(genFiles.reduce((a,f)=>a+f.size,0)/1024).toFixed(0);
-    document.getElementById('sG').textContent=chars.length;
-    document.getElementById('sS').textContent=kb+'KB';
-    document.getElementById('sT').textContent=el;
+    document.getElementById('sG').textContent=chars.length;document.getElementById('sS').textContent=kb+'KB';document.getElementById('sT').textContent=el;
     document.getElementById('stats').classList.add('show');
-    document.getElementById('dlRow').innerHTML=genFiles
-      .filter(f=>f.filename.endsWith('.ttf')||f.filename.endsWith('.otf'))
-      .map(f=>`<a class="btndl" href="${f.url}" download="${f.filename}">⬇ ${f.filename}</a>`).join('');
+    document.getElementById('dlRow').innerHTML=genFiles.filter(f=>f.filename.endsWith('.ttf')||f.filename.endsWith('.otf')).map(f=>`<a class="btndl" href="${f.url}" download="${f.filename}">⬇ ${f.filename}</a>`).join('');
     document.getElementById('result').classList.add('show');
     if(lastUrl){loadPrev(lastUrl);saveGallery(name,lastUrl);}
   }
 }
 
-// ── Preview ───────────────────────────────────────────────────────────────────
+// ── Preview ────────────────────────────────────────────────────────────────────
 async function loadPrev(url){
-  try{const buf=await(await fetch(url)).arrayBuffer();
-    const ff=new FontFace('PreviewFont',buf);await ff.load();document.fonts.add(ff);
-    document.getElementById('prevBox').classList.add('show');
-    document.getElementById('prevInp').value='AaBbCc 123';updatePrev();}
-  catch(e){}
+  try{const buf=await(await fetch(url)).arrayBuffer();const ff=new FontFace('PreviewFont',buf);await ff.load();document.fonts.add(ff);
+    document.getElementById('prevBox').classList.add('show');document.getElementById('prevInp').value='AaBbCc 123';updatePrev();}catch(e){}
 }
 function updatePrev(){document.getElementById('prevSpan').textContent=document.getElementById('prevInp').value||'AaBbCc 123';}
 function setSz(px){document.getElementById('prevSpan').style.fontSize=px+'px';document.querySelectorAll('.sz').forEach(b=>b.classList.toggle('on',b.textContent==px));}
 function setPB(bg,fg){const s=document.getElementById('prevStage');s.style.background=bg;s.style.color=fg;}
 
-// ── Gallery ───────────────────────────────────────────────────────────────────
+// ── Gallery ────────────────────────────────────────────────────────────────────
 const GK='vectrod_gal',TTL=7*24*60*60*1000;
 function saveGallery(name,url){
-  try{
-    let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>Date.now()-x.ts<TTL);
-    g.unshift({name,url,ts:Date.now(),id:Math.random().toString(36).slice(2)});
-    if(g.length>12)g=g.slice(0,12);
-    localStorage.setItem(GK,JSON.stringify(g));renderGallery();
-  }catch(e){}
+  try{let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>Date.now()-x.ts<TTL);g.unshift({name,url,ts:Date.now(),id:Math.random().toString(36).slice(2)});if(g.length>12)g=g.slice(0,12);localStorage.setItem(GK,JSON.stringify(g));renderGallery();}catch(e){}
 }
 function renderGallery(){
-  try{
-    let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>Date.now()-x.ts<TTL);
-    const el=document.getElementById('gallery');const grid=document.getElementById('galGrid');
-    if(!g.length){el.classList.remove('show');return;}
-    el.classList.add('show');
-    grid.innerHTML=g.map(x=>`
-      <div class="gal-item" onclick="reloadFont('${x.url}')">
-        <button class="gal-del" onclick="event.stopPropagation();delGal('${x.id}')">✕</button>
-        <div class="gal-name">${x.name}</div>
-        <div class="gal-prev" style="font-family:'GF_${x.id}',serif">AaBb</div>
-        <div class="gal-date">${new Date(x.ts).toLocaleDateString()}</div>
-      </div>`).join('');
-    g.forEach(x=>{fetch(x.url).then(r=>r.arrayBuffer()).then(buf=>{
-      const ff=new FontFace(`GF_${x.id}`,buf);ff.load().then(f=>document.fonts.add(f));}).catch(()=>{});});
-  }catch(e){}
+  try{let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>Date.now()-x.ts<TTL);const el=document.getElementById('gallery');const grid=document.getElementById('galGrid');
+    if(!g.length){el.classList.remove('show');return;}el.classList.add('show');
+    grid.innerHTML=g.map(x=>`<div class="gal-item" onclick="reloadFont('${x.url}')"><button class="gal-del" onclick="event.stopPropagation();delGal('${x.id}')">✕</button><div class="gal-name">${x.name}</div><div class="gal-prev" style="font-family:'GF_${x.id}',serif">AaBb</div><div class="gal-date">${new Date(x.ts).toLocaleDateString()}</div></div>`).join('');
+    g.forEach(x=>{fetch(x.url).then(r=>r.arrayBuffer()).then(buf=>{const ff=new FontFace(`GF_${x.id}`,buf);ff.load().then(f=>document.fonts.add(f));}).catch(()=>{});});}catch(e){}
 }
-function delGal(id){
-  try{let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>x.id!==id);localStorage.setItem(GK,JSON.stringify(g));renderGallery();}catch(e){}
-}
-function reloadFont(url){loadPrev(url);document.getElementById('panel-c').scrollIntoView({behavior:'smooth'});}
+function delGal(id){try{let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>x.id!==id);localStorage.setItem(GK,JSON.stringify(g));renderGallery();}catch(e){}}
+function reloadFont(url){loadPrev(url);switchTab('c');}
 renderGallery();
 
-// ── Optimize ──────────────────────────────────────────────────────────────────
-async function startOpt(){
-  if(!svgFileO){alert('Please upload an SVG file first.');return;}
-  const btn=document.getElementById('btnOpt');btn.disabled=true;
-  document.getElementById('progO').classList.add('show');
-  document.getElementById('progLogO').innerHTML='';
-  document.getElementById('optRes').classList.remove('show');
-  setBar(0,'progFillO');
-  addLog('[START] Reading SVG...','hi','progLogO');await sleep(60);
-  const fd=new FormData();fd.append('svg',svgFileO);fd.append('clean_ids',document.getElementById('ckCln').checked?'1':'0');
+// ── PNG to SVG ─────────────────────────────────────────────────────────────────
+async function startP2S(){
+  if(!pngFile){alert(lang==='tr'?'Lütfen görsel yükleyin.':'Please upload an image first.');return;}
+  const btn=document.getElementById('btnP2S');btn.disabled=true;
+  document.getElementById('progP').classList.add('show');
+  document.getElementById('progLogP').innerHTML='';
+  document.getElementById('resultP').classList.remove('show');
+  document.getElementById('svgResultPrev').classList.remove('show');
+  setBar(0,'progFillP');
+  addLog('[START] Reading image...','hi','progLogP');await sleep(60);
+  setBar(20,'progFillP');addLog('  → Tracing shapes...','','progLogP');
+  const fd=new FormData();fd.append('image',pngFile);
   try{
-    setBar(40,'progFillO');addLog('  → Optimizing...','','progLogO');
-    const res=await fetch('/optimize',{method:'POST',body:fd});
+    const res=await fetch('/png-to-svg',{method:'POST',body:fd});
     if(res.ok){const data=await res.json();
-      if(data.success){setBar(100,'progFillO');
-        addLog(`  ✓ ${data.original_size} → ${data.optimized_size}`,'ok','progLogO');
-        addLog('\n[DONE] ✓','ok','progLogO');
-        document.getElementById('optDl').innerHTML=`<a class="btndl" href="${data.url}" download="${data.filename}">⬇ ${data.filename}</a>`;
-        document.getElementById('optRes').classList.add('show');
-      }else addLog('  ✗ '+data.error,'er','progLogO');
-    }else addLog('  ✗ Server error','er','progLogO');
-  }catch(e){addLog('  ✗ Connection error','er','progLogO');}
-  btn.disabled=false;btn.querySelector('[data-i18n]').textContent=T[lang].btnOpt;
+      if(data.success){
+        setBar(100,'progFillP');
+        addLog(`  ✓ ${data.width}×${data.height}px → ${data.shapes} shapes → ${data.size}`,'ok','progLogP');
+        addLog('\n[DONE] ✓ SVG ready!','ok','progLogP');
+        document.getElementById('dlRowP').innerHTML=`<a class="btndl" href="${data.url}" download="${data.filename}">⬇ ${data.filename}</a>`;
+        document.getElementById('resultP').classList.add('show');
+        // Preview
+        fetch(data.url).then(r=>r.text()).then(svg=>{const b=new Blob([svg],{type:'image/svg+xml'});
+          document.getElementById('svgResultImg').src=URL.createObjectURL(b);
+          document.getElementById('svgResultPrev').classList.add('show');});
+      }else addLog('  ✗ '+data.error,'er','progLogP');
+    }else addLog('  ✗ Server error','er','progLogP');
+  }catch(e){addLog('  ✗ Connection error','er','progLogP');}
+  btn.disabled=false;btn.querySelector('[data-i18n]').textContent=T[lang].btnP2S;
 }
 
-// ── Custom Cursor ─────────────────────────────────────────────────────────────
+// ── Cursor ─────────────────────────────────────────────────────────────────────
 const cur=document.getElementById('cur'),ring=document.getElementById('curRing');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
-document.querySelectorAll('button,a,.drop,.ck,.step').forEach(el=>{
+(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('button,a,.drop,.ck,.gstep,.p2s-uc').forEach(el=>{
   el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';});
   el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';});
 });
 
-// ── Particles ─────────────────────────────────────────────────────────────────
-(function(){
-  const c=document.getElementById('ptcl');
-  const cols=['#f0c060','#aa77ff','#3388ff','#22dd99','#ff88cc'];
-  for(let i=0;i<35;i++){
-    const p=document.createElement('div');p.className='particle';
-    const size=1+Math.random()*2.5;
-    p.style.cssText=`left:${Math.random()*100}%;width:${size}px;height:${size}px;
-      background:${cols[Math.floor(Math.random()*cols.length)]};
-      animation-duration:${9+Math.random()*18}s;animation-delay:${-Math.random()*25}s`;
-    c.appendChild(p);
-  }
-})();
+// ── Particles ──────────────────────────────────────────────────────────────────
+(function(){const c=document.getElementById('ptcl');const cols=['#f0c060','#aa77ff','#3388ff','#22dd99','#ff88cc'];
+  for(let i=0;i<35;i++){const p=document.createElement('div');p.className='particle';const sz=1+Math.random()*2.5;
+    p.style.cssText=`left:${Math.random()*100}%;width:${sz}px;height:${sz}px;background:${cols[~~(Math.random()*5)]};animation-duration:${9+Math.random()*18}s;animation-delay:${-Math.random()*25}s`;c.appendChild(p);}})();
 </script>
 </body>
 </html>
