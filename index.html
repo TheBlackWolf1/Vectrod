@@ -3,21 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vectrod — Free SVG to Font Converter | TTF & OTF Generator</title>
-<meta name="description" content="Convert any SVG file into a professional TTF or OTF font online for free. No signup, no software. Also convert PNG to SVG and turn handwriting into fonts.">
-<meta name="keywords" content="svg to font, svg to ttf, svg to otf, free font converter, custom font maker, canva font, handwriting to font, png to svg, font generator online, ttf generator">
+<title>Vectrod — Free SVG to Font Converter Online | TTF & OTF Generator</title>
+<meta name="description" content="Convert any SVG to professional TTF & OTF fonts free online. No signup, no software. Also convert PNG to SVG and turn Canva designs or handwriting into real fonts. Instant download.">
+<meta name="keywords" content="svg to font, svg to ttf, svg to otf, free font converter online, custom font maker, canva font creator, handwriting to font, png to svg converter, font generator free, make your own font, ttf generator, otf generator, create font online, free font maker no signup">
 <meta name="author" content="Vectrod">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <link rel="canonical" href="https://vectrod.com/">
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://vectrod.com/"/>
-<meta property="og:title" content="Vectrod — Free SVG to Font Converter"/>
-<meta property="og:description" content="Turn your SVG designs into professional TTF & OTF fonts instantly. Free, no signup, works with Canva."/>
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Vectrod — Free SVG to Font Converter"/>
-<meta name="twitter:description" content="Convert SVG to TTF/OTF font online for free. No signup needed."/>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vectrod.com/">
+<meta property="og:title" content="Vectrod — Free SVG to Font Converter | Make Your Own Font Online">
+<meta property="og:description" content="Turn your SVG designs into professional TTF & OTF fonts instantly. No signup, no software — 100% free. Works with Canva designs and handwriting.">
+<meta property="og:site_name" content="Vectrod">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vectrod — Free SVG to Font Converter">
+<meta name="twitter:description" content="Convert SVG to TTF/OTF font online for free. Works with Canva. No signup needed.">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Vectrod","url":"https://vectrod.com","description":"Free online SVG to font converter. Convert SVG designs to TTF and OTF fonts instantly.","applicationCategory":"DesignApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebApplication",
+      "name":"Vectrod",
+      "url":"https://vectrod.com",
+      "description":"Free online SVG to font converter. Convert SVG designs to professional TTF and OTF fonts instantly. No signup required.",
+      "applicationCategory":"DesignApplication",
+      "operatingSystem":"Any",
+      "browserRequirements":"Requires JavaScript",
+      "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+      "featureList":["SVG to TTF conversion","SVG to OTF conversion","PNG to SVG conversion","Canva font creation","Handwriting to font","Auto SVG optimization","Font preview","Font gallery"]
+    },
+    {
+      "@type":"FAQPage",
+      "mainEntity":[
+        {"@type":"Question","name":"How do I convert SVG to font (TTF/OTF)?","acceptedAnswer":{"@type":"Answer","text":"Upload your SVG file to Vectrod, set your font name, confirm the character order, and click Generate. Your professional TTF and OTF font files are ready in under 60 seconds — free, no account needed."}},
+        {"@type":"Question","name":"Can I make a font from my Canva design?","acceptedAnswer":{"@type":"Answer","text":"Yes! Design each character as a separate object in Canva, export as SVG (File → Download → SVG), upload to Vectrod, and your Canva design becomes a real installable font."}},
+        {"@type":"Question","name":"Is Vectrod really free with no limits?","acceptedAnswer":{"@type":"Answer","text":"Yes, Vectrod is 100% free. No account, no watermarks, no file limits, no hidden fees. Convert as many SVG files to fonts as you want."}},
+        {"@type":"Question","name":"Can I convert handwriting to a font?","acceptedAnswer":{"@type":"Answer","text":"Yes! Write characters on white paper, use the PNG → SVG converter to vectorize your handwriting, then convert the SVG to a TTF font."}},
+        {"@type":"Question","name":"How do I install my custom font after downloading?","acceptedAnswer":{"@type":"Answer","text":"Windows: right-click TTF → Install. Mac: double-click TTF → Install Font. Your font then appears in Word, Photoshop, Canva, and any app supporting custom fonts."}}
+      ]
+    }
+  ]
+}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -61,9 +87,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 .particles{position:absolute;inset:0}
 .particle{position:absolute;border-radius:50%;animation:pFloat linear infinite;opacity:0}
 @keyframes pFloat{0%{opacity:0;transform:translateY(110vh)}10%,90%{opacity:1}100%{opacity:0;transform:translateY(-80px)}}
-.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:38px 24px 140px}
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:38px 24px 0}
 .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:72px;animation:slideDown .8s var(--ease-out) both}
-.logo{display:flex;align-items:center;gap:14px}
+.logo{display:flex;align-items:center;gap:14px;text-decoration:none}
 .logo-svg{width:46px;height:46px;flex-shrink:0}
 .logo-name{font-family:'Cinzel',serif;font-size:23px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 25%,var(--purple2) 55%,var(--blue2) 80%,var(--green2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 22px rgba(240,192,96,.28))}
 .logo-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.22em;color:var(--mt);text-transform:uppercase;margin-top:1px}
@@ -75,11 +101,11 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 .hero-badge{display:inline-flex;align-items:center;gap:9px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;border:1px solid rgba(240,192,96,.22);padding:6px 18px;border-radius:100px;background:rgba(240,192,96,.05);backdrop-filter:blur(10px);margin-bottom:28px}
 .bdot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:bdotPulse 2.2s ease-in-out infinite}
 @keyframes bdotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
-.hero h1{font-family:'Cinzel',serif;font-size:clamp(44px,8vw,92px);font-weight:900;line-height:.9;letter-spacing:.04em;margin-bottom:22px}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(42px,8vw,90px);font-weight:900;line-height:.9;letter-spacing:.04em;margin-bottom:22px}
 .h1a{display:block;color:var(--tx);opacity:.88}
-.h1b{display:block;background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 20%,var(--purple2) 50%,var(--blue2) 75%,var(--green2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 28px rgba(136,68,238,.3));animation:h1shimmer 5s ease-in-out infinite}
+.h1b{display:block;background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 20%,var(--purple2) 50%,var(--blue2) 75%,var(--green2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:h1shimmer 5s ease-in-out infinite}
 @keyframes h1shimmer{0%,100%{filter:drop-shadow(0 0 28px rgba(136,68,238,.3))}50%{filter:drop-shadow(0 0 48px rgba(240,192,96,.35))}}
-.hero-sub{font-size:16px;color:var(--mt);max-width:530px;margin:0 auto 30px;line-height:1.8}
+.hero-sub{font-size:16px;color:var(--mt);max-width:540px;margin:0 auto 30px;line-height:1.8}
 .hero-sub strong{color:var(--tx);font-weight:700}
 .hstats{display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap}
 .hst-n{font-family:'Cinzel',serif;font-size:26px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -106,10 +132,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 .tip-w:hover .tip-box{opacity:1}
 .drop{border:1.5px dashed var(--br);border-radius:18px;padding:52px 28px;text-align:center;cursor:pointer;transition:all .3s var(--ease);position:relative;overflow:hidden;background:var(--bg3)}
 .drop::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,var(--gO) 0%,transparent 65%);opacity:0;transition:opacity .3s;pointer-events:none}
-.drop:hover::after,.drop.over::after,.drop-img::after{opacity:1}
+.drop:hover::after,.drop.over::after{opacity:1}
 .drop:hover,.drop.over{border-color:var(--gold);border-style:solid}
-.drop-img:hover,.drop-img.over{border-color:var(--purple2) !important}
-.drop-img::after{background:radial-gradient(ellipse at center,var(--gP) 0%,transparent 65%) !important}
 .drop.done{border-color:var(--ok)}
 .drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .dicon{display:block;font-size:44px;margin-bottom:16px;animation:diconFloat 3.5s ease-in-out infinite;filter:drop-shadow(0 0 10px var(--gold))}
@@ -154,7 +178,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 .ptrack{height:3px;background:var(--bg3);border-radius:100px;overflow:hidden;margin-bottom:14px}
 .pfill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--purple),var(--blue),var(--green));border-radius:100px;transition:width .4s var(--ease-out);box-shadow:0 0 12px var(--purple)}
 .plog{font-family:'DM Mono',monospace;font-size:11px;color:var(--mt);line-height:2;max-height:96px;overflow-y:auto}
-.ll{animation:fadeIn .2s ease}.ll.ok{color:var(--ok)}.ll.er{color:var(--danger)}.ll.hi{color:var(--gold)}
+.ll.ok{color:var(--ok)}.ll.er{color:var(--danger)}.ll.hi{color:var(--gold)}
 .stats{display:none;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
 .stats.show{display:grid;animation:slideUp .35s var(--ease-out)}
 .stat{background:var(--sf);border:1px solid var(--br);border-radius:18px;padding:18px 20px;position:relative;overflow:hidden}
@@ -168,6 +192,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 .dlrow{display:flex;gap:10px;flex-wrap:wrap}
 .btndl{flex:1;min-width:130px;background:rgba(34,221,153,.07);border:1px solid rgba(34,221,153,.25);border-radius:12px;color:var(--ok);font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:14px 18px;cursor:pointer;transition:all .25s;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}
 .btndl:hover{background:rgba(34,221,153,.15);border-color:var(--ok);transform:translateY(-1px)}
+.btn-share{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,rgba(136,68,238,.12),rgba(51,136,255,.08));border:1px solid rgba(136,68,238,.22);border-radius:12px;color:var(--purple2);font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:14px 20px;cursor:pointer;transition:all .25s;text-decoration:none}
+.btn-share:hover{background:linear-gradient(90deg,rgba(136,68,238,.22),rgba(51,136,255,.15));transform:translateY(-1px)}
+.share-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .prevbox{display:none;background:var(--sf);border:1px solid var(--br);border-radius:22px;padding:28px;margin-top:14px}
 .prevbox.show{display:block;animation:slideUp .35s var(--ease-out)}
 .prev-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
@@ -193,11 +220,25 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 .gal-date{font-size:10px;color:var(--mt);margin-top:6px;font-family:'DM Mono',monospace}
 .gal-del{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--mt);font-size:13px;cursor:pointer;transition:color .2s;padding:2px}
 .gal-del:hover{color:var(--danger)}
-
-/* CANVA GUIDE */
-.guide-top{text-align:center;padding:20px 0 32px}
-.guide-icon{font-size:48px;margin-bottom:12px;filter:drop-shadow(0 0 18px var(--gold))}
-.guide-top h2{font-family:'Cinzel',serif;font-size:26px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+/* PNG to SVG */
+.p2s-top{text-align:center;padding:18px 0 28px}
+.p2s-icon{font-size:48px;margin-bottom:12px;display:block;filter:drop-shadow(0 0 18px var(--purple2))}
+.p2s-top h2{font-family:'Cinzel',serif;font-size:24px;font-weight:700;background:linear-gradient(90deg,var(--purple2),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.p2s-top p{font-size:14px;color:var(--mt);max-width:480px;margin:0 auto;line-height:1.7}
+.p2s-usecases{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.p2s-uc{background:var(--sf);border:1px solid var(--br);border-radius:14px;padding:16px;text-align:center}
+.p2s-uc-icon{font-size:28px;margin-bottom:8px;display:block}
+.p2s-uc-t{font-size:12px;font-weight:700;color:var(--tx);margin-bottom:3px}
+.p2s-uc-d{font-size:11px;color:var(--mt);line-height:1.5}
+.svg-result-preview{display:none;margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid rgba(34,221,153,.2);background:#fff;height:180px;position:relative}
+.svg-result-preview.show{display:block;animation:slideUp .3s var(--ease-out)}
+.svg-result-preview img{width:100%;height:100%;object-fit:contain}
+.p2s-also{background:linear-gradient(135deg,rgba(240,192,96,.06),rgba(136,68,238,.05));border:1px solid rgba(240,192,96,.15);border-radius:14px;padding:16px 20px;margin-top:14px;font-size:13px;color:var(--mt);line-height:1.7}
+.p2s-also strong{color:var(--tx);font-weight:700}
+.p2s-also a{color:var(--gold);cursor:pointer;text-decoration:none;font-weight:600}
+/* Canva Guide */
+.guide-top{text-align:center;padding:18px 0 28px}
+.guide-top h2{font-family:'Cinzel',serif;font-size:24px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
 .guide-top p{font-size:14px;color:var(--mt);max-width:480px;margin:0 auto;line-height:1.7}
 .gsteps{display:flex;flex-direction:column;gap:12px}
 .gstep{display:flex;gap:20px;align-items:flex-start;background:var(--sf);border:1px solid var(--br);border-radius:18px;padding:22px 24px;transition:all .3s}
@@ -209,28 +250,26 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 .guide-mistakes{background:linear-gradient(135deg,rgba(136,68,238,.07),rgba(51,136,255,.05));border:1px solid rgba(136,68,238,.15);border-radius:16px;padding:20px 24px;margin-top:12px}
 .guide-mistakes h4{font-size:14px;font-weight:700;color:var(--purple2);margin-bottom:12px}
 .guide-mistakes ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-.guide-mistakes li{font-size:13px;color:var(--mt);line-height:1.5;display:flex;gap:10px}
-.guide-mistakes li::before{content:'✦';color:var(--gold);font-size:10px;flex-shrink:0;margin-top:3px}
-
-/* PNG TO SVG */
-.p2s-top{text-align:center;padding:18px 0 28px}
-.p2s-icon{font-size:48px;margin-bottom:12px;filter:drop-shadow(0 0 18px var(--purple2))}
-.p2s-top h2{font-family:'Cinzel',serif;font-size:24px;font-weight:700;background:linear-gradient(90deg,var(--purple2),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
-.p2s-top p{font-size:14px;color:var(--mt);max-width:480px;margin:0 auto;line-height:1.7}
-.p2s-usecases{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
-.p2s-uc{background:var(--sf);border:1px solid var(--br);border-radius:14px;padding:16px;text-align:center}
-.p2s-uc-icon{font-size:28px;margin-bottom:8px;display:block}
-.p2s-uc-t{font-size:12px;font-weight:700;color:var(--tx);margin-bottom:3px}
-.p2s-uc-d{font-size:11px;color:var(--mt);line-height:1.5}
-.svg-result-preview{display:none;margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid rgba(34,221,153,.2);background:#fff;height:180px;position:relative}
-.svg-result-preview.show{display:block;animation:slideUp .3s var(--ease-out)}
-.svg-result-preview img{width:100%;height:100%;object-fit:contain}
-.svg-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);color:var(--ok);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;padding:3px 8px;border-radius:100px}
-.p2s-also{background:linear-gradient(135deg,rgba(240,192,96,.06),rgba(136,68,238,.05));border:1px solid rgba(240,192,96,.15);border-radius:14px;padding:16px 20px;margin-top:14px;font-size:13px;color:var(--mt);line-height:1.7}
-.p2s-also strong{color:var(--tx);font-weight:700}
-.p2s-also a{color:var(--gold);cursor:pointer;text-decoration:none;font-weight:600}
-.p2s-also a:hover{text-decoration:underline}
-
+.guide-mistakes li{font-size:13px;color:var(--mt);line-height:1.5;display:flex;gap:10px;align-items:flex-start}
+.guide-mistakes li::before{content:'✦';color:var(--gold);font-size:10px;flex-shrink:0;margin-top:4px}
+/* FAQ */
+.faq-item{background:var(--sf);backdrop-filter:blur(16px);border:1px solid var(--br);border-radius:16px;overflow:hidden;transition:border-color .25s;margin-bottom:10px}
+.faq-item:hover{border-color:rgba(240,192,96,.15)}
+.faq-item.open{border-color:rgba(240,192,96,.22)}
+.faq-q{padding:20px 24px;font-size:15px;font-weight:700;color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;user-select:none}
+.faq-q::after{content:'＋';font-size:18px;color:var(--gold);font-weight:300;flex-shrink:0;transition:transform .25s}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-item.open .faq-a{max-height:300px}
+.faq-a-inner{padding:0 24px 20px;font-size:13px;color:var(--mt);line-height:1.8}
+/* Footer */
+footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:48px 24px 60px;margin-top:80px}
+.footer-inner{max-width:980px;margin:0 auto;text-align:center}
+.footer-logo{font-family:'Cinzel',serif;font-size:20px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+.footer-desc{font-size:13px;color:var(--mt);max-width:500px;margin:0 auto 24px;line-height:1.7}
+.footer-links{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.footer-links span{font-size:11px;color:var(--mt);padding:4px 10px;background:var(--sf);border:1px solid var(--br);border-radius:100px}
+.footer-copy{font-size:11px;color:var(--mt);opacity:.5}
 @keyframes slideDown{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -246,7 +285,6 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 </style>
 </head>
 <body>
-
 <div class="cur" id="cur"></div>
 <div class="cur-ring" id="curRing"></div>
 <div class="bg-scene">
@@ -256,26 +294,17 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 </div>
 
 <div class="wrap">
-
   <div class="topbar">
-    <div class="logo">
-      <svg class="logo-svg" viewBox="0 0 46 46" fill="none">
-        <defs>
-          <linearGradient id="lg1" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#f0c060"/><stop offset="35%" stop-color="#aa77ff"/>
-            <stop offset="70%" stop-color="#3388ff"/><stop offset="100%" stop-color="#22dd99"/>
-          </linearGradient>
-        </defs>
+    <a class="logo" href="https://vectrod.com" aria-label="Vectrod - Free SVG to Font Converter">
+      <svg class="logo-svg" viewBox="0 0 46 46" fill="none" aria-hidden="true">
+        <defs><linearGradient id="lg1" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="35%" stop-color="#aa77ff"/><stop offset="70%" stop-color="#3388ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs>
         <path d="M23 2 L42 23 L23 44 L4 23 Z" stroke="url(#lg1)" stroke-width="1.5" fill="none" opacity=".4"/>
         <path d="M7 10 L23 38 L39 10 L34 10 L23 30 L12 10 Z" fill="url(#lg1)"/>
         <path d="M23 2 L27 9 L23 13 L19 9 Z" fill="#f0c060"/>
         <rect x="15" y="40" width="16" height="2.5" rx="1.25" fill="url(#lg1)" opacity=".7"/>
       </svg>
-      <div>
-        <div class="logo-name">VECTROD</div>
-        <div class="logo-sub">SVG → Font Converter</div>
-      </div>
-    </div>
+      <div><div class="logo-name">VECTROD</div><div class="logo-sub">Free SVG → Font Converter</div></div>
+    </a>
     <div class="nav-r">
       <button class="nbtn" id="themeBtn" onclick="toggleTheme()">☀ Light</button>
       <button class="nbtn active" id="btnEN" onclick="setLang('en')">EN</button>
@@ -284,73 +313,66 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
   </div>
 
   <div class="hero">
-    <div class="hero-badge"><span class="bdot"></span><span data-i18n="badge">Free Professional Font Converter</span></div>
+    <div class="hero-badge"><span class="bdot"></span><span>Free · No Signup · Instant Download</span></div>
     <h1>
-      <span class="h1a" data-i18n="h1a">TURN YOUR</span>
-      <span class="h1b" data-i18n="h1b">SVG INTO FONT</span>
+      <span class="h1a">MAKE YOUR OWN</span>
+      <span class="h1b">CUSTOM FONT</span>
     </h1>
-    <p class="hero-sub" data-i18n="heroSub">Convert any SVG into a <strong>professional TTF & OTF font</strong> in seconds. No software, no signup — completely free.</p>
+    <p class="hero-sub">Convert any SVG design into a <strong>professional TTF & OTF font</strong> in seconds. Works with Canva, Illustrator, Inkscape — no software, no account, completely free.</p>
     <div class="hstats">
-      <div><div class="hst-n">86+</div><div class="hst-l">Glyphs</div></div>
+      <div><div class="hst-n">86+</div><div class="hst-l">Characters</div></div>
       <div class="hst-div"></div>
       <div><div class="hst-n">&lt;60s</div><div class="hst-l">Convert Time</div></div>
       <div class="hst-div"></div>
-      <div><div class="hst-n">TTF+OTF</div><div class="hst-l">Output</div></div>
+      <div><div class="hst-n">TTF+OTF</div><div class="hst-l">Both Formats</div></div>
       <div class="hst-div"></div>
-      <div><div class="hst-n">100%</div><div class="hst-l">Free</div></div>
+      <div><div class="hst-n">100%</div><div class="hst-l">Free Forever</div></div>
     </div>
   </div>
 
   <div class="tabs-row">
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('c')">⚡ SVG → Font</button>
-      <button class="tab" onclick="switchTab('p')">🖼 PNG → SVG</button>
-      <button class="tab" onclick="switchTab('g')">✦ Canva Guide</button>
+    <div class="tabs" role="tablist">
+      <button class="tab active" role="tab" onclick="switchTab('c')">⚡ SVG → Font</button>
+      <button class="tab" role="tab" onclick="switchTab('p')">🖼 PNG → SVG</button>
+      <button class="tab" role="tab" onclick="switchTab('g')">✦ Canva Guide</button>
     </div>
   </div>
 
-  <!-- ████ SVG TO FONT ████ -->
-  <div class="panel active" id="panel-c">
-
+  <!-- CONVERTER -->
+  <div class="panel active" id="panel-c" role="tabpanel">
     <div style="background:linear-gradient(90deg,rgba(34,221,153,.07),rgba(136,68,238,.06));border:1px solid rgba(34,221,153,.18);border-radius:14px;padding:14px 20px;margin-bottom:14px;display:flex;align-items:center;gap:12px;animation:slideUp .5s var(--ease-out) .05s both">
       <span style="font-size:18px">✓</span>
       <div>
-        <div style="font-size:13px;font-weight:700;color:var(--ok)" data-i18n="autoTitle">Auto-Optimize Enabled</div>
-        <div style="font-size:12px;color:var(--mt)" data-i18n="autoDesc">SVG is automatically cleaned and optimized before conversion. No extra steps needed.</div>
+        <div style="font-size:13px;font-weight:700;color:var(--ok)">Auto-Optimize Active</div>
+        <div style="font-size:12px;color:var(--mt)">SVG is automatically cleaned before conversion — no preparation needed.</div>
       </div>
     </div>
-
     <div class="card" style="animation:slideUp .6s var(--ease-out) .08s both">
       <div class="clabel">
-        <span data-i18n="ul1">01 — Upload SVG</span>
-        <div class="tip-w"><div class="tip-i">?</div>
-          <div class="tip-box" data-i18n="tt1">In Canva: Design each character as a separate object → File → Download → SVG. Not sure how? Check the Canva Guide tab!</div>
-        </div>
+        <span>01 — Upload Your SVG File</span>
+        <div class="tip-w"><div class="tip-i">?</div><div class="tip-box">In Canva: design each character as a separate object → File → Download → SVG. Not sure? See the Canva Guide tab!</div></div>
       </div>
-      <div class="drop" id="dz">
-        <input type="file" id="svgFile" accept=".svg"/>
+      <div class="drop" id="dz" role="button" aria-label="Upload SVG file">
+        <input type="file" id="svgFile" accept=".svg" aria-label="Select SVG file"/>
         <span class="dicon">◈</span>
-        <div class="dhead" data-i18n="dh">Drag & drop your SVG here</div>
-        <div class="dsub" data-i18n="ds">or click to browse — SVG files only</div>
+        <div class="dhead">Drag & drop your SVG here</div>
+        <div class="dsub">or click to browse — SVG files only</div>
         <div class="dname" id="dzN"></div>
       </div>
-      <div class="thumb" id="svgThumb"><span class="thumb-badge">SVG PREVIEW</span><img id="thumbImg" src="" alt=""/></div>
+      <div class="thumb" id="svgThumb"><span class="thumb-badge">SVG PREVIEW</span><img id="thumbImg" src="" alt="SVG preview"/></div>
     </div>
-
     <div class="card" style="animation:slideUp .6s var(--ease-out) .14s both">
       <div class="clabel">
-        <span data-i18n="ul2">02 — Settings</span>
-        <div class="tip-w"><div class="tip-i">?</div>
-          <div class="tip-box" data-i18n="tt2">Font name appears in Word, Photoshop etc. Bold/Italic create separate font files from the same shapes.</div>
-        </div>
+        <span>02 — Font Settings</span>
+        <div class="tip-w"><div class="tip-i">?</div><div class="tip-box">Font name appears in Word, Photoshop, Canva etc. Bold/Italic create separate font files from the same SVG shapes.</div></div>
       </div>
       <div class="frow">
         <div class="fg" style="margin-bottom:0">
-          <label class="flbl" data-i18n="lName">Font Name</label>
+          <label class="flbl" for="fontName">Font Name</label>
           <input type="text" class="finp" id="fontName" placeholder="MyCustomFont" value="CustomFont"/>
         </div>
         <div class="fg" style="margin-bottom:0">
-          <label class="flbl" data-i18n="lVar">Variants</label>
+          <label class="flbl">Font Variants</label>
           <div class="cks">
             <label class="ck on"><input type="checkbox" checked id="ckR"/><span class="ckd"></span>Regular</label>
             <label class="ck"><input type="checkbox" id="ckB"/><span class="ckd"></span>Bold</label>
@@ -361,282 +383,181 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
       <div style="margin-top:20px">
         <div class="char-top">
           <div class="tip-w">
-            <label class="flbl" style="margin-bottom:0" data-i18n="lCh">Character Order</label>
+            <label class="flbl" style="margin-bottom:0">Character Order</label>
             <div class="tip-i">?</div>
-            <div class="tip-box" data-i18n="tt3">Must match the order of objects in your SVG (left-to-right, top-to-bottom). Drag to reorder, click a character to remove it.</div>
+            <div class="tip-box">Must match the order of objects in your SVG (left-to-right). Drag to reorder. Click any character to remove it.</div>
           </div>
-          <button class="char-rst" onclick="resetChars()" data-i18n="bReset">↺ Reset</button>
+          <button class="char-rst" onclick="resetChars()">↺ Reset to Default</button>
         </div>
-        <div class="charbox" id="charBox"></div>
-        <p class="char-note" data-i18n="chNote">Each SVG object maps to a character in this order, left-to-right, top-to-bottom.</p>
+        <div class="charbox" id="charBox" role="list" aria-label="Character order"></div>
+        <p class="char-note">Each object in your SVG maps to a character here, in left-to-right order.</p>
       </div>
     </div>
-
     <div class="card" style="animation:slideUp .6s var(--ease-out) .2s both">
-      <div class="clabel" data-i18n="ul3">03 — Generate</div>
-      <button class="btn-gen" id="btnConvert" onclick="startConvert()">
-        <span data-i18n="btnGen">⚡ GENERATE FONT INSTANTLY</span>
+      <div class="clabel">03 — Generate Your Font</div>
+      <button class="btn-gen" id="btnConvert" onclick="startConvert()" aria-label="Generate font">
+        <span>⚡ GENERATE FONT INSTANTLY — FREE</span>
       </button>
       <div class="prog" id="prog">
         <div class="ptrack"><div class="pfill" id="progFill"></div></div>
-        <div class="plog" id="progLog"></div>
+        <div class="plog" id="progLog" aria-live="polite"></div>
       </div>
     </div>
-
     <div class="stats" id="stats">
-      <div class="stat"><div class="sn" id="sG">—</div><div class="sl" data-i18n="stG">Glyphs</div></div>
-      <div class="stat"><div class="sn" id="sS">—</div><div class="sl" data-i18n="stS">File Size</div></div>
-      <div class="stat"><div class="sn" id="sT">—</div><div class="sl" data-i18n="stT">Seconds</div></div>
+      <div class="stat"><div class="sn" id="sG">—</div><div class="sl">Glyphs</div></div>
+      <div class="stat"><div class="sn" id="sS">—</div><div class="sl">File Size</div></div>
+      <div class="stat"><div class="sn" id="sT">—</div><div class="sl">Seconds</div></div>
     </div>
-
     <div class="result" id="result">
-      <div class="rtag" data-i18n="resTag">✓ Font Ready — Download</div>
+      <div class="rtag">✓ Your Custom Font is Ready</div>
       <div class="dlrow" id="dlRow"></div>
+      <div class="share-row" id="shareRow"></div>
     </div>
-
     <div class="prevbox" id="prevBox">
-      <div class="clabel" style="margin-bottom:16px" data-i18n="ul4">04 — Preview Your Font</div>
+      <div class="clabel" style="margin-bottom:16px">04 — Live Font Preview</div>
       <div class="prev-row">
-        <input class="prev-inp" id="prevInp" placeholder="AaBbCc 123..." oninput="updatePrev()"/>
+        <input class="prev-inp" id="prevInp" placeholder="Type to preview your font..." oninput="updatePrev()" aria-label="Font preview text"/>
         <div class="szrow">
-          <button class="sz on" onclick="setSz(32)">32</button>
-          <button class="sz" onclick="setSz(48)">48</button>
-          <button class="sz" onclick="setSz(64)">64</button>
-          <button class="sz" onclick="setSz(96)">96</button>
+          <button class="sz on" onclick="setSz(32)" aria-label="32px">32</button>
+          <button class="sz" onclick="setSz(48)" aria-label="48px">48</button>
+          <button class="sz" onclick="setSz(64)" aria-label="64px">64</button>
+          <button class="sz" onclick="setSz(96)" aria-label="96px">96</button>
         </div>
         <div class="bgrow">
-          <div class="bgd" style="background:#fff" onclick="setPB('#fff','#000')"></div>
-          <div class="bgd" style="background:#111" onclick="setPB('#111','#fff')"></div>
-          <div class="bgd" style="background:#555" onclick="setPB('#555','#fff')"></div>
+          <div class="bgd" style="background:#fff" onclick="setPB('#fff','#000')" title="White background"></div>
+          <div class="bgd" style="background:#111" onclick="setPB('#111','#fff')" title="Black background"></div>
+          <div class="bgd" style="background:#555" onclick="setPB('#555','#fff')" title="Gray background"></div>
         </div>
       </div>
-      <div class="prev-stage" id="prevStage">
-        <span id="prevSpan" style="font-size:32px">AaBbCc 123</span>
+      <div class="prev-stage" id="prevStage" aria-label="Font preview area">
+        <span id="prevSpan" style="font-size:32px">AaBbCcDd 123</span>
       </div>
     </div>
-
     <div class="gallery" id="gallery">
-      <div class="gal-title" data-i18n="galTitle">Your Font Gallery — Last 7 Days</div>
+      <div class="gal-title">Your Font History — Last 7 Days</div>
       <div class="gal-grid" id="galGrid"></div>
     </div>
-
   </div>
 
-  <!-- ████ PNG TO SVG ████ -->
-  <div class="panel" id="panel-p">
+  <!-- PNG TO SVG -->
+  <div class="panel" id="panel-p" role="tabpanel">
     <div class="card" style="animation:slideUp .5s var(--ease-out) both">
       <div class="p2s-top">
-        <div class="p2s-icon">🖼</div>
-        <h2 data-i18n="p2sTitle">PNG / JPG → SVG Converter</h2>
-        <p data-i18n="p2sSubtitle">Convert any image to a scalable SVG vector file. Perfect for preparing handwriting or sketches for font conversion.</p>
+        <span class="p2s-icon">🖼</span>
+        <h2>PNG / JPG → SVG Converter</h2>
+        <p>Convert any image to a scalable SVG vector. Perfect for turning handwriting photos or sketches into fonts.</p>
       </div>
       <div class="p2s-usecases">
-        <div class="p2s-uc">
-          <span class="p2s-uc-icon">✎</span>
-          <div class="p2s-uc-t" data-i18n="uc1t">Handwriting</div>
-          <div class="p2s-uc-d" data-i18n="uc1d">Convert handwritten characters to SVG, then use SVG → Font</div>
-        </div>
-        <div class="p2s-uc">
-          <span class="p2s-uc-icon">◈</span>
-          <div class="p2s-uc-t" data-i18n="uc2t">Logos & Icons</div>
-          <div class="p2s-uc-d" data-i18n="uc2d">Turn PNG logos into scalable vector files</div>
-        </div>
-        <div class="p2s-uc">
-          <span class="p2s-uc-icon">✦</span>
-          <div class="p2s-uc-t" data-i18n="uc3t">Sketches</div>
-          <div class="p2s-uc-d" data-i18n="uc3d">Convert hand-drawn sketches to editable vectors</div>
-        </div>
+        <div class="p2s-uc"><span class="p2s-uc-icon">✎</span><div class="p2s-uc-t">Handwriting</div><div class="p2s-uc-d">Photo your handwriting → SVG → Font</div></div>
+        <div class="p2s-uc"><span class="p2s-uc-icon">◈</span><div class="p2s-uc-t">Logos & Icons</div><div class="p2s-uc-d">PNG logos → scalable SVG vector</div></div>
+        <div class="p2s-uc"><span class="p2s-uc-icon">✦</span><div class="p2s-uc-t">Sketches</div><div class="p2s-uc-d">Hand-drawn art → editable vector</div></div>
       </div>
-
-      <div class="clabel" data-i18n="p2sUpload">Upload Image</div>
-      <div class="drop drop-img" id="dzP">
-        <input type="file" id="pngFile" accept="image/*"/>
-        <span class="dicon" style="filter:drop-shadow(0 0 10px var(--purple2));animation-name:none">🖼</span>
-        <div class="dhead" data-i18n="p2sDh">Drag & drop your image here</div>
-        <div class="dsub" data-i18n="p2sDs">PNG, JPG, WEBP — any image format</div>
+      <div class="clabel">Upload Image</div>
+      <div class="drop" id="dzP" style="border-color:rgba(136,68,238,.3)">
+        <input type="file" id="pngFile" accept="image/*" aria-label="Select image file"/>
+        <span class="dicon" style="filter:drop-shadow(0 0 10px var(--purple2))">🖼</span>
+        <div class="dhead">Drag & drop your image here</div>
+        <div class="dsub">PNG, JPG, WEBP — any image format</div>
         <div class="dname" id="dzPN"></div>
       </div>
-
-      <div class="thumb" id="pngThumb" style="margin-top:14px">
-        <span class="thumb-badge" style="color:var(--purple2)">IMAGE PREVIEW</span>
-        <img id="pngThumbImg" src="" alt=""/>
-      </div>
-
-      <div style="margin-top:18px">
-        <label class="flbl" style="margin-bottom:12px" data-i18n="p2sOpts">Options</label>
-        <div class="cks">
-          <label class="ck on" id="ckDark"><input type="checkbox" checked/><span class="ckd"></span><span data-i18n="p2oDark">Dark on Light (default)</span></label>
-          <label class="ck" id="ckLight"><input type="checkbox"/><span class="ckd"></span><span data-i18n="p2oLight">Light on Dark (invert)</span></label>
-        </div>
-      </div>
-
+      <div class="thumb" id="pngThumb" style="margin-top:14px"><span class="thumb-badge" style="color:var(--purple2)">IMAGE PREVIEW</span><img id="pngThumbImg" src="" alt="Image preview"/></div>
       <button class="btn-gen" style="margin-top:22px;background:linear-gradient(90deg,var(--purple3),var(--purple),var(--blue))" id="btnP2S" onclick="startP2S()">
-        <span data-i18n="btnP2S">🖼 CONVERT TO SVG</span>
+        <span>🖼 CONVERT TO SVG VECTOR — FREE</span>
       </button>
-
       <div class="prog" id="progP">
         <div class="ptrack"><div class="pfill" id="progFillP"></div></div>
         <div class="plog" id="progLogP"></div>
       </div>
-
       <div class="result" id="resultP">
-        <div class="rtag" data-i18n="p2sReady">✓ SVG Ready — Download</div>
+        <div class="rtag">✓ SVG Ready — Download</div>
         <div class="dlrow" id="dlRowP"></div>
       </div>
-
-      <div class="svg-result-preview" id="svgResultPrev">
-        <span class="svg-badge">SVG RESULT</span>
-        <img id="svgResultImg" src="" alt=""/>
-      </div>
-
+      <div class="svg-result-preview" id="svgResultPrev"><img id="svgResultImg" src="" alt="SVG result"/></div>
       <div class="p2s-also">
-        <strong data-i18n="p2sAlsoTitle">🚀 Next Step:</strong>
-        <span data-i18n="p2sAlsoDesc"> Download your SVG, then go to the </span>
-        <a onclick="switchTab('c')" data-i18n="p2sAlsoLink">SVG → Font converter</a>
-        <span data-i18n="p2sAlsoDesc2"> to turn it into a real installable font!</span>
+        <strong>🚀 Next Step:</strong> Download your SVG then go to the <a onclick="switchTab('c')">SVG → Font converter</a> to turn it into a real installable font!
       </div>
-
     </div>
   </div>
 
-  <!-- ████ CANVA GUIDE ████ -->
-  <div class="panel" id="panel-g">
+  <!-- CANVA GUIDE -->
+  <div class="panel" id="panel-g" role="tabpanel">
     <div class="card" style="animation:slideUp .5s var(--ease-out) both">
       <div class="guide-top">
-        <div class="guide-icon">✦</div>
-        <h2 data-i18n="guideTitle">How to Make a Font in Canva</h2>
-        <p data-i18n="guideSubtitle">Step-by-step guide to designing your font in Canva and converting it with Vectrod. No experience needed.</p>
+        <h2>How to Make a Custom Font in Canva</h2>
+        <p>Complete step-by-step guide to designing your own font in Canva and converting it with Vectrod. No design experience needed.</p>
       </div>
       <div class="gsteps">
-        <div class="gstep">
-          <div class="gstep-n">01</div>
-          <div>
-            <div class="gstep-t" data-i18n="gs1t">Open a New Canva Design</div>
-            <div class="gstep-d" data-i18n="gs1d">Go to canva.com and create a new design with custom size <strong>5000 × 500 px</strong>. This gives you space to place all characters side by side.</div>
-            <div class="gstep-tip">💡 <span data-i18n="gs1tip">Wide canvas = easy ordering. Place A, B, C... from left to right.</span></div>
-          </div>
-        </div>
-        <div class="gstep">
-          <div class="gstep-n">02</div>
-          <div>
-            <div class="gstep-t" data-i18n="gs2t">Draw Each Character as a Separate Object</div>
-            <div class="gstep-d" data-i18n="gs2d">Design every letter, number, and symbol as its own element. Place them in order from left to right. Use shapes, lines, or drawings — any style works.</div>
-            <div class="gstep-tip">⚠️ <span data-i18n="gs2tip">Each character MUST be a separate object, not grouped with others. If you used text, convert it: right-click → Flatten.</span></div>
-          </div>
-        </div>
-        <div class="gstep">
-          <div class="gstep-n">03</div>
-          <div>
-            <div class="gstep-t" data-i18n="gs3t">Keep Heights Consistent</div>
-            <div class="gstep-d" data-i18n="gs3d">All characters should be roughly the same height. Use Canva's alignment tools to keep them on the same baseline — this makes your font look professional.</div>
-            <div class="gstep-tip">💡 <span data-i18n="gs3tip">Select all → Position → Align middle. This aligns all characters vertically.</span></div>
-          </div>
-        </div>
-        <div class="gstep">
-          <div class="gstep-n">04</div>
-          <div>
-            <div class="gstep-t" data-i18n="gs4t">Export as SVG</div>
-            <div class="gstep-d" data-i18n="gs4d">Click <strong>File → Download → SVG</strong>. Do NOT select "Flatten". SVG preserves all vector shapes perfectly for font generation.</div>
-            <div class="gstep-tip">⚠️ <span data-i18n="gs4tip">PNG or JPG will not work. You need SVG format. If your Canva plan doesn't support SVG, use the PNG → SVG tab first.</span></div>
-          </div>
-        </div>
-        <div class="gstep">
-          <div class="gstep-n">05</div>
-          <div>
-            <div class="gstep-t" data-i18n="gs5t">Upload to Vectrod & Download Your Font</div>
-            <div class="gstep-d" data-i18n="gs5d">Switch to the <strong>SVG → Font</strong> tab, upload your file, name your font, and click Generate. Your TTF and OTF files are ready in seconds.</div>
-            <div class="gstep-tip">🎉 <span data-i18n="gs5tip">Install on your computer and use in Word, Photoshop, Canva, or anywhere that supports custom fonts!</span></div>
-          </div>
-        </div>
+        <div class="gstep"><div class="gstep-n">01</div><div><div class="gstep-t">Open a New Canva Design (5000 × 500 px)</div><div class="gstep-d">Go to canva.com → Create design → Custom size → 5000 × 500 px. This wide canvas gives you room to place all characters side by side.</div><div class="gstep-tip">💡 Wide canvas = easy left-to-right ordering. Place A, B, C... from left to right in one line.</div></div></div>
+        <div class="gstep"><div class="gstep-n">02</div><div><div class="gstep-t">Draw Each Character as a Separate Object</div><div class="gstep-d">Design every letter, number, and symbol as its own separate element. Use Canva's drawing tools, shapes, or custom text. Each character = one object.</div><div class="gstep-tip">⚠️ CRITICAL: Each character must be separate — not grouped with others. If using text: right-click → Flatten before exporting.</div></div></div>
+        <div class="gstep"><div class="gstep-n">03</div><div><div class="gstep-t">Align All Characters to the Same Height</div><div class="gstep-d">Select all objects → Position → Align middle. This keeps all characters on the same baseline, making your font look professional in any app.</div><div class="gstep-tip">💡 Consistent height = professional looking font. Uneven heights make text look messy.</div></div></div>
+        <div class="gstep"><div class="gstep-n">04</div><div><div class="gstep-t">Export as SVG — Not PNG or JPG</div><div class="gstep-d">File → Download → SVG. Do NOT check "Flatten". SVG preserves your vector shapes perfectly. PNG/JPG only save pixels — they don't work for font conversion.</div><div class="gstep-tip">⚠️ No SVG option in your Canva plan? No problem — export as PNG and use our PNG → SVG tab first!</div></div></div>
+        <div class="gstep"><div class="gstep-n">05</div><div><div class="gstep-t">Upload to Vectrod and Download Your Font</div><div class="gstep-d">Go to the SVG → Font tab, drag your file in, name your font, click Generate. Your professional TTF and OTF font files are ready in under 60 seconds.</div><div class="gstep-tip">🎉 Done! Install the font on your computer — it appears in Word, Photoshop, Canva, and every app that supports custom fonts.</div></div></div>
       </div>
       <div class="guide-mistakes">
-        <h4 data-i18n="gmTitle">Common Mistakes to Avoid</h4>
+        <h4>5 Mistakes to Avoid When Making a Font in Canva</h4>
         <ul>
-          <li data-i18n="gm1">Don't group multiple characters — each must be a separate Canva element</li>
-          <li data-i18n="gm2">Don't use gradients or transparency — solid filled shapes work best</li>
-          <li data-i18n="gm3">Don't forget to convert text to paths before exporting</li>
-          <li data-i18n="gm4">Make sure characters are in the correct left-to-right order</li>
-          <li data-i18n="gm5">Keep your SVG file under 10MB for best results</li>
+          <li>Never group multiple characters together — each must be a separate Canva element</li>
+          <li>Avoid gradients and transparency — solid filled vector shapes produce the best font quality</li>
+          <li>Always convert text to paths (flatten) before exporting to SVG</li>
+          <li>Make sure characters are in the exact left-to-right order you want in your font</li>
+          <li>Keep your SVG file under 10MB — very large files may take longer to process</li>
         </ul>
       </div>
-      <button class="btn-gen" style="margin-top:20px" onclick="switchTab('c')">
-        <span>⚡ Start Converting Now</span>
-      </button>
+      <button class="btn-gen" style="margin-top:20px" onclick="switchTab('c')"><span>⚡ Start Converting Your Font Now — Free</span></button>
     </div>
   </div>
-
 </div><!-- /wrap -->
 
+<!-- FAQ SECTION -->
+<section style="position:relative;z-index:1;max-width:980px;margin:60px auto 0;padding:0 24px" aria-label="Frequently Asked Questions">
+  <div style="text-align:center;margin-bottom:36px">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--purple2);text-transform:uppercase;margin-bottom:12px">FAQ</div>
+    <h2 style="font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:var(--tx)">Frequently Asked Questions</h2>
+    <p style="font-size:14px;color:var(--mt);margin-top:8px">Everything you need to know about SVG to font conversion</p>
+  </div>
+  <div id="faqList">
+    <div class="faq-item"><div class="faq-q">How do I convert SVG to a font (TTF or OTF)?</div><div class="faq-a"><div class="faq-a-inner">Upload your SVG file to Vectrod using the SVG → Font tab. Set your font name, verify the character order matches your SVG layout, then click Generate. Your professional TTF and OTF font files are ready to download in under 60 seconds. The entire process is free — no account required.</div></div></div>
+    <div class="faq-item"><div class="faq-q">Can I create a font from my Canva design?</div><div class="faq-a"><div class="faq-a-inner">Yes! Design each character as a separate object in Canva, arrange them left-to-right, then export as SVG (File → Download → SVG). Upload the SVG to Vectrod and your Canva design becomes a real installable font. See our Canva Guide tab for a full step-by-step walkthrough.</div></div></div>
+    <div class="faq-item"><div class="faq-q">Is Vectrod really 100% free? Are there any limits?</div><div class="faq-a"><div class="faq-a-inner">Yes — Vectrod is completely free. No account, no watermarks, no file limits, no hidden fees, no subscriptions. You can convert as many SVG files to fonts as you want. Every conversion generates both TTF and OTF format files.</div></div></div>
+    <div class="faq-item"><div class="faq-q">Can I turn my handwriting into a font?</div><div class="faq-a"><div class="faq-a-inner">Yes! Write your characters clearly on white paper, photograph them, then use the PNG → SVG tab to vectorize your handwriting. Then go to SVG → Font and convert your vectorized handwriting into a real installable TTF font you can use anywhere.</div></div></div>
+    <div class="faq-item"><div class="faq-q">What is the difference between TTF and OTF fonts?</div><div class="faq-a"><div class="faq-a-inner">TTF (TrueType Font) works on all systems — Windows, Mac, Linux — and is the best choice for general use. OTF (OpenType Font) is more modern and supports advanced typographic features like ligatures. Vectrod generates both formats automatically, so you always have both options ready.</div></div></div>
+    <div class="faq-item"><div class="faq-q">How do I install my custom font after downloading?</div><div class="faq-a"><div class="faq-a-inner">Windows: right-click the TTF file → Install. Mac: double-click the TTF file → Install Font. After installing, your font appears in Word, Photoshop, Canva, Illustrator, and any other app that supports custom fonts.</div></div></div>
+    <div class="faq-item"><div class="faq-q">What SVG files work best for font conversion?</div><div class="faq-a"><div class="faq-a-inner">Each character should be a separate path or group in your SVG. Use solid filled vector shapes — avoid gradients, transparency, or embedded images. Vectrod automatically cleans and optimizes your SVG before conversion, so most files work perfectly without any manual preparation.</div></div></div>
+    <div class="faq-item"><div class="faq-q">Does Vectrod work with Illustrator, Inkscape or other design tools?</div><div class="faq-a"><div class="faq-a-inner">Yes! Any tool that can export SVG files works with Vectrod — Adobe Illustrator, Inkscape, Figma, Affinity Designer, CorelDRAW, and more. As long as you export a standard SVG file with each character as a separate object, Vectrod will convert it to a professional font.</div></div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">VECTROD</div>
+    <p class="footer-desc">The free online SVG to font converter. Turn your designs, Canva creations, or handwriting into professional TTF & OTF fonts instantly — no signup, no software, no limits.</p>
+    <div class="footer-links">
+      <span>SVG to TTF</span><span>SVG to OTF</span><span>PNG to SVG</span>
+      <span>Custom Font Maker</span><span>Canva Font Creator</span>
+      <span>Handwriting to Font</span><span>Free Font Generator</span>
+      <span>Font Converter Online</span><span>Make Your Own Font</span>
+    </div>
+    <p class="footer-copy">© 2025 Vectrod · Free to use · <a href="https://vectrod.com" style="color:var(--mt)">vectrod.com</a></p>
+  </div>
+</footer>
+
 <script>
-// ── i18n ──────────────────────────────────────────────────────────────────────
-const T={
-en:{badge:'Free Professional Font Converter',h1a:'TURN YOUR',h1b:'SVG INTO FONT',
-  heroSub:'Convert any SVG into a professional TTF & OTF font in seconds. No software, no signup — completely free.',
-  autoTitle:'Auto-Optimize Enabled',autoDesc:'SVG is automatically cleaned before conversion. No extra steps needed.',
-  ul1:'01 — Upload SVG',tt1:'In Canva: design each character as a separate object → File → Download → SVG. Not sure? See Canva Guide!',
-  dh:'Drag & drop your SVG here',ds:'or click to browse — SVG files only',
-  ul2:'02 — Settings',tt2:'Font name appears in Word, Photoshop etc. Bold/Italic create separate files.',
-  lName:'Font Name',lVar:'Variants',lCh:'Character Order',
-  tt3:'Must match order of objects in your SVG. Drag to reorder, click to remove.',
-  bReset:'↺ Reset',chNote:'Each SVG object maps to a character, left-to-right, top-to-bottom.',
-  ul3:'03 — Generate',btnGen:'⚡ GENERATE FONT INSTANTLY',
-  stG:'Glyphs',stS:'File Size',stT:'Seconds',resTag:'✓ Font Ready — Download',ul4:'04 — Preview Your Font',
-  galTitle:'Your Font Gallery — Last 7 Days',
-  p2sTitle:'PNG / JPG → SVG Converter',p2sSubtitle:'Convert any image to scalable SVG. Perfect for handwriting and sketches before font conversion.',
-  uc1t:'Handwriting',uc1d:'Convert handwritten characters to SVG, then use SVG → Font',
-  uc2t:'Logos & Icons',uc2d:'Turn PNG logos into scalable vector files',
-  uc3t:'Sketches',uc3d:'Convert hand-drawn sketches to editable vectors',
-  p2sUpload:'Upload Image',p2sDh:'Drag & drop your image here',p2sDs:'PNG, JPG, WEBP — any image format',
-  p2sOpts:'Options',p2oDark:'Dark on Light (default)',p2oLight:'Light on Dark (invert)',
-  btnP2S:'🖼 CONVERT TO SVG',p2sReady:'✓ SVG Ready — Download',
-  p2sAlsoTitle:'🚀 Next Step:',p2sAlsoDesc:' Download your SVG, then go to the ',
-  p2sAlsoLink:'SVG → Font converter',p2sAlsoDesc2:' to turn it into a real font!',
-  guideTitle:'How to Make a Font in Canva',guideSubtitle:'Step-by-step guide to designing your font in Canva and converting it with Vectrod.',
-  gs1t:'Open a New Canva Design',gs1d:'Create a design with custom size 5000 × 500 px to place all characters side by side.',gs1tip:'Wide canvas = easy ordering. Place A, B, C... from left to right.',
-  gs2t:'Draw Each Character Separately',gs2d:'Design every letter as its own element, in left-to-right order.',gs2tip:'Each character MUST be a separate object. Convert text: right-click → Flatten.',
-  gs3t:'Keep Heights Consistent',gs3d:'All characters same height. Use alignment tools for a professional look.',gs3tip:'Select all → Position → Align middle.',
-  gs4t:'Export as SVG',gs4d:'File → Download → SVG. Do NOT select Flatten.',gs4tip:'PNG/JPG won\'t work. Need SVG. No SVG in Canva plan? Use the PNG → SVG tab first.',
-  gs5t:'Upload to Vectrod & Download',gs5d:'SVG → Font tab, upload, name your font, click Generate. Done!',gs5tip:'Install on your computer and use in Word, Photoshop, Canva anywhere!',
-  gmTitle:'Common Mistakes to Avoid',
-  gm1:'Don\'t group multiple characters — each must be separate',gm2:'Don\'t use gradients — solid fills work best',
-  gm3:'Convert text to paths before exporting',gm4:'Characters must be in correct left-to-right order',gm5:'Keep SVG under 10MB'},
-tr:{badge:'Ücretsiz Profesyonel Font Dönüştürücü',h1a:'SVG\'NİZİ',h1b:'FONTA ÇEVİRİN',
-  heroSub:'Herhangi bir SVG\'yi saniyeler içinde TTF ve OTF fonta dönüştürün. Program yok, üye ol yok — tamamen ücretsiz.',
-  autoTitle:'Otomatik Optimizasyon Aktif',autoDesc:'SVG dönüştürmeden önce otomatik temizlenir. Ekstra adım gerekmez.',
-  ul1:'01 — SVG Yükle',tt1:'Canva\'da her karakteri ayrı nesne olarak yap → Dosya → İndir → SVG. Nasıl? Canva Rehberi sekmesine bak!',
-  dh:'SVG dosyasını buraya sürükle',ds:'veya tıkla seç — sadece SVG',
-  ul2:'02 — Ayarlar',tt2:'Font adı Word, Photoshop\'ta görünür. Bold/Italic ayrı dosya oluşturur.',
-  lName:'Font Adı',lVar:'Varyantlar',lCh:'Karakter Sırası',
-  tt3:'SVG\'deki nesne sırasıyla eşleşmeli. Sürükle sırala, tıkla kaldır.',
-  bReset:'↺ Sıfırla',chNote:'SVG\'deki her nesne bu sırayla karakterlere atanır.',
-  ul3:'03 — Oluştur',btnGen:'⚡ ANINDA FONT OLUŞTUR',
-  stG:'Glyph',stS:'Dosya Boyutu',stT:'Saniye',resTag:'✓ Font Hazır — İndir',ul4:'04 — Fontunu Önizle',
-  galTitle:'Font Galeriniz — Son 7 Gün',
-  p2sTitle:'PNG / JPG → SVG Dönüştürücü',p2sSubtitle:'Herhangi bir görseli ölçeklenebilir SVG\'ye çevir. El yazısı ve eskizleri font için hazırla.',
-  uc1t:'El Yazısı',uc1d:'El yazılı karakterleri SVG\'ye çevir, sonra SVG → Font kullan',
-  uc2t:'Logo ve İkonlar',uc2d:'PNG logoları ölçeklenebilir vektör dosyasına dönüştür',
-  uc3t:'Eskizler',uc3d:'El çizimi eskizleri düzenlenebilir vektöre çevir',
-  p2sUpload:'Görsel Yükle',p2sDh:'Görselini buraya sürükle',p2sDs:'PNG, JPG, WEBP — her format',
-  p2sOpts:'Seçenekler',p2oDark:'Koyu üzerine açık (varsayılan)',p2oLight:'Açık üzerine koyu (ters çevir)',
-  btnP2S:'🖼 SVG\'YE DÖNÜŞTÜR',p2sReady:'✓ SVG Hazır — İndir',
-  p2sAlsoTitle:'🚀 Sonraki Adım:',p2sAlsoDesc:' SVG\'ni indir, ardından ',
-  p2sAlsoLink:'SVG → Font dönüştürücü',p2sAlsoDesc2:'ye giderek gerçek bir fonta çevir!',
-  guideTitle:'Canva\'da Font Nasıl Yapılır',guideSubtitle:'Canva\'da font tasarlayıp Vectrod ile dönüştürmek için adım adım rehber.',
-  gs1t:'Yeni Canva Tasarımı Aç',gs1d:'5000 × 500 px özel boyutta tasarım oluştur. Karakterleri yan yana koyacaksın.',gs1tip:'Geniş yatay kanvas = kolay sıralama. A, B, C... soldan sağa yerleştir.',
-  gs2t:'Her Karakteri Ayrı Çiz',gs2d:'Her harfi, rakamı ve sembolü ayrı nesne olarak tasarla.',gs2tip:'Her karakter AYRI nesne olmalı. Text kullandıysan: sağ tık → Düzleştir.',
-  gs3t:'Yükseklikleri Tutarlı Tut',gs3d:'Tüm karakterler aynı yükseklikte olmalı. Hizalama araçları kullan.',gs3tip:'Hepsini seç → Pozisyon → Ortaya hizala.',
-  gs4t:'SVG Olarak Dışa Aktar',gs4d:'Dosya → İndir → SVG. Düzleştirme seçme.',gs4tip:'PNG/JPG çalışmaz. SVG gerekli. Canva planında SVG yoksa önce PNG → SVG sekmesi.',
-  gs5t:'Vectrod\'a Yükle ve İndir',gs5d:'SVG → Font sekmesi, dosyayı yükle, font adını yaz, oluştur. Bitti!',gs5tip:'Bilgisayarına kur, Word, Photoshop, Canva\'da kullan!',
-  gmTitle:'Sık Yapılan Hatalar',
-  gm1:'Birden fazla karakteri gruplama — her biri ayrı element olmalı',gm2:'Gradient kullanma — düz renkler en iyi sonucu verir',
-  gm3:'Dışa aktarmadan önce text\'leri path\'e çevir',gm4:'Karakterlerin doğru sırada olduğundan emin ol',gm5:'SVG dosyasını 10MB altında tut'}
-};
+// ── Lang ───────────────────────────────────────────────────────────────────────
 let lang='en';
 function setLang(l){
   lang=l;
   document.getElementById('btnEN').classList.toggle('active',l==='en');
   document.getElementById('btnTR').classList.toggle('active',l==='tr');
-  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(T[l][k])el.textContent=T[l][k];});
+  if(l==='tr'){
+    document.querySelector('.h1a').textContent='KENDİ';
+    document.querySelector('.h1b').textContent='FONTUNU YAP';
+    document.querySelector('.hero-sub').innerHTML='SVG tasarımını <strong>profesyonel TTF ve OTF fonta</strong> saniyeler içinde dönüştür. Program yok, üye ol yok — tamamen ücretsiz.';
+  }else{
+    document.querySelector('.h1a').textContent='MAKE YOUR OWN';
+    document.querySelector('.h1b').textContent='CUSTOM FONT';
+    document.querySelector('.hero-sub').innerHTML='Convert any SVG design into a <strong>professional TTF & OTF font</strong> in seconds. Works with Canva, Illustrator — no software, no account, completely free.';
+  }
 }
 function toggleTheme(){
   const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
@@ -651,22 +572,17 @@ function switchTab(id){
 document.querySelectorAll('.ck input').forEach(cb=>{cb.addEventListener('change',function(){this.closest('.ck').classList.toggle('on',this.checked);});});
 
 // ── Char Order ─────────────────────────────────────────────────────────────────
-const DEFS=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-  'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-  '0','1','2','3','4','5','6','7','8','9','.',',','!','?',';',':','\'','"','(',')','–','_','/','@','#','$','%','&','*','+','=',' ',
-  'Ç','Ğ','İ','Ö','Ş','Ü','ç','ğ','ı','ö','ş','ü'];
+const DEFS=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9','.',',','!','?',';',':','\'','"','(',')','–','_','/','@','#','$','%','&','*','+','=',' ','Ç','Ğ','İ','Ö','Ş','Ü','ç','ğ','ı','ö','ş','ü'];
 let chars=[...DEFS],dragSrc=null;
 function renderChars(){
   const el=document.getElementById('charBox');
-  el.innerHTML=chars.map((c,i)=>`<span draggable="true" data-i="${i}" onclick="rmChar(${i})">${c===' '?'·':c}</span>`).join('');
+  el.innerHTML=chars.map((c,i)=>`<span draggable="true" data-i="${i}" onclick="rmChar(${i})" role="listitem" title="Click to remove">${c===' '?'·':c}</span>`).join('');
   el.querySelectorAll('span').forEach(s=>{
     s.addEventListener('dragstart',()=>{dragSrc=+s.dataset.i;s.classList.add('ding');});
     s.addEventListener('dragend',()=>{s.classList.remove('ding');dragSrc=null;renderChars();});
     s.addEventListener('dragover',e=>{e.preventDefault();s.classList.add('don');});
     s.addEventListener('dragleave',()=>s.classList.remove('don'));
-    s.addEventListener('drop',e=>{e.preventDefault();const to=+s.dataset.i;
-      if(dragSrc===null||dragSrc===to)return;
-      const t=chars[dragSrc];chars.splice(dragSrc,1);chars.splice(to,0,t);renderChars();});
+    s.addEventListener('drop',e=>{e.preventDefault();const to=+s.dataset.i;if(dragSrc===null||dragSrc===to)return;const t=chars[dragSrc];chars.splice(dragSrc,1);chars.splice(to,0,t);renderChars();});
   });
 }
 function rmChar(i){chars.splice(i,1);renderChars();}
@@ -674,7 +590,7 @@ function resetChars(){chars=[...DEFS];renderChars();}
 renderChars();
 
 // ── Drops ──────────────────────────────────────────────────────────────────────
-let svgFile=null,pngFile=null,genFiles=[],t0=0;
+let svgFile=null,pngFile=null,genFiles=[],t0=0,lastFontName='';
 function setupDrop(dId,iId,cb){
   const dz=document.getElementById(dId);
   document.getElementById(iId).addEventListener('change',function(){if(this.files[0])cb(this.files[0]);});
@@ -684,94 +600,97 @@ function setupDrop(dId,iId,cb){
 }
 setupDrop('dz','svgFile',f=>{
   if(!f.name.endsWith('.svg')){alert('Please select an SVG file.');return;}
-  svgFile=f;document.getElementById('dzN').textContent='✓ '+f.name;
-  document.getElementById('dz').classList.add('done');
-  const r=new FileReader();
-  r.onload=e=>{const b=new Blob([e.target.result],{type:'image/svg+xml'});
-    document.getElementById('thumbImg').src=URL.createObjectURL(b);
-    document.getElementById('svgThumb').classList.add('show');};
-  r.readAsText(f);
+  svgFile=f;document.getElementById('dzN').textContent='✓ '+f.name;document.getElementById('dz').classList.add('done');
+  const r=new FileReader();r.onload=e=>{const b=new Blob([e.target.result],{type:'image/svg+xml'});document.getElementById('thumbImg').src=URL.createObjectURL(b);document.getElementById('svgThumb').classList.add('show');};r.readAsText(f);
 });
 setupDrop('dzP','pngFile',f=>{
-  pngFile=f;document.getElementById('dzPN').textContent='✓ '+f.name;
-  document.getElementById('dzP').classList.add('done');
-  const r=new FileReader();
-  r.onload=e=>{document.getElementById('pngThumbImg').src=e.target.result;document.getElementById('pngThumb').classList.add('show');};
-  r.readAsDataURL(f);
+  pngFile=f;document.getElementById('dzPN').textContent='✓ '+f.name;document.getElementById('dzP').classList.add('done');
+  const r=new FileReader();r.onload=e=>{document.getElementById('pngThumbImg').src=e.target.result;document.getElementById('pngThumb').classList.add('show');};r.readAsDataURL(f);
 });
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
-function addLog(m,t='',lid='progLog'){
-  const el=document.getElementById(lid);
-  const d=document.createElement('div');d.className='ll '+t;d.textContent=m;
-  el.appendChild(d);el.scrollTop=el.scrollHeight;
-}
+function addLog(m,t='',lid='progLog'){const el=document.getElementById(lid);const d=document.createElement('div');d.className='ll '+t;d.textContent=m;el.appendChild(d);el.scrollTop=el.scrollHeight;}
 function setBar(p,id='progFill'){document.getElementById(id).style.width=p+'%';}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
 // ── Convert ────────────────────────────────────────────────────────────────────
 async function startConvert(){
-  if(!svgFile){alert(lang==='tr'?'Lütfen SVG yükleyin.':'Please upload an SVG file first.');return;}
+  if(!svgFile){alert(lang==='tr'?'Lütfen SVG dosyası yükleyin.':'Please upload an SVG file first.');return;}
   const name=document.getElementById('fontName').value.trim()||'CustomFont';
+  lastFontName=name;
   const variants=[];
   if(document.getElementById('ckR').checked)variants.push({bold:false,italic:false});
   if(document.getElementById('ckB').checked)variants.push({bold:true,italic:false});
   if(document.getElementById('ckI').checked)variants.push({bold:false,italic:true});
   if(!variants.length){alert('Select at least one variant.');return;}
   const btn=document.getElementById('btnConvert');btn.disabled=true;
-  document.getElementById('prog').classList.add('show');
-  document.getElementById('progLog').innerHTML='';
+  document.getElementById('prog').classList.add('show');document.getElementById('progLog').innerHTML='';
   ['result','prevBox','stats'].forEach(id=>document.getElementById(id).classList.remove('show'));
   setBar(0);genFiles=[];let lastUrl=null;t0=Date.now();
-  addLog('[START] Auto-optimizing SVG...','hi');await sleep(80);setBar(10);
+  addLog('[START] Optimizing SVG...','hi');await sleep(80);setBar(10);
   for(let vi=0;vi<variants.length;vi++){
-    const v=variants[vi];
-    const st=v.bold&&v.italic?'Bold Italic':v.bold?'Bold':v.italic?'Italic':'Regular';
+    const v=variants[vi];const st=v.bold&&v.italic?'Bold Italic':v.bold?'Bold':v.italic?'Italic':'Regular';
     addLog(`\n[FONT] Generating ${name} ${st}...`,'hi');
-    const fd=new FormData();fd.append('svg',svgFile);fd.append('font_name',name);
-    fd.append('bold',v.bold?'1':'0');fd.append('italic',v.italic?'1':'0');fd.append('char_order',JSON.stringify(chars));
+    const fd=new FormData();fd.append('svg',svgFile);fd.append('font_name',name);fd.append('bold',v.bold?'1':'0');fd.append('italic',v.italic?'1':'0');fd.append('char_order',JSON.stringify(chars));
     try{
       addLog('  → Processing glyphs...');await sleep(50);
       const res=await fetch('/convert-auto',{method:'POST',body:fd});
       if(res.ok){const data=await res.json();
-        if(data.success){
-          if(data.auto_optimized)addLog('  ✓ SVG auto-optimized','ok');
-          data.files.forEach(f=>{addLog(`  ✓ ${f.filename} (${(f.size/1024).toFixed(1)} KB)`,'ok');genFiles.push(f);if(f.filename.endsWith('.ttf')&&!lastUrl)lastUrl=f.url;});
-        }else addLog('  ✗ '+data.error,'er');
+        if(data.success){if(data.auto_optimized)addLog('  ✓ SVG auto-optimized','ok');data.files.forEach(f=>{addLog(`  ✓ ${f.filename} (${(f.size/1024).toFixed(1)} KB)`,'ok');genFiles.push(f);if(f.filename.endsWith('.ttf')&&!lastUrl)lastUrl=f.url;});}
+        else addLog('  ✗ '+data.error,'er');
       }else addLog('  ✗ Server error','er');
     }catch(e){addLog('  ✗ Connection error','er');}
     setBar(10+(vi+1)/variants.length*85);
   }
-  const el=((Date.now()-t0)/1000).toFixed(1);setBar(100);addLog('\n[DONE] ✓ Font generated!','ok');
-  btn.disabled=false;btn.querySelector('[data-i18n]').textContent=T[lang].btnGen;
+  const el=((Date.now()-t0)/1000).toFixed(1);setBar(100);addLog('\n[DONE] ✓ Font ready!','ok');
+  btn.disabled=false;
   if(genFiles.length){
     const kb=(genFiles.reduce((a,f)=>a+f.size,0)/1024).toFixed(0);
     document.getElementById('sG').textContent=chars.length;document.getElementById('sS').textContent=kb+'KB';document.getElementById('sT').textContent=el;
     document.getElementById('stats').classList.add('show');
     document.getElementById('dlRow').innerHTML=genFiles.filter(f=>f.filename.endsWith('.ttf')||f.filename.endsWith('.otf')).map(f=>`<a class="btndl" href="${f.url}" download="${f.filename}">⬇ ${f.filename}</a>`).join('');
+    // Share buttons
+    document.getElementById('shareRow').innerHTML=`
+      <button class="btn-share" onclick="shareFont('${name}','twitter')">🐦 Share on X</button>
+      <button class="btn-share" onclick="shareFont('${name}','whatsapp')">💬 WhatsApp</button>
+      <button class="btn-share" onclick="copyShareLink('${name}')">🔗 Copy Link</button>`;
     document.getElementById('result').classList.add('show');
     if(lastUrl){loadPrev(lastUrl);saveGallery(name,lastUrl);}
   }
 }
 
+// ── Share ──────────────────────────────────────────────────────────────────────
+function shareFont(name,platform){
+  const url='https://vectrod.com';
+  const text=`I just made my own custom font "${name}" for FREE with Vectrod! 🎨✨ Make yours →`;
+  if(platform==='twitter')window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text+' '+url)}`,'_blank');
+  else if(platform==='whatsapp')window.open(`https://wa.me/?text=${encodeURIComponent(text+' '+url)}`,'_blank');
+}
+function copyShareLink(name){
+  const text=`Check out Vectrod — free custom font maker! I made "${name}" with it → https://vectrod.com`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=event.target;const orig=btn.textContent;btn.textContent='✓ Copied!';btn.style.borderColor='var(--ok)';
+    setTimeout(()=>{btn.textContent=orig;btn.style.borderColor='';},2000);
+  }).catch(()=>alert('Copy: '+text));
+}
+
 // ── Preview ────────────────────────────────────────────────────────────────────
 async function loadPrev(url){
-  try{const buf=await(await fetch(url)).arrayBuffer();const ff=new FontFace('PreviewFont',buf);await ff.load();document.fonts.add(ff);
-    document.getElementById('prevBox').classList.add('show');document.getElementById('prevInp').value='AaBbCc 123';updatePrev();}catch(e){}
+  try{const buf=await(await fetch(url)).arrayBuffer();const ff=new FontFace('PreviewFont',buf);await ff.load();document.fonts.add(ff);document.getElementById('prevBox').classList.add('show');document.getElementById('prevInp').value='AaBbCcDd 123';updatePrev();}catch(e){}
 }
-function updatePrev(){document.getElementById('prevSpan').textContent=document.getElementById('prevInp').value||'AaBbCc 123';}
+function updatePrev(){document.getElementById('prevSpan').textContent=document.getElementById('prevInp').value||'AaBbCcDd 123';}
 function setSz(px){document.getElementById('prevSpan').style.fontSize=px+'px';document.querySelectorAll('.sz').forEach(b=>b.classList.toggle('on',b.textContent==px));}
 function setPB(bg,fg){const s=document.getElementById('prevStage');s.style.background=bg;s.style.color=fg;}
 
 // ── Gallery ────────────────────────────────────────────────────────────────────
-const GK='vectrod_gal',TTL=7*24*60*60*1000;
+const GK='vectrod_gal_v2',TTL=7*24*60*60*1000;
 function saveGallery(name,url){
   try{let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>Date.now()-x.ts<TTL);g.unshift({name,url,ts:Date.now(),id:Math.random().toString(36).slice(2)});if(g.length>12)g=g.slice(0,12);localStorage.setItem(GK,JSON.stringify(g));renderGallery();}catch(e){}
 }
 function renderGallery(){
   try{let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>Date.now()-x.ts<TTL);const el=document.getElementById('gallery');const grid=document.getElementById('galGrid');
     if(!g.length){el.classList.remove('show');return;}el.classList.add('show');
-    grid.innerHTML=g.map(x=>`<div class="gal-item" onclick="reloadFont('${x.url}')"><button class="gal-del" onclick="event.stopPropagation();delGal('${x.id}')">✕</button><div class="gal-name">${x.name}</div><div class="gal-prev" style="font-family:'GF_${x.id}',serif">AaBb</div><div class="gal-date">${new Date(x.ts).toLocaleDateString()}</div></div>`).join('');
+    grid.innerHTML=g.map(x=>`<div class="gal-item" onclick="reloadFont('${x.url}')" role="button" aria-label="Load ${x.name}"><button class="gal-del" onclick="event.stopPropagation();delGal('${x.id}')" aria-label="Delete">✕</button><div class="gal-name">${x.name}</div><div class="gal-prev" style="font-family:'GF_${x.id}',serif">AaBb</div><div class="gal-date">${new Date(x.ts).toLocaleDateString()}</div></div>`).join('');
     g.forEach(x=>{fetch(x.url).then(r=>r.arrayBuffer()).then(buf=>{const ff=new FontFace(`GF_${x.id}`,buf);ff.load().then(f=>document.fonts.add(f));}).catch(()=>{});});}catch(e){}
 }
 function delGal(id){try{let g=JSON.parse(localStorage.getItem(GK)||'[]').filter(x=>x.id!==id);localStorage.setItem(GK,JSON.stringify(g));renderGallery();}catch(e){}}
@@ -780,41 +699,35 @@ renderGallery();
 
 // ── PNG to SVG ─────────────────────────────────────────────────────────────────
 async function startP2S(){
-  if(!pngFile){alert(lang==='tr'?'Lütfen görsel yükleyin.':'Please upload an image first.');return;}
+  if(!pngFile){alert('Please upload an image first.');return;}
   const btn=document.getElementById('btnP2S');btn.disabled=true;
-  document.getElementById('progP').classList.add('show');
-  document.getElementById('progLogP').innerHTML='';
-  document.getElementById('resultP').classList.remove('show');
-  document.getElementById('svgResultPrev').classList.remove('show');
-  setBar(0,'progFillP');
-  addLog('[START] Reading image...','hi','progLogP');await sleep(60);
-  setBar(20,'progFillP');addLog('  → Tracing shapes...','','progLogP');
+  document.getElementById('progP').classList.add('show');document.getElementById('progLogP').innerHTML='';
+  document.getElementById('resultP').classList.remove('show');document.getElementById('svgResultPrev').classList.remove('show');
+  setBar(0,'progFillP');addLog('[START] Reading image...','hi','progLogP');await sleep(60);setBar(20,'progFillP');addLog('  → Tracing shapes...','','progLogP');
   const fd=new FormData();fd.append('image',pngFile);
-  try{
-    const res=await fetch('/png-to-svg',{method:'POST',body:fd});
+  try{const res=await fetch('/png-to-svg',{method:'POST',body:fd});
     if(res.ok){const data=await res.json();
-      if(data.success){
-        setBar(100,'progFillP');
-        addLog(`  ✓ ${data.width}×${data.height}px → ${data.shapes} shapes → ${data.size}`,'ok','progLogP');
-        addLog('\n[DONE] ✓ SVG ready!','ok','progLogP');
-        document.getElementById('dlRowP').innerHTML=`<a class="btndl" href="${data.url}" download="${data.filename}">⬇ ${data.filename}</a>`;
+      if(data.success){setBar(100,'progFillP');addLog(`  ✓ ${data.width}×${data.height}px → ${data.shapes} shapes (${data.size})`,'ok','progLogP');addLog('\n[DONE] ✓ SVG ready!','ok','progLogP');
+        document.getElementById('dlRowP').innerHTML=`<a class="btndl" href="${data.url}" download="${data.filename}">⬇ Download SVG</a>`;
         document.getElementById('resultP').classList.add('show');
-        // Preview
-        fetch(data.url).then(r=>r.text()).then(svg=>{const b=new Blob([svg],{type:'image/svg+xml'});
-          document.getElementById('svgResultImg').src=URL.createObjectURL(b);
-          document.getElementById('svgResultPrev').classList.add('show');});
+        fetch(data.url).then(r=>r.text()).then(svg=>{const b=new Blob([svg],{type:'image/svg+xml'});document.getElementById('svgResultImg').src=URL.createObjectURL(b);document.getElementById('svgResultPrev').classList.add('show');});
       }else addLog('  ✗ '+data.error,'er','progLogP');
     }else addLog('  ✗ Server error','er','progLogP');
   }catch(e){addLog('  ✗ Connection error','er','progLogP');}
-  btn.disabled=false;btn.querySelector('[data-i18n]').textContent=T[lang].btnP2S;
+  btn.disabled=false;
 }
+
+// ── FAQ ────────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{const item=q.parentElement;const isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!isOpen)item.classList.add('open');});
+});
 
 // ── Cursor ─────────────────────────────────────────────────────────────────────
 const cur=document.getElementById('cur'),ring=document.getElementById('curRing');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
 (function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
-document.querySelectorAll('button,a,.drop,.ck,.gstep,.p2s-uc').forEach(el=>{
+document.querySelectorAll('button,a,.drop,.ck,.gstep,.p2s-uc,.faq-q,.gal-item').forEach(el=>{
   el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';});
   el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';});
 });
