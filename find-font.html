@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-281FJFCNEX');
+</script>
+<title>Find Font & Compare Prices — Vectrod</title>
+<meta name="description" content="Find any font and compare prices across MyFonts, FontSpring, Creative Market. Find free alternatives instantly.">
+<meta name="keywords" content="find font, font price comparison, cheap fonts, font alternatives, buy fonts online, myfonts alternative, fontspring">
+<link rel="canonical" href="https://vectrod.com/find-font">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="dark"]{
+  --bg:#02030d;--bg2:#050615;--bg3:#080918;
+  --sf:rgba(255,255,255,.032);--sf2:rgba(255,255,255,.06);--br:rgba(255,255,255,.07);
+  --tx:#ede8ff;--mt:rgba(237,232,255,.4);
+  --gold:#f0c060;--gold2:#ffe090;--gold3:#c09040;
+  --purple:#8844ee;--purple2:#aa77ff;--purple3:#6622cc;
+  --blue:#3388ff;--blue2:#66aaff;--green:#22dd99;--ok:#22dd99;--danger:#ff4455;
+  --gO:rgba(240,192,96,.1);--gP:rgba(136,68,238,.14);--gG:rgba(34,221,153,.1);
+}
+[data-theme="light"]{
+  --bg:#f5f3ff;--bg3:#e0dcff;--sf:rgba(255,255,255,.85);--sf2:rgba(255,255,255,.95);
+  --br:rgba(60,20,180,.1);--tx:#08051e;--mt:rgba(8,5,30,.45);
+  --gold:#9a6600;--gold2:#b87800;--gold3:#7a5000;
+  --purple:#5520bb;--purple2:#7744dd;--purple3:#3808aa;
+  --blue:#1155dd;--blue2:#3377ee;--green:#008855;--ok:#008855;--danger:#cc1122;
+  --gO:rgba(154,102,0,.08);--gP:rgba(85,32,187,.1);--gG:rgba(0,136,85,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden;transition:background .4s,color .4s}
+.bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(136,68,238,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(136,68,238,.03) 1px,transparent 1px);background-size:56px 56px}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);animation:orbF ease-in-out infinite alternate}
+.o1{width:700px;height:700px;top:-250px;left:-150px;background:radial-gradient(circle,rgba(240,192,96,.18) 0%,transparent 65%);animation-duration:26s}
+.o2{width:600px;height:600px;bottom:-200px;right:-150px;background:radial-gradient(circle,rgba(136,68,238,.15) 0%,transparent 65%);animation-duration:32s;animation-delay:-14s}
+@keyframes orbF{from{transform:translate(0,0)}to{transform:translate(40px,30px)}}
+.wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:28px 20px 100px}
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:44px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#aa77ff,#3388ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nav-r{display:flex;gap:7px}
+.nb{background:var(--sf);backdrop-filter:blur(16px);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 14px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace;letter-spacing:.06em}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.gold{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+/* HERO */
+.hero{text-align:center;margin-bottom:44px}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;border:1px solid rgba(240,192,96,.2);padding:4px 14px;border-radius:100px;background:var(--gO);margin-bottom:20px;font-family:'DM Mono',monospace}
+.bdot{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:bp 2s ease-in-out infinite}
+@keyframes bp{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(28px,5vw,58px);font-weight:900;line-height:1;letter-spacing:.03em;margin-bottom:14px}
+.h1w{display:block;color:var(--tx);opacity:.9;font-size:.65em}
+.h1g{display:block;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--purple2),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:14px;color:var(--mt);max-width:500px;margin:0 auto;line-height:1.8}
+.hero-sub strong{color:var(--tx)}
+/* SEARCH BOX */
+.search-box{background:var(--sf2);backdrop-filter:blur(28px);border:1px solid var(--br);border-radius:22px;padding:28px 32px;margin-bottom:32px;transition:border-color .3s}
+.search-box:focus-within{border-color:rgba(240,192,96,.25)}
+.sb-title{font-size:11px;letter-spacing:.16em;color:var(--mt);text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:12px}
+.search-row{display:flex;gap:10px;align-items:center}
+.inp-wrap{flex:1;position:relative}
+.inp-ico{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--mt);font-size:16px;pointer-events:none}
+.main-inp{width:100%;background:var(--bg3);border:1.5px solid var(--br);border-radius:14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;padding:16px 16px 16px 48px;outline:none;transition:all .3s;letter-spacing:.01em}
+.main-inp:focus{border-color:var(--gold);box-shadow:0 0 0 4px var(--gO)}
+.main-inp::placeholder{color:var(--mt);font-weight:400;font-size:15px}
+.search-btn{background:linear-gradient(135deg,var(--gold3),var(--gold));border:none;border-radius:14px;color:#000;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;padding:16px 28px;cursor:pointer;transition:all .25s;white-space:nowrap;letter-spacing:.04em}
+.search-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(240,192,96,.3)}
+.search-btn:active{transform:translateY(0)}
+.suggestions{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.sug-lbl{font-size:10px;letter-spacing:.12em;color:var(--mt);text-transform:uppercase;font-family:'DM Mono',monospace;margin-right:4px;align-self:center}
+.sug{background:var(--bg3);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;padding:4px 12px;cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace}
+.sug:hover{border-color:var(--gold);color:var(--gold);background:var(--gO)}
+/* RESULTS */
+.results{display:none}
+.results.show{display:block}
+/* RESULT HEADER */
+.res-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.res-title{font-family:'Cinzel',serif;font-size:22px;font-weight:700}
+.res-title span{background:linear-gradient(90deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.res-meta{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.08em}
+/* FREE ALERT */
+.free-alert{background:linear-gradient(135deg,rgba(34,221,153,.08),rgba(34,221,153,.03));border:1px solid rgba(34,221,153,.25);border-radius:16px;padding:18px 22px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.free-alert-icon{font-size:24px;flex-shrink:0}
+.free-alert-txt h3{font-size:14px;font-weight:700;color:var(--ok);margin-bottom:3px}
+.free-alert-txt p{font-size:13px;color:var(--mt);line-height:1.5}
+.free-dl-btn{margin-left:auto;background:var(--ok);border:none;border-radius:10px;color:#000;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;padding:10px 18px;cursor:pointer;white-space:nowrap;text-decoration:none;transition:all .2s;flex-shrink:0}
+.free-dl-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(34,221,153,.3)}
+/* PRICE GRID */
+.price-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:24px}
+/* PRICE CARD */
+.price-card{background:var(--sf);backdrop-filter:blur(16px);border:1px solid var(--br);border-radius:18px;overflow:hidden;transition:all .28s var(--ease);animation:cIn .3s var(--ease) both}
+@keyframes cIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.price-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.2)}
+.price-card.best{border-color:rgba(240,192,96,.3);box-shadow:0 0 0 1px rgba(240,192,96,.1)}
+.pc-header{padding:16px 18px 12px;display:flex;align-items:center;justify-content:space-between}
+.pc-site{display:flex;align-items:center;gap:9px}
+.pc-logo{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
+.logo-mf{background:linear-gradient(135deg,#ff6b35,#f7931e);color:#fff}
+.logo-fs{background:linear-gradient(135deg,#2d6cdf,#4a90e2);color:#fff}
+.logo-cm{background:linear-gradient(135deg,#e84393,#c0127a);color:#fff}
+.logo-af{background:linear-gradient(135deg,#ff0000,#cc0000);color:#fff}
+.logo-free{background:linear-gradient(135deg,#22dd99,#00aa77);color:#000}
+.pc-name{font-size:13px;font-weight:700;color:var(--tx)}
+.pc-trust{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.06em}
+.best-badge{background:var(--gold);color:#000;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:100px;font-family:'DM Mono',monospace}
+.pc-price-row{padding:0 18px 14px;display:flex;align-items:flex-end;justify-content:space-between}
+.pc-price{font-family:'Cinzel',serif;font-size:28px;font-weight:700}
+.pc-price.free{color:var(--ok)}
+.pc-price.paid{background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pc-price.sub{font-size:18px;color:var(--purple2)}
+.pc-price-note{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.06em;margin-bottom:4px}
+.pc-action{padding:0 18px 16px}
+.pc-btn{width:100%;background:var(--bg3);border:1px solid var(--br);border-radius:10px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:10px;cursor:pointer;transition:all .22s;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px}
+.pc-btn.free-btn{color:var(--ok);border-color:rgba(34,221,153,.2)}
+.pc-btn.free-btn:hover{background:var(--gG);border-color:var(--ok);transform:translateY(-1px)}
+.pc-btn.paid-btn:hover{background:var(--gO);border-color:var(--gold);color:var(--gold);transform:translateY(-1px)}
+.pc-btn.sub-btn:hover{background:var(--gP);border-color:var(--purple2);color:var(--purple2);transform:translateY(-1px)}
+/* FREE ALTERNATIVES */
+.alts-section{margin-top:28px}
+.alts-title{font-size:13px;font-weight:700;color:var(--mt);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.alts-title::after{content:'';flex:1;height:1px;background:var(--br)}
+.alts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.alt-card{background:var(--sf);border:1px solid var(--br);border-radius:14px;padding:14px 16px;transition:all .22s;cursor:pointer}
+.alt-card:hover{border-color:rgba(34,221,153,.25);transform:translateY(-2px)}
+.alt-name{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:2px}
+.alt-preview{font-size:20px;color:var(--mt);margin-bottom:8px;min-height:32px;line-height:1.3;overflow:hidden}
+.alt-tags{display:flex;gap:4px;flex-wrap:wrap}
+.alt-tag{font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:100px;background:var(--gG);color:var(--ok);border:1px solid rgba(34,221,153,.15);font-family:'DM Mono',monospace}
+.alt-free-badge{font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:100px;background:var(--gG);color:var(--ok);border:1px solid rgba(34,221,153,.2);font-family:'DM Mono',monospace;display:inline-flex;align-items:center;gap:4px}
+/* NOT FOUND */
+.not-found{text-align:center;padding:60px 20px;display:none}
+.not-found.show{display:block}
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:#06071a;border:1px solid rgba(34,221,153,.3);border-radius:13px;padding:12px 18px;font-size:13px;font-weight:600;color:var(--ok);z-index:9999;transform:translateY(70px);opacity:0;transition:all .32s var(--ease);backdrop-filter:blur(20px)}
+.toast.show{transform:translateY(0);opacity:1}
+@media(max-width:640px){.price-grid{grid-template-columns:1fr}.search-row{flex-direction:column}.main-inp{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="bg-scene">
+  <div class="bg-grid"></div>
+  <div class="orb o1"></div><div class="orb o2"></div>
+</div>
+<div class="wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <a class="logo-a" href="/">
+      <svg width="36" height="36" viewBox="0 0 46 46" fill="none">
+        <defs><linearGradient id="lg0" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#aa77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs>
+        <path d="M23 2 L42 23 L23 44 L4 23 Z" stroke="url(#lg0)" stroke-width="1.5" fill="none" opacity=".4"/>
+        <path d="M7 10 L23 38 L39 10 L34 10 L23 30 L12 10 Z" fill="url(#lg0)"/>
+        <path d="M23 2 L27 9 L23 13 L19 9 Z" fill="#f0c060"/>
+      </svg>
+      <div><div class="logo-n">VECTROD</div><div class="logo-s">Font Finder</div></div>
+    </a>
+    <div class="nav-r">
+      <button class="nb" onclick="toggleTheme()">☀</button>
+      <a class="nb" href="/fonts">✦ Free Fonts</a>
+      <a class="nb" href="/">⚡ SVG→Font</a>
+      <a class="nb gold" href="/">Make My Font</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span class="bdot"></span>Price Comparison · Free Alternatives · Instant Results</div>
+    <h1>
+      <span class="h1w">FIND YOUR FONT &</span>
+      <span class="h1g">COMPARE PRICES</span>
+    </h1>
+    <p class="hero-sub">Search any font — we show you <strong>where to buy it cheapest</strong> across MyFonts, FontSpring, Creative Market, and show you <strong>free alternatives</strong> too.</p>
+  </div>
+
+  <!-- SEARCH BOX -->
+  <div class="search-box">
+    <div class="sb-title">🔍 Type the font name you're looking for</div>
+    <div class="search-row">
+      <div class="inp-wrap">
+        <span class="inp-ico">Aa</span>
+        <input class="main-inp" id="mainInp" placeholder="e.g. Helvetica, Futura, Garamond, Proxima Nova..." 
+               oninput="onType()" onkeydown="if(event.key==='Enter')doSearch()"/>
+      </div>
+      <button class="search-btn" onclick="doSearch()">Find Font →</button>
+    </div>
+    <div class="suggestions">
+      <span class="sug-lbl">Try:</span>
+      <button class="sug" onclick="quickSearch('Helvetica')">Helvetica</button>
+      <button class="sug" onclick="quickSearch('Futura')">Futura</button>
+      <button class="sug" onclick="quickSearch('Garamond')">Garamond</button>
+      <button class="sug" onclick="quickSearch('Proxima Nova')">Proxima Nova</button>
+      <button class="sug" onclick="quickSearch('Gotham')">Gotham</button>
+      <button class="sug" onclick="quickSearch('Bodoni')">Bodoni</button>
+      <button class="sug" onclick="quickSearch('Playfair Display')">Playfair Display</button>
+      <button class="sug" onclick="quickSearch('Montserrat')">Montserrat</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results">
+
+    <div class="res-header">
+      <div class="res-title">Results for: <span id="resName"></span></div>
+      <div class="res-meta" id="resMeta"></div>
+    </div>
+
+    <!-- FREE ALERT (shown if free version exists) -->
+    <div class="free-alert" id="freeAlert" style="display:none">
+      <div class="free-alert-icon">🎉</div>
+      <div class="free-alert-txt">
+        <h3>Free version available!</h3>
+        <p id="freeAlertTxt">This font or a near-identical alternative is available for FREE on Google Fonts.</p>
+      </div>
+      <a class="free-dl-btn" id="freeDlBtn" href="#" target="_blank">Download Free ↗</a>
+    </div>
+
+    <!-- PRICE CARDS -->
+    <div class="price-grid" id="priceGrid"></div>
+
+    <!-- FREE ALTERNATIVES -->
+    <div class="alts-section" id="altsSection" style="display:none">
+      <div class="alts-title">Free Alternatives from Google Fonts</div>
+      <div class="alts-grid" id="altsGrid"></div>
+    </div>
+
+  </div>
+
+  <!-- NOT FOUND -->
+  <div class="not-found" id="notFound">
+    <div style="font-size:48px;margin-bottom:16px">🔍</div>
+    <div style="font-size:18px;font-weight:700;margin-bottom:8px">Font not found in our database</div>
+    <div style="font-size:13px;color:var(--mt);max-width:400px;margin:0 auto 20px;line-height:1.7">
+      Try searching directly on these trusted sites:
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap" id="fallbackLinks"></div>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── FONT DATABASE ────────────────────────────────────────────────────────────
+const FONT_DB = {"Helvetica": {"cat": "sans-serif", "tags": ["clean", "professional", "classic", "modern"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/helvetica", "price": "$29-199"}, "FontSpring": {"url": "https://www.fontspring.com/search?q=helvetica", "price": "$29-149"}, "Adobe Fonts": {"url": "https://fonts.adobe.com/fonts/helvetica-now", "price": "Subscription"}}}, "Futura": {"cat": "sans-serif", "tags": ["geometric", "modern", "clean", "bauhaus"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/futura", "price": "$35-199"}, "FontSpring": {"url": "https://www.fontspring.com/search?q=futura", "price": "$35-149"}, "Adobe Fonts": {"url": "https://fonts.adobe.com/fonts/futura-pt", "price": "Subscription"}}}, "Gill Sans": {"cat": "sans-serif", "tags": ["humanist", "classic", "british"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/gill+sans", "price": "$29-149"}, "Adobe Fonts": {"url": "https://fonts.adobe.com", "price": "Subscription"}}}, "Avenir": {"cat": "sans-serif", "tags": ["geometric", "elegant", "modern"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/avenir", "price": "$39-199"}, "Adobe Fonts": {"url": "https://fonts.adobe.com", "price": "Subscription"}}}, "Proxima Nova": {"cat": "sans-serif", "tags": ["modern", "geometric", "popular", "web"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/products/proxima-nova-proxima-nova-42296", "price": "$29-299"}, "FontSpring": {"url": "https://www.fontspring.com/fonts/mark-simonson-studio/proxima-nova", "price": "$29-219"}}}, "Brandon Grotesque": {"cat": "sans-serif", "tags": ["geometric", "modern", "versatile"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/brandon+grotesque", "price": "$35-149"}, "FontSpring": {"url": "https://www.fontspring.com/fonts/hvd-fonts/brandon-grotesque", "price": "$35-119"}}}, "Gotham": {"cat": "sans-serif", "tags": ["geometric", "american", "bold", "modern"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/gotham", "price": "$99-599"}, "Adobe Fonts": {"url": "https://fonts.adobe.com", "price": "Subscription"}}}, "Circular": {"cat": "sans-serif", "tags": ["geometric", "modern", "tech"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/circular", "price": "$199-799"}, "FontSpring": {"url": "https://www.fontspring.com/search?q=circular", "price": "$199+"}}}, "TT Norms": {"cat": "sans-serif", "tags": ["geometric", "modern", "versatile"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/tt+norms", "price": "$49-199"}, "FontSpring": {"url": "https://www.fontspring.com/search?q=tt+norms", "price": "$49-179"}}}, "Garamond": {"cat": "serif", "tags": ["classic", "elegant", "literary", "old-style"], "free": "https://fonts.google.com/specimen/EB+Garamond", "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/garamond", "price": "$29-149"}, "Adobe Fonts": {"url": "https://fonts.adobe.com", "price": "Subscription"}}}, "Times New Roman": {"cat": "serif", "tags": ["classic", "editorial", "newspaper"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/times+new+roman", "price": "$35-149"}, "Adobe Fonts": {"url": "https://fonts.adobe.com", "price": "Subscription"}}}, "Baskerville": {"cat": "serif", "tags": ["transitional", "elegant", "classic"], "free": "https://fonts.google.com/specimen/Libre+Baskerville", "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/baskerville", "price": "$29-199"}, "FontSpring": {"url": "https://www.fontspring.com/search?q=baskerville", "price": "$29-149"}}}, "Bodoni": {"cat": "serif", "tags": ["didone", "luxury", "fashion", "high-contrast"], "free": "https://fonts.google.com/specimen/Bodoni+Moda", "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/bodoni", "price": "$29-199"}, "Adobe Fonts": {"url": "https://fonts.adobe.com", "price": "Subscription"}}}, "Caslon": {"cat": "serif", "tags": ["classic", "oldstyle", "editorial"], "free": "https://fonts.google.com/specimen/Libre+Caslon+Text", "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/caslon", "price": "$29-149"}, "Adobe Fonts": {"url": "https://fonts.adobe.com", "price": "Subscription"}}}, "Didot": {"cat": "serif", "tags": ["didone", "fashion", "luxury", "elegant"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/didot", "price": "$35-249"}, "Adobe Fonts": {"url": "https://fonts.adobe.com", "price": "Subscription"}}}, "Minion": {"cat": "serif", "tags": ["oldstyle", "editorial", "book"], "free": null, "paid": {"Adobe Fonts": {"url": "https://fonts.adobe.com/fonts/minion", "price": "Subscription"}, "MyFonts": {"url": "https://www.myfonts.com/search/minion", "price": "$35-199"}}}, "Impact": {"cat": "display", "tags": ["bold", "condensed", "strong"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/impact", "price": "$15-49"}}}, "Trajan": {"cat": "display", "tags": ["roman", "classic", "movie", "epic"], "free": null, "paid": {"Adobe Fonts": {"url": "https://fonts.adobe.com/fonts/trajan", "price": "Subscription"}, "MyFonts": {"url": "https://www.myfonts.com/search/trajan", "price": "$35-149"}}}, "Neutraface": {"cat": "sans-serif", "tags": ["geometric", "art-deco", "modern"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/neutraface", "price": "$49-299"}, "FontSpring": {"url": "https://www.fontspring.com/search?q=neutraface", "price": "$49-249"}}}, "Freight Display": {"cat": "serif", "tags": ["elegant", "display", "editorial"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/freight", "price": "$35-199"}, "Adobe Fonts": {"url": "https://fonts.adobe.com", "price": "Subscription"}}}, "Zapfino": {"cat": "handwriting", "tags": ["calligraphy", "elegant", "script"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/zapfino", "price": "$29-99"}, "Adobe Fonts": {"url": "https://fonts.adobe.com", "price": "Subscription"}}}, "Edwardian Script": {"cat": "handwriting", "tags": ["formal", "calligraphy", "elegant"], "free": null, "paid": {"MyFonts": {"url": "https://www.myfonts.com/search/edwardian+script", "price": "$25-79"}}}, "Roboto": {"cat": "sans-serif", "tags": ["clean", "modern", "popular", "android"], "free": "https://fonts.google.com/specimen/Roboto", "paid": {}}, "Open Sans": {"cat": "sans-serif", "tags": ["clean", "readable", "popular"], "free": "https://fonts.google.com/specimen/Open+Sans", "paid": {}}, "Montserrat": {"cat": "sans-serif", "tags": ["geometric", "modern", "popular"], "free": "https://fonts.google.com/specimen/Montserrat", "paid": {}}, "Playfair Display": {"cat": "serif", "tags": ["elegant", "editorial", "luxury"], "free": "https://fonts.google.com/specimen/Playfair+Display", "paid": {}}, "Lato": {"cat": "sans-serif", "tags": ["clean", "humanist", "popular"], "free": "https://fonts.google.com/specimen/Lato", "paid": {}}, "Raleway": {"cat": "sans-serif", "tags": ["elegant", "thin", "modern"], "free": "https://fonts.google.com/specimen/Raleway", "paid": {}}, "Oswald": {"cat": "sans-serif", "tags": ["condensed", "bold", "display"], "free": "https://fonts.google.com/specimen/Oswald", "paid": {}}, "Merriweather": {"cat": "serif", "tags": ["readable", "editorial", "classic"], "free": "https://fonts.google.com/specimen/Merriweather", "paid": {}}, "Poppins": {"cat": "sans-serif", "tags": ["geometric", "modern", "rounded"], "free": "https://fonts.google.com/specimen/Poppins", "paid": {}}, "Inter": {"cat": "sans-serif", "tags": ["modern", "ui", "tech"], "free": "https://fonts.google.com/specimen/Inter", "paid": {}}, "Bebas Neue": {"cat": "display", "tags": ["bold", "condensed", "strong"], "free": "https://fonts.google.com/specimen/Bebas+Neue", "paid": {}}, "Dancing Script": {"cat": "handwriting", "tags": ["cursive", "elegant", "script"], "free": "https://fonts.google.com/specimen/Dancing+Script", "paid": {}}};
+
+// Free alternatives mapping — when searching paid fonts, suggest free similar
+const FREE_ALTERNATIVES = {
+  "Helvetica": ["Inter","Work Sans","Barlow","Nunito Sans"],
+  "Futura": ["Josefin Sans","Montserrat","Poppins","DM Sans"],
+  "Gill Sans": ["Raleway","Cabin","Muli","Nunito"],
+  "Avenir": ["Nunito","Quicksand","Poppins","Rubik"],
+  "Proxima Nova": ["Montserrat","Poppins","Raleway","Source Sans 3"],
+  "Brandon Grotesque": ["Raleway","Josefin Sans","Nunito","Quicksand"],
+  "Gotham": ["Montserrat","Barlow","Oswald","Source Sans 3"],
+  "Circular": ["Nunito","Quicksand","Varela Round","Poppins"],
+  "Garamond": ["EB Garamond","Cormorant Garamond","Libre Baskerville","Lora"],
+  "Times New Roman": ["Libre Baskerville","Merriweather","Lora","PT Serif"],
+  "Baskerville": ["Libre Baskerville","Lora","Merriweather","EB Garamond"],
+  "Bodoni": ["Playfair Display","Cormorant Garamond","Libre Bodoni","GFS Didot"],
+  "Didot": ["Playfair Display","Cormorant Garamond","Libre Bodoni","GFS Didot"],
+  "Caslon": ["Libre Caslon Text","EB Garamond","Crimson Text","Lora"],
+  "Trajan": ["Cinzel","Uncial Antiqua","Cardo","Sorts Mill Goudy"],
+  "Impact": ["Bebas Neue","Anton","Oswald","Black Ops One"],
+  "Gotham": ["Montserrat","Poppins","Barlow","Source Sans 3"],
+  "Zapfino": ["Dancing Script","Great Vibes","Sacramento","Parisienne"],
+  "Edwardian Script": ["Great Vibes","Allura","Pinyon Script","Sacramento"],
+};
+
+// Site info
+const SITES = {
+  "MyFonts": {logo:"M",cls:"logo-mf",trust:"Trusted since 1999 · 130,000+ fonts"},
+  "FontSpring": {logo:"F",cls:"logo-fs",trust:"No subscription · Best price guarantee"},
+  "Creative Market": {logo:"C",cls:"logo-cm",trust:"Independent designers · Unique fonts"},
+  "Adobe Fonts": {logo:"A",cls:"logo-af",trust:"Included in Creative Cloud · 20,000+ fonts"},
+};
+
+let lastQuery = '';
+
+function onType(){
+  const v = document.getElementById('mainInp').value;
+  if(v.length === 0){
+    document.getElementById('results').classList.remove('show');
+    document.getElementById('notFound').classList.remove('show');
+  }
+}
+
+function quickSearch(name){
+  document.getElementById('mainInp').value = name;
+  doSearch();
+}
+
+function doSearch(){
+  const query = document.getElementById('mainInp').value.trim();
+  if(!query) return;
+  lastQuery = query;
+
+  // Exact match first
+  let font = FONT_DB[query];
+  
+  // Case-insensitive match
+  if(!font){
+    const qLow = query.toLowerCase();
+    for(const [k,v] of Object.entries(FONT_DB)){
+      if(k.toLowerCase() === qLow){ font = v; break; }
+    }
+  }
+  
+  // Partial match
+  if(!font){
+    const qLow = query.toLowerCase();
+    for(const [k,v] of Object.entries(FONT_DB)){
+      if(k.toLowerCase().includes(qLow) || qLow.includes(k.toLowerCase())){
+        font = v; lastQuery = k; break;
+      }
+    }
+  }
+
+  if(font){
+    showResults(lastQuery, font);
+  } else {
+    showNotFound(query);
+  }
+}
+
+function showResults(name, font){
+  document.getElementById('results').classList.add('show');
+  document.getElementById('notFound').classList.remove('show');
+  document.getElementById('resName').textContent = name;
+
+  const hasPaid = font.paid && Object.keys(font.paid).length > 0;
+  const isFree = !!font.free;
+  
+  // Meta
+  let metaParts = [font.cat];
+  if(font.tags) metaParts.push(...font.tags.slice(0,3));
+  document.getElementById('resMeta').textContent = metaParts.join(' · ');
+
+  // Free alert
+  const freeAlert = document.getElementById('freeAlert');
+  if(isFree){
+    freeAlert.style.display = 'flex';
+    document.getElementById('freeAlertTxt').textContent = 
+      `Great news! "${name}" is available completely FREE on Google Fonts — no purchase needed.`;
+    document.getElementById('freeDlBtn').href = font.free;
+    document.getElementById('freeDlBtn').textContent = 'Download Free ↗';
+  } else {
+    freeAlert.style.display = 'none';
+  }
+
+  // Price cards
+  const grid = document.getElementById('priceGrid');
+  grid.innerHTML = '';
+
+  if(isFree){
+    // Free card first
+    const card = createPriceCard('Google Fonts', 'FREE', 'free', font.free, true, 0);
+    grid.appendChild(card);
+  }
+
+  if(hasPaid){
+    // Sort by price (cheapest first)
+    const entries = Object.entries(font.paid);
+    entries.sort((a,b) => {
+      const pa = parsePrice(a[1].price);
+      const pb = parsePrice(b[1].price);
+      return pa - pb;
+    });
+    
+    entries.forEach(([site, info], i) => {
+      const isBest = !isFree && i === 0;
+      const card = createPriceCard(site, info.price, 'paid', info.url, isBest, i+1);
+      grid.appendChild(card);
+    });
+  }
+
+  // Free alternatives
+  const altsSection = document.getElementById('altsSection');
+  const altsGrid = document.getElementById('altsGrid');
+  const alts = FREE_ALTERNATIVES[name] || FREE_ALTERNATIVES[lastQuery] || [];
+  
+  if(alts.length > 0 && !isFree){
+    altsSection.style.display = 'block';
+    altsGrid.innerHTML = '';
+    alts.forEach((altName, i) => {
+      const card = document.createElement('div');
+      card.className = 'alt-card';
+      card.style.animationDelay = (i * 0.05) + 's';
+      card.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <div class="alt-name">${altName}</div>
+          <span class="alt-free-badge">✓ FREE</span>
+        </div>
+        <div class="alt-preview" id="alt_${altName.replace(/ /g,'_')}" style="font-family:'${altName}',sans-serif">Aa Bb Cc</div>
+        <div class="alt-tags">
+          <span class="alt-tag">Google Fonts</span>
+          <span class="alt-tag">SIL License</span>
+        </div>`;
+      card.onclick = () => window.open(`https://fonts.google.com/specimen/${encodeURIComponent(altName)}`, '_blank');
+      altsGrid.appendChild(card);
+      // Load font preview
+      const link = document.createElement('link');
+      link.rel='stylesheet';
+      link.href=`https://fonts.googleapis.com/css2?family=${encodeURIComponent(altName)}&display=swap`;
+      document.head.appendChild(link);
+    });
+  } else {
+    altsSection.style.display = 'none';
+  }
+}
+
+function createPriceCard(site, price, type, url, isBest, delay){
+  const card = document.createElement('div');
+  card.className = `price-card${isBest ? ' best' : ''}`;
+  card.style.animationDelay = (delay * 0.06) + 's';
+
+  const siteInfo = SITES[site] || {logo:site[0],cls:'logo-free',trust:'Trusted font source'};
+  const isFreeType = type === 'free';
+  const priceClass = isFreeType ? 'free' : (price === 'Subscription' ? 'sub' : 'paid');
+  const priceDisplay = isFreeType ? 'FREE' : price;
+  const btnClass = isFreeType ? 'free-btn' : (price === 'Subscription' ? 'sub-btn' : 'paid-btn');
+  const btnText = isFreeType ? '⬇ Download Free' : (price === 'Subscription' ? '→ View on ' + site : '→ Buy on ' + site);
+
+  card.innerHTML = `
+    <div class="pc-header">
+      <div class="pc-site">
+        <div class="pc-logo ${isFreeType ? 'logo-free' : siteInfo.cls}">${isFreeType ? '✓' : siteInfo.logo}</div>
+        <div>
+          <div class="pc-name">${isFreeType ? 'Google Fonts' : site}</div>
+          <div class="pc-trust">${isFreeType ? 'SIL Open Font License · No signup' : siteInfo.trust}</div>
+        </div>
+      </div>
+      ${isBest ? '<span class="best-badge">Cheapest</span>' : ''}
+    </div>
+    <div class="pc-price-row">
+      <div class="pc-price ${priceClass}">${priceDisplay}</div>
+      <div class="pc-price-note">${isFreeType ? 'Forever free' : (price === 'Subscription' ? 'per month' : 'one-time')}</div>
+    </div>
+    <div class="pc-action">
+      <a class="pc-btn ${btnClass}" href="${url}" target="_blank" rel="noopener"
+         onclick="trackClick('${site}', '${lastQuery}')">${btnText} ↗</a>
+    </div>`;
+  return card;
+}
+
+function parsePrice(p){
+  if(!p || p==='Subscription') return 999;
+  const m = p.match(/\$(\d+)/);
+  return m ? parseInt(m[1]) : 999;
+}
+
+function showNotFound(query){
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('notFound').classList.add('show');
+  const links = document.getElementById('fallbackLinks');
+  links.innerHTML = [
+    {name:'MyFonts', url:`https://www.myfonts.com/search/${encodeURIComponent(query)}`, cls:'logo-mf', emoji:'🔵'},
+    {name:'FontSpring', url:`https://www.fontspring.com/search?q=${encodeURIComponent(query)}`, cls:'logo-fs', emoji:'🟡'},
+    {name:'Creative Market', url:`https://creativemarket.com/search?q=${encodeURIComponent(query)}+font`, cls:'logo-cm', emoji:'🟣'},
+    {name:'Google Fonts', url:`https://fonts.google.com/?query=${encodeURIComponent(query)}`, cls:'logo-free', emoji:'🟢'},
+  ].map(s => `<a href="${s.url}" target="_blank" rel="noopener" style="background:var(--sf);border:1px solid var(--br);border-radius:12px;padding:10px 18px;text-decoration:none;color:var(--mt);font-size:13px;font-weight:600;transition:all .2s;display:flex;align-items:center;gap:6px" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--br)';this.style.color='var(--mt)'">${s.emoji} ${s.name} ↗</a>`).join('');
+}
+
+function trackClick(site, font){
+  if(typeof gtag !== 'undefined'){
+    gtag('event', 'font_price_click', {
+      'event_category': 'font_finder',
+      'event_label': font + ' -> ' + site
+    });
+  }
+}
+
+let toastT;
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function toggleTheme(){
+  const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+}
+</script>
+</body>
+</html>
