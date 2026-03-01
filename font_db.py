@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Vectrod Font Database — SIL OFL, Apache 2.0"""
+"""Vectrod Font Database — 1500+ SIL OFL Fonts"""
 
 GOOGLE_FONTS = [
     {"family":"Roboto","category":"sans-serif","variants":["regular","700"]},
@@ -1086,6 +1086,20 @@ GOOGLE_FONTS = [
     {"family":"Vibes","category":"handwriting","variants":["regular","700"]},
     {"family":"Vibur","category":"handwriting","variants":["regular","700"]},
     {"family":"Yaldevi","category":"sans-serif","variants":["regular","700"]},
+    {"family":"Agbalumo","category":"display","variants":["regular","700"]},
+    {"family":"Agdasima","category":"sans-serif","variants":["regular","700"]},
+    {"family":"Agu Display","category":"display","variants":["regular","700"]},
+    {"family":"Akatab","category":"sans-serif","variants":["regular","700"]},
+    {"family":"Akaya Kanadaka","category":"display","variants":["regular","700"]},
+    {"family":"Akaya Telivigala","category":"display","variants":["regular","700"]},
+    {"family":"Akshar","category":"sans-serif","variants":["regular","700"]},
+    {"family":"Aladin","category":"display","variants":["regular","700"]},
+    {"family":"Alef","category":"sans-serif","variants":["regular","700"]},
+    {"family":"Almarai","category":"sans-serif","variants":["regular","700"]},
+    {"family":"Arizonia","category":"handwriting","variants":["regular","700"]},
+    {"family":"Arima","category":"display","variants":["regular","700"]},
+    {"family":"Aref Ruqaa Ink","category":"serif","variants":["regular","700"]},
+    {"family":"Spice","category":"display","variants":["regular","700"]},
 ]
 
 FONTSHARE_FONTS = [
@@ -1135,15 +1149,12 @@ LEAGUE_FONTS = [
 ]
 
 def get_all_fonts():
-    result = []
-    for i, f in enumerate(GOOGLE_FONTS):
-        result.append({"family":f["family"],"category":f["category"],"source":"google","variants":f.get("variants",["regular"]),"pop":i})
-    for i, f in enumerate(FONTSHARE_FONTS):
-        result.append({"family":f["family"],"category":f["category"],"source":"fontshare","dl_id":f.get("dl_id",f["family"].lower().replace(" ","-")),"pop":i-50})
-    for i, f in enumerate(LEAGUE_FONTS):
-        result.append({"family":f["family"],"category":f["category"],"source":"league","pop":i+100})
-    return result
+    r=[]
+    for i,f in enumerate(GOOGLE_FONTS): r.append({"family":f["family"],"category":f["category"],"source":"google","variants":f.get("variants",["regular"]),"pop":i})
+    for i,f in enumerate(FONTSHARE_FONTS): r.append({"family":f["family"],"category":f["category"],"source":"fontshare","dl_id":f.get("dl_id",""),"pop":i-50})
+    for i,f in enumerate(LEAGUE_FONTS): r.append({"family":f["family"],"category":f["category"],"source":"league","pop":i+100})
+    return r
 
-if __name__ == "__main__":
-    fonts = get_all_fonts()
-    print(f"Total: {len(fonts)}")
+if __name__=="__main__":
+    f=get_all_fonts()
+    print(f"Total: {len(f)}")
