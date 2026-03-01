@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Vectrod Font Database — 1500+ SIL OFL Fonts"""
+"""Vectrod Font Database — 1500+ SIL OFL"""
 
 GOOGLE_FONTS = [
     {"family":"Roboto","category":"sans-serif","variants":["regular","700"]},
@@ -1100,6 +1100,11 @@ GOOGLE_FONTS = [
     {"family":"Arima","category":"display","variants":["regular","700"]},
     {"family":"Aref Ruqaa Ink","category":"serif","variants":["regular","700"]},
     {"family":"Spice","category":"display","variants":["regular","700"]},
+    {"family":"Allan","category":"display","variants":["regular","700"]},
+    {"family":"Allerta","category":"sans-serif","variants":["regular","700"]},
+    {"family":"Allerta Stencil","category":"sans-serif","variants":["regular","700"]},
+    {"family":"Almendra","category":"serif","variants":["regular","700"]},
+    {"family":"Almendra SC","category":"serif","variants":["regular","700"]},
 ]
 
 FONTSHARE_FONTS = [
@@ -1133,6 +1138,12 @@ FONTSHARE_FONTS = [
     {"family":"Melodrama","category":"display","source":"fontshare","dl_id":"melodrama"},
     {"family":"Swear Display","category":"display","source":"fontshare","dl_id":"swear-display"},
     {"family":"Nacelle","category":"sans-serif","source":"fontshare","dl_id":"nacelle"},
+    {"family":"Archivo Black","category":"sans-serif","source":"fontshare","dl_id":"archivo-black"},
+    {"family":"Aspekta","category":"sans-serif","source":"fontshare","dl_id":"aspekta"},
+    {"family":"Callie","category":"handwriting","source":"fontshare","dl_id":"callie"},
+    {"family":"Geist","category":"sans-serif","source":"fontshare","dl_id":"geist"},
+    {"family":"Geist Mono","category":"monospace","source":"fontshare","dl_id":"geist-mono"},
+    {"family":"Young Serif","category":"serif","source":"fontshare","dl_id":"young-serif"},
 ]
 
 LEAGUE_FONTS = [
@@ -1150,11 +1161,9 @@ LEAGUE_FONTS = [
 
 def get_all_fonts():
     r=[]
-    for i,f in enumerate(GOOGLE_FONTS): r.append({"family":f["family"],"category":f["category"],"source":"google","variants":f.get("variants",["regular"]),"pop":i})
+    for i,f in enumerate(GOOGLE_FONTS): r.append({"family":f["family"],"category":f["category"],"source":"google","variants":["regular","700"],"pop":i})
     for i,f in enumerate(FONTSHARE_FONTS): r.append({"family":f["family"],"category":f["category"],"source":"fontshare","dl_id":f.get("dl_id",""),"pop":i-50})
     for i,f in enumerate(LEAGUE_FONTS): r.append({"family":f["family"],"category":f["category"],"source":"league","pop":i+100})
     return r
-
 if __name__=="__main__":
-    f=get_all_fonts()
-    print(f"Total: {len(f)}")
+    print(f"Total: {len(get_all_fonts())}")
