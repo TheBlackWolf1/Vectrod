@@ -122,6 +122,15 @@ class Handler(BaseHTTPRequestHandler):
         elif path == '/find-font':
             self.serve_static('find-font.html', 'text/html')
 
+        elif path == '/about':
+            self.serve_static('about.html', 'text/html')
+
+        elif path == '/sitemap.xml':
+            self.serve_static('sitemap.xml', 'application/xml')
+
+        elif path == '/robots.txt':
+            self.serve_static('robots.txt', 'text/plain')
+
         elif path == '/privacy':
             self.serve_static('privacy.html', 'text/html')
 
