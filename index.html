@@ -102,7 +102,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 .logo-name{font-family:'Cinzel',serif;font-size:23px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 25%,var(--purple2) 55%,var(--blue2) 80%,var(--green2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 22px rgba(240,192,96,.28))}
 .logo-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.22em;color:var(--mt);text-transform:uppercase;margin-top:1px}
 .nav-r{display:flex;align-items:center;gap:7px}
-.nbtn{background:var(--sf);backdrop-filter:blur(16px);border:1px solid var(--br);color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;padding:8px 16px;border-radius:100px;cursor:pointer;transition:all .25s}
+.nbtn{background:var(--sf);backdrop-filter:blur(16px);border:1px solid var(--br);color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;padding:8px 16px;border-radius:100px;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center}
 .nbtn:hover{border-color:var(--gold);color:var(--gold)}
 .nbtn.active{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;box-shadow:0 0 18px var(--gO)}
 /* Free Fonts CTA Button */
@@ -327,17 +327,19 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:48px 2
       <div><div class="logo-name">VECTROD</div><div class="logo-sub">Free SVG → Font Converter</div></div>
     </a>
     <div class="nav-r">
-      <a class="nb" href="/about" style="color:var(--mt)">About</a>
-      <a class="nb find-font-btn" href="/find-font" style="background:linear-gradient(90deg,rgba(240,192,96,.08),rgba(136,68,238,.08));border-color:rgba(240,192,96,.2);color:var(--gold)">🔍 Find Font</a>
+      <a class="nbtn" href="/pairing">⚡ Font Pairing</a>
+      <a class="nbtn" href="/preview">👁 Preview</a>
+      <a class="nbtn" href="/blog">Blog</a>
+      <a class="nbtn" href="/about">About</a>
+      <a class="nbtn" href="/find-font">🔍 Find Font</a>
       <a class="btn-free-fonts" href="/fonts" aria-label="Browse 1500+ free fonts">
         <span class="bff-glow"></span>
         <span class="bff-icon">✦</span>
-        <span class="bff-text">1,138+ Free Fonts</span>
+        <span class="bff-text">1,200+ Free Fonts</span>
         <span class="bff-badge">NEW</span>
       </a>
       <button class="nbtn" id="themeBtn" onclick="toggleTheme()">☀ Light</button>
-      <button class="nbtn active" id="btnEN" onclick="setLang('en')">EN</button>
-      <button class="nbtn" id="btnTR" onclick="setLang('tr')">TR</button>
+      <a class="nbtn" href="https://translate.google.com/translate?sl=en&tl=auto&u=https://vectrod.com" target="_blank" title="Translate this page">🌐</a>
     </div>
   </div>
 
