@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /upload
+Disallow: /download/
+Disallow: /sessions/
+
+Sitemap: https://vectrod.com/sitemap.xml
+
+# Crawl-delay for polite bots
+Crawl-delay: 1
