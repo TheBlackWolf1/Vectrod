@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>Font Preview Tool — Type & See Any Font Live | Vectrod</title>
+<meta name="description" content="Type your text and instantly preview it in 100+ fonts. Compare fonts side by side. Free font preview tool — no signup required.">
+<meta name="keywords" content="font preview, font tester, type in any font, see fonts live, compare fonts, font visualizer, google fonts preview">
+<link rel="canonical" href="https://vectrod.com/preview">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="dark"]{--bg:#02030d;--bg3:#080918;--sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.07);--br:rgba(255,255,255,.07);--tx:#ede8ff;--mt:rgba(237,232,255,.45);--gold:#f0c060;--gold2:#ffe090;--gold3:#c09040;--purple2:#aa77ff;--blue2:#66aaff;--ok:#22dd99;--gO:rgba(240,192,96,.1);--gP:rgba(136,68,238,.14);--gG:rgba(34,221,153,.1)}
+[data-theme="light"]{--bg:#f8f7ff;--bg3:#edeaff;--sf:rgba(255,255,255,.9);--sf2:rgba(255,255,255,.97);--br:rgba(80,40,200,.1);--tx:#08051e;--mt:rgba(8,5,30,.5);--gold:#9a6600;--gold2:#c08000;--gold3:#7a5000;--purple2:#7744dd;--blue2:#3377ee;--ok:#008855;--gO:rgba(154,102,0,.07);--gP:rgba(85,32,187,.08);--gG:rgba(0,136,85,.07)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+.bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(130px);animation:orbF ease-in-out infinite alternate}
+.o1{width:600px;height:600px;top:-250px;right:-150px;background:radial-gradient(circle,rgba(136,68,238,.18) 0%,transparent 65%);animation-duration:26s}
+.o2{width:500px;height:500px;bottom:-150px;left:-100px;background:radial-gradient(circle,rgba(240,192,96,.12) 0%,transparent 65%);animation-duration:32s}
+@keyframes orbF{from{transform:translate(0,0)}to{transform:translate(40px,30px)}}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:28px 20px 100px}
+/* NAV */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#aa77ff,#3388ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nav-r{display:flex;gap:7px;flex-wrap:wrap}
+.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 14px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace;display:inline-flex;align-items:center}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.gold{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+/* HERO */
+.hero{margin-bottom:36px}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.18em;color:var(--purple2);text-transform:uppercase;border:1px solid rgba(170,119,255,.2);padding:4px 14px;border-radius:100px;background:var(--gP);margin-bottom:14px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(22px,4vw,44px);font-weight:900;line-height:1.1;letter-spacing:.04em;margin-bottom:8px}
+.h1g{background:linear-gradient(90deg,var(--purple2),var(--blue2),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:14px;color:var(--mt);max-width:500px;line-height:1.7}
+/* CONTROLS */
+.controls{background:var(--sf2);backdrop-filter:blur(24px);border:1px solid var(--br);border-radius:20px;padding:20px 24px;margin-bottom:28px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.ctrl-group{display:flex;flex-direction:column;gap:6px}
+.ctrl-label{font-size:9px;color:var(--mt);text-transform:uppercase;letter-spacing:.14em;font-family:'DM Mono',monospace}
+.text-inp{background:var(--bg3);border:1.5px solid var(--br);border-radius:12px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;padding:10px 16px;outline:none;transition:border-color .25s;min-width:280px;flex:1}
+.text-inp:focus{border-color:rgba(170,119,255,.4)}
+.size-row{display:flex;align-items:center;gap:10px}
+.size-slider{-webkit-appearance:none;width:130px;height:3px;border-radius:2px;background:var(--br);outline:none;cursor:pointer}
+.size-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--purple2);cursor:pointer;box-shadow:0 0 8px rgba(170,119,255,.4)}
+.size-val{font-size:12px;color:var(--purple2);font-family:'DM Mono',monospace;width:36px}
+.cat-btns{display:flex;gap:5px;flex-wrap:wrap}
+.cat-btn{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:10px;padding:5px 11px;border-radius:100px;cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace;letter-spacing:.05em}
+.cat-btn:hover,.cat-btn.on{background:var(--gP);border-color:rgba(170,119,255,.3);color:var(--purple2)}
+.ctrl-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.count-badge{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;background:var(--sf);border:1px solid var(--br);padding:5px 12px;border-radius:100px}
+/* GRID */
+.preview-grid{columns:3;gap:14px;column-gap:14px}
+@media(max-width:1000px){.preview-grid{columns:2}}
+@media(max-width:600px){.preview-grid{columns:1}}
+/* FONT CARD */
+.font-card{background:var(--sf);border:1px solid var(--br);border-radius:18px;padding:22px 22px 16px;margin-bottom:14px;break-inside:avoid;transition:all .28s var(--ease);cursor:pointer;position:relative;overflow:hidden}
+.font-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(170,119,255,.04),transparent);opacity:0;transition:opacity .3s}
+.font-card:hover{border-color:rgba(170,119,255,.2);transform:translateY(-3px);box-shadow:0 10px 40px rgba(136,68,238,.12)}
+.font-card:hover::before{opacity:1}
+.font-card.liked{border-color:rgba(240,192,96,.25);background:rgba(240,192,96,.03)}
+.fc-preview{min-height:60px;margin-bottom:12px;word-break:break-word;transition:font-size .2s;line-height:1.25;color:var(--tx)}
+.fc-meta{display:flex;align-items:center;justify-content:space-between}
+.fc-name{font-size:11px;font-weight:700;color:var(--mt)}
+.fc-cat{font-size:9px;color:var(--mt);opacity:.6;font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+.fc-actions{display:flex;gap:6px;opacity:0;transition:opacity .2s}
+.font-card:hover .fc-actions{opacity:1}
+.fc-btn{background:var(--sf2);border:1px solid var(--br);border-radius:8px;color:var(--mt);font-size:10px;padding:4px 9px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace}
+.fc-btn:hover{border-color:var(--gold);color:var(--gold)}
+.fc-like{background:none;border:none;cursor:pointer;font-size:14px;padding:2px;transition:transform .2s}
+.fc-like:hover{transform:scale(1.3)}
+/* LOADING */
+.loading-row{display:flex;gap:8px;justify-content:center;padding:40px 0;color:var(--mt);font-size:13px;font-family:'DM Mono',monospace}
+.ld-dot{width:6px;height:6px;border-radius:50%;background:var(--purple2);animation:ldp 1s ease-in-out infinite}
+.ld-dot:nth-child(2){animation-delay:.15s}
+.ld-dot:nth-child(3){animation-delay:.3s}
+@keyframes ldp{0%,100%{transform:scale(.7);opacity:.4}50%{transform:scale(1.2);opacity:1}}
+/* SEO */
+.seo-section{margin-top:80px;background:var(--sf);border:1px solid var(--br);border-radius:22px;padding:36px}
+.seo-section h2{font-family:'Cinzel',serif;font-size:22px;font-weight:700;margin-bottom:16px;background:linear-gradient(90deg,var(--purple2),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.seo-section h3{font-size:15px;font-weight:700;color:var(--tx);margin:20px 0 6px}
+.seo-section p{font-size:13px;color:var(--mt);line-height:1.8;margin-bottom:10px}
+/* FOOTER */
+.footer{text-align:center;margin-top:80px;padding-top:28px;border-top:1px solid var(--br)}
+.footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.footer-links a{font-size:11px;color:var(--mt);text-decoration:none}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:11px;color:var(--mt);opacity:.5}
+</style>
+</head>
+<body>
+<div class="bg-scene"><div class="orb o1"></div><div class="orb o2"></div></div>
+<div class="wrap">
+
+<!-- NAV -->
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="34" height="34" viewBox="0 0 46 46" fill="none">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#aa77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs>
+      <path d="M23 2 L42 23 L23 44 L4 23 Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/>
+      <path d="M7 10 L23 38 L39 10 L34 10 L23 30 L12 10 Z" fill="url(#lg)"/>
+      <path d="M23 2 L27 9 L23 13 L19 9 Z" fill="#f0c060"/>
+    </svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Font Preview</div></div>
+  </a>
+  <div class="nav-r">
+    <button class="nb" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">☀</button>
+    <a class="nb" href="/pairing">⚡ Pairings</a>
+    <a class="nb" href="/find-font">🔍 Find Font</a>
+    <a class="nb" href="/fonts">Fonts</a>
+    <a class="nb gold" href="/">Make My Font →</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">👁 Live Preview · 100+ Fonts · Instant</div>
+  <h1>Type Once,<br><span class="h1g">See Every Font</span></h1>
+  <p>Type your text below and instantly see it rendered in dozens of fonts. Perfect for choosing the right font for your project.</p>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="ctrl-group" style="flex:1;min-width:200px">
+    <div class="ctrl-label">Your Text</div>
+    <input class="text-inp" id="textInp" value="The quick brown fox" oninput="updateText()" placeholder="Type anything...">
+  </div>
+  <div class="ctrl-group">
+    <div class="ctrl-label">Size</div>
+    <div class="size-row">
+      <input class="size-slider" type="range" min="16" max="72" value="32" oninput="updateSize(this.value)" id="sizeSlider">
+      <span class="size-val" id="sizeVal">32px</span>
+    </div>
+  </div>
+  <div class="ctrl-group">
+    <div class="ctrl-label">Category</div>
+    <div class="cat-btns">
+      <button class="cat-btn on" onclick="filterCat('all',this)">All</button>
+      <button class="cat-btn" onclick="filterCat('sans-serif',this)">Sans</button>
+      <button class="cat-btn" onclick="filterCat('serif',this)">Serif</button>
+      <button class="cat-btn" onclick="filterCat('display',this)">Display</button>
+      <button class="cat-btn" onclick="filterCat('handwriting',this)">Script</button>
+      <button class="cat-btn" onclick="filterCat('monospace',this)">Mono</button>
+    </div>
+  </div>
+  <div class="ctrl-right">
+    <span class="count-badge" id="countBadge">Loading...</span>
+  </div>
+</div>
+
+<!-- PREVIEW GRID -->
+<div id="loading" class="loading-row">
+  <div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div>
+  <span style="margin-left:8px">Loading fonts...</span>
+</div>
+<div class="preview-grid" id="grid" style="display:none"></div>
+
+<!-- SEO CONTENT -->
+<div class="seo-section">
+  <h2>How to Choose the Perfect Font for Your Project</h2>
+  <p>Finding the right font is one of the most subjective — and impactful — decisions in any design project. The best way is always to see your actual content in the font, not just a generic sample. That's exactly what this tool lets you do.</p>
+  
+  <h3>Why "The Quick Brown Fox" Isn't Enough</h3>
+  <p>Generic pangrams show all letters but don't reflect your real use case. A font might look beautiful in a sample but feel wrong with your brand name or tagline. Always test fonts with your actual words before committing.</p>
+  
+  <h3>Sans-Serif for Screens, Serif for Print (Mostly)</h3>
+  <p>The old rule that serifs are for print and sans-serifs for screens has softened — high-resolution displays render serifs beautifully. But sans-serifs like Inter, Poppins, and DM Sans remain dominant for UI because their clean strokes perform well at small sizes.</p>
+  
+  <h3>Display Fonts: Use Sparingly</h3>
+  <p>Display fonts like Bebas Neue, Playfair Display, and Abril Fatface are designed for headlines and large sizes. They lose legibility — and sometimes charm — when set small. Use them for impact moments, not body copy.</p>
+  
+  <h3>Licensing: Why Free Matters for Commercial Projects</h3>
+  <p>All fonts in this preview tool are licensed under SIL Open Font License — meaning you can use them in commercial projects, modify them, and distribute them freely. This is not always true with fonts found elsewhere, so always check licenses before using a font professionally.</p>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-links">
+    <a href="/">Home</a><a href="/fonts">Free Fonts</a><a href="/pairing">Font Pairing</a>
+    <a href="/find-font">Find Font</a><a href="/blog">Blog</a>
+    <a href="/about">About</a><a href="/privacy">Privacy</a>
+  </div>
+  <div class="footer-copy">© 2025 Vectrod · Free Font Tools</div>
+</div>
+</div>
+
+<script>
+const PREVIEW_FONTS = [
+  // Top 100 most useful preview fonts
+  {f:'Roboto',c:'sans-serif'},{f:'Open Sans',c:'sans-serif'},{f:'Lato',c:'sans-serif'},
+  {f:'Montserrat',c:'sans-serif'},{f:'Poppins',c:'sans-serif'},{f:'Inter',c:'sans-serif'},
+  {f:'Raleway',c:'sans-serif'},{f:'Nunito',c:'sans-serif'},{f:'Oswald',c:'sans-serif'},
+  {f:'Barlow',c:'sans-serif'},{f:'Work Sans',c:'sans-serif'},{f:'DM Sans',c:'sans-serif'},
+  {f:'Outfit',c:'sans-serif'},{f:'Plus Jakarta Sans',c:'sans-serif'},{f:'Space Grotesk',c:'sans-serif'},
+  {f:'Urbanist',c:'sans-serif'},{f:'Figtree',c:'sans-serif'},{f:'Syne',c:'sans-serif'},
+  {f:'Josefin Sans',c:'sans-serif'},{f:'Quicksand',c:'sans-serif'},{f:'Mulish',c:'sans-serif'},
+  {f:'Cabin',c:'sans-serif'},{f:'Karla',c:'sans-serif'},{f:'Manrope',c:'sans-serif'},
+  {f:'Source Sans 3',c:'sans-serif'},{f:'Rubik',c:'sans-serif'},{f:'Exo 2',c:'sans-serif'},
+  {f:'Titillium Web',c:'sans-serif'},{f:'Ubuntu',c:'sans-serif'},{f:'Fira Sans',c:'sans-serif'},
+  {f:'Heebo',c:'sans-serif'},{f:'Be Vietnam Pro',c:'sans-serif'},{f:'Jost',c:'sans-serif'},
+  {f:'Hanken Grotesk',c:'sans-serif'},{f:'Epilogue',c:'sans-serif'},{f:'Commissioner',c:'sans-serif'},
+  {f:'Red Hat Display',c:'sans-serif'},{f:'Playfair Display',c:'serif'},{f:'Merriweather',c:'serif'},
+  {f:'Lora',c:'serif'},{f:'EB Garamond',c:'serif'},{f:'Cormorant Garamond',c:'serif'},
+  {f:'Libre Baskerville',c:'serif'},{f:'Crimson Text',c:'serif'},{f:'Source Serif 4',c:'serif'},
+  {f:'PT Serif',c:'serif'},{f:'Bitter',c:'serif'},{f:'Spectral',c:'serif'},
+  {f:'Zilla Slab',c:'serif'},{f:'Rokkitt',c:'serif'},{f:'Vollkorn',c:'serif'},
+  {f:'Alegreya',c:'serif'},{f:'Domine',c:'serif'},{f:'Neuton',c:'serif'},
+  {f:'Arvo',c:'serif'},{f:'Cardo',c:'serif'},{f:'DM Serif Display',c:'serif'},
+  {f:'Fraunces',c:'serif'},{f:'Libre Bodoni',c:'serif'},{f:'Cinzel',c:'serif'},
+  {f:'Marcellus',c:'serif'},{f:'Piazzolla',c:'serif'},{f:'Bebas Neue',c:'display'},
+  {f:'Anton',c:'display'},{f:'Lobster',c:'display'},{f:'Pacifico',c:'display'},
+  {f:'Abril Fatface',c:'display'},{f:'Righteous',c:'display'},{f:'Fredoka One',c:'display'},
+  {f:'Black Ops One',c:'display'},{f:'Bangers',c:'display'},{f:'Permanent Marker',c:'display'},
+  {f:'Titan One',c:'display'},{f:'Boogaloo',c:'display'},{f:'Lilita One',c:'display'},
+  {f:'Passion One',c:'display'},{f:'Chewy',c:'display'},{f:'Comfortaa',c:'display'},
+  {f:'Oswald',c:'display'},{f:'Rajdhani',c:'sans-serif'},{f:'Barlow Condensed',c:'sans-serif'},
+  {f:'Racing Sans One',c:'display'},{f:'Staatliches',c:'display'},{f:'Fjalla One',c:'sans-serif'},
+  {f:'Poiret One',c:'display'},{f:'Russo One',c:'sans-serif'},{f:'Orbitron',c:'display'},
+  {f:'Audiowide',c:'display'},{f:'Iceland',c:'display'},{f:'Syncopate',c:'sans-serif'},
+  {f:'Dancing Script',c:'handwriting'},{f:'Satisfy',c:'handwriting'},{f:'Great Vibes',c:'handwriting'},
+  {f:'Caveat',c:'handwriting'},{f:'Kalam',c:'handwriting'},{f:'Sacramento',c:'handwriting'},
+  {f:'Amatic SC',c:'handwriting'},{f:'Indie Flower',c:'handwriting'},{f:'Parisienne',c:'handwriting'},
+  {f:'Allura',c:'handwriting'},{f:'Alex Brush',c:'handwriting'},{f:'Tangerine',c:'handwriting'},
+  {f:'Pinyon Script',c:'handwriting'},{f:'Courgette',c:'handwriting'},{f:'Cookie',c:'handwriting'},
+  {f:'JetBrains Mono',c:'monospace'},{f:'Fira Code',c:'monospace'},{f:'Space Mono',c:'monospace'},
+  {f:'DM Mono',c:'monospace'},{f:'Roboto Mono',c:'monospace'},{f:'Source Code Pro',c:'monospace'},
+  {f:'IBM Plex Mono',c:'monospace'},{f:'Courier Prime',c:'monospace'},{f:'Inconsolata',c:'monospace'},
+  {f:'Anonymous Pro',c:'monospace'},{f:'Overpass Mono',c:'monospace'},
+];
+
+let currentText = 'The quick brown fox';
+let currentSize = 32;
+let currentCat = 'all';
+let loaded = new Set();
+let liked = new Set(JSON.parse(localStorage.getItem('vectrod_liked') || '[]'));
+
+function loadBatch(fonts, start, batchSize, cb) {
+  const batch = fonts.slice(start, start + batchSize);
+  if (batch.length === 0) { if(cb) cb(); return; }
+  
+  const toLoad = batch.filter(f => !loaded.has(f.f));
+  if (toLoad.length === 0) { renderBatch(batch); loadBatch(fonts, start + batchSize, batchSize, cb); return; }
+  
+  let loaded_count = 0;
+  toLoad.forEach(f => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(f.f)}:wght@400;700&display=swap`;
+    link.onload = () => {
+      loaded.add(f.f);
+      loaded_count++;
+      if (loaded_count === toLoad.length) {
+        renderBatch(batch);
+        setTimeout(() => loadBatch(fonts, start + batchSize, batchSize, cb), 100);
+      }
+    };
+    link.onerror = () => { loaded.add(f.f); loaded_count++; if (loaded_count === toLoad.length) { renderBatch(batch); setTimeout(() => loadBatch(fonts, start + batchSize, batchSize, cb), 100); }};
+    document.head.appendChild(link);
+  });
+}
+
+function renderBatch(fonts) {
+  const grid = document.getElementById('grid');
+  fonts.forEach(f => {
+    if (document.getElementById('fc_' + f.f.replace(/\s/g,'_'))) return;
+    const card = document.createElement('div');
+    card.className = 'font-card' + (liked.has(f.f) ? ' liked' : '');
+    card.id = 'fc_' + f.f.replace(/\s/g,'_');
+    card.dataset.cat = f.c;
+    card.style.display = (currentCat === 'all' || currentCat === f.c) ? '' : 'none';
+    card.innerHTML = `
+      <div class="fc-preview" style="font-family:'${f.f}',sans-serif;font-size:${currentSize}px">${currentText || 'Aa Bb Cc'}</div>
+      <div class="fc-meta">
+        <div>
+          <div class="fc-name">${f.f}</div>
+          <div class="fc-cat">${f.c}</div>
+        </div>
+        <div class="fc-actions">
+          <button class="fc-like" onclick="toggleLike('${f.f}',this)" title="Save">${liked.has(f.f) ? '♥' : '♡'}</button>
+          <a class="fc-btn" href="https://fonts.google.com/specimen/${encodeURIComponent(f.f)}" target="_blank">Get ↗</a>
+          <a class="fc-btn" href="/fonts" onclick="return false" style="cursor:default">Free ✓</a>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+  updateCount();
+}
+
+function updateText() {
+  currentText = document.getElementById('textInp').value;
+  document.querySelectorAll('.fc-preview').forEach(el => {
+    el.textContent = currentText || 'Aa Bb Cc';
+  });
+}
+
+function updateSize(v) {
+  currentSize = parseInt(v);
+  document.getElementById('sizeVal').textContent = v + 'px';
+  document.querySelectorAll('.fc-preview').forEach(el => {
+    el.style.fontSize = v + 'px';
+  });
+}
+
+function filterCat(cat, el) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('.font-card').forEach(c => {
+    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none';
+  });
+  updateCount();
+}
+
+function updateCount() {
+  const visible = document.querySelectorAll('.font-card:not([style*="none"])').length;
+  document.getElementById('countBadge').textContent = visible + ' fonts';
+}
+
+function toggleLike(name, btn) {
+  if (liked.has(name)) {
+    liked.delete(name);
+    btn.textContent = '♡';
+    btn.closest('.font-card').classList.remove('liked');
+  } else {
+    liked.add(name);
+    btn.textContent = '♥';
+    btn.closest('.font-card').classList.add('liked');
+  }
+  localStorage.setItem('vectrod_liked', JSON.stringify([...liked]));
+}
+
+// Init
+document.getElementById('loading').style.display = 'flex';
+loadBatch(PREVIEW_FONTS, 0, 12, () => {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('grid').style.display = '';
+  updateCount();
+  // Load rest in background
+  loadBatch(PREVIEW_FONTS, 12, PREVIEW_FONTS.length, null);
+});
+</script>
+</body>
+</html>

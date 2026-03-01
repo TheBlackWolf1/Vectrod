@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>Font Design Blog — Typography Tips, Tutorials & Trends | Vectrod</title>
+<meta name="description" content="Learn typography, font design, and branding. Free guides on the best fonts for 2025, how to create custom fonts, SVG to font conversion tutorials.">
+<meta name="keywords" content="font design blog, typography tips 2025, best fonts, how to make fonts, SVG to font, free font guide, font tutorial">
+<link rel="canonical" href="https://vectrod.com/blog">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="dark"]{--bg:#02030d;--bg3:#080918;--sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.07);--br:rgba(255,255,255,.07);--tx:#ede8ff;--mt:rgba(237,232,255,.45);--gold:#f0c060;--gold2:#ffe090;--gold3:#c09040;--purple2:#aa77ff;--blue2:#66aaff;--ok:#22dd99;--gO:rgba(240,192,96,.1);--gP:rgba(136,68,238,.14);--gG:rgba(34,221,153,.1)}
+[data-theme="light"]{--bg:#f8f7ff;--bg3:#edeaff;--sf:rgba(255,255,255,.9);--sf2:rgba(255,255,255,.97);--br:rgba(80,40,200,.1);--tx:#08051e;--mt:rgba(8,5,30,.5);--gold:#9a6600;--gold2:#c08000;--gold3:#7a5000;--purple2:#7744dd;--blue2:#3377ee;--ok:#008855;--gO:rgba(154,102,0,.07)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+.bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(130px);animation:orbF ease-in-out infinite alternate}
+.o1{width:700px;height:700px;top:-300px;right:-200px;background:radial-gradient(circle,rgba(51,136,255,.12) 0%,transparent 65%);animation-duration:30s}
+.o2{width:500px;height:500px;bottom:-200px;left:-100px;background:radial-gradient(circle,rgba(240,192,96,.1) 0%,transparent 65%);animation-duration:26s}
+@keyframes orbF{from{transform:translate(0,0)}to{transform:translate(40px,30px)}}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:28px 20px 100px}
+/* NAV */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#aa77ff,#3388ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nav-r{display:flex;gap:7px;flex-wrap:wrap}
+.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 14px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace;display:inline-flex;align-items:center}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.gold{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+/* HERO */
+.hero{margin-bottom:60px}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.18em;color:var(--blue2);text-transform:uppercase;border:1px solid rgba(51,136,255,.2);padding:4px 14px;border-radius:100px;background:rgba(51,136,255,.07);margin-bottom:16px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(26px,4.5vw,52px);font-weight:900;line-height:1.05;margin-bottom:12px}
+.h1g{background:linear-gradient(90deg,var(--blue2),var(--purple2),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:15px;color:var(--mt);max-width:500px;line-height:1.8}
+/* FEATURED */
+.featured{background:linear-gradient(135deg,var(--sf2),var(--sf));border:1px solid rgba(240,192,96,.15);border-radius:24px;padding:36px;margin-bottom:48px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;transition:all .3s;cursor:pointer;text-decoration:none;color:inherit}
+.featured:hover{border-color:rgba(240,192,96,.3);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.feat-badge{font-size:9px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:12px}
+.feat-title{font-family:'Cinzel',serif;font-size:clamp(20px,3vw,32px);font-weight:700;line-height:1.15;margin-bottom:14px;background:linear-gradient(135deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.feat-desc{font-size:14px;color:var(--mt);line-height:1.8;margin-bottom:20px}
+.feat-meta{display:flex;align-items:center;gap:12px}
+.feat-date{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace}
+.feat-time{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace}
+.feat-tag{font-size:9px;padding:3px 9px;border-radius:100px;background:var(--gO);color:var(--gold);border:1px solid rgba(240,192,96,.2);font-family:'DM Mono',monospace;letter-spacing:.08em}
+.feat-visual{background:var(--bg3);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:12px;border:1px solid var(--br)}
+.feat-font-demo{font-size:32px;font-weight:700;color:var(--tx);line-height:1}
+.feat-font-sub{font-size:13px;color:var(--mt)}
+/* GRID */
+.blog-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.blog-header h2{font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--tx)}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:60px}
+/* CARD */
+.blog-card{background:var(--sf);border:1px solid var(--br);border-radius:20px;overflow:hidden;transition:all .28s var(--ease);text-decoration:none;color:inherit;display:block}
+.blog-card:hover{transform:translateY(-4px);box-shadow:0 14px 45px rgba(0,0,0,.18);border-color:rgba(136,68,238,.2)}
+.bc-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;overflow:hidden}
+.bc-body{padding:20px}
+.bc-tags{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.bc-tag{font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:100px;font-family:'DM Mono',monospace}
+.bc-tag.blue{background:rgba(51,136,255,.08);color:var(--blue2);border:1px solid rgba(51,136,255,.15)}
+.bc-tag.purple{background:var(--gP);color:var(--purple2);border:1px solid rgba(136,68,238,.2)}
+.bc-tag.green{background:var(--gG);color:var(--ok);border:1px solid rgba(34,221,153,.2)}
+.bc-tag.gold{background:var(--gO);color:var(--gold);border:1px solid rgba(240,192,96,.2)}
+.bc-title{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:8px;line-height:1.4}
+.bc-desc{font-size:12px;color:var(--mt);line-height:1.7;margin-bottom:14px}
+.bc-meta{display:flex;align-items:center;justify-content:space-between}
+.bc-date{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace}
+.bc-read{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace}
+/* FULL ARTICLE */
+.article{background:var(--sf);border:1px solid var(--br);border-radius:24px;padding:44px;margin-bottom:32px}
+.article-badge{font-size:9px;letter-spacing:.18em;color:var(--ok);text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.article h2{font-family:'Cinzel',serif;font-size:clamp(20px,3vw,34px);font-weight:700;line-height:1.15;margin-bottom:16px;background:linear-gradient(135deg,var(--tx),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.article h3{font-size:17px;font-weight:700;color:var(--tx);margin:28px 0 10px}
+.article p{font-family:'Lora',serif;font-size:15px;color:var(--mt);line-height:1.9;margin-bottom:16px}
+.article p strong{color:var(--tx);font-family:'Outfit',sans-serif}
+.article-meta{display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.article-sep{color:var(--br)}
+.font-callout{background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:20px 22px;margin:20px 0;display:flex;align-items:center;gap:16px}
+.fc-icon{font-size:24px;flex-shrink:0}
+.fc-txt{font-size:13px;color:var(--mt);line-height:1.6}
+.fc-txt a{color:var(--gold);text-decoration:none;font-weight:600}
+.fc-txt a:hover{text-decoration:underline}
+.font-grid-mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:20px 0}
+.fgm-item{background:var(--bg3);border:1px solid var(--br);border-radius:12px;padding:14px 16px}
+.fgm-name{font-size:12px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.fgm-preview{font-size:22px;color:var(--mt);line-height:1.2;margin-bottom:6px}
+.fgm-badge{font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.08em;padding:2px 7px;border-radius:100px;background:var(--gG);color:var(--ok);border:1px solid rgba(34,221,153,.15)}
+/* FOOTER */
+.footer{text-align:center;margin-top:80px;padding-top:28px;border-top:1px solid var(--br)}
+.footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.footer-links a{font-size:11px;color:var(--mt);text-decoration:none}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:11px;color:var(--mt);opacity:.5}
+@media(max-width:700px){.featured{grid-template-columns:1fr}.feat-visual{display:none}}
+</style>
+</head>
+<body>
+<div class="bg-scene"><div class="orb o1"></div><div class="orb o2"></div></div>
+<div class="wrap">
+
+<!-- NAV -->
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="34" height="34" viewBox="0 0 46 46" fill="none">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#aa77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs>
+      <path d="M23 2 L42 23 L23 44 L4 23 Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/>
+      <path d="M7 10 L23 38 L39 10 L34 10 L23 30 L12 10 Z" fill="url(#lg)"/>
+      <path d="M23 2 L27 9 L23 13 L19 9 Z" fill="#f0c060"/>
+    </svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Typography Blog</div></div>
+  </a>
+  <div class="nav-r">
+    <button class="nb" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">☀</button>
+    <a class="nb" href="/pairing">⚡ Pairings</a>
+    <a class="nb" href="/preview">👁 Preview</a>
+    <a class="nb" href="/fonts">Fonts</a>
+    <a class="nb gold" href="/">Make My Font →</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">📝 Typography · Design · Tutorials</div>
+  <h1>The Vectrod<br><span class="h1g">Design Blog</span></h1>
+  <p>Typography tips, font recommendations, design tutorials, and guides to help you create better visual experiences.</p>
+</div>
+
+<!-- FEATURED -->
+<a class="featured" href="#article-best-fonts">
+  <div>
+    <div class="feat-badge">✦ FEATURED GUIDE</div>
+    <div class="feat-title">30 Best Free Fonts for 2025 — The Complete Designer's Guide</div>
+    <div class="feat-desc">We analyzed thousands of designs to curate the definitive list of free fonts every designer needs in 2025. From minimalist sans-serifs to expressive display fonts.</div>
+    <div class="feat-meta">
+      <span class="feat-date">March 2025</span>
+      <span class="article-sep">·</span>
+      <span class="feat-time">8 min read</span>
+      <span class="feat-tag">Free Fonts</span>
+    </div>
+  </div>
+  <div class="feat-visual">
+    <div class="feat-font-demo" style="font-family:'Playfair Display',serif">Playfair</div>
+    <div class="feat-font-sub">Display — Editorial</div>
+    <div style="height:1px;background:var(--br);margin:10px 0"></div>
+    <div class="feat-font-demo" style="font-family:'DM Sans',sans-serif;font-size:22px">DM Sans</div>
+    <div class="feat-font-sub">Sans-Serif — Modern</div>
+    <div style="height:1px;background:var(--br);margin:10px 0"></div>
+    <div class="feat-font-demo" style="font-family:'Bebas Neue',sans-serif;font-size:36px">BEBAS</div>
+    <div class="feat-font-sub">Display — Bold</div>
+  </div>
+</a>
+
+<!-- ARTICLE CARDS -->
+<div class="blog-header"><h2>All Articles</h2></div>
+<div class="blog-grid">
+  <a class="blog-card" href="#article-best-fonts">
+    <div class="bc-img" style="background:linear-gradient(135deg,rgba(240,192,96,.08),rgba(136,68,238,.06))">
+      <span style="font-family:'Playfair Display',serif;font-size:32px;color:var(--gold)">Aa</span>
+    </div>
+    <div class="bc-body">
+      <div class="bc-tags"><span class="bc-tag gold">Free Fonts</span><span class="bc-tag purple">2025</span></div>
+      <div class="bc-title">30 Best Free Fonts for Designers in 2025</div>
+      <div class="bc-desc">The definitive collection of free fonts that every designer needs — from elegant serifs to bold display fonts.</div>
+      <div class="bc-meta"><span class="bc-date">Mar 2025</span><span class="bc-read">8 min</span></div>
+    </div>
+  </a>
+  <a class="blog-card" href="#article-svg-to-font">
+    <div class="bc-img" style="background:linear-gradient(135deg,rgba(34,221,153,.06),rgba(51,136,255,.06))">
+      <span style="font-size:36px">⚡</span>
+    </div>
+    <div class="bc-body">
+      <div class="bc-tags"><span class="bc-tag green">Tutorial</span><span class="bc-tag blue">SVG</span></div>
+      <div class="bc-title">How to Convert SVG to a Font File: Complete Guide</div>
+      <div class="bc-desc">Step-by-step: turn any SVG design, logo, or hand-drawn letter into a professional TTF or OTF font.</div>
+      <div class="bc-meta"><span class="bc-date">Mar 2025</span><span class="bc-read">6 min</span></div>
+    </div>
+  </a>
+  <a class="blog-card" href="#article-pairing">
+    <div class="bc-img" style="background:linear-gradient(135deg,rgba(136,68,238,.08),rgba(51,136,255,.06))">
+      <span style="font-family:'Montserrat',sans-serif;font-size:22px;font-weight:800;color:var(--purple2)">A+B</span>
+    </div>
+    <div class="bc-body">
+      <div class="bc-tags"><span class="bc-tag purple">Pairing</span><span class="bc-tag blue">Typography</span></div>
+      <div class="bc-title">Font Pairing 101: How to Match Fonts Like a Pro</div>
+      <div class="bc-desc">The rules (and when to break them) for combining typefaces that work beautifully together.</div>
+      <div class="bc-meta"><span class="bc-date">Feb 2025</span><span class="bc-read">5 min</span></div>
+    </div>
+  </a>
+  <a class="blog-card" href="#article-logo-fonts">
+    <div class="bc-img" style="background:linear-gradient(135deg,rgba(240,192,96,.08),rgba(34,221,153,.04))">
+      <span style="font-family:'Cinzel',serif;font-size:24px;color:var(--gold);font-weight:700">LOGO</span>
+    </div>
+    <div class="bc-body">
+      <div class="bc-tags"><span class="bc-tag gold">Branding</span><span class="bc-tag green">Logo</span></div>
+      <div class="bc-title">Best Fonts for Logos and Brand Identity in 2025</div>
+      <div class="bc-desc">Which fonts make logos timeless? We analyze iconic brands and extract the typographic principles they share.</div>
+      <div class="bc-meta"><span class="bc-date">Feb 2025</span><span class="bc-read">7 min</span></div>
+    </div>
+  </a>
+  <a class="blog-card" href="#article-canva-fonts">
+    <div class="bc-img" style="background:linear-gradient(135deg,rgba(51,136,255,.08),rgba(136,68,238,.06))">
+      <span style="font-size:36px">🎨</span>
+    </div>
+    <div class="bc-body">
+      <div class="bc-tags"><span class="bc-tag blue">Canva</span><span class="bc-tag purple">Tutorial</span></div>
+      <div class="bc-title">How to Upload Custom Fonts to Canva (2025)</div>
+      <div class="bc-desc">A complete guide to adding your own fonts to Canva Pro — including how to convert SVG files to font format first.</div>
+      <div class="bc-meta"><span class="bc-date">Jan 2025</span><span class="bc-read">4 min</span></div>
+    </div>
+  </a>
+  <a class="blog-card" href="#article-web-fonts">
+    <div class="bc-img" style="background:linear-gradient(135deg,rgba(34,221,153,.07),rgba(136,68,238,.06))">
+      <span style="font-family:'Inter',sans-serif;font-size:28px;font-weight:700;color:var(--ok)">Web</span>
+    </div>
+    <div class="bc-body">
+      <div class="bc-tags"><span class="bc-tag green">Web Design</span><span class="bc-tag blue">Performance</span></div>
+      <div class="bc-title">Best Web Fonts for Performance & Readability 2025</div>
+      <div class="bc-desc">Fast-loading fonts that look great on all screens. We test load times and readability scores for the top web fonts.</div>
+      <div class="bc-meta"><span class="bc-date">Jan 2025</span><span class="bc-read">6 min</span></div>
+    </div>
+  </a>
+</div>
+
+<!-- FULL ARTICLE 1 -->
+<div class="article" id="article-best-fonts">
+  <div class="article-badge">✦ Featured Guide · Free Fonts · 2025</div>
+  <h2>30 Best Free Fonts for Designers in 2025</h2>
+  <div class="article-meta">
+    <span class="feat-date" style="font-size:11px;color:var(--mt);font-family:'DM Mono',monospace">March 2025</span>
+    <span class="article-sep">·</span>
+    <span class="feat-time" style="font-size:11px;color:var(--mt);font-family:'DM Mono',monospace">8 min read</span>
+    <span class="feat-time" style="font-size:11px;color:var(--mt);font-family:'DM Mono',monospace">All fonts: SIL Open Font License</span>
+  </div>
+
+  <p>The right font can transform a good design into a great one. But with thousands of options available, choosing is overwhelming. We've done the research for you — these are the <strong>30 free fonts that actually get used by professional designers</strong> in 2025, not just the most downloaded.</p>
+
+  <h3>The Best Free Sans-Serif Fonts</h3>
+  <p>Sans-serif fonts dominate digital design for good reason — they're clean, versatile, and render beautifully on screens. Here are the standouts you need to know.</p>
+
+  <div class="font-grid-mini">
+    <div class="fgm-item"><div class="fgm-name">Inter</div><div class="fgm-preview" style="font-family:'Inter',sans-serif">Aa Bb 123</div><span class="fgm-badge">UI Favorite</span></div>
+    <div class="fgm-item"><div class="fgm-name">Poppins</div><div class="fgm-preview" style="font-family:'Poppins',sans-serif">Aa Bb 123</div><span class="fgm-badge">Most Popular</span></div>
+    <div class="fgm-item"><div class="fgm-name">DM Sans</div><div class="fgm-preview" style="font-family:'DM Sans',sans-serif">Aa Bb 123</div><span class="fgm-badge">Modern</span></div>
+    <div class="fgm-item"><div class="fgm-name">Plus Jakarta Sans</div><div class="fgm-preview" style="font-family:'Plus Jakarta Sans',sans-serif">Aa Bb 123</div><span class="fgm-badge">Premium Feel</span></div>
+  </div>
+
+  <p><strong>Inter</strong> was designed specifically for computer screens. Its letterforms are optimized for legibility at small sizes, making it the go-to choice for UI design. Used by thousands of apps and websites globally, it's become the de facto standard for product interfaces. <strong>Poppins</strong> takes a different approach with its perfectly circular geometry — great for brands that want to feel modern and approachable.</p>
+
+  <div class="font-callout">
+    <span class="fc-icon">💡</span>
+    <div class="fc-txt">All fonts in this guide are available for free in our <a href="/fonts">font library</a>. Download any of them with one click — no signup required, commercial use allowed.</div>
+  </div>
+
+  <h3>The Best Free Serif Fonts</h3>
+  <p>Serif fonts are experiencing a renaissance in digital design. High-resolution displays now render fine details beautifully, and designers are rediscovering the warmth and authority that serifs bring to brands.</p>
+
+  <p><strong>Playfair Display</strong> remains the most impactful free serif for headlines. Its high contrast — thick strokes meeting hairline serifs — creates drama that no sans-serif can match. Pair it with any clean sans-serif body font and you've got an editorial aesthetic that communicates sophistication immediately.</p>
+
+  <p><strong>EB Garamond</strong> is the free alternative to the legendary Garamond typeface used in books for centuries. If you need a font that communicates "this is serious, well-researched content," Garamond is your answer. It's also remarkably economical — it sets more text per line than most serifs without sacrificing readability.</p>
+
+  <h3>The Best Free Display Fonts</h3>
+  <p>Display fonts are the showstoppers — designed for headlines, logos, and moments where personality matters more than neutrality. Use them sparingly and with intent.</p>
+
+  <p><strong>Bebas Neue</strong> is arguably the most downloaded font of the decade for a reason. Its condensed all-caps geometry communicates strength and modernity in a way that very few fonts achieve. It works for fitness brands, tech companies, posters, and anywhere you need impact without decoration. <strong>Cinzel</strong> takes the opposite approach — drawing from Roman inscriptions, it communicates authority, history, and premium positioning. Perfect for law firms, luxury brands, and editorial projects that need gravitas.</p>
+
+  <h3>The Best Free Script & Handwriting Fonts</h3>
+  <p>Script fonts require restraint — they're the seasoning of typography, not the main course. Used in headlines or for specific decorative elements, the best free options rival expensive paid alternatives.</p>
+
+  <p><strong>Dancing Script</strong> and <strong>Great Vibes</strong> remain the most versatile free scripts. Dancing Script's rhythm feels natural and contemporary, while Great Vibes leans more formal and calligraphic. For wedding invitations, beauty brands, or any context requiring elegance, these are your starting points.</p>
+
+  <div class="font-callout">
+    <span class="fc-icon">🔍</span>
+    <div class="fc-txt">Need to find a specific font and compare prices across MyFonts, FontSpring, and other retailers? Try our <a href="/find-font">Font Finder & Price Comparison tool</a> — free, instant, no signup.</div>
+  </div>
+
+  <h3>What Makes a Font "Good" for 2025?</h3>
+  <p>Beyond aesthetics, the best fonts in 2025 share practical characteristics: <strong>variable font support</strong> (one file, infinite weights), <strong>extensive language support</strong> (critical for global brands), <strong>screen optimization</strong> (hinting for small sizes), and <strong>open licensing</strong> that allows commercial use without ongoing fees.</p>
+
+  <p>The SIL Open Font License — used by all fonts in this guide — is particularly powerful. It permits modification and redistribution, meaning you can adapt fonts to your needs, embed them in apps and documents, and use them commercially without royalty payments.</p>
+</div>
+
+<!-- FULL ARTICLE 2 -->
+<div class="article" id="article-svg-to-font">
+  <div class="article-badge">✦ Tutorial · SVG · Font Creation</div>
+  <h2>How to Convert SVG to a Font File: Complete Guide 2025</h2>
+  <div class="article-meta">
+    <span style="font-size:11px;color:var(--mt);font-family:'DM Mono',monospace">March 2025</span>
+    <span class="article-sep">·</span>
+    <span style="font-size:11px;color:var(--mt);font-family:'DM Mono',monospace">6 min read</span>
+  </div>
+
+  <p>Creating a custom font used to require expensive software like FontLab ($499) or Glyphs ($300). In 2025, <strong>you can convert any SVG file to a professional TTF or OTF font for free</strong> — in under 60 seconds. Here's exactly how.</p>
+
+  <h3>What You Need Before Starting</h3>
+  <p>To convert SVG to font, you need SVG files of your letterforms or icons. These can come from: Canva (export as SVG), Adobe Illustrator (Save As SVG), Inkscape (free, export SVG), or any vector drawing app. Each SVG file should contain a single glyph — one letter, number, or symbol per file.</p>
+
+  <h3>Step 1: Prepare Your SVG Files</h3>
+  <p>The most common mistake is using SVGs with multiple paths that aren't united. Before uploading, <strong>merge all paths in your SVG into a single compound path</strong>. In Illustrator: select all paths, then Object → Compound Path → Make. In Inkscape: select all, then Path → Combine. This ensures your font renders correctly at all sizes.</p>
+
+  <h3>Step 2: Upload to Vectrod</h3>
+  <p>Upload your SVG files to our <a href="/" style="color:var(--gold);text-decoration:none;font-weight:600">free converter</a>. You can upload up to 86 characters at once — the full alphabet, numbers, and punctuation. Each file name should match the character it represents (e.g., "A.svg" for the letter A).</p>
+
+  <h3>Step 3: Download Your Font</h3>
+  <p>Within seconds, you'll receive a downloadable TTF and OTF font file. These work in every design application — Adobe Creative Suite, Canva Pro, Figma, Microsoft Office, and more. The font is yours to use commercially with no restrictions.</p>
+
+  <div class="font-callout">
+    <span class="fc-icon">⚡</span>
+    <div class="fc-txt">Ready to make your font? <a href="/">Try the free Vectrod SVG-to-Font converter</a>. No signup, no software download, instant results.</div>
+  </div>
+
+  <h3>Common Questions</h3>
+  <p><strong>Can I use the font commercially?</strong> Yes, fonts you create with Vectrod are yours. There are no usage restrictions on fonts you generate from your own artwork.</p>
+  <p><strong>What's the difference between TTF and OTF?</strong> TTF (TrueType Font) has slightly broader compatibility — it works everywhere, including older Windows and Office versions. OTF (OpenType Font) supports more advanced typographic features and is preferred for professional design work. When in doubt, use TTF.</p>
+  <p><strong>What if my SVG has issues?</strong> Our PNG-to-SVG converter can first vectorize images or photos before font conversion — useful if you're starting from hand-drawn lettering photographed on paper.</p>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-links">
+    <a href="/">Home</a><a href="/fonts">Free Fonts</a><a href="/pairing">Font Pairing</a>
+    <a href="/preview">Font Preview</a><a href="/find-font">Find Font</a>
+    <a href="/about">About</a><a href="/privacy">Privacy</a>
+  </div>
+  <div class="footer-copy">© 2025 Vectrod · Free Typography Tools · vectrod.com</div>
+</div>
+</div>
+<script>
+// Load preview fonts for article demos
+['Playfair Display','DM Sans','Inter','Poppins','Plus Jakarta Sans','Dancing Script','Cinzel','Bebas Neue'].forEach(f => {
+  const l = document.createElement('link');
+  l.rel='stylesheet';
+  l.href=`https://fonts.googleapis.com/css2?family=${encodeURIComponent(f)}:wght@400;700&display=swap`;
+  document.head.appendChild(l);
+});
+</script>
+</body>
+</html>
