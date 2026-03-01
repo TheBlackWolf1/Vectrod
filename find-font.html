@@ -75,9 +75,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 .main-inp{width:100%;background:var(--bg3);border:1.5px solid var(--br);border-radius:14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;padding:16px 16px 16px 48px;outline:none;transition:all .3s;letter-spacing:.01em}
 .main-inp:focus{border-color:var(--gold);box-shadow:0 0 0 4px var(--gO)}
 .main-inp::placeholder{color:var(--mt);font-weight:400;font-size:15px}
-.search-btn{background:linear-gradient(135deg,var(--gold3),var(--gold));border:none;border-radius:14px;color:#000;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;padding:16px 28px;cursor:pointer;transition:all .25s;white-space:nowrap;letter-spacing:.04em}
-.search-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(240,192,96,.3)}
-.search-btn:active{transform:translateY(0)}
+
+
+
 .suggestions{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
 .sug-lbl{font-size:10px;letter-spacing:.12em;color:var(--mt);text-transform:uppercase;font-family:'DM Mono',monospace;margin-right:4px;align-self:center}
 .sug{background:var(--bg3);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;padding:4px 12px;cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace}
@@ -146,6 +146,91 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 .toast{position:fixed;bottom:24px;right:24px;background:#06071a;border:1px solid rgba(34,221,153,.3);border-radius:13px;padding:12px 18px;font-size:13px;font-weight:600;color:var(--ok);z-index:9999;transform:translateY(70px);opacity:0;transition:all .32s var(--ease);backdrop-filter:blur(20px)}
 .toast.show{transform:translateY(0);opacity:1}
 @media(max-width:640px){.price-grid{grid-template-columns:1fr}.search-row{flex-direction:column}.main-inp{font-size:15px}}
+
+/* ANIMATED SEARCH BUTTON */
+.search-btn{
+  background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2),var(--gold3));
+  background-size:300% 300%;
+  border:none;border-radius:14px;color:#000;
+  font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;
+  padding:16px 28px;cursor:pointer;transition:all .3s;
+  white-space:nowrap;letter-spacing:.06em;
+  position:relative;overflow:hidden;
+  animation:btnGrad 3s ease infinite;
+  box-shadow:0 4px 20px rgba(240,192,96,.3);
+}
+@keyframes btnGrad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.search-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.25) 50%,transparent 100%);
+  transform:translateX(-100%);animation:btnShine 2.5s ease-in-out infinite;
+}
+@keyframes btnShine{50%{transform:translateX(100%)}}
+.search-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 8px 32px rgba(240,192,96,.45);}
+.search-btn:active{transform:translateY(-1px) scale(1.01);}
+
+/* IMAGE UPLOAD SECTION */
+.img-section{
+  background:var(--sf2);backdrop-filter:blur(28px);
+  border:1px solid var(--br);border-radius:22px;
+  padding:28px 32px;margin-bottom:32px;
+  transition:border-color .3s;
+}
+.img-section:hover{border-color:rgba(136,68,238,.2)}
+.img-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;user-select:none;
+}
+.img-toggle-left{display:flex;align-items:center;gap:12px}
+.img-toggle-icon{
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(136,68,238,.2),rgba(136,68,238,.05));
+  border:1px solid rgba(136,68,238,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.img-toggle-title{font-size:15px;font-weight:700;color:var(--tx)}
+.img-toggle-sub{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.06em;margin-top:2px}
+.img-toggle-badge{
+  background:linear-gradient(90deg,rgba(136,68,238,.15),rgba(51,136,255,.1));
+  border:1px solid rgba(136,68,238,.2);border-radius:100px;
+  color:var(--purple2);font-size:10px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;
+  font-family:'DM Mono',monospace;
+}
+.img-arrow{color:var(--mt);font-size:14px;transition:transform .3s}
+.img-arrow.open{transform:rotate(180deg)}
+.img-body{display:none;margin-top:20px}
+.img-body.show{display:block}
+.drop-zone{
+  border:2px dashed rgba(136,68,238,.25);border-radius:16px;
+  padding:40px 20px;text-align:center;cursor:pointer;
+  transition:all .3s;background:rgba(136,68,238,.03);
+  position:relative;
+}
+.drop-zone:hover,.drop-zone.drag{
+  border-color:var(--purple2);background:rgba(136,68,238,.07);
+}
+.drop-icon{font-size:40px;margin-bottom:12px;animation:dropPulse 2s ease-in-out infinite}
+@keyframes dropPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.drop-title{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.drop-sub{font-size:12px;color:var(--mt)}
+.drop-sub span{color:var(--purple2);font-weight:600;cursor:pointer}
+.drop-file{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.coming-soon-overlay{
+  position:absolute;inset:0;border-radius:14px;
+  background:rgba(2,3,13,.75);backdrop-filter:blur(4px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+}
+.cs-badge{
+  background:linear-gradient(90deg,var(--gold3),var(--gold));
+  color:#000;font-size:11px;font-weight:800;
+  letter-spacing:.15em;text-transform:uppercase;
+  padding:6px 18px;border-radius:100px;
+  font-family:'DM Mono',monospace;
+}
+.cs-txt{font-size:12px;color:var(--mt);text-align:center;max-width:280px;line-height:1.6}
+
 </style>
 </head>
 <body>
@@ -205,6 +290,42 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
       <button class="sug" onclick="quickSearch('Bodoni')">Bodoni</button>
       <button class="sug" onclick="quickSearch('Playfair Display')">Playfair Display</button>
       <button class="sug" onclick="quickSearch('Montserrat')">Montserrat</button>
+    </div>
+  </div>
+
+
+  <!-- IMAGE UPLOAD SECTION -->
+  <div class="img-section">
+    <div class="img-toggle" onclick="toggleImgSection()">
+      <div class="img-toggle-left">
+        <div class="img-toggle-icon">🔍</div>
+        <div>
+          <div class="img-toggle-title">Identify Font from Image</div>
+          <div class="img-toggle-sub">Upload a photo or screenshot — we'll find the font</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="img-toggle-badge">Coming Soon</span>
+        <span class="img-arrow" id="imgArrow">▾</span>
+      </div>
+    </div>
+    <div class="img-body" id="imgBody">
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-icon">🖼️</div>
+        <div class="drop-title">Drop your image here</div>
+        <div class="drop-sub">PNG, JPG, WEBP — or <span>click to browse</span></div>
+        <input type="file" class="drop-file" accept="image/*" disabled>
+        <div class="coming-soon-overlay">
+          <div class="cs-badge">✦ Coming Soon</div>
+          <div class="cs-txt">
+            AI-powered font detection is on the way!<br>
+            We'll analyze your image and find the exact font + free alternatives.
+          </div>
+          <div style="font-size:11px;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:.1em;margin-top:4px">
+            Need Claude API key → launching soon
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
