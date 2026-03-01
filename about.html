@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-281FJFCNEX');
+</script>
+<title>About Vectrod — Free SVG to Font Converter & Font Library</title>
+<meta name="description" content="Learn about Vectrod — the free online SVG to font converter. Our mission is to make professional font creation accessible to everyone, for free.">
+<meta name="keywords" content="about vectrod, free font converter, svg to ttf, font maker online, free font tools">
+<link rel="canonical" href="https://vectrod.com/about">
+<meta property="og:title" content="About Vectrod — Free Font Tools for Everyone">
+<meta property="og:description" content="Vectrod makes professional font creation free and accessible. Convert SVG to fonts, browse 1138+ free fonts, find fonts by image.">
+<meta property="og:url" content="https://vectrod.com/about">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="dark"]{--bg:#02030d;--bg3:#080918;--sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.07);--br:rgba(255,255,255,.07);--tx:#ede8ff;--mt:rgba(237,232,255,.45);--gold:#f0c060;--gold2:#ffe090;--purple2:#aa77ff;--blue2:#66aaff;--green:#22dd99;--ok:#22dd99;--gO:rgba(240,192,96,.1);--gP:rgba(136,68,238,.14);--gG:rgba(34,221,153,.1)}
+[data-theme="light"]{--bg:#f5f3ff;--bg3:#e8e4ff;--sf:rgba(255,255,255,.9);--sf2:rgba(255,255,255,.95);--br:rgba(60,20,180,.1);--tx:#08051e;--mt:rgba(8,5,30,.5);--gold:#9a6600;--gold2:#b87800;--purple2:#7744dd;--blue2:#3377ee;--green:#008855;--ok:#008855;--gO:rgba(154,102,0,.08);--gP:rgba(85,32,187,.1);--gG:rgba(0,136,85,.08)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;line-height:1.7;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+.bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);animation:orbF ease-in-out infinite alternate}
+.o1{width:600px;height:600px;top:-200px;left:-150px;background:radial-gradient(circle,rgba(136,68,238,.18) 0%,transparent 65%);animation-duration:24s}
+.o2{width:500px;height:500px;bottom:-150px;right:-100px;background:radial-gradient(circle,rgba(240,192,96,.14) 0%,transparent 65%);animation-duration:30s}
+@keyframes orbF{from{transform:translate(0,0)}to{transform:translate(40px,30px)}}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:28px 20px 100px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#aa77ff,#3388ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nav-r{display:flex;gap:7px;align-items:center}
+.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 14px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.gold{background:linear-gradient(90deg,#c09040,#f0c060);color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+/* HERO */
+.about-hero{text-align:center;margin-bottom:64px}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.18em;color:var(--ok);text-transform:uppercase;border:1px solid rgba(34,221,153,.2);padding:4px 14px;border-radius:100px;background:var(--gG);margin-bottom:20px;font-family:'DM Mono',monospace}
+.bdot{width:5px;height:5px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:bp 2s ease-in-out infinite}
+@keyframes bp{0%,100%{opacity:1}50%{opacity:.3}}
+.about-hero h1{font-family:'Cinzel',serif;font-size:clamp(28px,5vw,56px);font-weight:900;line-height:1.05;letter-spacing:.04em;margin-bottom:16px}
+.h1g{background:linear-gradient(90deg,var(--gold),var(--purple2),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.about-hero p{font-size:16px;color:var(--mt);max-width:580px;margin:0 auto;line-height:1.8}
+.about-hero strong{color:var(--tx)}
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:56px}
+.stat-card{background:var(--sf2);border:1px solid var(--br);border-radius:18px;padding:24px 20px;text-align:center;transition:all .25s}
+.stat-card:hover{border-color:rgba(240,192,96,.2);transform:translateY(-3px)}
+.stat-n{font-family:'Cinzel',serif;font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.stat-l{font-size:11px;color:var(--mt);letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace}
+/* TOOLS */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:56px}
+.tool-card{background:var(--sf);border:1px solid var(--br);border-radius:18px;padding:24px;transition:all .28s;text-decoration:none;display:block}
+.tool-card:hover{border-color:rgba(240,192,96,.2);transform:translateY(-4px);box-shadow:0 12px 40px rgba(136,68,238,.12)}
+.tool-icon{font-size:28px;margin-bottom:12px}
+.tool-name{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px}
+.tool-desc{font-size:13px;color:var(--mt);line-height:1.65}
+.tool-badge{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:var(--gG);color:var(--ok);border:1px solid rgba(34,221,153,.2)}
+/* STORY */
+.section{margin-bottom:56px}
+.section-title{font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--tx);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--br)}
+.section-title span{color:var(--gold)}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.story-card{background:var(--sf);border:1px solid var(--br);border-radius:16px;padding:22px}
+.story-icon{font-size:22px;margin-bottom:10px}
+.story-card h3{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:8px}
+.story-card p{font-size:13px;color:var(--mt);line-height:1.7}
+/* TRUST */
+.trust-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:56px}
+.trust-item{display:flex;align-items:center;gap:10px;background:var(--sf);border:1px solid var(--br);border-radius:13px;padding:14px 16px}
+.trust-ico{font-size:18px;flex-shrink:0}
+.trust-txt{font-size:12px;color:var(--mt);font-weight:600;line-height:1.4}
+/* CONTACT */
+.contact-box{background:linear-gradient(135deg,var(--sf2),var(--sf));border:1px solid rgba(240,192,96,.15);border-radius:20px;padding:36px;text-align:center}
+.contact-box h2{font-family:'Cinzel',serif;font-size:24px;font-weight:700;margin-bottom:10px;background:linear-gradient(90deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.contact-box p{font-size:14px;color:var(--mt);margin-bottom:24px;line-height:1.7}
+.contact-links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.cta-btn{padding:12px 28px;border-radius:12px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+.cta-primary{background:linear-gradient(90deg,#c09040,#f0c060);color:#000;border:none}
+.cta-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(240,192,96,.3)}
+.cta-secondary{background:var(--sf);border:1px solid var(--br);color:var(--tx)}
+.cta-secondary:hover{border-color:var(--gold);color:var(--gold)}
+/* FOOTER MINI */
+.footer-mini{text-align:center;margin-top:56px;padding-top:28px;border-top:1px solid var(--br)}
+.footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.footer-links a{font-size:11px;color:var(--mt);text-decoration:none}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:11px;color:var(--mt);opacity:.5}
+@media(max-width:640px){.stats-row{grid-template-columns:repeat(2,1fr)}.story-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="bg-scene">
+  <div class="orb o1"></div><div class="orb o2"></div>
+</div>
+<div class="wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <a class="logo-a" href="/">
+      <svg width="36" height="36" viewBox="0 0 46 46" fill="none">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#aa77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs>
+        <path d="M23 2 L42 23 L23 44 L4 23 Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/>
+        <path d="M7 10 L23 38 L39 10 L34 10 L23 30 L12 10 Z" fill="url(#lg)"/>
+        <path d="M23 2 L27 9 L23 13 L19 9 Z" fill="#f0c060"/>
+      </svg>
+      <div><div class="logo-n">VECTROD</div><div class="logo-s">Free Font Tools</div></div>
+    </a>
+    <div class="nav-r">
+      <button class="nb" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">☀</button>
+      <a class="nb" href="/fonts">Free Fonts</a>
+      <a class="nb" href="/find-font">Find Font</a>
+      <a class="nb gold" href="/">Make My Font →</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="about-hero">
+    <div class="hero-badge"><span class="bdot"></span>Our Story · Our Mission</div>
+    <h1>Free Font Tools<br><span class="h1g">For Everyone</span></h1>
+    <p>We believe professional typography shouldn't cost a fortune. <strong>Vectrod makes font creation, discovery, and comparison completely free</strong> — no signup, no limits, no tricks.</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-n">1,138+</div>
+      <div class="stat-l">Free Fonts</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-n">0 ₺</div>
+      <div class="stat-l">Cost Forever</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-n">3</div>
+      <div class="stat-l">Font Sources</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-n">SIL OFL</div>
+      <div class="stat-l">Open License</div>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <div class="section">
+    <div class="section-title"><span>01</span> Our Tools</div>
+    <div class="tools-grid">
+      <a class="tool-card" href="/">
+        <div class="tool-icon">⚡</div>
+        <div class="tool-name">SVG → Font Converter</div>
+        <div class="tool-desc">Convert any SVG file into a professional TTF or OTF font. Works with Canva designs, hand-drawn letters, icons, and logos.</div>
+        <span class="tool-badge">✓ Completely Free</span>
+      </a>
+      <a class="tool-card" href="/fonts">
+        <div class="tool-icon">✦</div>
+        <div class="tool-name">Free Font Library</div>
+        <div class="tool-desc">Browse and download 1,138+ open-source fonts from Google Fonts, Fontshare, and League of Moveable Type. All SIL licensed.</div>
+        <span class="tool-badge">✓ 1,138+ Fonts</span>
+      </a>
+      <a class="tool-card" href="/find-font">
+        <div class="tool-icon">🔍</div>
+        <div class="tool-name">Font Finder & Price Comparison</div>
+        <div class="tool-desc">Search any font by name. We show you where to buy it cheapest and suggest free alternatives — saving you money.</div>
+        <span class="tool-badge">✓ Price Comparison</span>
+      </a>
+      <a class="tool-card" href="/">
+        <div class="tool-icon">🖼️</div>
+        <div class="tool-name">PNG → SVG Converter</div>
+        <div class="tool-desc">Convert raster images (PNG, JPG, WEBP) to clean SVG vector files. Perfect preparation for font creation.</div>
+        <span class="tool-badge">✓ AI-Powered</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- STORY -->
+  <div class="section">
+    <div class="section-title"><span>02</span> Our Story</div>
+    <div class="story-grid">
+      <div class="story-card">
+        <div class="story-icon">💡</div>
+        <h3>The Problem We Solve</h3>
+        <p>Creating custom fonts used to require expensive software like FontLab or Glyphs, costing hundreds of dollars. We built Vectrod to change that — making font creation free and instant for everyone.</p>
+      </div>
+      <div class="story-card">
+        <div class="story-icon">🎯</div>
+        <h3>Our Mission</h3>
+        <p>Typography is fundamental to design. We believe every designer, student, hobbyist, and creator deserves access to professional font tools without financial barriers.</p>
+      </div>
+      <div class="story-card">
+        <div class="story-icon">🔓</div>
+        <h3>Open Source Philosophy</h3>
+        <p>All fonts in our library are under open licenses (SIL OFL, Apache 2.0). We support the open source typography community and give back by making our tools free.</p>
+      </div>
+      <div class="story-card">
+        <div class="story-icon">🚀</div>
+        <h3>What's Coming Next</h3>
+        <p>AI-powered font identification from images, more font sources, font pairing suggestions, and SVG-to-variable-font conversion. We're just getting started.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST -->
+  <div class="section">
+    <div class="section-title"><span>03</span> Why Trust Us</div>
+    <div class="trust-grid">
+      <div class="trust-item"><span class="trust-ico">🔒</span><div class="trust-txt">SSL Encrypted<br>All connections secured</div></div>
+      <div class="trust-item"><span class="trust-ico">🗑️</span><div class="trust-txt">Files Auto-Deleted<br>No permanent storage</div></div>
+      <div class="trust-item"><span class="trust-ico">👤</span><div class="trust-txt">No Account Needed<br>Anonymous usage</div></div>
+      <div class="trust-item"><span class="trust-ico">📊</span><div class="trust-txt">Google Analytics<br>Anonymized only</div></div>
+      <div class="trust-item"><span class="trust-ico">💰</span><div class="trust-txt">No Data Sold<br>Ever, to anyone</div></div>
+      <div class="trust-item"><span class="trust-ico">⚡</span><div class="trust-txt">Free Forever<br>No hidden costs</div></div>
+      <div class="trust-item"><span class="trust-ico">📋</span><div class="trust-txt">Clear Privacy Policy<br>Transparent practices</div></div>
+      <div class="trust-item"><span class="trust-ico">🌍</span><div class="trust-txt">GDPR Compliant<br>EU privacy respected</div></div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="contact-box">
+    <h2>Get In Touch</h2>
+    <p>Have questions, suggestions, or want to collaborate?<br>We'd love to hear from you.</p>
+    <div class="contact-links">
+      <a class="cta-btn cta-primary" href="mailto:contact@vectrod.com">✉ contact@vectrod.com</a>
+      <a class="cta-btn cta-secondary" href="/">⚡ Try SVG → Font</a>
+      <a class="cta-btn cta-secondary" href="/fonts">✦ Browse Fonts</a>
+    </div>
+  </div>
+
+  <!-- FOOTER MINI -->
+  <div class="footer-mini">
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/fonts">Free Fonts</a>
+      <a href="/find-font">Find Font</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms of Service</a>
+    </div>
+    <div class="footer-copy">© 2025 Vectrod · Made with ♥ for the design community</div>
+  </div>
+
+</div>
+</body>
+</html>
