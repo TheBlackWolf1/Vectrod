@@ -125,6 +125,15 @@ class Handler(BaseHTTPRequestHandler):
         elif path == '/about':
             self.serve_static('about.html', 'text/html')
 
+        elif path == '/pairing':
+            self.serve_static('pairing.html', 'text/html')
+
+        elif path == '/preview':
+            self.serve_static('preview.html', 'text/html')
+
+        elif path == '/blog':
+            self.serve_static('blog.html', 'text/html')
+
         elif path == '/sitemap.xml':
             self.serve_static('sitemap.xml', 'application/xml')
 
