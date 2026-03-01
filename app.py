@@ -119,6 +119,12 @@ class Handler(BaseHTTPRequestHandler):
         elif path == '/fonts':
             self.serve_static('fonts.html', 'text/html')
 
+        elif path == '/privacy':
+            self.serve_static('privacy.html', 'text/html')
+
+        elif path == '/terms':
+            self.serve_static('terms.html', 'text/html')
+
         elif path == '/api/fonts':
             self.handle_fonts_api()
 
@@ -139,28 +145,43 @@ class Handler(BaseHTTPRequestHandler):
             self.send_error(404)
 
     def handle_fonts_api(self):
-        """Backend proxy for Google Fonts API — avoids CORS issues"""
-        import urllib.request, urllib.error, json as _json
+        """Font listesini döndür — önce embedded DB, sonra Google API bonus"""
+        import urllib.request, json as _json
         GKEY = 'AIzaSyAkLMad9aRgv6wEAyYhe4xUrzHlyfvJu_o'
+
+        # Embedded font database — her zaman çalışır
+        try:
+            db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'font_db.py')
+            import importlib.util
+            spec = importlib.util.spec_from_file_location('font_db', db_path)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            fonts = mod.get_all_fonts()
+        except Exception as e:
+            print(f'[FONT DB ERROR] {e}')
+            fonts = []
+
+        # Google API'den ek fontlar çekmeyi dene (bonus)
         try:
             url = f'https://www.googleapis.com/webfonts/v1/webfonts?key={GKEY}&sort=popularity'
             req = urllib.request.Request(url, headers={'User-Agent': 'Vectrod/1.0'})
-            with urllib.request.urlopen(req, timeout=15) as r:
-                raw = r.read()
-            data = _json.loads(raw)
-            fonts = []
+            with urllib.request.urlopen(req, timeout=8) as r:
+                data = _json.loads(r.read())
+            existing = {f['family'] for f in fonts}
             for i, f in enumerate(data.get('items', [])):
-                fonts.append({
-                    'family': f['family'],
-                    'category': f['category'],
-                    'variants': f.get('variants', []),
-                    'files': f.get('files', {}),
-                    'pop': i
-                })
-            self.json_resp({'success': True, 'fonts': fonts, 'total': len(fonts)})
+                if f['family'] not in existing:
+                    fonts.append({
+                        'family': f['family'],
+                        'category': f['category'],
+                        'source': 'google',
+                        'files': f.get('files', {}),
+                        'pop': i + 1000
+                    })
+            print(f'[FONTS API] Google bonus loaded, total: {len(fonts)}')
         except Exception as e:
-            print(f'[FONTS API ERROR] {e}')
-            self.json_resp({'success': False, 'error': str(e)}, 500)
+            print(f'[FONTS API] Google API unavailable (using embedded DB): {e}')
+
+        self.json_resp({'success': True, 'fonts': fonts, 'total': len(fonts)})
 
     def serve_static(self, filename, mime):
         filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
