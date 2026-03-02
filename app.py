@@ -143,6 +143,12 @@ class Handler(BaseHTTPRequestHandler):
         elif path == '/license-checker':
             self.serve_static('license-checker.html', 'text/html')
 
+        elif path == '/font-size':
+            self.serve_static('font-size.html', 'text/html')
+
+        elif path == '/variable-fonts':
+            self.serve_static('variable-fonts.html', 'text/html')
+
         elif path == '/sitemap.xml':
             self.serve_static('sitemap.xml', 'application/xml')
 
@@ -253,6 +259,8 @@ class Handler(BaseHTTPRequestHandler):
             self.handle_png_to_svg()
         elif path == '/ai-generate':
             self.handle_ai_generate()
+        elif path == '/api/font-license':
+            self.handle_font_license()
         elif path == '/fonts':
             self.serve_fonts_page()
         else:
@@ -264,6 +272,89 @@ class Handler(BaseHTTPRequestHandler):
         body = self.rfile.read(length)
         return parse_multipart(body, ctype)
 
+
+    def handle_font_license(self):
+        """AI-powered font license checker — Anthropic API"""
+        try:
+            import urllib.request as urlreq
+            length = int(self.headers.get('Content-Length', 0))
+            body = self.rfile.read(length)
+            data = json.loads(body.decode('utf-8'))
+            font_name = data.get('font', '').strip()
+
+            if not font_name:
+                self.json_resp({'error': 'Font name required'}, 400)
+                return
+
+            api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+            if not api_key:
+                self.json_resp({'error': 'API key not configured'}, 500)
+                return
+
+            prompt = f"""You are a font licensing expert with deep knowledge of ALL fonts worldwide.
+
+Font to check: "{font_name}"
+
+Respond ONLY with a valid JSON object. No markdown, no extra text:
+
+{{
+  "found": true,
+  "name": "exact official font name",
+  "foundry": "foundry or designer",
+  "license_type": "SIL OFL 1.1",
+  "license_category": "free",
+  "commercial": true,
+  "web_use": true,
+  "pdf_embed": true,
+  "modify": true,
+  "logo_branding": true,
+  "app_embed": true,
+  "source_name": "Google Fonts",
+  "source_url": "https://fonts.google.com/...",
+  "summary": "2-3 sentence expert summary of this font's license, restrictions, and any free alternatives if it's paid.",
+  "free_alternatives": ["Alt1", "Alt2"]
+}}
+
+license_category must be: "free", "paid", "personal", or "proprietary"
+Set found:false ONLY if this is completely unrecognizable as a real font.
+For DaFont fonts: most are "personal" (free personal use only, paid commercial).
+For Google Fonts: always "free" (SIL OFL or Apache 2.0).
+Be accurate. Respond with ONLY the JSON."""
+
+            payload = json.dumps({
+                "model": "claude-opus-4-5",
+                "max_tokens": 600,
+                "messages": [{"role": "user", "content": prompt}]
+            }).encode('utf-8')
+
+            req = urlreq.Request(
+                'https://api.anthropic.com/v1/messages',
+                data=payload,
+                headers={
+                    'Content-Type': 'application/json',
+                    'x-api-key': api_key,
+                    'anthropic-version': '2023-06-01'
+                },
+                method='POST'
+            )
+
+            with urlreq.urlopen(req, timeout=15) as resp:
+                resp_data = json.loads(resp.read().decode('utf-8'))
+
+            raw = ''.join(b.get('text', '') for b in resp_data.get('content', []))
+            # Extract JSON from response
+            import re as _re
+            m = _re.search(r'\{[\s\S]*\}', raw)
+            if not m:
+                self.json_resp({'error': 'Could not parse AI response'}, 500)
+                return
+
+            result = json.loads(m.group(0))
+            self.json_resp({'success': True, 'result': result})
+
+        except Exception as e:
+            print(f'[FONT-LICENSE ERROR] {e}')
+            self.json_resp({'error': str(e)}, 500)
 
     def handle_ai_generate(self):
         """AI ile prompt'tan font üret"""
