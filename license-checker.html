@@ -5,402 +5,472 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
-<title>Font License Checker — Is This Font Free for Commercial Use? | Vectrod</title>
-<meta name="description" content="Check if any font is safe for commercial use. Instantly see font licenses — SIL OFL, Apache, proprietary, free for personal use only. 500+ fonts checked.">
-<meta name="keywords" content="font license checker, is font free commercial use, font copyright check, SIL OFL fonts, free fonts commercial use, font licensing guide 2025">
+<title>Font License Checker — Any Font, Instant Result | Vectrod</title>
+<meta name="description" content="Check the license of ANY font instantly. Commercial use, web embedding, PDF rights — get the full picture in seconds. Powered by AI.">
+<meta name="keywords" content="font license checker, is font free commercial use, font copyright check, SIL OFL fonts, free fonts commercial use, helvetica license, gotham font license, futura commercial use">
 <link rel="canonical" href="https://vectrod.com/license-checker">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800;900&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ease:cubic-bezier(.16,1,.3,1)}
-[data-theme="dark"]{--bg:#02030d;--bg3:#080918;--sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.07);--br:rgba(255,255,255,.08);--tx:#ede8ff;--mt:rgba(237,232,255,.45);--gold:#f0c060;--gold3:#c09040;--purple2:#aa77ff;--blue2:#66aaff;--ok:#22dd99;--gO:rgba(240,192,96,.1);--gP:rgba(136,68,238,.14);--gG:rgba(34,221,153,.1)}
-[data-theme="light"]{--bg:#f7f6ff;--bg3:#edeaff;--sf:rgba(255,255,255,.9);--sf2:rgba(255,255,255,.97);--br:rgba(80,40,200,.1);--tx:#08051e;--mt:rgba(8,5,30,.5);--gold:#9a6600;--gold3:#7a5000;--purple2:#7744dd;--blue2:#3377ee;--ok:#008855;--gO:rgba(154,102,0,.07)}
+:root{--bg:#050610;--bg2:#0a0c1e;--bg3:#0f1128;--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);--tx:#f0eeff;--muted:rgba(240,238,255,.4);--gold:#f0c060;--green:#1ddd88;--red:#ff5566;--amber:#ffaa33;--purple:#aa77ff;--blue:#5599ff;--ease:cubic-bezier(.16,1,.3,1)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
-.bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.orb{position:absolute;border-radius:50%;filter:blur(130px);animation:orbF ease-in-out infinite alternate}
-.o1{width:600px;height:600px;top:-200px;right:-100px;background:radial-gradient(circle,rgba(34,221,153,.12) 0%,transparent 65%);animation-duration:30s}
-.o2{width:500px;height:500px;bottom:-150px;left:-100px;background:radial-gradient(circle,rgba(136,68,238,.12) 0%,transparent 65%);animation-duration:26s}
-@keyframes orbF{from{transform:translate(0,0)}to{transform:translate(40px,30px)}}
-.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:28px 20px 100px}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:12px}
+body{background:var(--bg);color:var(--tx);font-family:'Instrument Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+.bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(85,153,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(85,153,255,.035) 1px,transparent 1px);background-size:48px 48px}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;animation:drift ease-in-out infinite alternate}
+.o1{width:700px;height:700px;top:-200px;left:-200px;background:radial-gradient(circle,rgba(29,221,136,.1) 0%,transparent 65%);animation-duration:22s}
+.o2{width:500px;height:500px;top:30%;right:-150px;background:radial-gradient(circle,rgba(85,153,255,.12) 0%,transparent 65%);animation-duration:28s}
+.o3{width:600px;height:600px;bottom:-200px;left:20%;background:radial-gradient(circle,rgba(170,119,255,.08) 0%,transparent 65%);animation-duration:35s}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(30px,25px)}}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:28px 20px 100px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:60px;flex-wrap:wrap;gap:12px}
 .logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#aa77ff,#3388ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
-.nav-r{display:flex;gap:8px}
-.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace;display:inline-flex;align-items:center;white-space:nowrap}
-.nb:hover{border-color:var(--gold);color:var(--gold)}
-.nb.cta{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
-/* HERO */
-.hero{text-align:center;margin-bottom:44px}
-.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.18em;color:var(--ok);text-transform:uppercase;border:1px solid rgba(34,221,153,.2);padding:4px 16px;border-radius:100px;background:var(--gG);margin-bottom:16px;font-family:'DM Mono',monospace}
-.bdot{width:5px;height:5px;border-radius:50%;background:var(--ok);animation:bp 2s ease-in-out infinite}
-@keyframes bp{0%,100%{opacity:1}50%{opacity:.3}}
-.hero h1{font-family:'Cinzel',serif;font-size:clamp(24px,4.5vw,52px);font-weight:900;line-height:1.05;margin-bottom:12px}
-.h1g{background:linear-gradient(90deg,var(--ok),var(--blue2),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:15px;color:var(--mt);max-width:520px;margin:0 auto;line-height:1.8}
+.logo-n{font-family:'Syne',sans-serif;font-size:19px;font-weight:900;letter-spacing:.12em;background:linear-gradient(90deg,#f0c060,#aa77ff,#1ddd88);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-sub{font-size:9px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nav-pills{display:flex;gap:8px}
+.pill{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted);font-size:11px;padding:7px 14px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace;white-space:nowrap}
+.pill:hover{border-color:var(--gold);color:var(--gold)}
+.pill.cta{background:linear-gradient(90deg,#c09040,#f0c060);color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+.hero{text-align:center;margin-bottom:52px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.2em;color:var(--green);text-transform:uppercase;border:1px solid rgba(29,221,136,.2);padding:5px 18px;border-radius:100px;background:rgba(29,221,136,.05);margin-bottom:20px;font-family:'DM Mono',monospace}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,62px);font-weight:900;line-height:1;letter-spacing:-.02em;margin-bottom:14px}
+.h1-line1{display:block;color:var(--tx)}
+.h1-line2{display:block;background:linear-gradient(90deg,var(--green),var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto;line-height:1.8}
+.ai-tag{display:inline-flex;align-items:center;gap:6px;font-size:9px;color:var(--purple);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;background:rgba(170,119,255,.07);border:1px solid rgba(170,119,255,.15);padding:3px 10px;border-radius:100px;margin-top:10px}
 /* SEARCH */
-.search-box{max-width:600px;margin:0 auto 44px;position:relative}
-.search-inp{width:100%;background:var(--sf2);border:2px solid var(--br);border-radius:18px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:16px;padding:16px 56px 16px 22px;outline:none;transition:border-color .25s}
-.search-inp:focus{border-color:rgba(34,221,153,.3)}
-.search-ico{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:20px;pointer-events:none;opacity:.35}
+.search-wrap{max-width:640px;margin:0 auto 48px;position:relative}
+.search-outer{position:relative;background:var(--bg3);border:2px solid var(--border2);border-radius:20px;transition:border-color .25s,box-shadow .25s;overflow:hidden}
+.search-outer:focus-within{border-color:rgba(29,221,136,.35);box-shadow:0 0 0 4px rgba(29,221,136,.06),0 24px 60px rgba(0,0,0,.5)}
+.search-inner{display:flex;align-items:center;padding:6px 8px 6px 20px;gap:8px}
+.search-ico{font-size:18px;flex-shrink:0;opacity:.35}
+.search-inp{flex:1;background:none;border:none;outline:none;color:var(--tx);font-family:'Instrument Sans',sans-serif;font-size:17px;padding:10px 0}
+.search-inp::placeholder{color:var(--muted)}
+.search-btn{background:linear-gradient(135deg,var(--green),rgba(85,153,255,.8));border:none;border-radius:14px;color:#000;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.06em;padding:10px 20px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.search-btn:hover{opacity:.88;transform:scale(.98)}
+.search-hint{text-align:center;font-size:11px;color:var(--muted);margin-top:10px;font-family:'DM Mono',monospace;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.hint-chip{background:rgba(255,255,255,.04);border:1px solid var(--border);padding:3px 10px;border-radius:100px;cursor:pointer;transition:all .2s}
+.hint-chip:hover{border-color:var(--green);color:var(--green)}
 /* RESULT */
-.result-card{background:var(--sf2);border:2px solid var(--br);border-radius:24px;padding:0;overflow:hidden;margin-bottom:32px;transition:all .3s;animation:cIn .3s var(--ease) both}
-@keyframes cIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.result-header{padding:28px 28px 20px;border-bottom:1px solid var(--br)}
-.result-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
-.result-name{font-family:'Cinzel',serif;font-size:28px;font-weight:700;color:var(--tx)}
-.result-cat{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
-.license-badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;padding:10px 20px;border-radius:100px;font-family:'DM Mono',monospace;letter-spacing:.06em}
-.license-badge.free{background:rgba(34,221,153,.1);color:var(--ok);border:2px solid rgba(34,221,153,.25)}
-.license-badge.personal{background:rgba(240,192,96,.1);color:var(--gold);border:2px solid rgba(240,192,96,.25)}
-.license-badge.paid{background:var(--gP);color:var(--purple2);border:2px solid rgba(136,68,238,.25)}
-.license-badge.proprietary{background:rgba(255,100,100,.08);color:#ff8888;border:2px solid rgba(255,100,100,.2)}
-/* USAGE GRID */
-.usage-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;padding:24px 28px}
-.usage-item{display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:16px 12px;text-align:center}
-.usage-icon{font-size:22px}
-.usage-label{font-size:11px;font-weight:700;color:var(--tx)}
-.usage-status{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.07em;padding:3px 9px;border-radius:100px}
-.usage-status.yes{background:var(--gG);color:var(--ok);border:1px solid rgba(34,221,153,.2)}
-.usage-status.no{background:rgba(255,80,80,.08);color:#ff8888;border:1px solid rgba(255,80,80,.2)}
-.usage-status.check{background:var(--gO);color:var(--gold);border:1px solid rgba(240,192,96,.2)}
-/* DETAILS */
-.result-details{padding:0 28px 24px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:600px){.result-details{grid-template-columns:1fr}}
-.detail-box{background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:16px}
-.detail-label{font-size:9px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
-.detail-val{font-size:13px;color:var(--tx);font-weight:600;line-height:1.5}
-.detail-val a{color:var(--blue2);text-decoration:none}
+#resultArea{min-height:10px}
+.result-wrap{animation:slideUp .35s var(--ease) both;margin-bottom:32px}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.result-card{border-radius:24px;overflow:hidden;border:2px solid var(--border2);background:var(--bg2);position:relative}
+.result-glow{position:absolute;top:0;left:0;right:0;height:2px}
+.result-glow.free{background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.result-glow.paid{background:linear-gradient(90deg,transparent,var(--amber),transparent)}
+.result-glow.proprietary{background:linear-gradient(90deg,transparent,var(--red),transparent)}
+.result-glow.personal{background:linear-gradient(90deg,transparent,var(--amber),transparent)}
+.result-head{padding:28px 28px 22px;display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.result-headleft{flex:1;min-width:200px}
+.result-name{font-family:'Syne',sans-serif;font-size:30px;font-weight:900;letter-spacing:-.01em;color:var(--tx);margin-bottom:4px}
+.result-foundry{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.08em}
+.result-license-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;padding:10px 22px;border-radius:100px;flex-shrink:0}
+.rlb-free{background:rgba(29,221,136,.1);color:var(--green);border:2px solid rgba(29,221,136,.25)}
+.rlb-paid{background:rgba(255,170,51,.08);color:var(--amber);border:2px solid rgba(255,170,51,.2)}
+.rlb-proprietary{background:rgba(255,85,102,.06);color:var(--red);border:2px solid rgba(255,85,102,.18)}
+.rlb-personal{background:rgba(255,170,51,.08);color:var(--amber);border:2px solid rgba(255,170,51,.2)}
+.usage-matrix{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;padding:20px 24px;border-bottom:1px solid var(--border)}
+.usage-cell{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.uc-icon{font-size:20px}
+.uc-label{font-size:11px;font-weight:600;color:var(--tx)}
+.uc-status{font-size:10px;font-family:'DM Mono',monospace;padding:2px 10px;border-radius:100px;font-weight:700}
+.ucs-yes{background:rgba(29,221,136,.1);color:var(--green);border:1px solid rgba(29,221,136,.2)}
+.ucs-no{background:rgba(255,85,102,.08);color:var(--red);border:1px solid rgba(255,85,102,.2)}
+.ucs-check{background:rgba(255,170,51,.08);color:var(--amber);border:1px solid rgba(255,170,51,.2)}
+.result-body{padding:20px 24px 24px}
+.ai-note{font-size:14px;color:rgba(240,238,255,.72);line-height:1.85;margin-bottom:18px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+.detail-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px}
+.detail-box{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.detail-lbl{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.detail-val{font-size:13px;font-weight:600;color:var(--tx);line-height:1.5}
+.detail-val a{color:var(--blue);text-decoration:none}
 .detail-val a:hover{text-decoration:underline}
-/* LICENSE GUIDE */
-.guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:44px}
-.guide-card{border-radius:18px;padding:22px;border:2px solid}
-.guide-card.ofl{background:rgba(34,221,153,.04);border-color:rgba(34,221,153,.15)}
-.guide-card.apache{background:rgba(51,136,255,.04);border-color:rgba(51,136,255,.15)}
-.guide-card.personal{background:rgba(240,192,96,.04);border-color:rgba(240,192,96,.15)}
-.guide-card.proprietary{background:rgba(255,80,80,.04);border-color:rgba(255,80,80,.12)}
-.guide-icon{font-size:28px;margin-bottom:10px}
-.guide-name{font-size:16px;font-weight:800;color:var(--tx);margin-bottom:6px}
-.guide-desc{font-size:13px;color:var(--mt);line-height:1.7;margin-bottom:12px}
-.guide-perms{display:flex;flex-direction:column;gap:4px}
-.guide-perm{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--mt)}
-.perm-y{color:var(--ok)}
-.perm-n{color:#ff8888}
-.perm-m{color:var(--gold)}
-/* POPULAR CHECK */
-.popular-section{margin-bottom:44px}
-.section-title{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px}
-.pop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
-.pop-item{background:var(--sf);border:1px solid var(--br);border-radius:14px;padding:12px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:space-between}
-.pop-item:hover{border-color:rgba(34,221,153,.2);transform:translateY(-2px)}
-.pop-name{font-size:13px;font-weight:700;color:var(--tx)}
-.pop-lic{font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.07em;padding:2px 8px;border-radius:100px}
-.pop-lic.free{background:var(--gG);color:var(--ok);border:1px solid rgba(34,221,153,.2)}
-.pop-lic.paid{background:var(--gP);color:var(--purple2);border:1px solid rgba(136,68,238,.2)}
-/* NO RESULT */
-.no-result{text-align:center;padding:48px;background:var(--sf);border:1px solid var(--br);border-radius:20px;margin-bottom:32px;display:none}
-.no-result.show{display:block}
-/* SEO */
-.seo-box{background:var(--sf);border:1px solid var(--br);border-radius:20px;padding:36px;margin-top:60px}
-.seo-box h2{font-family:'Cinzel',serif;font-size:22px;font-weight:700;margin-bottom:14px;background:linear-gradient(90deg,var(--ok),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.seo-box h3{font-size:15px;font-weight:700;color:var(--tx);margin:20px 0 7px}
-.seo-box p{font-size:13px;color:var(--mt);line-height:1.85;margin-bottom:10px}
+.alt-box{border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.alt-box.free{background:rgba(29,221,136,.05);border:1px solid rgba(29,221,136,.15)}
+.alt-box.paid{background:rgba(170,119,255,.04);border:1px solid rgba(170,119,255,.15)}
+.alt-box-text{flex:1;min-width:160px;font-size:13px;color:var(--muted);line-height:1.6}
+.alt-box-link{background:var(--green);color:#000;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;padding:8px 18px;border-radius:100px;text-decoration:none;white-space:nowrap;transition:opacity .2s;flex-shrink:0}
+.alt-box-link:hover{opacity:.85}
+.alt-box-link.purple{background:var(--purple)}
+/* LOADING */
+.loading-card{background:var(--bg2);border:2px solid var(--border2);border-radius:24px;padding:44px 28px;text-align:center;animation:slideUp .3s var(--ease) both}
+.loading-spinner{width:40px;height:40px;border-radius:50%;border:3px solid rgba(29,221,136,.15);border-top-color:var(--green);animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-font-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:900;color:var(--tx);margin-bottom:6px}
+.loading-status{font-size:13px;color:var(--muted);font-family:'DM Mono',monospace}
+.loading-dots::after{content:'';animation:dots 1.5s steps(4,end) infinite}
+@keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}100%{content:''}}
+/* ERROR */
+.error-card{background:rgba(255,85,102,.05);border:1px solid rgba(255,85,102,.15);border-radius:20px;padding:32px;text-align:center;animation:slideUp .3s var(--ease) both}
+.error-ico{font-size:32px;margin-bottom:10px}
+.error-title{font-size:17px;font-weight:700;color:var(--red);margin-bottom:6px}
+.error-msg{font-size:13px;color:var(--muted);line-height:1.7}
+/* GUIDE */
+.guide-section{margin-bottom:52px}
+.section-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.guide-card{border-radius:16px;padding:18px;border:1.5px solid;transition:transform .2s}
+.guide-card:hover{transform:translateY(-2px)}
+.gc-ofl{background:rgba(29,221,136,.03);border-color:rgba(29,221,136,.15)}
+.gc-apache{background:rgba(85,153,255,.03);border-color:rgba(85,153,255,.15)}
+.gc-personal{background:rgba(255,170,51,.03);border-color:rgba(255,170,51,.15)}
+.gc-proprietary{background:rgba(255,85,102,.03);border-color:rgba(255,85,102,.12)}
+.gc-icon{font-size:24px;margin-bottom:8px}
+.gc-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--tx);margin-bottom:4px}
+.gc-desc{font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:10px}
+.gc-perms{display:flex;flex-direction:column;gap:3px}
+.gc-perm{font-size:11px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.perm-y{color:var(--green)}.perm-n{color:var(--red)}.perm-w{color:var(--amber)}
+/* POPULAR */
+.popular-grid{display:flex;flex-wrap:wrap;gap:7px}
+.pop-chip{background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:7px 14px;cursor:pointer;font-size:12px;color:var(--muted);transition:all .2s;display:flex;align-items:center;gap:7px}
+.pop-chip:hover{border-color:var(--green);color:var(--tx);transform:translateY(-1px)}
+.pop-dot{width:5px;height:5px;border-radius:50%}
+.pop-dot.free{background:var(--green)}.pop-dot.paid{background:var(--amber)}.pop-dot.proprietary{background:var(--red)}
 /* FOOTER */
-.footer{text-align:center;margin-top:60px;padding-top:24px;border-top:1px solid var(--br)}
+.footer{text-align:center;padding-top:24px;border-top:1px solid var(--border)}
 .footer-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
-.footer-links a{font-size:11px;color:var(--mt);text-decoration:none}
+.footer-links a{font-size:11px;color:var(--muted);text-decoration:none}
 .footer-links a:hover{color:var(--gold)}
-.footer-copy{font-size:11px;color:var(--mt);opacity:.5}
+.footer-copy{font-size:11px;color:var(--muted);opacity:.4;line-height:1.7}
+@media(max-width:600px){.result-head{flex-direction:column}.usage-matrix{grid-template-columns:repeat(3,1fr)}.hero h1{font-size:clamp(24px,8vw,42px)}}
 </style>
 </head>
 <body>
-<div class="bg-scene"><div class="orb o1"></div><div class="orb o2"></div></div>
+<div class="bg-canvas">
+  <div class="bg-grid"></div>
+  <div class="bg-orb o1"></div>
+  <div class="bg-orb o2"></div>
+  <div class="bg-orb o3"></div>
+</div>
+
 <div class="wrap">
-
-<div class="topbar">
-  <a class="logo-a" href="/">
-    <svg width="34" height="34" viewBox="0 0 46 46" fill="none">
-      <defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#aa77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs>
-      <path d="M23 2 L42 23 L23 44 L4 23 Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/>
-      <path d="M7 10 L23 38 L39 10 L34 10 L23 30 L12 10 Z" fill="url(#lg)"/>
-      <path d="M23 2 L27 9 L23 13 L19 9 Z" fill="#f0c060"/>
-    </svg>
-    <div><div class="logo-n">VECTROD</div><div class="logo-s">License Checker</div></div>
-  </a>
-  <div class="nav-r">
-    <button class="nb" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">☀</button>
-    <a class="nb" href="/css-stack">💻 CSS Stack</a>
-    <a class="nb" href="/fonts">Fonts</a>
-    <a class="nb cta" href="/">Make Font →</a>
-  </div>
-</div>
-
-<div class="hero">
-  <div class="hero-badge"><span class="bdot"></span> Instant License Check · 500+ Fonts</div>
-  <h1>Font License<br><span class="h1g">Checker</span></h1>
-  <p>Is this font safe for commercial use? Search any font to instantly see its license type, what you can and can't do, and where to get it legally.</p>
-</div>
-
-<!-- SEARCH -->
-<div class="search-box">
-  <input class="search-inp" id="searchInp" type="text" placeholder="Search any font — Helvetica, Futura, Inter..." oninput="checkFont(this.value)">
-  <span class="search-ico">🛡</span>
-</div>
-
-<!-- RESULT AREA -->
-<div id="resultArea"></div>
-<div class="no-result" id="noResult">
-  <div style="font-size:36px;margin-bottom:12px">🤔</div>
-  <div style="font-size:18px;font-weight:700;margin-bottom:8px">Font not found in our database</div>
-  <div style="font-size:14px;color:var(--mt);line-height:1.7">Try searching on <a href="https://fonts.google.com" target="_blank" style="color:var(--gold)">Google Fonts</a> or <a href="https://www.fontsquirrel.com" target="_blank" style="color:var(--gold)">Font Squirrel</a> for license info. When in doubt, always check the font's README file.</div>
-</div>
-
-<!-- LICENSE GUIDE -->
-<div class="section-title" style="margin-bottom:16px">📋 Font License Types Explained</div>
-<div class="guide-grid">
-  <div class="guide-card ofl">
-    <div class="guide-icon">✅</div>
-    <div class="guide-name">SIL Open Font License</div>
-    <div class="guide-desc">The gold standard for free fonts. Used by all Google Fonts. Maximum freedom with one restriction.</div>
-    <div class="guide-perms">
-      <div class="guide-perm"><span class="perm-y">✓</span> Commercial use</div>
-      <div class="guide-perm"><span class="perm-y">✓</span> Modify font files</div>
-      <div class="guide-perm"><span class="perm-y">✓</span> Embed in apps & PDFs</div>
-      <div class="guide-perm"><span class="perm-y">✓</span> Web use (@font-face)</div>
-      <div class="guide-perm"><span class="perm-n">✗</span> Sell font itself alone</div>
+  <div class="topbar">
+    <a class="logo-a" href="/">
+      <svg width="32" height="32" viewBox="0 0 46 46" fill="none">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#aa77ff"/><stop offset="100%" stop-color="#1ddd88"/></linearGradient></defs>
+        <path d="M23 2 L42 23 L23 44 L4 23 Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/>
+        <path d="M7 10 L23 38 L39 10 L34 10 L23 30 L12 10 Z" fill="url(#lg)"/>
+        <path d="M23 2 L27 9 L23 13 L19 9 Z" fill="#f0c060"/>
+      </svg>
+      <div><div class="logo-n">VECTROD</div><div class="logo-sub">License Checker</div></div>
+    </a>
+    <div class="nav-pills">
+      <a class="pill" href="/css-stack">💻 CSS Stack</a>
+      <a class="pill" href="/fonts">Fonts</a>
+      <a class="pill cta" href="/">Make Font →</a>
     </div>
   </div>
-  <div class="guide-card apache">
-    <div class="guide-icon">✅</div>
-    <div class="guide-name">Apache 2.0</div>
-    <div class="guide-desc">Used by Roboto, Noto, and other Google fonts. Very permissive open source license.</div>
-    <div class="guide-perms">
-      <div class="guide-perm"><span class="perm-y">✓</span> Commercial use</div>
-      <div class="guide-perm"><span class="perm-y">✓</span> Modify font files</div>
-      <div class="guide-perm"><span class="perm-y">✓</span> Distribute freely</div>
-      <div class="guide-perm"><span class="perm-y">✓</span> Patent rights included</div>
-      <div class="guide-perm"><span class="perm-m">⚠</span> Keep attribution notice</div>
+
+  <div class="hero">
+    <div class="hero-badge"><span class="pulse"></span> AI-Powered · Any Font · Instant</div>
+    <h1><span class="h1-line1">Font License</span><span class="h1-line2">Checker</span></h1>
+    <p class="hero-sub">Type any font name — Helvetica, Futura, Canela, custom foundry fonts — and get full license details instantly.</p>
+    <div class="ai-tag">⚡ AI searches thousands of fonts in real-time</div>
+  </div>
+
+  <div class="search-wrap">
+    <div class="search-outer">
+      <div class="search-inner">
+        <span class="search-ico">🔍</span>
+        <input class="search-inp" id="searchInp" type="text"
+          placeholder="Type any font name... Helvetica, Futura, Canela..."
+          onkeydown="if(event.key==='Enter')doSearch()">
+        <button class="search-btn" onclick="doSearch()">Check License →</button>
+      </div>
+    </div>
+    <div class="search-hint">
+      Try:
+      <span class="hint-chip" onclick="quickSearch('Helvetica')">Helvetica</span>
+      <span class="hint-chip" onclick="quickSearch('Futura')">Futura</span>
+      <span class="hint-chip" onclick="quickSearch('Gotham')">Gotham</span>
+      <span class="hint-chip" onclick="quickSearch('Inter')">Inter</span>
+      <span class="hint-chip" onclick="quickSearch('Circular')">Circular</span>
+      <span class="hint-chip" onclick="quickSearch('Canela')">Canela</span>
+      <span class="hint-chip" onclick="quickSearch('GT Walsheim')">GT Walsheim</span>
     </div>
   </div>
-  <div class="guide-card personal">
-    <div class="guide-icon">⚠️</div>
-    <div class="guide-name">Free for Personal Use</div>
-    <div class="guide-desc">Common on DaFont and free font sites. You CANNOT use these commercially without purchasing a license.</div>
-    <div class="guide-perms">
-      <div class="guide-perm"><span class="perm-y">✓</span> Personal projects</div>
-      <div class="guide-perm"><span class="perm-n">✗</span> Commercial projects</div>
-      <div class="guide-perm"><span class="perm-n">✗</span> Client work</div>
-      <div class="guide-perm"><span class="perm-n">✗</span> Logos or branding</div>
-      <div class="guide-perm"><span class="perm-m">⚠</span> Purchase license for commercial</div>
+
+  <div id="resultArea"></div>
+
+  <div class="guide-section">
+    <div class="section-label">📋 License Types Explained</div>
+    <div class="guide-grid">
+      <div class="guide-card gc-ofl">
+        <div class="gc-icon">✅</div>
+        <div class="gc-name">SIL OFL 1.1</div>
+        <div class="gc-desc">Gold standard for free fonts. All Google Fonts use this. Maximum freedom.</div>
+        <div class="gc-perms">
+          <div class="gc-perm"><span class="perm-y">✓</span> Commercial use</div>
+          <div class="gc-perm"><span class="perm-y">✓</span> Web / @font-face</div>
+          <div class="gc-perm"><span class="perm-y">✓</span> PDF embed</div>
+          <div class="gc-perm"><span class="perm-y">✓</span> Modify files</div>
+          <div class="gc-perm"><span class="perm-n">✗</span> Sell font alone</div>
+        </div>
+      </div>
+      <div class="guide-card gc-apache">
+        <div class="gc-icon">✅</div>
+        <div class="gc-name">Apache 2.0</div>
+        <div class="gc-desc">Used by Roboto, Noto. Very permissive open source license.</div>
+        <div class="gc-perms">
+          <div class="gc-perm"><span class="perm-y">✓</span> Commercial use</div>
+          <div class="gc-perm"><span class="perm-y">✓</span> Modify & distribute</div>
+          <div class="gc-perm"><span class="perm-y">✓</span> Patent rights</div>
+          <div class="gc-perm"><span class="perm-w">⚠</span> Keep attribution</div>
+        </div>
+      </div>
+      <div class="guide-card gc-personal">
+        <div class="gc-icon">⚠️</div>
+        <div class="gc-name">Free Personal Only</div>
+        <div class="gc-desc">Common on DaFont. Cannot use commercially without buying license.</div>
+        <div class="gc-perms">
+          <div class="gc-perm"><span class="perm-y">✓</span> Personal projects</div>
+          <div class="gc-perm"><span class="perm-n">✗</span> Client work</div>
+          <div class="gc-perm"><span class="perm-n">✗</span> Logos / branding</div>
+          <div class="gc-perm"><span class="perm-w">⚠</span> Buy commercial license</div>
+        </div>
+      </div>
+      <div class="guide-card gc-proprietary">
+        <div class="gc-icon">🔒</div>
+        <div class="gc-name">Proprietary</div>
+        <div class="gc-desc">Must purchase. License terms vary widely — always read the EULA.</div>
+        <div class="gc-perms">
+          <div class="gc-perm"><span class="perm-w">⚠</span> Purchase required</div>
+          <div class="gc-perm"><span class="perm-n">✗</span> Free redistribution</div>
+          <div class="gc-perm"><span class="perm-n">✗</span> Modification</div>
+          <div class="gc-perm"><span class="perm-w">⚠</span> Check EULA per project</div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="guide-card proprietary">
-    <div class="guide-icon">🔒</div>
-    <div class="guide-name">Proprietary / Commercial</div>
-    <div class="guide-desc">Must be purchased. License terms vary widely — always read the EULA before using in client work.</div>
-    <div class="guide-perms">
-      <div class="guide-perm"><span class="perm-m">⚠</span> Purchase required</div>
-      <div class="guide-perm"><span class="perm-n">✗</span> Free redistribution</div>
-      <div class="guide-perm"><span class="perm-n">✗</span> Modification usually</div>
-      <div class="guide-perm"><span class="perm-m">⚠</span> Check EULA for embedding</div>
-      <div class="guide-perm"><span class="perm-m">⚠</span> Per-desktop or per-web pricing</div>
+
+  <div style="margin-bottom:52px">
+    <div class="section-label">⚡ Popular Fonts — Click to Check</div>
+    <div class="popular-grid">
+      <span class="pop-chip" onclick="quickSearch('Helvetica')"><span class="pop-dot proprietary"></span>Helvetica</span>
+      <span class="pop-chip" onclick="quickSearch('Futura')"><span class="pop-dot proprietary"></span>Futura</span>
+      <span class="pop-chip" onclick="quickSearch('Gotham')"><span class="pop-dot paid"></span>Gotham</span>
+      <span class="pop-chip" onclick="quickSearch('Proxima Nova')"><span class="pop-dot paid"></span>Proxima Nova</span>
+      <span class="pop-chip" onclick="quickSearch('Inter')"><span class="pop-dot free"></span>Inter</span>
+      <span class="pop-chip" onclick="quickSearch('Roboto')"><span class="pop-dot free"></span>Roboto</span>
+      <span class="pop-chip" onclick="quickSearch('Circular')"><span class="pop-dot paid"></span>Circular</span>
+      <span class="pop-chip" onclick="quickSearch('Canela')"><span class="pop-dot paid"></span>Canela</span>
+      <span class="pop-chip" onclick="quickSearch('GT Walsheim')"><span class="pop-dot paid"></span>GT Walsheim</span>
+      <span class="pop-chip" onclick="quickSearch('Bebas Neue')"><span class="pop-dot free"></span>Bebas Neue</span>
+      <span class="pop-chip" onclick="quickSearch('Playfair Display')"><span class="pop-dot free"></span>Playfair Display</span>
+      <span class="pop-chip" onclick="quickSearch('Avenir')"><span class="pop-dot proprietary"></span>Avenir</span>
+      <span class="pop-chip" onclick="quickSearch('Brandon Grotesque')"><span class="pop-dot paid"></span>Brandon Grotesque</span>
+      <span class="pop-chip" onclick="quickSearch('Poppins')"><span class="pop-dot free"></span>Poppins</span>
+      <span class="pop-chip" onclick="quickSearch('Tiempos')"><span class="pop-dot paid"></span>Tiempos</span>
+      <span class="pop-chip" onclick="quickSearch('Gilroy')"><span class="pop-dot paid"></span>Gilroy</span>
+      <span class="pop-chip" onclick="quickSearch('Neutraface')"><span class="pop-dot paid"></span>Neutraface</span>
+      <span class="pop-chip" onclick="quickSearch('Neue Haas Grotesk')"><span class="pop-dot paid"></span>Neue Haas Grotesk</span>
+      <span class="pop-chip" onclick="quickSearch('Abril Fatface')"><span class="pop-dot free"></span>Abril Fatface</span>
+      <span class="pop-chip" onclick="quickSearch('FF Din')"><span class="pop-dot paid"></span>FF Din</span>
+      <span class="pop-chip" onclick="quickSearch('Montserrat')"><span class="pop-dot free"></span>Montserrat</span>
+      <span class="pop-chip" onclick="quickSearch('Aktiv Grotesk')"><span class="pop-dot paid"></span>Aktiv Grotesk</span>
+      <span class="pop-chip" onclick="quickSearch('Times New Roman')"><span class="pop-dot proprietary"></span>Times New Roman</span>
+      <span class="pop-chip" onclick="quickSearch('Garamond')"><span class="pop-dot paid"></span>Garamond</span>
     </div>
   </div>
-</div>
 
-<!-- POPULAR FONTS QUICK CHECK -->
-<div class="popular-section">
-  <div class="section-title">⚡ Popular Fonts — Click to Check</div>
-  <div class="pop-grid" id="popGrid"></div>
-</div>
-
-<!-- SEO -->
-<div class="seo-box">
-  <h2>Font Licensing: What Every Designer Must Know</h2>
-  <p>Font licensing is one of the most misunderstood aspects of professional design. Using a font without the proper license — even unknowingly — can result in legal action, especially for commercial projects. Here's what you need to know.</p>
-  <h3>The "Free to Download" Trap</h3>
-  <p>Just because a font is free to download doesn't mean it's free to use commercially. Many fonts on sites like DaFont, 1001Fonts, and Behance are "free for personal use only." Using these in client work, on commercial websites, or in products is a license violation — even if you downloaded them legally.</p>
-  <h3>Google Fonts Are Safe for Commercial Use</h3>
-  <p>All fonts on Google Fonts are licensed under either the SIL Open Font License or Apache 2.0 — both of which explicitly allow commercial use, web embedding, and modification. All 1,149+ fonts in our library are also under these licenses.</p>
-  <h3>Embedding in PDFs and Documents</h3>
-  <p>Many commercial font licenses restrict embedding in PDFs or documents. If you're creating PDFs for clients or products, verify that your font license includes embedding rights. SIL OFL explicitly permits this.</p>
-  <h3>Web Fonts and @font-face</h3>
-  <p>Using a font via @font-face on a website counts as distribution. Many desktop font licenses don't include web rights — you need a separate webfont license. Google Fonts can always be used via @font-face under their standard terms.</p>
-</div>
-
-<div class="footer">
-  <div class="footer-links">
-    <a href="/">Home</a><a href="/fonts">Free Fonts</a><a href="/css-stack">CSS Stack</a>
-    <a href="/pairing">Pairing</a><a href="/brands">Brand Fonts</a><a href="/blog">Blog</a>
+  <div class="footer">
+    <div class="footer-links">
+      <a href="/">Home</a><a href="/fonts">Free Fonts</a><a href="/css-stack">CSS Stack</a>
+      <a href="/pairing">Pairing</a><a href="/brands">Brand Fonts</a><a href="/blog">Blog</a>
+    </div>
+    <div class="footer-copy">
+      © 2025 Vectrod · Font License Checker<br>
+      AI-powered results are informational. Always verify licenses directly with font creators for legal certainty.
+    </div>
   </div>
-  <div class="footer-copy">© 2025 Vectrod · Font License Checker · Note: Always verify licenses directly with font creators for legal certainty.</div>
-</div>
 </div>
 
 <script>
-const FONT_DB = [
-  // FREE — SIL OFL
-  {name:'Inter',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Inter',note:'Designed by Rasmus Andersson. Used by thousands of apps worldwide.'},
-  {name:'Roboto',license:'Apache 2.0',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Roboto',note:"Google's primary UI font. Android system font. Extremely versatile."},
-  {name:'Open Sans',license:'Apache 2.0',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Open+Sans',note:'One of the most used web fonts. Optimized for web and mobile.'},
-  {name:'Poppins',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Poppins',note:'Geometric sans-serif. Extremely popular for modern UI design.'},
-  {name:'Montserrat',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Montserrat',note:'Inspired by Buenos Aires signage. Great for headings and logos.'},
-  {name:'Lato',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Lato',note:'Designed by Łukasz Dziedzic. Semi-rounded details with warm feel.'},
-  {name:'Raleway',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Raleway',note:'Elegant sans-serif. Popular for creative agencies and portfolios.'},
-  {name:'Nunito',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Nunito',note:'Well-balanced rounded terminal sans-serif.'},
-  {name:'Oswald',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Oswald',note:'Condensed sans-serif. Great alternative to Impact for headlines.'},
-  {name:'Bebas Neue',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Bebas+Neue',note:'All-caps condensed sans. One of the most downloaded display fonts.'},
-  {name:'Playfair Display',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Playfair+Display',note:'High-contrast serif. Perfect for editorial and luxury branding.'},
-  {name:'Merriweather',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Merriweather',note:'Designed for screens. Excellent readability at body text sizes.'},
-  {name:'Lora',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Lora',note:'Calligraphic roots with contemporary serif style.'},
-  {name:'EB Garamond',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/EB+Garamond',note:'Revival of Garamond. Classical old-style serif for body text.'},
-  {name:'Dancing Script',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Dancing+Script',note:'Lively casual script with natural flow.'},
-  {name:'Pacifico',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Pacifico',note:'Fun brush script. Great for logos and casual branding.'},
-  {name:'Cinzel',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Cinzel',note:'Based on Roman inscriptions. Premium authority feel.'},
-  {name:'JetBrains Mono',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/JetBrains+Mono',note:'Designed by JetBrains for developers. Excellent for code.'},
-  {name:'Fira Code',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Fira+Code',note:'Monospace with programming ligatures. Developer favorite.'},
-  {name:'Source Code Pro',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Adobe / Google',url:'https://fonts.google.com/specimen/Source+Code+Pro',note:"Adobe's open source monospace. Clean and professional."},
-  {name:'Space Grotesk',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Space+Grotesk',note:'Quirky yet professional grotesque. Great for tech brands.'},
-  {name:'DM Sans',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/DM+Sans',note:'Low-contrast geometric sans. Excellent for UI design.'},
-  {name:'Plus Jakarta Sans',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Plus+Jakarta+Sans',note:'Technical and contemporary. Clean professional look.'},
-  {name:'Outfit',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Outfit',note:'Variable font with great range of weights. Modern and clean.'},
-  {name:'Libre Baskerville',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Libre+Baskerville',note:'Web-optimized Baskerville revival. Great for body text.'},
-  {name:'Cormorant Garamond',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Cormorant+Garamond',note:'Elegant high-contrast serif. Luxury and fashion use.'},
-  {name:'Work Sans',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Work+Sans',note:'Optimized for screen readability. Great for headers.'},
-  {name:'Rubik',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Rubik',note:'Slightly rounded corners. Friendly and modern.'},
-  {name:'Josefin Sans',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Josefin+Sans',note:'Geometric and elegant. Great for minimalist design.'},
-  {name:'Anton',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Anton',note:'Bold condensed sans. High impact headlines and posters.'},
-  {name:'Satoshi',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Fontshare',url:'https://www.fontshare.com/fonts/satoshi',note:"Fontshare's most popular font. Modern geometric sans."},
-  {name:'Cabinet Grotesk',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Fontshare',url:'https://www.fontshare.com/fonts/cabinet-grotesk',note:'Strong display grotesque from Fontshare.'},
-  {name:'Manrope',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Manrope',note:'Modern geometric sans with broad weight range.'},
-  {name:'Quicksand',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Quicksand',note:'Rounded terminals, soft and friendly feel.'},
-  {name:'Caveat',license:'SIL OFL 1.1',type:'free',commercial:true,modify:true,embed:true,web:true,source:'Google Fonts',url:'https://fonts.google.com/specimen/Caveat',note:'Handwriting style. Great for annotations and casual headers.'},
+let currentSearch='';
+let isLoading=false;
 
-  // PAID / COMMERCIAL
-  {name:'Helvetica',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Check EULA',source:'Monotype',url:'https://www.myfonts.com/search/helvetica',note:'One of the most famous fonts. Requires commercial license from Monotype. Free alternatives: Inter, Aktiv Grotesk.'},
-  {name:'Helvetica Neue',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Check EULA',source:'Monotype',url:'https://www.myfonts.com/search/helvetica+neue',note:'Updated Helvetica. Premium license required. Free alternative: Inter or DM Sans.'},
-  {name:'Futura',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Webfont license',source:'Bauer/Neufville',url:'https://www.myfonts.com/search/futura',note:'Geometric sans classic. Requires license. Free alternatives: Josefin Sans, Jost.'},
-  {name:'Garamond',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Webfont license',source:'Various foundries',url:'https://www.myfonts.com/search/garamond',note:'Classic old-style serif. Note: EB Garamond on Google Fonts is a FREE revival.'},
-  {name:'Gotham',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Webfont license',source:'Hoefler&Co',url:'https://www.typography.com/fonts/gotham',note:'Used by Obama campaign, Tesla. Premium. Free alternative: Montserrat.'},
-  {name:'Proxima Nova',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Webfont license',source:'Mark Simonson',url:'https://www.myfonts.com/search/proxima+nova',note:'Extremely popular for web design. Requires license. Free alternative: Nunito Sans.'},
-  {name:'Brandon Grotesque',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Webfont license',source:'HVD Fonts',url:'https://www.myfonts.com/search/brandon+grotesque',note:'Very popular in branding. Free alternative: Raleway or Nunito.'},
-  {name:'Circular',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Webfont license',source:'Lineto',url:'https://lineto.com/typefaces/circular',note:'Used by Spotify, Airbnb. Very expensive (~$900/style). Free alternative: Nunito.'},
-  {name:'Avenir',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Webfont license',source:'Monotype/Linotype',url:'https://www.myfonts.com/search/avenir',note:'Adrian Frutiger classic. Needs license. Free alternative: Nunito or Jost.'},
-  {name:'Didot',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Webfont license',source:'Linotype/H&FJ',url:'https://www.myfonts.com/search/didot',note:'High-contrast luxury serif. Used by Zara. Free alternative: Playfair Display.'},
-  {name:'Bodoni',license:'Various',type:'personal',commercial:'Depends on version',modify:false,embed:'Check license',web:'Check license',source:'Multiple versions',note:'Original Bodoni is old. Some versions are free (Libre Bodoni on Google Fonts), others require purchase.'},
-  {name:'Times New Roman',license:'Proprietary',type:'paid',commercial:'System use OK',modify:false,embed:'Restricted',web:'Check EULA',source:'Monotype',note:'Bundled with Windows/Office. System use is OK but web embedding and redistribution require license.'},
-  {name:'Arial',license:'Proprietary',type:'paid',commercial:'System use OK',modify:false,embed:'Restricted',web:'Check EULA',source:'Monotype',note:'Windows system font. Safe to specify in CSS stacks as fallback, but cannot be redistributed.'},
-  {name:'Georgia',license:'Proprietary',type:'paid',commercial:'System use OK',modify:false,embed:'Restricted',web:'Check EULA',source:'Microsoft',note:'Microsoft system font. Great as CSS fallback. Cannot redistribute or embed independently.'},
-  {name:'Gill Sans',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Webfont license',source:'Monotype',url:'https://www.myfonts.com/search/gill+sans',note:'Eric Gill classic. Needs commercial license. Free alternative: Cabin.'},
-  {name:'Trade Gothic',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Webfont license',source:'Linotype',note:'Used by Nike. Needs license. Free alternative: Barlow Condensed.'},
-  {name:'Univers',license:'Proprietary',type:'paid',commercial:'License required',modify:false,embed:'Check EULA',web:'Webfont license',source:'Monotype',note:'Adrian Frutiger grotesque. Professional license needed. Free alt: Work Sans.'},
-  {name:'Baskerville',license:'Various',type:'personal',commercial:'Depends on version',modify:false,embed:'Check license',web:'Check license',source:'Multiple versions',note:'Original Baskerville public domain, but most digital versions need license. Libre Baskerville (Google) is FREE.'},
-
-  // PERSONAL USE ONLY
-  {name:'Pacifico (old)',license:'Free Personal Only',type:'personal',commercial:false,modify:false,embed:false,web:false,source:'Various',note:'Note: The Google Fonts version of Pacifico IS free for commercial use under SIL OFL.'},
-];
-
-const POPULAR = [
-  'Inter','Helvetica','Gotham','Proxima Nova','Futura','Roboto',
-  'Poppins','Garamond','Circular','Bebas Neue','Montserrat','Didot',
-  'Georgia','Arial','Times New Roman','Dancing Script'
-];
-
-function checkFont(val){
-  if(!val||val.length<2){
-    document.getElementById('resultArea').innerHTML='';
-    document.getElementById('noResult').classList.remove('show');
-    return;
-  }
-  const q=val.toLowerCase().trim();
-  const found=FONT_DB.filter(f=>f.name.toLowerCase().includes(q));
-  if(found.length===0){
-    document.getElementById('resultArea').innerHTML='';
-    document.getElementById('noResult').classList.add('show');
-    return;
-  }
-  document.getElementById('noResult').classList.remove('show');
-  document.getElementById('resultArea').innerHTML=found.slice(0,3).map(buildResultCard).join('');
+function quickSearch(name){
+  document.getElementById('searchInp').value=name;
+  doSearch();
 }
 
-function buildResultCard(f){
-  const typeMap={free:['free','✅ Free for Commercial Use'],personal:['personal','⚠️ Personal Use Only'],paid:['paid','💰 Paid License Required'],proprietary:['proprietary','🔒 Proprietary']};
-  const [cls,label]=typeMap[f.type]||typeMap['paid'];
+async function doSearch(){
+  const val=document.getElementById('searchInp').value.trim();
+  if(!val||isLoading) return;
+  if(val===currentSearch) return;
+  currentSearch=val;
+  isLoading=true;
+
+  document.getElementById('resultArea').innerHTML=`
+    <div class="result-wrap">
+      <div class="loading-card">
+        <div class="loading-spinner"></div>
+        <div class="loading-font-name">${escHtml(val)}</div>
+        <div class="loading-status">Checking license database<span class="loading-dots"></span></div>
+      </div>
+    </div>`;
+
+  try {
+    const prompt=`You are a font licensing expert with deep knowledge of ALL fonts worldwide — Google Fonts, Adobe Fonts, Fontshare, and every major commercial foundry (Hoefler&Co, Linotype, Monotype, Klim Type Foundry, Commercial Type, Grilli Type, Optimo, Colophon, etc.), DaFont, and free font sites.
+
+The user is checking the license for this font: "${val}"
+
+Respond ONLY with valid JSON. No markdown backticks, no explanation text, just the raw JSON object:
+
+{
+  "found": true,
+  "name": "Exact official font name",
+  "foundry": "Foundry or company name",
+  "designer": "Designer name(s)",
+  "year": "Year first released",
+  "license_type": "SIL OFL 1.1",
+  "license_category": "free",
+  "commercial": true,
+  "web_use": true,
+  "pdf_embed": true,
+  "modify": true,
+  "logo_branding": true,
+  "app_embed": true,
+  "price_range": "Free",
+  "source_url": "https://...",
+  "source_name": "Google Fonts",
+  "summary": "3 sentence expert summary covering license details, important restrictions, and designer history.",
+  "free_alternatives": ["Alt1","Alt2","Alt3"],
+  "alt_note": "Brief note if paid font",
+  "notable_usage": "Famous usage examples"
+}
+
+license_category must be one of: "free", "paid", "personal", "proprietary"
+Set found:false only if this font name is completely unrecognizable or fictional.
+For system fonts (Arial, Times New Roman, Georgia, Calibri): they are Microsoft/Monotype proprietary, safe to USE via CSS but cannot be redistributed. Set license_category:"proprietary".
+Be accurate and specific about pricing where known.`;
+
+    const response=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+
+    if(!response.ok) throw new Error('API '+response.status);
+    const data=await response.json();
+    const rawText=data.content.map(b=>b.text||'').join('');
+    const jsonMatch=rawText.match(/\{[\s\S]*\}/);
+    if(!jsonMatch) throw new Error('No JSON found');
+    const result=JSON.parse(jsonMatch[0]);
+
+    if(!result.found){
+      document.getElementById('resultArea').innerHTML=`
+        <div class="result-wrap">
+          <div class="error-card">
+            <div class="error-ico">🤔</div>
+            <div class="error-title">Font not recognized</div>
+            <div class="error-msg">
+              "<strong>${escHtml(val)}</strong>" couldn't be identified.<br>
+              Try <a href="https://fonts.google.com" target="_blank" style="color:var(--blue)">Google Fonts</a>,
+              <a href="https://www.myfonts.com" target="_blank" style="color:var(--blue)">MyFonts</a>, or
+              <a href="https://www.fontsquirrel.com" target="_blank" style="color:var(--blue)">Font Squirrel</a>.
+            </div>
+          </div>
+        </div>`;
+      return;
+    }
+
+    renderResult(result);
+  } catch(err){
+    document.getElementById('resultArea').innerHTML=`
+      <div class="result-wrap">
+        <div class="error-card">
+          <div class="error-ico">⚠️</div>
+          <div class="error-title">Search failed</div>
+          <div class="error-msg">Couldn't fetch license info. Try again.<br><small style="opacity:.5">${err.message}</small></div>
+        </div>
+      </div>`;
+  } finally {
+    isLoading=false;
+  }
+}
+
+function renderResult(r){
+  const cat=r.license_category||'paid';
+  const catClass={free:'rlb-free',paid:'rlb-paid',personal:'rlb-personal',proprietary:'rlb-proprietary'}[cat]||'rlb-paid';
+  const catLabel={free:'✅ Free for Commercial Use',paid:'💰 Paid License Required',personal:'⚠️ Personal Use Only',proprietary:'🔒 Proprietary'}[cat]||'⚠️ Check License';
+
+  function badge(val){
+    if(val===true)  return '<span class="uc-status ucs-yes">✓ Yes</span>';
+    if(val===false) return '<span class="uc-status ucs-no">✗ No</span>';
+    return '<span class="uc-status ucs-check">⚠ Check</span>';
+  }
 
   const usages=[
-    {icon:'💼',label:'Commercial',status:f.commercial===true?'yes':f.commercial===false?'no':'check',text:f.commercial===true?'Allowed':f.commercial===false?'Not allowed':'Check license'},
-    {icon:'🌐',label:'Web / CSS',status:f.web===true?'yes':f.web===false?'no':'check',text:f.web===true?'Allowed':f.web===false?'Not allowed':f.web},
-    {icon:'📄',label:'PDF Embed',status:f.embed===true?'yes':f.embed===false?'no':'check',text:f.embed===true?'Allowed':f.embed===false?'Not allowed':f.embed},
-    {icon:'✏️',label:'Modify',status:f.modify===true?'yes':f.modify===false?'no':'check',text:f.modify===true?'Allowed':f.modify===false?'Not allowed':'Check license'},
-    {icon:'🎨',label:'Logo / Brand',status:f.commercial===true?'yes':f.commercial===false?'no':'check',text:f.commercial===true?'Allowed':'Check license'},
-    {icon:'📱',label:'App Embed',status:f.embed===true?'yes':'check',text:f.embed===true?'Allowed':'Check EULA'},
+    {icon:'💼',label:'Commercial',val:r.commercial},
+    {icon:'🌐',label:'Web / CSS',val:r.web_use},
+    {icon:'📄',label:'PDF Embed',val:r.pdf_embed},
+    {icon:'✏️',label:'Modify Files',val:r.modify},
+    {icon:'🎨',label:'Logo/Brand',val:r.logo_branding},
+    {icon:'📱',label:'App Embed',val:r.app_embed},
   ];
 
-  const usageHtml=usages.map(u=>`
-    <div class="usage-item">
-      <span class="usage-icon">${u.icon}</span>
-      <span class="usage-label">${u.label}</span>
-      <span class="usage-status ${u.status}">${u.text}</span>
-    </div>`).join('');
+  const srcHtml=r.source_url
+    ?`<a href="${escHtml(r.source_url)}" target="_blank">${escHtml(r.source_name||'View source')} ↗</a>`
+    :escHtml(r.source_name||'—');
 
-  const srcLink=f.url?`<a href="${f.url}" target="_blank">${f.source} ↗</a>`:f.source;
+  const altBoxHtml=cat!=='free'&&r.free_alternatives&&r.free_alternatives.length
+    ?`<div class="alt-box paid">
+        <div class="alt-box-text"><strong style="color:var(--tx)">Free alternatives:</strong> ${r.free_alternatives.map(a=>escHtml(a)).join(', ')}<br>${r.alt_note?`<span style="font-size:12px">${escHtml(r.alt_note)}</span>`:''}</div>
+        <a class="alt-box-link purple" href="/fonts">Browse 1,200+ Free Fonts →</a>
+      </div>`
+    :cat==='free'
+    ?`<div class="alt-box free">
+        <div class="alt-box-text"><strong style="color:var(--green)">✅ Safe to use commercially!</strong> Find it and similar fonts in our free library.</div>
+        <a class="alt-box-link" href="/fonts">Get It Free →</a>
+      </div>`
+    :'';
 
-  return `
-    <div class="result-card">
-      <div class="result-header">
-        <div class="result-top">
-          <div>
-            <div class="result-name">${f.name}</div>
-            <div class="result-cat">${f.license}</div>
+  document.getElementById('resultArea').innerHTML=`
+    <div class="result-wrap">
+      <div class="result-card">
+        <div class="result-glow ${cat}"></div>
+        <div class="result-head">
+          <div class="result-headleft">
+            <div class="result-name">${escHtml(r.name)}</div>
+            <div class="result-foundry">${[r.designer?`by ${escHtml(r.designer)}`:'',r.foundry?escHtml(r.foundry):'',r.year?escHtml(r.year):''].filter(Boolean).join(' · ')}</div>
           </div>
-          <span class="license-badge ${cls}">${label}</span>
+          <span class="result-license-badge ${catClass}">${catLabel}</span>
         </div>
-        <p style="font-size:14px;color:var(--mt);line-height:1.7">${f.note}</p>
-      </div>
-      <div class="usage-grid">${usageHtml}</div>
-      <div class="result-details">
-        <div class="detail-box">
-          <div class="detail-label">License</div>
-          <div class="detail-val">${f.license}</div>
+        <div class="usage-matrix">${usages.map(u=>`
+          <div class="usage-cell">
+            <span class="uc-icon">${u.icon}</span>
+            <span class="uc-label">${u.label}</span>
+            ${badge(u.val)}
+          </div>`).join('')}
         </div>
-        <div class="detail-box">
-          <div class="detail-label">Source</div>
-          <div class="detail-val">${srcLink}</div>
+        <div class="result-body">
+          ${r.summary?`<div class="ai-note">${escHtml(r.summary)}</div>`:''}
+          <div class="detail-row">
+            <div class="detail-box"><div class="detail-lbl">License</div><div class="detail-val">${escHtml(r.license_type)}</div></div>
+            <div class="detail-box"><div class="detail-lbl">Price</div><div class="detail-val">${escHtml(r.price_range||'—')}</div></div>
+            <div class="detail-box"><div class="detail-lbl">Source</div><div class="detail-val">${srcHtml}</div></div>
+            ${r.notable_usage?`<div class="detail-box"><div class="detail-lbl">Notable Usage</div><div class="detail-val">${escHtml(r.notable_usage)}</div></div>`:''}
+          </div>
+          ${altBoxHtml}
         </div>
-        ${f.type==='free'?`
-        <div class="detail-box" style="grid-column:1/-1;background:rgba(34,221,153,.04);border-color:rgba(34,221,153,.15)">
-          <div class="detail-label" style="color:var(--ok)">✅ Safe to use — Download Free</div>
-          <div class="detail-val"><a href="/fonts" style="color:var(--ok)">Get ${f.name} from our free font library →</a></div>
-        </div>`:f.type==='paid'?`
-        <div class="detail-box" style="grid-column:1/-1;background:rgba(170,119,255,.04);border-color:rgba(170,119,255,.15)">
-          <div class="detail-label" style="color:var(--purple2)">💡 Free Alternatives Available</div>
-          <div class="detail-val"><a href="/fonts" style="color:var(--purple2)">Browse 1,200+ free fonts with similar styles →</a></div>
-        </div>`:''}
       </div>
     </div>`;
 }
 
-function buildPopGrid(){
-  const grid=document.getElementById('popGrid');
-  POPULAR.forEach(name=>{
-    const font=FONT_DB.find(f=>f.name===name);
-    if(!font) return;
-    const item=document.createElement('div');
-    item.className='pop-item';
-    const licClass=font.type==='free'?'free':'paid';
-    const licText=font.type==='free'?'Free ✓':'Paid';
-    item.innerHTML=`<span class="pop-name">${name}</span><span class="pop-lic ${licClass}">${licText}</span>`;
-    item.onclick=()=>{
-      document.getElementById('searchInp').value=name;
-      checkFont(name);
-      window.scrollTo({top:0,behavior:'smooth'});
-    };
-    grid.appendChild(item);
-  });
+function escHtml(s){
+  if(!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
-buildPopGrid();
 </script>
 </body>
 </html>
