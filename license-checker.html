@@ -156,6 +156,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-he
 .pf-b.personal{background:var(--warnL);color:var(--warn);border:1px solid rgba(240,160,48,.2)}
 .note-box{background:rgba(51,136,255,.05);border:1px solid rgba(51,136,255,.1);border-radius:14px;padding:14px 18px;margin-bottom:36px;display:flex;gap:12px;font-size:12px;color:var(--mt);line-height:1.7}
 footer{border-top:1px solid var(--br);padding:36px 0;text-align:center;margin-top:40px}
+@keyframes spin{to{transform:rotate(360deg)}}
 .footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
 .footer-links a{font-size:11px;color:var(--mt);text-decoration:none;transition:color .2s}
 .footer-links a:hover{color:var(--gold)}
@@ -529,8 +530,60 @@ function searchAndShow(name){
   const font = findFont(name);
   hideAC();
   if(font){ showResult(font); }
-  else { showNotFound(name); }
+  else { askBackend(name); }
   document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+async function askBackend(name){
+  // Show loading
+  document.getElementById('resultArea').innerHTML = `
+    <div class="result-card">
+      <div style="padding:52px 32px;text-align:center">
+        <div style="width:44px;height:44px;border:3px solid var(--br);border-top-color:var(--ok);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px"></div>
+        <div style="font-size:14px;color:var(--mt);font-family:'DM Mono',monospace">Searching license for "${name}"...</div>
+        <div style="font-size:11px;color:var(--mt2);margin-top:6px;font-family:'DM Mono',monospace">Checking global font database</div>
+      </div>
+    </div>`;
+
+  try {
+    const res = await fetch('/api/font-license', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({font: name})
+    });
+    const data = await res.json();
+
+    if(!data.success || !data.result){
+      showNotFound(name);
+      return;
+    }
+
+    const r = data.result;
+    if(!r.found){
+      showNotFound(name);
+      return;
+    }
+
+    // Map API result to our format and show
+    const mapped = {
+      name: r.name || name,
+      foundry: r.foundry || '—',
+      l: r.license_type || 'Unknown',
+      t: r.license_category || 'paid',
+      c: r.commercial === true ? 1 : r.commercial === false ? 0 : 2,
+      w: r.web_use === true ? 1 : r.web_use === false ? 0 : 2,
+      e: r.pdf_embed === true ? 1 : r.pdf_embed === false ? 0 : 2,
+      m: r.modify === true ? 1 : 0,
+      src: r.source_name || '—',
+      url: r.source_url || '',
+      note: r.summary || '',
+      alias: []
+    };
+    showResult(mapped);
+
+  } catch(err) {
+    showNotFound(name);
+  }
 }
 
 // ── RENDER RESULT ─────────────────────────────────────────
