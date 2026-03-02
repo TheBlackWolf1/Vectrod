@@ -137,6 +137,12 @@ class Handler(BaseHTTPRequestHandler):
         elif path == '/brands':
             self.serve_static('brands.html', 'text/html')
 
+        elif path == '/css-stack':
+            self.serve_static('css-stack.html', 'text/html')
+
+        elif path == '/license-checker':
+            self.serve_static('license-checker.html', 'text/html')
+
         elif path == '/sitemap.xml':
             self.serve_static('sitemap.xml', 'application/xml')
 
