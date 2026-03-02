@@ -307,41 +307,89 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:48px 2
 
 
 
-/* DROPDOWN */
+
+
+
+
+/* ── DROPDOWN (TEMİZ VERSİYON) ────────────────────────────── */
 .nav-dd{position:relative;display:inline-block}
-.dd-btn{display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
-.dd-panel{
-  position:absolute;top:calc(100% + 14px);right:0;
-  min-width:210px;padding:8px;
-  background:rgba(5,6,18,.98);
-  backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:18px;
-  box-shadow:0 28px 80px rgba(0,0,0,.65);
-  opacity:0;visibility:hidden;
-  transform:translateY(-6px) scale(.98);
-  transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s;
-  z-index:99999;
-}
-.dd-panel.is-open{
-  opacity:1;visibility:visible;
-  transform:translateY(0) scale(1);
-  transition:opacity .2s ease,transform .2s ease;
-}
-.dd-link{
-  display:flex;align-items:center;gap:11px;
-  padding:11px 14px;border-radius:11px;
-  color:rgba(237,232,255,.58);
-  font-size:11px;font-family:'DM Mono',monospace;
-  letter-spacing:.07em;text-decoration:none;
-  transition:background .15s,color .15s;
+.dd-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.1);
+  color:rgba(237,232,255,.6);
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:.12em;
+  padding:8px 16px;border-radius:100px;
+  cursor:pointer;transition:all .25s;
   white-space:nowrap;
 }
-.dd-link:hover{background:rgba(240,192,96,.1);color:var(--gold)}
-.dd-ico{width:20px;text-align:center;font-size:14px;flex-shrink:0}
-.dd-divider{height:1px;background:rgba(255,255,255,.07);margin:5px 4px}
-.dd-chevron{font-size:9px;opacity:.5;transition:transform .22s;display:inline-block;margin-left:2px}
-.dd-chevron.up{transform:rotate(180deg);opacity:.9}
+.dd-btn:hover,.dd-btn.active{
+  border-color:rgba(240,192,96,.5);
+  color:var(--gold);
+}
+.dd-chevron{
+  font-size:9px;opacity:.6;
+  transition:transform .22s;
+  display:inline-block;line-height:1;
+}
+.dd-chevron.up{transform:rotate(180deg);color:var(--gold);opacity:1}
+.dd-panel{
+  position:fixed !important;
+  min-width:230px;
+  padding:10px;
+  background:rgba(7,8,24,.98);
+  border:1px solid rgba(240,192,96,.25);
+  border-radius:20px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.04) inset,
+             0 32px 80px rgba(0,0,0,.85),
+             0 0 40px rgba(136,68,238,.15);
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(-6px) scale(.97);
+  transition:opacity .2s,transform .2s,visibility 0s linear .2s;
+  z-index:2147483647 !important;
+  pointer-events:none;
+}
+.dd-panel.is-open{
+  opacity:1 !important;
+  visibility:visible !important;
+  transform:translateY(0) scale(1);
+  transition:opacity .2s,transform .2s;
+  pointer-events:all !important;
+}
+.dd-label{
+  font-size:9px;color:rgba(237,232,255,.25);
+  font-family:'DM Mono',monospace;
+  letter-spacing:.16em;text-transform:uppercase;
+  padding:6px 14px 4px;
+}
+.dd-link{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 14px;border-radius:13px;
+  color:rgba(237,232,255,.75);
+  font-family:'Outfit',sans-serif;
+  font-size:13px;font-weight:500;
+  text-decoration:none;
+  transition:background .15s,color .15s;
+  white-space:nowrap;
+  cursor:pointer;
+}
+.dd-link:hover{
+  background:rgba(240,192,96,.12);
+  color:#fff;
+}
+.dd-ico{
+  font-size:16px;width:26px;text-align:center;
+  flex-shrink:0;
+}
+.dd-divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(240,192,96,.15),transparent);
+  margin:6px 10px;
+}
+/* ── END DROPDOWN ───────────────────────────────────────────── */
 
 </style>
 </head>
@@ -369,18 +417,9 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:48px 2
     <div class="nav-r">
       <!-- Tools dropdown -->
       <div class="nav-dd" id="navDd">
-        <button class="nbtn dd-btn" id="ddTrigger" onclick="ddToggle(event)">
-          Tools <span class="dd-chevron" id="ddChevron">▾</span>
+        <button class="dd-btn" id="ddTrigger" onclick="ddToggle(event)">
+          Tools&nbsp;<span class="dd-chevron" id="ddChevron">▾</span>
         </button>
-        <div class="dd-panel" id="ddPanel">
-          <a class="dd-link" href="/find-font"><span class="dd-ico">🔍</span>Find Font</a>
-          <a class="dd-link" href="/pairing"><span class="dd-ico">⚡</span>Font Pairing</a>
-          <a class="dd-link" href="/preview"><span class="dd-ico">👁</span>Font Preview</a>
-          <div class="dd-divider"></div>
-          <a class="dd-link" href="/brands"><span class="dd-ico">🏷</span>Brand Fonts</a>
-          <a class="dd-link" href="/blog"><span class="dd-ico">📝</span>Blog</a>
-          <a class="dd-link" href="/about"><span class="dd-ico">ℹ</span>About</a>
-        </div>
       </div>
       <a class="btn-free-fonts" href="/fonts" aria-label="Browse fonts">
         <span class="bff-glow"></span>
@@ -838,23 +877,55 @@ document.querySelectorAll('button,a,.drop,.ck,.gstep,.p2s-uc,.faq-q,.gal-item').
 </script>
 
 <script>
-// Dropdown menu
+
+</script>
+
+<!-- DROPDOWN PANEL — fixed position, outside normal flow -->
+<div class="dd-panel" id="ddPanel">
+  <div class="dd-label">Tools</div>
+  <a class="dd-link" href="/find-font"><span class="dd-ico">🔍</span>Find Font</a>
+  <a class="dd-link" href="/pairing"><span class="dd-ico">⚡</span>Font Pairing</a>
+  <a class="dd-link" href="/preview"><span class="dd-ico">👁</span>Font Preview</a>
+  <a class="dd-link" href="/css-stack"><span class="dd-ico">💻</span>CSS Font Stack</a>
+  <a class="dd-link" href="/license-checker"><span class="dd-ico">🛡</span>License Checker</a>
+  <div class="dd-divider"></div>
+  <div class="dd-label">Info</div>
+  <a class="dd-link" href="/brands"><span class="dd-ico">🏷</span>Brand Fonts</a>
+  <a class="dd-link" href="/blog"><span class="dd-ico">📝</span>Blog</a>
+  <a class="dd-link" href="/about"><span class="dd-ico">ℹ</span>About</a>
+</div>
+
+<script>
+// ── Dropdown ──────────────────────────────────────────────────
 function ddToggle(e){
   e.stopPropagation();
-  var panel=document.getElementById('ddPanel');
-  var chev=document.getElementById('ddChevron');
-  var open=panel.classList.toggle('is-open');
-  chev.classList.toggle('up',open);
+  var panel   = document.getElementById('ddPanel');
+  var trigger = document.getElementById('ddTrigger');
+  var chev    = document.getElementById('ddChevron');
+  var rect    = trigger.getBoundingClientRect();
+  
+  // Panel konumunu trigger'a göre ayarla
+  panel.style.top  = (rect.bottom + 10) + 'px';
+  panel.style.right = (window.innerWidth - rect.right) + 'px';
+  
+  var open = panel.classList.toggle('is-open');
+  chev.classList.toggle('up', open);
+  trigger.classList.toggle('active', open);
 }
-document.addEventListener('click',function(e){
-  var panel=document.getElementById('ddPanel');
-  var trigger=document.getElementById('ddTrigger');
-  if(!panel||!trigger) return;
-  if(!panel.contains(e.target)&&!trigger.contains(e.target)){
+document.addEventListener('click', function(e){
+  var panel   = document.getElementById('ddPanel');
+  var trigger = document.getElementById('ddTrigger');
+  if(!panel || !trigger) return;
+  if(!panel.contains(e.target) && !trigger.contains(e.target)){
     panel.classList.remove('is-open');
-    document.getElementById('ddChevron').classList.remove('up');
+    var chev = document.getElementById('ddChevron');
+    var btn  = document.getElementById('ddTrigger');
+    if(chev) chev.classList.remove('up');
+    if(btn)  btn.classList.remove('active');
   }
 });
+// ── End Dropdown ──────────────────────────────────────────────
 </script>
+
 </body>
 </html>
