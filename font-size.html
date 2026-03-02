@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>Font Size Calculator — px to rem, em, clamp() Generator | Vectrod</title>
+<meta name="description" content="Free font size calculator. Convert px to rem, em, vw. Generate fluid clamp() CSS for responsive typography. Instant type scale generator.">
+<meta name="keywords" content="font size calculator, px to rem, rem to px, css clamp generator, fluid typography, responsive font size, type scale generator">
+<link rel="canonical" href="https://vectrod.com/font-size">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#02030d;--bg2:#05061a;--bg3:#0a0b1e;
+  --sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.07);
+  --br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.13);
+  --tx:#ede8ff;--mt:rgba(237,232,255,.45);--mt2:rgba(237,232,255,.22);
+  --gold:#f0c060;--gold3:#c09040;
+  --purple2:#aa77ff;--purpleL:rgba(136,68,238,.13);
+  --blue2:#66aaff;--blueL:rgba(51,136,255,.12);
+  --ok:#22dd99;--okL:rgba(34,221,153,.1);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+.bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(51,136,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(51,136,255,.03) 1px,transparent 1px);background-size:52px 52px}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);animation:oF ease-in-out infinite alternate}
+.o1{width:700px;height:700px;top:-250px;left:-150px;background:radial-gradient(circle,rgba(51,136,255,.1) 0%,transparent 65%);animation-duration:30s}
+.o2{width:500px;height:500px;bottom:-150px;right:-100px;background:radial-gradient(circle,rgba(240,192,96,.08) 0%,transparent 65%);animation-duration:26s}
+@keyframes oF{from{transform:translate(0,0)}to{transform:translate(40px,30px)}}
+.wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:28px 20px 120px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#aa77ff,#3388ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace;display:inline-flex;align-items:center;white-space:nowrap}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+/* HERO */
+.hero{text-align:center;margin-bottom:48px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--blue2);text-transform:uppercase;border:1px solid rgba(51,136,255,.2);padding:5px 18px;border-radius:100px;background:var(--blueL);margin-bottom:18px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(26px,4.5vw,54px);font-weight:900;line-height:1.05;margin-bottom:12px}
+.h1-2{background:linear-gradient(90deg,var(--blue2),var(--purple2),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:15px;color:var(--mt);max-width:520px;margin:12px auto 0;line-height:1.8}
+/* TABS */
+.tabs-row{display:flex;background:var(--sf);border:1px solid var(--br);border-radius:16px;padding:4px;gap:4px;margin-bottom:32px;overflow-x:auto}
+.tab{flex:1;min-width:120px;padding:10px 14px;border-radius:12px;border:none;background:none;color:var(--mt);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;cursor:pointer;transition:all .2s;white-space:nowrap;text-align:center}
+.tab.on{background:var(--bg2);color:var(--tx);border:1px solid var(--br2);box-shadow:0 2px 12px rgba(0,0,0,.3)}
+/* PANELS */
+.panel{display:none;animation:fadeIn .25s ease}
+.panel.on{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+/* CONVERTER GRID */
+.conv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:24px}
+.conv-box{background:var(--sf2);border:1.5px solid var(--br);border-radius:18px;padding:20px;transition:border-color .2s}
+.conv-box.active{border-color:rgba(51,136,255,.3);background:rgba(51,136,255,.04)}
+.conv-label{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.conv-label::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--blue2)}
+.conv-inp{width:100%;background:var(--bg3);border:1.5px solid var(--br);border-radius:10px;color:var(--tx);font-family:'DM Mono',monospace;font-size:18px;font-weight:500;padding:10px 14px;outline:none;transition:border-color .2s}
+.conv-inp:focus{border-color:rgba(51,136,255,.4)}
+.conv-unit{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;margin-top:6px;letter-spacing:.05em}
+/* BASE SETTINGS */
+.base-row{display:flex;align-items:center;gap:12px;background:rgba(240,192,96,.05);border:1px solid rgba(240,192,96,.12);border-radius:14px;padding:14px 18px;margin-bottom:24px;flex-wrap:wrap;font-size:13px;color:var(--mt)}
+.base-row strong{color:var(--gold)}
+.base-inp{background:var(--bg3);border:1.5px solid rgba(240,192,96,.2);border-radius:8px;color:var(--gold);font-family:'DM Mono',monospace;font-size:13px;font-weight:700;padding:5px 10px;outline:none;width:64px;text-align:center}
+/* COPY ROW */
+.copy-row{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1.5px solid rgba(51,136,255,.15);border-radius:14px;padding:14px 18px;margin-bottom:12px}
+.copy-code{font-family:'DM Mono',monospace;font-size:13px;color:var(--ok);flex:1;overflow-x:auto;white-space:nowrap}
+.copy-btn{background:rgba(51,136,255,.1);border:1px solid rgba(51,136,255,.2);border-radius:100px;color:var(--blue2);font-size:11px;font-family:'DM Mono',monospace;padding:5px 14px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.copy-btn:hover{background:rgba(51,136,255,.2)}
+.copy-btn.ok{background:var(--okL);border-color:rgba(34,221,153,.3);color:var(--ok)}
+/* CLAMP SECTION */
+.clamp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+@media(max-width:600px){.clamp-grid{grid-template-columns:1fr}}
+.field-group{background:var(--sf2);border:1px solid var(--br);border-radius:16px;padding:18px}
+.field-label{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.field-inp{width:100%;background:var(--bg3);border:1.5px solid var(--br);border-radius:10px;color:var(--tx);font-family:'DM Mono',monospace;font-size:15px;padding:9px 14px;outline:none;transition:border-color .2s}
+.field-inp:focus{border-color:rgba(51,136,255,.35)}
+/* SCALE */
+.scale-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+.scale-select{background:var(--bg3);border:1.5px solid var(--br);border-radius:10px;color:var(--tx);font-family:'DM Mono',monospace;font-size:12px;padding:8px 14px;outline:none;cursor:pointer}
+.scale-select:focus{border-color:rgba(51,136,255,.35)}
+.scale-label{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace}
+.scale-table{width:100%;border-collapse:collapse}
+.scale-table th{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;padding:8px 14px;text-align:left;border-bottom:1px solid var(--br)}
+.scale-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.scale-table tr:last-child td{border-bottom:none}
+.scale-table tr:hover td{background:rgba(51,136,255,.04)}
+.sz-preview{font-weight:700;color:var(--tx);line-height:1}
+.sz-name{font-size:12px;color:var(--mt);font-family:'DM Mono',monospace}
+.sz-px{font-family:'DM Mono',monospace;font-size:12px;color:var(--blue2)}
+.sz-rem{font-family:'DM Mono',monospace;font-size:12px;color:var(--ok)}
+.sz-copy{background:none;border:1px solid var(--br);border-radius:6px;color:var(--mt);font-size:10px;padding:3px 8px;cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace}
+.sz-copy:hover{border-color:var(--ok);color:var(--ok)}
+/* VISUAL PREVIEW */
+.preview-card{background:var(--sf2);border:1px solid var(--br);border-radius:18px;padding:28px;margin-bottom:12px}
+.preview-text-sample{line-height:1.2;margin-bottom:4px;transition:font-size .2s,font-family .2s}
+.preview-meta{font-size:11px;color:var(--mt2);font-family:'DM Mono',monospace}
+/* SEO */
+.info-box{background:var(--sf);border:1px solid var(--br);border-radius:18px;padding:28px;margin-top:52px}
+.info-box h2{font-family:'Cinzel',serif;font-size:18px;font-weight:700;margin-bottom:10px;background:linear-gradient(90deg,var(--blue2),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.info-box h3{font-size:14px;font-weight:700;color:var(--tx);margin:16px 0 6px}
+.info-box p{font-size:13px;color:var(--mt);line-height:1.85;margin-bottom:8px}
+.code-inline{background:var(--bg3);padding:2px 7px;border-radius:5px;font-family:'DM Mono',monospace;font-size:12px;color:var(--ok)}
+footer{border-top:1px solid var(--br);padding:32px 0;text-align:center;margin-top:52px}
+.footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.footer-links a{font-size:11px;color:var(--mt);text-decoration:none}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:11px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="bg-scene"><div class="bg-grid"></div><div class="orb o1"></div><div class="orb o2"></div></div>
+<div class="wrap">
+
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="34" height="34" viewBox="0 0 46 46" fill="none">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#aa77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs>
+      <path d="M23 2 L42 23 L23 44 L4 23 Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/>
+      <path d="M7 10 L23 38 L39 10 L34 10 L23 30 L12 10 Z" fill="url(#lg)"/>
+      <path d="M23 2 L27 9 L23 13 L19 9 Z" fill="#f0c060"/>
+    </svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Font Size Calc</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nb" href="/license-checker">🛡 License</a>
+    <a class="nb" href="/css-stack">💻 CSS Stack</a>
+    <a class="nb" href="/variable-fonts">🎛 Variable</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">📐 4 Tools in 1 · Instant Results</div>
+  <h1>Font Size<br><span class="h1-2">Calculator</span></h1>
+  <p>Convert px → rem → em → vw. Generate fluid <code style="background:var(--bg3);padding:2px 8px;border-radius:6px;font-family:'DM Mono',monospace;font-size:14px">clamp()</code> CSS. Build type scales. All instant, all free.</p>
+</div>
+
+<div class="tabs-row">
+  <button class="tab on" onclick="setTab('converter',this)">⇄ Converter</button>
+  <button class="tab" onclick="setTab('clamp',this)">🌊 Clamp Generator</button>
+  <button class="tab" onclick="setTab('scale',this)">📏 Type Scale</button>
+  <button class="tab" onclick="setTab('preview',this)">👁 Preview</button>
+</div>
+
+<!-- ── CONVERTER ── -->
+<div class="panel on" id="panel-converter">
+  <div class="base-row">
+    <span>Base font size:</span>
+    <input class="base-inp" id="baseSize" type="number" value="16" min="1" max="32" oninput="recalc()">
+    <strong>px</strong>
+    <span style="color:var(--mt2);font-size:12px">(usually 16px — browser default)</span>
+  </div>
+  <div class="conv-grid" id="convGrid">
+    <div class="conv-box active">
+      <div class="conv-label">Pixels</div>
+      <input class="conv-inp" id="val-px" type="number" value="16" step="0.1" oninput="fromPx(this.value)">
+      <div class="conv-unit">px — absolute pixels</div>
+    </div>
+    <div class="conv-box">
+      <div class="conv-label">REM</div>
+      <input class="conv-inp" id="val-rem" type="number" value="1" step="0.001" oninput="fromRem(this.value)">
+      <div class="conv-unit">rem — relative to root (html)</div>
+    </div>
+    <div class="conv-box">
+      <div class="conv-label">EM</div>
+      <input class="conv-inp" id="val-em" type="number" value="1" step="0.001" oninput="fromEm(this.value)">
+      <div class="conv-unit">em — relative to parent element</div>
+    </div>
+    <div class="conv-box">
+      <div class="conv-label">Points (pt)</div>
+      <input class="conv-inp" id="val-pt" type="number" value="12" step="0.1" oninput="fromPt(this.value)">
+      <div class="conv-unit">pt — 1pt = 1.333px</div>
+    </div>
+    <div class="conv-box">
+      <div class="conv-label">Viewport Width (vw)</div>
+      <input class="conv-inp" id="val-vw" type="number" value="1" step="0.01" oninput="fromVw(this.value)">
+      <div class="conv-unit">vw — % of viewport width (at 1600px)</div>
+    </div>
+    <div class="conv-box">
+      <div class="conv-label">Percent (%)</div>
+      <input class="conv-inp" id="val-pct" type="number" value="100" step="0.1" oninput="fromPct(this.value)">
+      <div class="conv-unit">% — relative to parent font-size</div>
+    </div>
+  </div>
+  <div class="copy-row">
+    <span class="copy-code" id="cssOutput">font-size: 1rem; /* 16px */</span>
+    <button class="copy-btn" id="mainCopyBtn" onclick="copyMain()">⎘ Copy CSS</button>
+  </div>
+  <p style="font-size:12px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.05em">💡 Tip: Use <strong style="color:var(--tx)">rem</strong> for font sizes — scales with user's browser preferences. Use <strong style="color:var(--tx)">em</strong> for spacing relative to text size.</p>
+</div>
+
+<!-- ── CLAMP ── -->
+<div class="panel" id="panel-clamp">
+  <div style="background:rgba(51,136,255,.05);border:1px solid rgba(51,136,255,.1);border-radius:14px;padding:16px 20px;margin-bottom:24px;font-size:13px;color:var(--mt);line-height:1.7">
+    🌊 <strong style="color:var(--tx)">CSS clamp()</strong> creates fluid typography that scales smoothly between a minimum and maximum size as the viewport changes. No media queries needed.
+  </div>
+  <div class="clamp-grid">
+    <div class="field-group">
+      <div class="field-label">Min Size (mobile)</div>
+      <input class="field-inp" id="clamp-min-px" type="number" value="16" placeholder="16" oninput="calcClamp()">
+      <div style="font-size:11px;color:var(--mt2);font-family:'DM Mono',monospace;margin-top:6px">px — smallest the text gets</div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Max Size (desktop)</div>
+      <input class="field-inp" id="clamp-max-px" type="number" value="32" placeholder="32" oninput="calcClamp()">
+      <div style="font-size:11px;color:var(--mt2);font-family:'DM Mono',monospace;margin-top:6px">px — largest the text gets</div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Min Viewport (start scaling)</div>
+      <input class="field-inp" id="clamp-min-vp" type="number" value="320" placeholder="320" oninput="calcClamp()">
+      <div style="font-size:11px;color:var(--mt2);font-family:'DM Mono',monospace;margin-top:6px">px — usually 320 (small mobile)</div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Max Viewport (stop scaling)</div>
+      <input class="field-inp" id="clamp-max-vp" type="number" value="1440" placeholder="1440" oninput="calcClamp()">
+      <div style="font-size:11px;color:var(--mt2);font-family:'DM Mono',monospace;margin-top:6px">px — usually 1440 (desktop)</div>
+    </div>
+  </div>
+  <div class="copy-row" style="margin-bottom:8px">
+    <span class="copy-code" id="clampOutput">font-size: clamp(1rem, 2.5vw + 0.5rem, 2rem);</span>
+    <button class="copy-btn" id="clampCopyBtn" onclick="copyClamp()">⎘ Copy</button>
+  </div>
+  <div class="copy-row">
+    <span class="copy-code" id="clampRem">/* rem version */</span>
+    <button class="copy-btn" onclick="copyEl('clampRem',this)">⎘ Copy</button>
+  </div>
+  <!-- Visual scale indicator -->
+  <div style="background:var(--sf2);border:1px solid var(--br);border-radius:16px;padding:22px;margin-top:12px">
+    <div style="font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px">Live Preview</div>
+    <div id="clampPreview" style="font-weight:700;color:var(--tx);line-height:1.1;transition:font-size .15s;margin-bottom:10px">The quick brown fox jumps over the lazy dog</div>
+    <input type="range" id="vpSlider" min="320" max="1440" value="880" oninput="updateClampPreview(this.value)" style="width:100%;accent-color:var(--blue2)">
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace;margin-top:6px">
+      <span>320px</span><span id="vpLabel" style="color:var(--blue2)">880px viewport</span><span>1440px</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── TYPE SCALE ── -->
+<div class="panel" id="panel-scale">
+  <div class="scale-controls">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div class="scale-label">Base Size</div>
+      <input class="field-inp" id="scale-base" type="number" value="16" style="width:80px;padding:7px 10px;font-size:13px" oninput="buildScale()">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div class="scale-label">Scale Ratio</div>
+      <select class="scale-select" id="scale-ratio" onchange="buildScale()">
+        <option value="1.067">Minor Second (1.067)</option>
+        <option value="1.125">Major Second (1.125)</option>
+        <option value="1.200">Minor Third (1.200)</option>
+        <option value="1.250" selected>Major Third (1.250)</option>
+        <option value="1.333">Perfect Fourth (1.333)</option>
+        <option value="1.414">Augmented Fourth (1.414)</option>
+        <option value="1.500">Perfect Fifth (1.500)</option>
+        <option value="1.618">Golden Ratio (1.618)</option>
+        <option value="2.000">Octave (2.000)</option>
+      </select>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div class="scale-label">Font Family</div>
+      <input class="field-inp" id="scale-font" type="text" value="Outfit" style="width:140px;padding:7px 10px;font-size:13px" oninput="buildScale()">
+    </div>
+  </div>
+  <div style="background:var(--sf2);border:1px solid var(--br);border-radius:18px;overflow:hidden;margin-bottom:16px">
+    <table class="scale-table" id="scaleTable"></table>
+  </div>
+  <button onclick="copyScale()" style="background:var(--blueL);border:1px solid rgba(51,136,255,.2);border-radius:100px;color:var(--blue2);font-size:12px;font-family:'DM Mono',monospace;padding:9px 20px;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(51,136,255,.2)'" onmouseout="this.style.background='var(--blueL)'">⎘ Copy Full CSS Scale</button>
+</div>
+
+<!-- ── PREVIEW ── -->
+<div class="panel" id="panel-preview">
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
+    <div style="flex:1;min-width:160px">
+      <div class="field-label" style="font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px">Font Size (px)</div>
+      <input class="field-inp" id="prev-size" type="number" value="32" min="8" max="200" oninput="updatePreview()">
+    </div>
+    <div style="flex:2;min-width:200px">
+      <div class="field-label" style="font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px">Font Family</div>
+      <input class="field-inp" id="prev-font" type="text" value="Outfit" oninput="updatePreview()">
+    </div>
+    <div style="flex:1;min-width:120px">
+      <div class="field-label" style="font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px">Weight</div>
+      <select class="scale-select" id="prev-weight" onchange="updatePreview()" style="width:100%">
+        <option value="300">Light 300</option>
+        <option value="400">Regular 400</option>
+        <option value="500">Medium 500</option>
+        <option value="600">SemiBold 600</option>
+        <option value="700" selected>Bold 700</option>
+        <option value="800">ExtraBold 800</option>
+        <option value="900">Black 900</option>
+      </select>
+    </div>
+  </div>
+  <div class="preview-card" id="prevCard">
+    <div class="preview-text-sample" id="prevText">The quick brown fox jumps over the lazy dog</div>
+    <div class="preview-meta" id="prevMeta">32px · 2rem · Outfit · 700</div>
+  </div>
+  <input type="range" id="sizeSlider" min="8" max="120" value="32" oninput="document.getElementById('prev-size').value=this.value;updatePreview()" style="width:100%;margin-bottom:14px;accent-color:var(--blue2)">
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button onclick="document.getElementById('prevText').contentEditable='true';document.getElementById('prevText').focus()" style="background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;font-family:'DM Mono',monospace;padding:7px 16px;cursor:pointer">✏️ Edit Text</button>
+    <button onclick="loadGoogleFont()" style="background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;font-family:'DM Mono',monospace;padding:7px 16px;cursor:pointer">↓ Load Google Font</button>
+  </div>
+</div>
+
+<!-- INFO -->
+<div class="info-box">
+  <h2>Understanding CSS Font Units</h2>
+  <h3>px (Pixels) — Absolute</h3>
+  <p>Pixels are the simplest unit — <code class="code-inline">font-size: 16px</code> will always be 16 pixels regardless of context. Problem: it ignores the user's browser font size preference, causing accessibility issues.</p>
+  <h3>rem — Relative to Root</h3>
+  <p><code class="code-inline">rem</code> is relative to the root element's (<code class="code-inline">html</code>) font size. Default browser base is 16px, so <code class="code-inline">1rem = 16px</code>, <code class="code-inline">1.5rem = 24px</code>. Best practice for typography — respects user preferences.</p>
+  <h3>em — Relative to Parent</h3>
+  <p><code class="code-inline">em</code> is relative to the parent element's font size. Useful for spacing and padding that should scale with the text, but can compound unexpectedly in nested elements.</p>
+  <h3>clamp() — Fluid Typography</h3>
+  <p><code class="code-inline">clamp(min, preferred, max)</code> creates text that grows with the viewport between defined limits. No media queries needed. The preferred value is typically a <code class="code-inline">vw</code> calculation: <code class="code-inline">font-size: clamp(1rem, 2.5vw + 0.5rem, 2rem)</code>.</p>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="/">Home</a><a href="/fonts">Free Fonts</a><a href="/license-checker">License Checker</a>
+    <a href="/css-stack">CSS Stack</a><a href="/variable-fonts">Variable Fonts</a><a href="/brands">Brand Fonts</a>
+  </div>
+  <div class="footer-copy">© 2025 Vectrod · Font Size Calculator</div>
+</footer>
+</div>
+
+<script>
+const VP_REF = 1600; // reference viewport for vw calc
+let baseSize = 16;
+let updating = false;
+
+function setTab(id, el){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('panel-'+id).classList.add('on');
+}
+
+function recalc(){
+  baseSize = parseFloat(document.getElementById('baseSize').value) || 16;
+  const px = parseFloat(document.getElementById('val-px').value) || 16;
+  fromPx(px, true);
+}
+
+function fromPx(px, skipPx){
+  if(updating) return; updating=true;
+  px = parseFloat(px) || 0;
+  if(!skipPx) document.getElementById('val-px').value = round(px);
+  document.getElementById('val-rem').value = round(px / baseSize);
+  document.getElementById('val-em').value  = round(px / baseSize);
+  document.getElementById('val-pt').value  = round(px * 0.75);
+  document.getElementById('val-vw').value  = round(px / VP_REF * 100);
+  document.getElementById('val-pct').value = round((px / baseSize) * 100);
+  updateCssOutput(px);
+  updating=false;
+}
+function fromRem(r){ if(updating)return; fromPx(parseFloat(r||0)*baseSize); }
+function fromEm(e){ if(updating)return; fromPx(parseFloat(e||0)*baseSize); }
+function fromPt(pt){ if(updating)return; fromPx(parseFloat(pt||0)/0.75); }
+function fromVw(vw){ if(updating)return; fromPx(parseFloat(vw||0)*VP_REF/100); }
+function fromPct(pct){ if(updating)return; fromPx((parseFloat(pct||0)/100)*baseSize); }
+
+function round(n){ return Math.round(n*1000)/1000; }
+
+function updateCssOutput(px){
+  const rem = round(px/baseSize);
+  document.getElementById('cssOutput').textContent =
+    `font-size: ${rem}rem; /* ${round(px)}px */`;
+}
+
+function copyMain(){
+  const txt = document.getElementById('cssOutput').textContent;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn = document.getElementById('mainCopyBtn');
+    btn.textContent='✓ Copied!'; btn.classList.add('ok');
+    setTimeout(()=>{ btn.textContent='⎘ Copy CSS'; btn.classList.remove('ok'); },2000);
+  });
+}
+
+// ── CLAMP ──────────────────────────────────────────────
+function calcClamp(){
+  const minPx = parseFloat(document.getElementById('clamp-min-px').value)||16;
+  const maxPx = parseFloat(document.getElementById('clamp-max-px').value)||32;
+  const minVp = parseFloat(document.getElementById('clamp-min-vp').value)||320;
+  const maxVp = parseFloat(document.getElementById('clamp-max-vp').value)||1440;
+  const base  = parseFloat(document.getElementById('baseSize').value)||16;
+
+  const slope = (maxPx - minPx) / (maxVp - minVp);
+  const intercept = minPx - slope * minVp;
+
+  const slopeVw  = round(slope * 100);
+  const intRem   = round(intercept / base);
+  const minRem   = round(minPx / base);
+  const maxRem   = round(maxPx / base);
+  const intPx    = round(intercept);
+
+  const pxVersion  = `font-size: clamp(${minPx}px, ${slopeVw}vw + ${intPx}px, ${maxPx}px);`;
+  const remVersion = `font-size: clamp(${minRem}rem, ${slopeVw}vw + ${intRem}rem, ${maxRem}rem);`;
+
+  document.getElementById('clampOutput').textContent = pxVersion;
+  document.getElementById('clampRem').textContent = remVersion;
+  updateClampPreview(document.getElementById('vpSlider').value);
+}
+
+function updateClampPreview(vp){
+  vp = parseFloat(vp);
+  const minPx = parseFloat(document.getElementById('clamp-min-px').value)||16;
+  const maxPx = parseFloat(document.getElementById('clamp-max-px').value)||32;
+  const minVp = parseFloat(document.getElementById('clamp-min-vp').value)||320;
+  const maxVp = parseFloat(document.getElementById('clamp-max-vp').value)||1440;
+
+  const slope = (maxPx - minPx) / (maxVp - minVp);
+  const size  = Math.max(minPx, Math.min(maxPx, minPx + slope * (vp - minVp)));
+
+  document.getElementById('clampPreview').style.fontSize = size+'px';
+  document.getElementById('vpLabel').textContent = Math.round(vp)+'px viewport → '+Math.round(size)+'px';
+}
+
+function copyClamp(){
+  const txt = document.getElementById('clampOutput').textContent;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn = document.getElementById('clampCopyBtn');
+    btn.textContent='✓ Copied!'; btn.classList.add('ok');
+    setTimeout(()=>{ btn.textContent='⎘ Copy'; btn.classList.remove('ok'); },2000);
+  });
+}
+
+function copyEl(id, btn){
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(()=>{
+    const orig = btn.textContent;
+    btn.textContent='✓ Copied!'; btn.classList.add('ok');
+    setTimeout(()=>{ btn.textContent=orig; btn.classList.remove('ok'); },2000);
+  });
+}
+
+// ── TYPE SCALE ─────────────────────────────────────────
+const SCALE_NAMES = ['xs','sm','base','md','lg','xl','2xl','3xl','4xl'];
+const SCALE_LABELS = ['Extra Small','Small','Base','Medium','Large','XL','2XL','3XL','4XL'];
+
+function buildScale(){
+  const base  = parseFloat(document.getElementById('scale-base').value)||16;
+  const ratio = parseFloat(document.getElementById('scale-ratio').value)||1.25;
+  const font  = document.getElementById('scale-font').value||'inherit';
+
+  const steps = SCALE_NAMES.map((name,i) => {
+    const exp = i - 2; // base is index 2
+    const px  = base * Math.pow(ratio, exp);
+    return { name, label:SCALE_LABELS[i], px, rem: round(px/base) };
+  });
+
+  const table = document.getElementById('scaleTable');
+  table.innerHTML = `
+    <thead><tr>
+      <th>Step</th><th>Preview</th><th>px</th><th>rem</th><th></th>
+    </tr></thead>
+    <tbody>${steps.reverse().map(s=>`
+    <tr>
+      <td><span class="sz-name">--font-size-${s.name}</span></td>
+      <td><div class="sz-preview" style="font-size:${s.px}px;font-family:'${font}',sans-serif">Aa</div></td>
+      <td><span class="sz-px">${round(s.px)}px</span></td>
+      <td><span class="sz-rem">${s.rem}rem</span></td>
+      <td><button class="sz-copy" onclick="navigator.clipboard.writeText('${s.rem}rem')">Copy</button></td>
+    </tr>`).join('')}</tbody>`;
+
+  table._steps = steps;
+  table._base  = base;
+  table._font  = font;
+}
+
+function copyScale(){
+  const base  = parseFloat(document.getElementById('scale-base').value)||16;
+  const ratio = parseFloat(document.getElementById('scale-ratio').value)||1.25;
+  const font  = document.getElementById('scale-font').value||'inherit';
+
+  const lines = [':root {'];
+  SCALE_NAMES.forEach((name,i) => {
+    const px = round(base * Math.pow(ratio, i-2));
+    lines.push(`  --font-size-${name}: ${round(px/base)}rem; /* ${px}px */`);
+  });
+  lines.push('}');
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+    alert('CSS custom properties copied to clipboard!');
+  });
+}
+
+// ── PREVIEW ────────────────────────────────────────────
+function updatePreview(){
+  const px     = parseFloat(document.getElementById('prev-size').value)||32;
+  const font   = document.getElementById('prev-font').value||'Outfit';
+  const weight = document.getElementById('prev-weight').value||'700';
+  const rem    = round(px/baseSize);
+
+  document.getElementById('sizeSlider').value = px;
+  document.getElementById('prevText').style.fontSize   = px+'px';
+  document.getElementById('prevText').style.fontFamily = `'${font}',sans-serif`;
+  document.getElementById('prevText').style.fontWeight = weight;
+  document.getElementById('prevMeta').textContent = `${px}px · ${rem}rem · ${font} · ${weight}`;
+}
+
+function loadGoogleFont(){
+  const font = document.getElementById('prev-font').value;
+  if(!font) return;
+  const existing = document.getElementById('gfLoad');
+  if(existing) existing.remove();
+  const link = document.createElement('link');
+  link.id = 'gfLoad';
+  link.rel = 'stylesheet';
+  link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(font)}:wght@300;400;500;600;700;800;900&display=swap`;
+  document.head.appendChild(link);
+  updatePreview();
+}
+
+// Init
+fromPx(16);
+calcClamp();
+buildScale();
+updatePreview();
+</script>
+</body>
+</html>

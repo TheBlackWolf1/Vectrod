@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>Variable Font Playground — Test Any Variable Font Live | Vectrod</title>
+<meta name="description" content="Free variable font playground. Test weight, width, slant, optical size with live sliders. Generate CSS instantly. Works with any Google variable font.">
+<meta name="keywords" content="variable font playground, variable font tester, font weight slider, font-variation-settings, css variable fonts, google variable fonts">
+<link rel="canonical" href="https://vectrod.com/variable-fonts">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#020209;--bg2:#07071a;--bg3:#0c0c22;
+  --sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.06);
+  --br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.13);
+  --tx:#f0eaff;--mt:rgba(240,234,255,.45);--mt2:rgba(240,234,255,.22);
+  --gold:#f0c060;--gold3:#c09040;
+  --purple:#9955ff;--purple2:#bb88ff;--purpleL:rgba(153,85,255,.12);
+  --pink:#ff66cc;--pinkL:rgba(255,102,204,.08);
+  --ok:#22dd99;--okL:rgba(34,221,153,.1);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'DM Mono',monospace;min-height:100vh;overflow-x:hidden}
+
+/* animated bg */
+.bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none}
+.bg-noise{position:absolute;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.orb{position:absolute;border-radius:50%;filter:blur(140px);animation:drift ease-in-out infinite alternate}
+.o1{width:900px;height:900px;top:-400px;left:-300px;background:radial-gradient(circle,rgba(153,85,255,.15) 0%,transparent 65%);animation-duration:38s}
+.o2{width:700px;height:700px;bottom:-300px;right:-200px;background:radial-gradient(circle,rgba(255,102,204,.1) 0%,transparent 65%);animation-duration:30s}
+.o3{width:500px;height:500px;top:40%;left:50%;background:radial-gradient(circle,rgba(240,192,96,.06) 0%,transparent 65%);animation-duration:24s}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(60px,40px)}}
+
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:28px 20px 100px}
+
+/* NAV */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:52px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#bb88ff,#ff66cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase}
+.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:48px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:9px;letter-spacing:.2em;color:var(--purple2);text-transform:uppercase;border:1px solid rgba(153,85,255,.22);padding:5px 18px;border-radius:100px;background:var(--purpleL);margin-bottom:18px}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(26px,4.5vw,58px);font-weight:900;line-height:1;margin-bottom:12px;letter-spacing:-.01em}
+.h1-grad{background:linear-gradient(90deg,var(--purple2),var(--pink),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:14px;color:var(--mt);max-width:520px;margin:12px auto 0;line-height:1.85;font-family:'DM Mono',monospace}
+
+/* FONT PICKER */
+.font-picker{background:var(--bg2);border:1.5px solid var(--br2);border-radius:24px;padding:24px;margin-bottom:24px}
+.picker-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.picker-label{font-size:9px;color:var(--mt2);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.font-inp{background:var(--bg3);border:1.5px solid var(--br);border-radius:12px;color:var(--tx);font-family:'DM Mono',monospace;font-size:14px;padding:10px 16px;outline:none;transition:border-color .2s;min-width:220px;flex:1}
+.font-inp:focus{border-color:rgba(153,85,255,.4)}
+.load-btn{background:linear-gradient(90deg,var(--purple),var(--pink));border:none;border-radius:12px;color:#fff;-webkit-text-fill-color:#fff;font-family:'DM Mono',monospace;font-size:12px;font-weight:700;padding:11px 24px;cursor:pointer;transition:opacity .2s;white-space:nowrap;letter-spacing:.05em}
+.load-btn:hover{opacity:.85}
+.preset-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.preset{background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:10px;padding:5px 14px;cursor:pointer;transition:all .2s}
+.preset:hover{border-color:var(--purple2);color:var(--purple2);background:var(--purpleL)}
+.preset.on{border-color:var(--purple2);color:var(--purple2);background:var(--purpleL)}
+
+/* MAIN LAYOUT */
+.main-grid{display:grid;grid-template-columns:360px 1fr;gap:20px;margin-bottom:20px}
+@media(max-width:860px){.main-grid{grid-template-columns:1fr}}
+
+/* SLIDERS PANEL */
+.sliders-panel{background:var(--bg2);border:1.5px solid var(--br);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:20px}
+.slider-group{display:flex;flex-direction:column;gap:8px}
+.sg-header{display:flex;justify-content:space-between;align-items:baseline}
+.sg-name{font-size:10px;color:var(--tx);letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.sg-axis{font-size:9px;color:var(--mt2);letter-spacing:.06em}
+.sg-val{font-size:15px;color:var(--purple2);font-weight:700;letter-spacing:.04em;min-width:60px;text-align:right}
+.sg-range{display:flex;align-items:center;gap:8px}
+.sg-min{font-size:9px;color:var(--mt2);min-width:28px}
+.sg-max{font-size:9px;color:var(--mt2);min-width:36px;text-align:right}
+.vslider{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;outline:none;cursor:pointer;background:linear-gradient(to right,var(--purple) var(--pct,50%),rgba(255,255,255,.1) var(--pct,50%))}
+.vslider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--purple2),var(--pink));border:2px solid rgba(255,255,255,.2);cursor:pointer;box-shadow:0 2px 12px rgba(153,85,255,.5);transition:transform .15s}
+.vslider::-webkit-slider-thumb:hover{transform:scale(1.2)}
+.sg-disabled{opacity:.3;pointer-events:none}
+
+/* PREVIEW PANEL */
+.preview-panel{background:var(--bg2);border:1.5px solid var(--br);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:16px;min-height:400px}
+.preview-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:4px}
+.ctrl-btn{background:var(--sf);border:1px solid var(--br);border-radius:8px;color:var(--mt);font-size:10px;padding:5px 12px;cursor:pointer;transition:all .2s}
+.ctrl-btn:hover{border-color:var(--purple2);color:var(--purple2)}
+.ctrl-btn.on{background:var(--purpleL);border-color:var(--purple2);color:var(--purple2)}
+.size-ctrl{display:flex;align-items:center;gap:8px;margin-left:auto}
+.size-lbl{font-size:10px;color:var(--mt2)}
+.size-inp{background:var(--bg3);border:1px solid var(--br);border-radius:8px;color:var(--tx);font-size:12px;padding:4px 10px;width:60px;text-align:center;outline:none}
+/* big preview */
+.preview-box{flex:1;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.p-huge{font-size:72px;line-height:1;color:var(--tx);transition:all .15s;word-break:break-word}
+.p-heading{font-size:36px;line-height:1.15;color:var(--tx);transition:all .15s}
+.p-body{font-size:16px;line-height:1.7;color:var(--mt);transition:all .15s}
+.p-alpha{display:flex;flex-wrap:wrap;gap:2px}
+.p-alpha span{font-size:22px;line-height:1.2;color:var(--tx);transition:all .15s}
+.preview-hidden{display:none}
+
+/* CURRENT SETTINGS */
+.settings-strip{background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.setting-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(153,85,255,.08);border:1px solid rgba(153,85,255,.15);border-radius:8px;padding:4px 10px;font-size:10px;color:var(--purple2)}
+.chip-axis{color:var(--mt2)}
+
+/* CODE PANEL */
+.code-panel{background:var(--bg2);border:1.5px solid var(--br);border-radius:24px;padding:24px;margin-bottom:20px}
+.code-tabs{display:flex;gap:4px;margin-bottom:16px}
+.code-tab{background:none;border:1px solid var(--br);border-radius:8px;color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;padding:5px 14px;cursor:pointer;transition:all .2s;letter-spacing:.06em}
+.code-tab.on{background:var(--purpleL);border-color:var(--purple2);color:var(--purple2)}
+.code-block{background:var(--bg3);border:1px solid var(--br);border-radius:12px;padding:18px;font-family:'DM Mono',monospace;font-size:12px;line-height:1.8;overflow-x:auto;position:relative}
+.c-prop{color:#ff8866}.c-val{color:#66aaff}.c-str{color:#22dd99}.c-cm{color:rgba(240,234,255,.3)}
+.copy-row2{display:flex;justify-content:flex-end;margin-top:10px}
+.copy-btn2{background:var(--purpleL);border:1px solid rgba(153,85,255,.2);border-radius:100px;color:var(--purple2);font-family:'DM Mono',monospace;font-size:11px;padding:7px 18px;cursor:pointer;transition:all .2s}
+.copy-btn2:hover{background:rgba(153,85,255,.2)}
+.copy-btn2.ok{background:var(--okL);border-color:rgba(34,221,153,.3);color:var(--ok)}
+
+/* EXAMPLES */
+.examples-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:44px}
+.ex-card{background:var(--sf2);border:1px solid var(--br);border-radius:18px;padding:22px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
+.ex-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--purpleL),transparent);opacity:0;transition:opacity .2s}
+.ex-card:hover{border-color:rgba(153,85,255,.3);transform:translateY(-3px)}
+.ex-card:hover::before{opacity:1}
+.ex-preview{font-size:38px;font-weight:800;line-height:1;margin-bottom:10px;color:var(--tx)}
+.ex-name{font-size:11px;color:var(--mt);margin-bottom:4px}
+.ex-tags{display:flex;flex-wrap:wrap;gap:4px}
+.ex-tag{font-size:9px;background:var(--purpleL);border:1px solid rgba(153,85,255,.15);border-radius:4px;color:var(--purple2);padding:2px 7px}
+
+/* SECTION HDR */
+.sh{font-size:9px;color:var(--mt);letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sh::after{content:'';flex:1;height:1px;background:var(--br)}
+
+footer{border-top:1px solid var(--br);padding:32px 0;text-align:center;margin-top:40px}
+.footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.footer-links a{font-size:10px;color:var(--mt);text-decoration:none}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:10px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="bg-scene">
+  <div class="bg-noise"></div>
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+</div>
+<div class="wrap">
+
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="34" height="34" viewBox="0 0 46 46" fill="none">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#bb88ff"/><stop offset="100%" stop-color="#ff66cc"/></linearGradient></defs>
+      <path d="M23 2 L42 23 L23 44 L4 23 Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/>
+      <path d="M7 10 L23 38 L39 10 L34 10 L23 30 L12 10 Z" fill="url(#lg)"/>
+      <path d="M23 2 L27 9 L23 13 L19 9 Z" fill="#f0c060"/>
+    </svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Variable Fonts</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nb" href="/font-size">📐 Size Calc</a>
+    <a class="nb" href="/license-checker">🛡 License</a>
+    <a class="nb" href="/css-stack">💻 CSS Stack</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">🎛 Live Sliders · Any Variable Font</div>
+  <h1>Variable Font<br><span class="h1-grad">Playground</span></h1>
+  <p>Drag sliders to control weight, width, slant, optical size and more. Get the exact CSS instantly. Works with any Google variable font.</p>
+</div>
+
+<!-- FONT PICKER -->
+<div class="font-picker">
+  <div class="picker-row">
+    <div style="flex:1;min-width:200px">
+      <div class="picker-label">Font Name</div>
+      <input class="font-inp" id="fontInput" type="text" value="Inter" placeholder="e.g. Roboto Flex, Raleway, Fraunces..." onkeydown="if(event.key==='Enter')loadFont()">
+    </div>
+    <button class="load-btn" onclick="loadFont()">Load Font →</button>
+  </div>
+  <div class="preset-row" id="presetRow"></div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main-grid">
+  <!-- SLIDERS -->
+  <div class="sliders-panel" id="slidersPanel">
+    <div style="font-size:9px;color:var(--mt2);letter-spacing:.14em;text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid var(--br)">
+      Axes — <span id="fontNameLabel" style="color:var(--purple2)">Inter</span>
+    </div>
+    <!-- sliders injected here -->
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview-panel">
+    <div class="preview-controls">
+      <button class="ctrl-btn on" id="btn-huge" onclick="setView('huge',this)">Headline</button>
+      <button class="ctrl-btn" id="btn-heading" onclick="setView('heading',this)">Heading</button>
+      <button class="ctrl-btn" id="btn-body" onclick="setView('body',this)">Body</button>
+      <button class="ctrl-btn" id="btn-alpha" onclick="setView('alpha',this)">Alphabet</button>
+      <div class="size-ctrl">
+        <span class="size-lbl">size</span>
+        <input class="size-inp" id="previewSize" type="number" value="72" min="8" max="300" oninput="updatePreviewSize()">
+        <span class="size-lbl">px</span>
+      </div>
+    </div>
+    <div class="preview-box" id="previewBox">
+      <div class="p-huge" id="p-huge" contenteditable="true">Typography</div>
+      <div class="p-heading preview-hidden" id="p-heading" contenteditable="true">The quick brown fox jumps over the lazy dog</div>
+      <div class="p-body preview-hidden" id="p-body">The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs. How vexingly quick daft zebras jump! The five boxing wizards jump quickly. Sphinx of black quartz, judge my vow.</div>
+      <div class="p-alpha preview-hidden" id="p-alpha"></div>
+    </div>
+    <div class="settings-strip" id="settingsStrip"></div>
+  </div>
+</div>
+
+<!-- CODE -->
+<div class="code-panel">
+  <div class="code-tabs">
+    <button class="code-tab on" onclick="setCodeTab('css',this)">CSS</button>
+    <button class="code-tab" onclick="setCodeTab('fontface',this)">@font-face</button>
+    <button class="code-tab" onclick="setCodeTab('html',this)">HTML Import</button>
+    <button class="code-tab" onclick="setCodeTab('animation',this)">Animation</button>
+  </div>
+  <div class="code-block" id="codeBlock"></div>
+  <div class="copy-row2">
+    <button class="copy-btn2" id="copyCodeBtn" onclick="copyCode()">⎘ Copy Code</button>
+  </div>
+</div>
+
+<!-- EXAMPLES -->
+<div class="sh">Variable Font Showcase — Click to Load</div>
+<div class="examples-grid" id="examplesGrid"></div>
+
+<footer>
+  <div class="footer-links">
+    <a href="/">Home</a><a href="/fonts">Free Fonts</a>
+    <a href="/font-size">Size Calc</a><a href="/license-checker">License</a>
+    <a href="/css-stack">CSS Stack</a><a href="/brands">Brands</a>
+  </div>
+  <div class="footer-copy">© 2025 Vectrod · Variable Font Playground</div>
+</footer>
+</div>
+
+<script>
+// ── VARIABLE FONT DATABASE ───────────────────────────────────────────────────
+const FONTS = {
+  'Inter': {
+    gf: 'Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900',
+    axes: [
+      {tag:'wght',name:'Weight',min:100,max:900,def:400,step:1},
+      {tag:'opsz',name:'Optical Size',min:14,max:32,def:16,step:1},
+    ]
+  },
+  'Roboto Flex': {
+    gf: 'Roboto+Flex:ital,opsz,wdth,wght,GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC@0,8..144,25..151,100..1000,-200..150,27..175,323..603,25..135,649..854,-305..-98,560..788,416..570,528..760',
+    axes: [
+      {tag:'wght',name:'Weight',min:100,max:1000,def:400,step:1},
+      {tag:'wdth',name:'Width',min:25,max:151,def:100,step:1},
+      {tag:'opsz',name:'Optical Size',min:8,max:144,def:14,step:1},
+      {tag:'GRAD',name:'Grade',min:-200,max:150,def:0,step:1},
+    ]
+  },
+  'Raleway': {
+    gf: 'Raleway:ital,wght@0,100..900;1,100..900',
+    axes: [
+      {tag:'wght',name:'Weight',min:100,max:900,def:400,step:1},
+    ]
+  },
+  'Playfair Display': {
+    gf: 'Playfair+Display:ital,wght@0,400..900;1,400..900',
+    axes: [
+      {tag:'wght',name:'Weight',min:400,max:900,def:400,step:1},
+    ]
+  },
+  'Fraunces': {
+    gf: 'Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1',
+    axes: [
+      {tag:'wght',name:'Weight',min:100,max:900,def:400,step:1},
+      {tag:'opsz',name:'Optical Size',min:9,max:144,def:12,step:1},
+      {tag:'SOFT',name:'Softness',min:0,max:100,def:0,step:1},
+      {tag:'WONK',name:'Wonky',min:0,max:1,def:0,step:0.1},
+    ]
+  },
+  'Outfit': {
+    gf: 'Outfit:wght@100..900',
+    axes: [
+      {tag:'wght',name:'Weight',min:100,max:900,def:400,step:1},
+    ]
+  },
+  'DM Sans': {
+    gf: 'DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000',
+    axes: [
+      {tag:'wght',name:'Weight',min:100,max:1000,def:400,step:1},
+      {tag:'opsz',name:'Optical Size',min:9,max:40,def:14,step:1},
+    ]
+  },
+  'Crimson Pro': {
+    gf: 'Crimson+Pro:ital,wght@0,200..900;1,200..900',
+    axes: [
+      {tag:'wght',name:'Weight',min:200,max:900,def:400,step:1},
+    ]
+  },
+  'Inconsolata': {
+    gf: 'Inconsolata:wdth,wght@50..200,200..900',
+    axes: [
+      {tag:'wght',name:'Weight',min:200,max:900,def:400,step:1},
+      {tag:'wdth',name:'Width',min:50,max:200,def:100,step:1},
+    ]
+  },
+  'Manrope': {
+    gf: 'Manrope:wght@200..800',
+    axes: [
+      {tag:'wght',name:'Weight',min:200,max:800,def:400,step:1},
+    ]
+  },
+  'Nunito': {
+    gf: 'Nunito:ital,wght@0,200..1000;1,200..1000',
+    axes: [
+      {tag:'wght',name:'Weight',min:200,max:1000,def:400,step:1},
+    ]
+  },
+  'Oswald': {
+    gf: 'Oswald:wght@200..700',
+    axes: [
+      {tag:'wght',name:'Weight',min:200,max:700,def:400,step:1},
+    ]
+  },
+  'Work Sans': {
+    gf: 'Work+Sans:ital,wght@0,100..900;1,100..900',
+    axes: [
+      {tag:'wght',name:'Weight',min:100,max:900,def:400,step:1},
+    ]
+  },
+  'Rubik': {
+    gf: 'Rubik:ital,wght@0,300..900;1,300..900',
+    axes: [
+      {tag:'wght',name:'Weight',min:300,max:900,def:400,step:1},
+    ]
+  },
+  'Barlow': {
+    gf: 'Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900',
+    axes: [
+      {tag:'wght',name:'Weight',min:100,max:900,def:400,step:100},
+    ]
+  },
+};
+
+const PRESETS = ['Inter','Roboto Flex','Fraunces','Outfit','DM Sans','Raleway','Manrope','Inconsolata'];
+
+const EXAMPLES = [
+  {font:'Fraunces',settings:{'wght':900,'opsz':144,'SOFT':100},label:'Fraunces — Soft Serif',preview:'Beautiful',tags:['Serif','Display','Quirky']},
+  {font:'Roboto Flex',settings:{'wght':900,'wdth':151,'GRAD':150},label:'Roboto Flex — Ultra Wide Bold',preview:'Expanded',tags:['Sans','Wide','Bold']},
+  {font:'Inter',settings:{'wght':100,'opsz':14},label:'Inter — Hairline Thin',preview:'Hairline',tags:['Sans','Thin','UI']},
+  {font:'Raleway',settings:{'wght':800},label:'Raleway — Heavy Headlines',preview:'Headlines',tags:['Sans','Display']},
+  {font:'Fraunces',settings:{'wght':200,'opsz':9,'WONK':1},label:'Fraunces — Wonky Light',preview:'Wonky',tags:['Serif','Wonky','Playful']},
+  {font:'Inconsolata',settings:{'wght':700,'wdth':150},label:'Inconsolata — Wide Bold Mono',preview:'MONO',tags:['Monospace','Wide']},
+  {font:'DM Sans',settings:{'wght':900,'opsz':40},label:'DM Sans — Display Heavy',preview:'Impact',tags:['Sans','Heavy']},
+  {font:'Crimson Pro',settings:{'wght':200},label:'Crimson Pro — Elegant Light',preview:'Elegant',tags:['Serif','Editorial']},
+];
+
+let currentFont = 'Inter';
+let currentAxes = [];
+let axisValues  = {};
+let currentView = 'huge';
+let currentCodeTab = 'css';
+
+// ── INIT ────────────────────────────────────────────────────────────────────
+function init(){
+  buildPresets();
+  buildExamples();
+  loadFontData('Inter');
+}
+
+function buildPresets(){
+  const row = document.getElementById('presetRow');
+  PRESETS.forEach(name => {
+    const btn = document.createElement('button');
+    btn.className = 'preset' + (name === 'Inter' ? ' on' : '');
+    btn.textContent = name;
+    btn.onclick = () => {
+      document.getElementById('fontInput').value = name;
+      loadFont();
+    };
+    row.appendChild(btn);
+  });
+}
+
+function buildAlphabet(){
+  const box = document.getElementById('p-alpha');
+  const chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789!@#$&';
+  box.innerHTML = chars.split('').map(c => `<span>${c}</span>`).join('');
+}
+
+function buildExamples(){
+  const grid = document.getElementById('examplesGrid');
+  EXAMPLES.forEach(ex => {
+    const card = document.createElement('div');
+    card.className = 'ex-card';
+    card.innerHTML = `
+      <div class="ex-preview" id="ex-${ex.font.replace(/\s/g,'-')}-${Object.values(ex.settings).join('-')}">${ex.preview}</div>
+      <div class="ex-name">${ex.label}</div>
+      <div class="ex-tags">${ex.tags.map(t=>`<span class="ex-tag">${t}</span>`).join('')}</div>`;
+    card.onclick = () => {
+      document.getElementById('fontInput').value = ex.font;
+      loadFont(() => {
+        // Apply settings after load
+        setTimeout(() => {
+          ex.settings && Object.entries(ex.settings).forEach(([tag,val]) => {
+            const slider = document.getElementById('slider-'+tag);
+            if(slider){ slider.value = val; axisValues[tag] = val; updateSliderTrack(slider); }
+          });
+          applyVariation();
+        }, 500);
+      });
+    };
+    grid.appendChild(card);
+  });
+  // Load example fonts in background for previews
+  EXAMPLES.forEach(ex => loadGF(ex.font, () => {
+    const id = `ex-${ex.font.replace(/\s/g,'-')}-${Object.values(ex.settings).join('-')}`;
+    const el = document.getElementById(id);
+    if(el){
+      el.style.fontFamily = `'${ex.font}',sans-serif`;
+      el.style.fontVariationSettings = Object.entries(ex.settings).map(([k,v])=>`'${k}' ${v}`).join(',');
+    }
+  }));
+}
+
+function loadFont(cb){
+  const name = document.getElementById('fontInput').value.trim() || 'Inter';
+  loadFontData(name, cb);
+}
+
+function loadFontData(name, cb){
+  const data = FONTS[name];
+  currentFont = name;
+
+  document.getElementById('fontNameLabel').textContent = name;
+  document.querySelectorAll('.preset').forEach(b => b.classList.toggle('on', b.textContent === name));
+
+  if(data){
+    currentAxes = data.axes;
+  } else {
+    // Generic single-axis fallback
+    currentAxes = [{tag:'wght',name:'Weight',min:100,max:900,def:400,step:1}];
+  }
+
+  // Reset axis values
+  axisValues = {};
+  currentAxes.forEach(a => axisValues[a.tag] = a.def);
+
+  buildSliders();
+  loadGF(name, () => {
+    applyVariation();
+    updateCode();
+    if(cb) cb();
+  });
+}
+
+function loadGF(name, cb){
+  const data = FONTS[name];
+  const id   = 'gf-'+name.replace(/\s/g,'_');
+  if(document.getElementById(id)){ if(cb) cb(); return; }
+  const link = document.createElement('link');
+  link.id   = id;
+  link.rel  = 'stylesheet';
+  const query = data ? data.gf : `${name.replace(/\s/g,'+')}:wght@100..900`;
+  link.href = `https://fonts.googleapis.com/css2?family=${query}&display=swap`;
+  link.onload = () => { setTimeout(cb||function(){},150); };
+  document.head.appendChild(link);
+}
+
+function buildSliders(){
+  const panel = document.getElementById('slidersPanel');
+  // Keep header
+  const header = panel.children[0];
+  panel.innerHTML = '';
+  panel.appendChild(header);
+
+  currentAxes.forEach(axis => {
+    const pct = ((axisValues[axis.tag] - axis.min) / (axis.max - axis.min)) * 100;
+    const group = document.createElement('div');
+    group.className = 'slider-group';
+    group.innerHTML = `
+      <div class="sg-header">
+        <div>
+          <span class="sg-name">${axis.name}</span>
+          <span class="sg-axis">&nbsp;'${axis.tag}'</span>
+        </div>
+        <span class="sg-val" id="val-${axis.tag}">${axisValues[axis.tag]}</span>
+      </div>
+      <div class="sg-range">
+        <span class="sg-min">${axis.min}</span>
+        <input type="range" class="vslider" id="slider-${axis.tag}"
+          min="${axis.min}" max="${axis.max}" step="${axis.step}" value="${axisValues[axis.tag]}"
+          style="--pct:${pct}%"
+          oninput="onSlider('${axis.tag}',this)">
+        <span class="sg-max">${axis.max}</span>
+      </div>`;
+    panel.appendChild(group);
+  });
+
+  // Tip
+  const tip = document.createElement('div');
+  tip.style.cssText = 'font-size:10px;color:var(--mt2);letter-spacing:.04em;padding-top:8px;border-top:1px solid var(--br)';
+  tip.textContent = '💡 Drag sliders to customize. CSS updates instantly.';
+  panel.appendChild(tip);
+}
+
+function onSlider(tag, el){
+  axisValues[tag] = parseFloat(el.value);
+  document.getElementById('val-'+tag).textContent = el.value;
+  updateSliderTrack(el);
+  applyVariation();
+  updateCode();
+}
+
+function updateSliderTrack(el){
+  const axis = currentAxes.find(a => a.tag === el.id.replace('slider-',''));
+  if(!axis) return;
+  const pct = ((parseFloat(el.value) - axis.min) / (axis.max - axis.min)) * 100;
+  el.style.setProperty('--pct', pct+'%');
+  const valEl = document.getElementById('val-'+el.id.replace('slider-',''));
+  if(valEl) valEl.textContent = el.value;
+}
+
+function applyVariation(){
+  const varStr = buildVarStr();
+  const weight = axisValues['wght'] || 400;
+  const targets = ['p-huge','p-heading','p-body','p-alpha'];
+  targets.forEach(id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.style.fontFamily = `'${currentFont}',sans-serif`;
+    el.style.fontVariationSettings = varStr;
+    el.style.fontWeight = weight;
+  });
+  // Also alphabet spans
+  document.querySelectorAll('#p-alpha span').forEach(span => {
+    span.style.fontFamily = `'${currentFont}',sans-serif`;
+    span.style.fontVariationSettings = varStr;
+  });
+  updateSettingsStrip();
+}
+
+function buildVarStr(){
+  return Object.entries(axisValues).map(([tag,val]) => `'${tag}' ${val}`).join(', ');
+}
+
+function updateSettingsStrip(){
+  const strip = document.getElementById('settingsStrip');
+  strip.innerHTML = Object.entries(axisValues).map(([tag,val]) =>
+    `<span class="setting-chip"><span class="chip-axis">'${tag}'</span> ${val}</span>`
+  ).join('');
+}
+
+// ── PREVIEW CONTROLS ────────────────────────────────────────────────────────
+function setView(view, btn){
+  currentView = view;
+  document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  ['huge','heading','body','alpha'].forEach(v => {
+    const el = document.getElementById('p-'+v);
+    if(el) el.classList.toggle('preview-hidden', v !== view);
+  });
+  if(view === 'alpha') buildAlphabet(), applyVariation();
+  updatePreviewSize();
+}
+
+function updatePreviewSize(){
+  const size = document.getElementById('previewSize').value || 72;
+  const sizes = {huge: size, heading: Math.min(size, 48), body: Math.min(size, 18), alpha: Math.min(size, 28)};
+  const el = document.getElementById('p-'+currentView);
+  if(el) el.style.fontSize = sizes[currentView]+'px';
+}
+
+// ── CODE GENERATOR ───────────────────────────────────────────────────────────
+function setCodeTab(tab, el){
+  currentCodeTab = tab;
+  document.querySelectorAll('.code-tab').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  updateCode();
+}
+
+function updateCode(){
+  const varStr  = buildVarStr();
+  const weight  = axisValues['wght'] || 400;
+  const fontFam = `'${currentFont}', sans-serif`;
+  const gfQuery = (FONTS[currentFont]?.gf || `${currentFont.replace(/\s/g,'+')}:wght@100..900`);
+  const gfUrl   = `https://fonts.googleapis.com/css2?family=${gfQuery}&display=swap`;
+
+  let html = '';
+  if(currentCodeTab === 'css'){
+    html = `<span class="c-cm">/* Variable font CSS */</span>
+<span class="c-prop">font-family</span>: <span class="c-str">${fontFam}</span>;
+<span class="c-prop">font-weight</span>: <span class="c-val">${weight}</span>;
+<span class="c-prop">font-variation-settings</span>: <span class="c-str">${varStr}</span>;`;
+  } else if(currentCodeTab === 'fontface'){
+    html = `<span class="c-cm">/* Import from Google Fonts */</span>
+<span class="c-prop">@import</span> <span class="c-str">url('${gfUrl}')</span>;
+
+<span class="c-cm">/* Apply to element */</span>
+<span class="c-prop">.my-text</span> {
+  <span class="c-prop">font-family</span>: <span class="c-str">${fontFam}</span>;
+  <span class="c-prop">font-variation-settings</span>: <span class="c-str">'${Object.keys(axisValues)[0]}' ${Object.values(axisValues)[0]}</span>${Object.entries(axisValues).length > 1 ? ',\n                          '+Object.entries(axisValues).slice(1).map(([k,v])=>`<span class="c-str">'${k}' ${v}</span>`).join(',\n                          ') : ''};
+}`;
+  } else if(currentCodeTab === 'html'){
+    html = `<span class="c-cm">&lt;!-- Add to &lt;head&gt; --&gt;</span>
+&lt;<span class="c-prop">link</span> <span class="c-prop">rel</span>=<span class="c-str">"preconnect"</span> <span class="c-prop">href</span>=<span class="c-str">"https://fonts.googleapis.com"</span>&gt;
+&lt;<span class="c-prop">link</span> <span class="c-prop">rel</span>=<span class="c-str">"stylesheet"</span>
+  <span class="c-prop">href</span>=<span class="c-str">"${gfUrl}"</span>&gt;
+
+<span class="c-cm">&lt;!-- In your CSS --&gt;</span>
+<span class="c-prop">body</span> {
+  <span class="c-prop">font-family</span>: <span class="c-str">${fontFam}</span>;
+  <span class="c-prop">font-variation-settings</span>: <span class="c-str">${varStr}</span>;
+}`;
+  } else if(currentCodeTab === 'animation'){
+    const axis = currentAxes[0];
+    html = `<span class="c-cm">/* Animated variable font */</span>
+<span class="c-prop">@keyframes</span> <span class="c-str">fontPulse</span> {
+  <span class="c-prop">0%</span>   { <span class="c-prop">font-variation-settings</span>: <span class="c-str">'${axis.tag}' ${axis.min}</span>; }
+  <span class="c-prop">100%</span> { <span class="c-prop">font-variation-settings</span>: <span class="c-str">'${axis.tag}' ${axis.max}</span>; }
+}
+
+<span class="c-prop">.animated-text</span> {
+  <span class="c-prop">font-family</span>: <span class="c-str">${fontFam}</span>;
+  <span class="c-prop">animation</span>: <span class="c-val">fontPulse 2s ease-in-out infinite alternate</span>;
+}`;
+  }
+
+  document.getElementById('codeBlock').innerHTML = html;
+}
+
+function copyCode(){
+  // Get plain text version
+  const el    = document.getElementById('codeBlock').cloneNode(true);
+  el.querySelectorAll('*').forEach(n => { n.replaceWith(n.textContent); });
+  const text  = el.textContent.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyCodeBtn');
+    btn.textContent = '✓ Copied!'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = '⎘ Copy Code'; btn.classList.remove('ok'); }, 2000);
+  });
+}
+
+init();
+</script>
+</body>
+</html>
