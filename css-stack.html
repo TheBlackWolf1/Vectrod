@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>CSS Font Stack Generator — Free Font Family Code | Vectrod</title>
+<meta name="description" content="Generate perfect CSS font-family stacks instantly. Pick your font, get ready-to-paste CSS code with fallbacks for every browser and OS. Free tool.">
+<meta name="keywords" content="css font stack generator, font family css, font fallback generator, web safe fonts css, google fonts css code, font-family code generator">
+<link rel="canonical" href="https://vectrod.com/css-stack">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="dark"]{--bg:#02030d;--bg3:#080918;--sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.07);--br:rgba(255,255,255,.08);--tx:#ede8ff;--mt:rgba(237,232,255,.45);--gold:#f0c060;--gold3:#c09040;--purple2:#aa77ff;--blue2:#66aaff;--ok:#22dd99;--gO:rgba(240,192,96,.1);--gP:rgba(136,68,238,.14);--gG:rgba(34,221,153,.1)}
+[data-theme="light"]{--bg:#f7f6ff;--bg3:#edeaff;--sf:rgba(255,255,255,.9);--sf2:rgba(255,255,255,.97);--br:rgba(80,40,200,.1);--tx:#08051e;--mt:rgba(8,5,30,.5);--gold:#9a6600;--gold3:#7a5000;--purple2:#7744dd;--blue2:#3377ee;--ok:#008855;--gO:rgba(154,102,0,.07)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+.bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(130px);animation:orbF ease-in-out infinite alternate}
+.o1{width:600px;height:600px;top:-200px;left:-100px;background:radial-gradient(circle,rgba(51,136,255,.14) 0%,transparent 65%);animation-duration:28s}
+.o2{width:500px;height:500px;bottom:-150px;right:-100px;background:radial-gradient(circle,rgba(240,192,96,.1) 0%,transparent 65%);animation-duration:34s}
+@keyframes orbF{from{transform:translate(0,0)}to{transform:translate(40px,30px)}}
+.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:28px 20px 100px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#aa77ff,#3388ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nav-r{display:flex;gap:8px}
+.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace;display:inline-flex;align-items:center;white-space:nowrap}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+/* HERO */
+.hero{text-align:center;margin-bottom:44px}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.18em;color:var(--blue2);text-transform:uppercase;border:1px solid rgba(51,136,255,.2);padding:4px 16px;border-radius:100px;background:rgba(51,136,255,.07);margin-bottom:16px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(24px,4.5vw,52px);font-weight:900;line-height:1.05;margin-bottom:12px}
+.h1g{background:linear-gradient(90deg,var(--blue2),var(--purple2),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:15px;color:var(--mt);max-width:520px;margin:0 auto;line-height:1.8}
+/* MAIN TOOL */
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:700px){.tool-grid{grid-template-columns:1fr}}
+.panel{background:var(--sf2);border:1px solid var(--br);border-radius:20px;padding:24px}
+.panel-title{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.panel-title::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--blue2)}
+/* FONT SEARCH */
+.font-search{position:relative;margin-bottom:12px}
+.font-search input{width:100%;background:var(--bg3);border:1.5px solid var(--br);border-radius:12px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;padding:10px 14px;outline:none;transition:border-color .2s}
+.font-search input:focus{border-color:rgba(51,136,255,.4)}
+.font-list{max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:2px;scrollbar-width:thin;scrollbar-color:var(--br) transparent}
+.font-item{padding:9px 14px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--mt);transition:all .15s;display:flex;align-items:center;justify-content:space-between}
+.font-item:hover{background:var(--sf2);color:var(--tx)}
+.font-item.selected{background:rgba(51,136,255,.1);color:var(--blue2);border:1px solid rgba(51,136,255,.2)}
+.font-item-cat{font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.07em;opacity:.5;text-transform:uppercase}
+/* FALLBACK OPTIONS */
+.fallback-grid{display:flex;flex-direction:column;gap:8px}
+.fallback-row{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--br);border-radius:10px;padding:8px 12px;cursor:grab;transition:all .2s}
+.fallback-row:hover{border-color:var(--br);background:var(--sf)}
+.fallback-row.dragging{opacity:.5;border-style:dashed}
+.drag-handle{color:var(--mt);opacity:.4;font-size:12px;cursor:grab;flex-shrink:0}
+.fallback-name{font-size:13px;font-weight:600;color:var(--tx);flex:1}
+.fallback-type{font-size:9px;color:var(--mt);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.07em}
+.fallback-remove{background:none;border:none;color:var(--mt);cursor:pointer;font-size:14px;padding:2px;transition:color .2s;flex-shrink:0}
+.fallback-remove:hover{color:#ff6666}
+/* PREVIEW */
+.preview-panel{background:var(--sf2);border:1px solid var(--br);border-radius:20px;padding:24px;margin-bottom:16px}
+.preview-text{font-size:32px;font-weight:700;color:var(--tx);line-height:1.2;margin-bottom:8px;transition:font-family .3s;min-height:44px}
+.preview-sub{font-size:14px;color:var(--mt);margin-bottom:16px;line-height:1.7;transition:font-family .3s}
+.preview-inp{width:100%;background:var(--bg3);border:1.5px solid var(--br);border-radius:10px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:13px;padding:9px 14px;outline:none;transition:border-color .2s}
+.preview-inp:focus{border-color:rgba(51,136,255,.3)}
+/* CODE OUTPUT */
+.code-panel{background:var(--bg3);border:1.5px solid rgba(51,136,255,.15);border-radius:20px;padding:0;overflow:hidden;margin-bottom:16px}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--br);background:rgba(51,136,255,.04)}
+.code-tab{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;color:var(--mt);padding:4px 12px;border-radius:100px;cursor:pointer;transition:all .2s}
+.code-tab.on{background:rgba(51,136,255,.12);color:var(--blue2)}
+.copy-btn{display:flex;align-items:center;gap:6px;background:rgba(51,136,255,.1);border:1px solid rgba(51,136,255,.2);border-radius:100px;color:var(--blue2);font-size:11px;font-family:'DM Mono',monospace;padding:5px 14px;cursor:pointer;transition:all .2s}
+.copy-btn:hover{background:rgba(51,136,255,.18);border-color:rgba(51,136,255,.35)}
+.copy-btn.copied{background:var(--gG);border-color:rgba(34,221,153,.3);color:var(--ok)}
+.code-body{padding:20px;overflow-x:auto}
+.code-block{font-family:'DM Mono',monospace;font-size:13px;line-height:1.8;color:var(--tx);white-space:pre;tab-size:2}
+.c-prop{color:var(--blue2)}
+.c-val{color:var(--ok)}
+.c-str{color:var(--gold)}
+.c-comment{color:rgba(237,232,255,.28);font-style:italic}
+/* QUICK STACKS */
+.quick-section{margin-bottom:28px}
+.section-title{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.quick-card{background:var(--sf);border:1px solid var(--br);border-radius:14px;padding:14px 16px;cursor:pointer;transition:all .22s}
+.quick-card:hover{border-color:rgba(240,192,96,.2);transform:translateY(-2px)}
+.qc-name{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.qc-preview{font-size:18px;color:var(--mt);margin-bottom:6px;line-height:1.2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.qc-desc{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase}
+/* SEO */
+.seo-box{background:var(--sf);border:1px solid var(--br);border-radius:20px;padding:36px;margin-top:60px}
+.seo-box h2{font-family:'Cinzel',serif;font-size:22px;font-weight:700;margin-bottom:14px;background:linear-gradient(90deg,var(--blue2),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.seo-box h3{font-size:15px;font-weight:700;color:var(--tx);margin:20px 0 7px}
+.seo-box p{font-size:13px;color:var(--mt);line-height:1.85;margin-bottom:10px}
+/* FOOTER */
+.footer{text-align:center;margin-top:60px;padding-top:24px;border-top:1px solid var(--br)}
+.footer-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.footer-links a{font-size:11px;color:var(--mt);text-decoration:none}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:11px;color:var(--mt);opacity:.5}
+</style>
+</head>
+<body>
+<div class="bg-scene"><div class="orb o1"></div><div class="orb o2"></div></div>
+<div class="wrap">
+
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="34" height="34" viewBox="0 0 46 46" fill="none">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#aa77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs>
+      <path d="M23 2 L42 23 L23 44 L4 23 Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/>
+      <path d="M7 10 L23 38 L39 10 L34 10 L23 30 L12 10 Z" fill="url(#lg)"/>
+      <path d="M23 2 L27 9 L23 13 L19 9 Z" fill="#f0c060"/>
+    </svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">CSS Font Stack</div></div>
+  </a>
+  <div class="nav-r">
+    <button class="nb" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">☀</button>
+    <a class="nb" href="/license-checker">🛡 License Check</a>
+    <a class="nb" href="/fonts">Fonts</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">💻 CSS Generator · Instant Code</div>
+  <h1>CSS Font Stack<br><span class="h1g">Generator</span></h1>
+  <p>Pick your font, customize fallbacks, copy the CSS. Perfect font-family stacks with Google Fonts import code — ready in seconds.</p>
+</div>
+
+<!-- QUICK STACKS -->
+<div class="quick-section">
+  <div class="section-title">⚡ Popular Stacks — Click to Load</div>
+  <div class="quick-grid" id="quickGrid"></div>
+</div>
+
+<!-- TOOL -->
+<div class="tool-grid">
+  <div class="panel">
+    <div class="panel-title">Primary Font</div>
+    <div class="font-search">
+      <input id="fontSearch" type="text" placeholder="Search fonts..." oninput="searchFonts(this.value)">
+    </div>
+    <div class="font-list" id="fontList"></div>
+  </div>
+  <div class="panel">
+    <div class="panel-title">Fallback Stack <small style="opacity:.5;font-size:9px">(drag to reorder)</small></div>
+    <div class="fallback-grid" id="fallbackGrid"></div>
+    <button onclick="addCustomFallback()" style="margin-top:10px;background:var(--sf);border:1px dashed var(--br);border-radius:10px;color:var(--mt);font-size:12px;padding:8px;width:100%;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--br)';this.style.color='var(--mt)'">+ Add custom fallback</button>
+  </div>
+</div>
+
+<!-- PREVIEW -->
+<div class="preview-panel">
+  <div class="panel-title">Live Preview</div>
+  <div class="preview-text" id="previewHeading">The quick brown fox jumps</div>
+  <div class="preview-sub" id="previewBody">Pack my box with five dozen liquor jugs. 0123456789 !@#$%</div>
+  <input class="preview-inp" id="previewInp" value="The quick brown fox jumps" oninput="updatePreview(this.value)" placeholder="Type to preview...">
+</div>
+
+<!-- CODE OUTPUT -->
+<div class="code-panel">
+  <div class="code-header">
+    <div style="display:flex;gap:6px">
+      <button class="code-tab on" onclick="setTab('css',this)">CSS</button>
+      <button class="code-tab" onclick="setTab('import',this)">@import</button>
+      <button class="code-tab" onclick="setTab('link',this)">&lt;link&gt;</button>
+      <button class="code-tab" onclick="setTab('full',this)">Full Block</button>
+    </div>
+    <button class="copy-btn" id="copyBtn" onclick="copyCode()">
+      <span id="copyIcon">⎘</span> <span id="copyTxt">Copy</span>
+    </button>
+  </div>
+  <div class="code-body">
+    <div class="code-block" id="codeOutput"></div>
+  </div>
+</div>
+
+<!-- SEO -->
+<div class="seo-box">
+  <h2>Understanding CSS Font Stacks</h2>
+  <p>A CSS font stack is the comma-separated list of font names you provide in the <code style="background:var(--bg3);padding:2px 6px;border-radius:5px;font-family:'DM Mono',monospace;font-size:12px">font-family</code> property. The browser tries each font in order — if the first isn't installed, it moves to the second, then the third, until it finds one it can use.</p>
+  <h3>Why Do Fallbacks Matter?</h3>
+  <p>Web fonts require a network request to download. Until that download completes, the browser shows text in a fallback font. A well-chosen fallback minimizes layout shift (CLS) because it shares similar metrics — x-height, letter-spacing, line-height — with your web font.</p>
+  <h3>The Generic Families</h3>
+  <p>Always end your stack with a generic family keyword: <code style="background:var(--bg3);padding:2px 6px;border-radius:5px;font-family:'DM Mono',monospace;font-size:12px">serif</code>, <code style="background:var(--bg3);padding:2px 6px;border-radius:5px;font-family:'DM Mono',monospace;font-size:12px">sans-serif</code>, <code style="background:var(--bg3);padding:2px 6px;border-radius:5px;font-family:'DM Mono',monospace;font-size:12px">monospace</code>, or <code style="background:var(--bg3);padding:2px 6px;border-radius:5px;font-family:'DM Mono',monospace;font-size:12px">display</code>. This guarantees the browser always has a valid value and renders something — even if none of your specified fonts are available.</p>
+  <h3>Variable Font Stacks</h3>
+  <p>Variable fonts reduce HTTP requests by combining multiple weights and styles in a single file. When using variable fonts, add <code style="background:var(--bg3);padding:2px 6px;border-radius:5px;font-family:'DM Mono',monospace;font-size:12px">font-weight: 100 900</code> to your @font-face declaration to unlock all weight variations with a single file.</p>
+</div>
+
+<div class="footer">
+  <div class="footer-links">
+    <a href="/">Home</a><a href="/fonts">Free Fonts</a><a href="/pairing">Font Pairing</a>
+    <a href="/preview">Preview</a><a href="/license-checker">License Checker</a>
+    <a href="/brands">Brand Fonts</a><a href="/blog">Blog</a>
+  </div>
+  <div class="footer-copy">© 2025 Vectrod · CSS Font Stack Generator</div>
+</div>
+</div>
+
+<script>
+const FONTS = [
+  {f:'Inter',c:'sans-serif',fallbacks:['system-ui','-apple-system','Segoe UI','Roboto','sans-serif']},
+  {f:'Roboto',c:'sans-serif',fallbacks:['Arial','Helvetica Neue','sans-serif']},
+  {f:'Open Sans',c:'sans-serif',fallbacks:['Helvetica Neue','Arial','sans-serif']},
+  {f:'Poppins',c:'sans-serif',fallbacks:['Trebuchet MS','Arial','sans-serif']},
+  {f:'Montserrat',c:'sans-serif',fallbacks:['Trebuchet MS','Arial','sans-serif']},
+  {f:'Lato',c:'sans-serif',fallbacks:['Helvetica Neue','Arial','sans-serif']},
+  {f:'Raleway',c:'sans-serif',fallbacks:['Trebuchet MS','Arial','sans-serif']},
+  {f:'DM Sans',c:'sans-serif',fallbacks:['system-ui','Helvetica Neue','sans-serif']},
+  {f:'Nunito',c:'sans-serif',fallbacks:['Verdana','Geneva','sans-serif']},
+  {f:'Outfit',c:'sans-serif',fallbacks:['system-ui','Arial','sans-serif']},
+  {f:'Plus Jakarta Sans',c:'sans-serif',fallbacks:['system-ui','Arial','sans-serif']},
+  {f:'Work Sans',c:'sans-serif',fallbacks:['Helvetica Neue','Arial','sans-serif']},
+  {f:'Rubik',c:'sans-serif',fallbacks:['Arial','Helvetica','sans-serif']},
+  {f:'Space Grotesk',c:'sans-serif',fallbacks:['system-ui','Arial','sans-serif']},
+  {f:'Josefin Sans',c:'sans-serif',fallbacks:['Century Gothic','Trebuchet MS','sans-serif']},
+  {f:'Playfair Display',c:'serif',fallbacks:['Georgia','Garamond','Times New Roman','serif']},
+  {f:'Merriweather',c:'serif',fallbacks:['Georgia','Times New Roman','serif']},
+  {f:'Lora',c:'serif',fallbacks:['Georgia','Times New Roman','serif']},
+  {f:'EB Garamond',c:'serif',fallbacks:['Garamond','Georgia','Times New Roman','serif']},
+  {f:'Cormorant Garamond',c:'serif',fallbacks:['Garamond','Georgia','serif']},
+  {f:'Libre Baskerville',c:'serif',fallbacks:['Baskerville','Georgia','serif']},
+  {f:'Source Serif 4',c:'serif',fallbacks:['Georgia','Times New Roman','serif']},
+  {f:'Crimson Text',c:'serif',fallbacks:['Garamond','Georgia','serif']},
+  {f:'Cinzel',c:'serif',fallbacks:['Trajan Pro','Georgia','serif']},
+  {f:'Bebas Neue',c:'display',fallbacks:['Impact','Arial Narrow','sans-serif']},
+  {f:'Oswald',c:'sans-serif',fallbacks:['Impact','Arial Narrow','sans-serif']},
+  {f:'Anton',c:'display',fallbacks:['Impact','Arial Narrow','sans-serif']},
+  {f:'Comfortaa',c:'display',fallbacks:['Trebuchet MS','Arial','sans-serif']},
+  {f:'Dancing Script',c:'handwriting',fallbacks:['Brush Script MT','cursive']},
+  {f:'Caveat',c:'handwriting',fallbacks:['Brush Script MT','cursive']},
+  {f:'Pacifico',c:'handwriting',fallbacks:['Comic Sans MS','cursive']},
+  {f:'JetBrains Mono',c:'monospace',fallbacks:['Fira Code','Consolas','Courier New','monospace']},
+  {f:'Fira Code',c:'monospace',fallbacks:['Consolas','Monaco','Courier New','monospace']},
+  {f:'Source Code Pro',c:'monospace',fallbacks:['Consolas','Courier New','monospace']},
+  {f:'DM Mono',c:'monospace',fallbacks:['Consolas','Monaco','monospace']},
+  {f:'Space Mono',c:'monospace',fallbacks:['Courier New','Consolas','monospace']},
+];
+
+const QUICK_STACKS = [
+  {name:'Modern UI',font:'Inter',desc:'Apps & Dashboards',fallbacks:['system-ui','-apple-system','Segoe UI','Roboto','sans-serif']},
+  {name:'Editorial',font:'Playfair Display',desc:'Blogs & Magazines',fallbacks:['Georgia','Times New Roman','serif']},
+  {name:'Bold Impact',font:'Bebas Neue',desc:'Sports & Posters',fallbacks:['Impact','Arial Narrow','sans-serif']},
+  {name:'Elegant',font:'Cormorant Garamond',desc:'Luxury & Fashion',fallbacks:['Garamond','Georgia','serif']},
+  {name:'Developer',font:'JetBrains Mono',desc:'Code & Terminal',fallbacks:['Fira Code','Consolas','monospace']},
+  {name:'Friendly',font:'Nunito',desc:'Kids & Community',fallbacks:['Verdana','Geneva','sans-serif']},
+  {name:'Startup',font:'DM Sans',desc:'SaaS & Products',fallbacks:['system-ui','Helvetica Neue','sans-serif']},
+  {name:'Script',font:'Dancing Script',desc:'Weddings & Cards',fallbacks:['Brush Script MT','cursive']},
+];
+
+let selectedFont = FONTS[0];
+let currentFallbacks = [...FONTS[0].fallbacks];
+let currentTab = 'css';
+let loadedFonts = new Set();
+
+function loadFont(name){
+  if(loadedFonts.has(name)) return;
+  loadedFonts.add(name);
+  const l=document.createElement('link');
+  l.rel='stylesheet';
+  l.href=`https://fonts.googleapis.com/css2?family=${encodeURIComponent(name)}:wght@400;700&display=swap`;
+  document.head.appendChild(l);
+}
+
+function buildFontList(filter=''){
+  const list=document.getElementById('fontList');
+  const fl=filter.toLowerCase();
+  const filtered=FONTS.filter(f=>!fl||f.f.toLowerCase().includes(fl)||f.c.includes(fl));
+  list.innerHTML='';
+  filtered.forEach(font=>{
+    const item=document.createElement('div');
+    item.className='font-item'+(selectedFont.f===font.f?' selected':'');
+    item.innerHTML=`<span>${font.f}</span><span class="font-item-cat">${font.c}</span>`;
+    item.onclick=()=>selectFont(font);
+    list.appendChild(item);
+  });
+}
+
+function selectFont(font){
+  selectedFont=font;
+  currentFallbacks=[...font.fallbacks];
+  loadFont(font.f);
+  buildFontList(document.getElementById('fontSearch').value);
+  buildFallbacks();
+  updatePreview();
+  updateCode();
+}
+
+function searchFonts(v){buildFontList(v)}
+
+function buildFallbacks(){
+  const grid=document.getElementById('fallbackGrid');
+  grid.innerHTML='';
+  currentFallbacks.forEach((fb,i)=>{
+    const row=document.createElement('div');
+    row.className='fallback-row';
+    row.draggable=true;
+    row.dataset.index=i;
+    const isGeneric=['serif','sans-serif','monospace','cursive','fantasy','system-ui','-apple-system'].includes(fb);
+    row.innerHTML=`
+      <span class="drag-handle">⣿</span>
+      <span class="fallback-name">${fb}</span>
+      <span class="fallback-type">${isGeneric?'generic':'system'}</span>
+      <button class="fallback-remove" onclick="removeFallback(${i})">×</button>`;
+    row.ondragstart=e=>{e.dataTransfer.setData('text/plain',i);row.classList.add('dragging')};
+    row.ondragend=()=>row.classList.remove('dragging');
+    row.ondragover=e=>{e.preventDefault()};
+    row.ondrop=e=>{
+      e.preventDefault();
+      const from=parseInt(e.dataTransfer.getData('text/plain'));
+      const to=i;
+      const item=currentFallbacks.splice(from,1)[0];
+      currentFallbacks.splice(to,0,item);
+      buildFallbacks();updateCode();
+    };
+    grid.appendChild(row);
+  });
+}
+
+function removeFallback(i){currentFallbacks.splice(i,1);buildFallbacks();updateCode()}
+
+function addCustomFallback(){
+  const v=prompt('Enter fallback font name:');
+  if(v&&v.trim()){currentFallbacks.push(v.trim());buildFallbacks();updateCode()}
+}
+
+function updatePreview(text){
+  const t=text||document.getElementById('previewInp').value||'The quick brown fox jumps';
+  const stack=`'${selectedFont.f}',${currentFallbacks.map(f=>f.includes(' ')?`'${f}'`:f).join(',')}`;
+  document.getElementById('previewHeading').style.fontFamily=stack;
+  document.getElementById('previewHeading').textContent=t;
+  document.getElementById('previewBody').style.fontFamily=stack;
+  loadFont(selectedFont.f);
+}
+
+function buildStack(){
+  return [selectedFont.f,...currentFallbacks].map(f=>f.includes(' ')?`'${f}'`:f).join(', ');
+}
+
+function updateCode(){
+  const stack=buildStack();
+  const gUrl=`https://fonts.googleapis.com/css2?family=${encodeURIComponent(selectedFont.f)}:wght@400;500;600;700&display=swap`;
+  const w=selectedFont.c==='monospace'?'code':'body';
+
+  const codes={
+    css:`<span class="c-comment">/* ${selectedFont.f} font-family stack */</span>\n<span class="c-prop">font-family</span>: <span class="c-str">${stack}</span>;`,
+    import:`<span class="c-comment">/* Add to top of your CSS */</span>\n<span class="c-prop">@import</span> url('<span class="c-val">${gUrl}</span>');\n\n<span class="c-comment">/* Use in your CSS */</span>\n<span class="c-prop">font-family</span>: <span class="c-str">${stack}</span>;`,
+    link:`<span class="c-comment">&lt;!-- Add to your HTML &lt;head&gt; --&gt;</span>\n&lt;<span class="c-prop">link</span> rel="<span class="c-val">preconnect</span>" href="<span class="c-str">https://fonts.googleapis.com</span>"&gt;\n&lt;<span class="c-prop">link</span> rel="<span class="c-val">stylesheet</span>"\n  href="<span class="c-str">${gUrl}</span>"&gt;\n\n<span class="c-comment">/* Then in CSS */</span>\n<span class="c-prop">font-family</span>: <span class="c-str">${stack}</span>;`,
+    full:`<span class="c-comment">/* ─── ${selectedFont.f} Font Stack ─── */</span>\n\n<span class="c-comment">/* 1. Google Fonts import */</span>\n@import url('<span class="c-val">${gUrl}</span>');\n\n<span class="c-comment">/* 2. Base styles */</span>\n<span class="c-prop">body</span>, <span class="c-prop">.${w}</span> {\n  font-family: <span class="c-str">${stack}</span>;\n  font-size: <span class="c-val">16px</span>;\n  font-weight: <span class="c-val">400</span>;\n  line-height: <span class="c-val">1.6</span>;\n  -webkit-font-smoothing: <span class="c-val">antialiased</span>;\n  -moz-osx-font-smoothing: <span class="c-val">grayscale</span>;\n}\n\n<span class="c-comment">/* 3. Headings */</span>\n<span class="c-prop">h1, h2, h3</span> {\n  font-family: <span class="c-str">${stack}</span>;\n  font-weight: <span class="c-val">700</span>;\n  line-height: <span class="c-val">1.2</span>;\n}`,
+  };
+  document.getElementById('codeOutput').innerHTML=codes[currentTab];
+}
+
+function setTab(tab,el){
+  currentTab=tab;
+  document.querySelectorAll('.code-tab').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  updateCode();
+}
+
+function copyCode(){
+  const stack=buildStack();
+  const gUrl=`https://fonts.googleapis.com/css2?family=${encodeURIComponent(selectedFont.f)}:wght@400;500;600;700&display=swap`;
+  const texts={
+    css:`font-family: ${stack};`,
+    import:`@import url('${gUrl}');\n\nfont-family: ${stack};`,
+    link:`<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="stylesheet" href="${gUrl}">`,
+    full:`@import url('${gUrl}');\n\nbody {\n  font-family: ${stack};\n  font-size: 16px;\n  font-weight: 400;\n  line-height: 1.6;\n  -webkit-font-smoothing: antialiased;\n}\n\nh1, h2, h3 {\n  font-family: ${stack};\n  font-weight: 700;\n}`,
+  };
+  navigator.clipboard.writeText(texts[currentTab]).then(()=>{
+    const btn=document.getElementById('copyBtn');
+    document.getElementById('copyIcon').textContent='✓';
+    document.getElementById('copyTxt').textContent='Copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{
+      document.getElementById('copyIcon').textContent='⎘';
+      document.getElementById('copyTxt').textContent='Copy';
+      btn.classList.remove('copied');
+    },2000);
+  });
+}
+
+function buildQuickGrid(){
+  const grid=document.getElementById('quickGrid');
+  QUICK_STACKS.forEach(s=>{
+    loadFont(s.font);
+    const card=document.createElement('div');
+    card.className='quick-card';
+    card.innerHTML=`
+      <div class="qc-preview" style="font-family:'${s.font}',sans-serif">${s.name}</div>
+      <div class="qc-name">${s.font}</div>
+      <div class="qc-desc">${s.desc}</div>`;
+    card.onclick=()=>{
+      const fontObj=FONTS.find(f=>f.f===s.font)||{f:s.font,c:'sans-serif',fallbacks:s.fallbacks};
+      currentFallbacks=[...s.fallbacks];
+      selectFont(fontObj);
+      window.scrollTo({top:document.querySelector('.tool-grid').offsetTop-20,behavior:'smooth'});
+    };
+    grid.appendChild(card);
+  });
+}
+
+// Init
+buildFontList();
+buildFallbacks();
+buildQuickGrid();
+loadFont(selectedFont.f);
+updateCode();
+</script>
+</body>
+</html>
