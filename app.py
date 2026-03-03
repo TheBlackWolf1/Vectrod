@@ -160,6 +160,14 @@ class Handler(BaseHTTPRequestHandler):
 
         elif path == '/css-animation':
             self.serve_static('css-animation.html', 'text/html')
+        elif path == '/tools':
+            self.serve_static('tools.html', 'text/html')
+        elif path == '/type-scale':
+            self.serve_static('type-scale.html', 'text/html')
+        elif path == '/contrast-checker':
+            self.serve_static('contrast-checker.html', 'text/html')
+        elif path == '/color-palette':
+            self.serve_static('color-palette.html', 'text/html')
 
         elif path == '/sitemap.xml':
             self.serve_static('sitemap.xml', 'application/xml')
