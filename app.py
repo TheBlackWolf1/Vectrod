@@ -178,6 +178,12 @@ class Handler(BaseHTTPRequestHandler):
         elif path == '/sitemap.xml':
             self.serve_static('sitemap.xml', 'application/xml')
 
+        elif path == '/favicon.ico':
+            self.serve_static('favicon.ico', 'image/x-icon')
+        elif path == '/favicon.svg':
+            self.serve_static('favicon.svg', 'image/svg+xml')
+        elif path == '/favicon-32.png':
+            self.serve_static('favicon-32.png', 'image/png')
         elif path == '/robots.txt':
             self.serve_static('robots.txt', 'text/plain')
 
