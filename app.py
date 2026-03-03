@@ -110,6 +110,118 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def handle_handwriting_process(self):
+        """Process uploaded handwriting image → extract glyphs → return preview"""
+        try:
+            fields, files = self.read_body()
+            if 'image' not in files:
+                self.json_resp({'success': False, 'error': 'No image uploaded'}, 400)
+                return
+            
+            from handwriting_processor import process_handwriting
+            
+            img_bytes = files['image']['data']
+            mode = fields.get('mode', 'sentence')
+            expected_text = fields.get('expected_text', '').strip()
+            
+            print(f"[HANDWRITING] mode={mode} text='{expected_text[:40]}'")
+            
+            result = process_handwriting(
+                img_bytes, 
+                mode=mode,
+                expected_text=expected_text if expected_text else None
+            )
+            
+            if 'error' in result:
+                self.json_resp({'success': False, 'error': result['error']})
+                return
+            
+            # Store SVG in session for font building
+            import tempfile, os
+            sid = os.urandom(8).hex()
+            tmp_dir = os.path.join('/tmp', f'hw_{sid}')
+            os.makedirs(tmp_dir, exist_ok=True)
+            
+            svg_path = os.path.join(tmp_dir, 'handwriting.svg')
+            with open(svg_path, 'w', encoding='utf-8') as f:
+                f.write(result['svg'])
+            
+            self.json_resp({
+                'success': True,
+                'preview': result['preview'],
+                'char_count': result['char_count'],
+                'detected_chars': result['detected_chars'],
+                'session_id': sid,
+                'mode': result['mode']
+            })
+            
+        except Exception as e:
+            import traceback
+            print(f"[HANDWRITING ERROR] {e}\n{traceback.format_exc()}")
+            self.json_resp({'success': False, 'error': str(e)}, 500)
+    
+    def handle_handwriting_to_font(self):
+        """Convert processed handwriting SVG to downloadable font"""
+        try:
+            import json as _json
+            length = int(self.headers.get('Content-Length', 0))
+            body = self.rfile.read(length)
+            data = _json.loads(body)
+            
+            session_id = data.get('session_id', '')
+            font_name = data.get('font_name', 'MyHandwriting').strip() or 'MyHandwriting'
+            expected_text = data.get('expected_text', '')
+            
+            svg_path = f'/tmp/hw_{session_id}/handwriting.svg'
+            if not os.path.exists(svg_path):
+                self.json_resp({'success': False, 'error': 'Session expired. Please re-upload.'})
+                return
+            
+            # Build font using existing engine
+            from engine import build_font, DEFAULT_CHAR_ORDER
+            
+            out_dir = f'/tmp/hw_{session_id}/output'
+            os.makedirs(out_dir, exist_ok=True)
+            
+            # Build char order from detected text
+            if expected_text:
+                chars = list(dict.fromkeys(c for c in expected_text if c.strip()))
+                char_order = chars + [c for c in DEFAULT_CHAR_ORDER if c not in chars]
+            else:
+                char_order = list(DEFAULT_CHAR_ORDER)
+            
+            print(f"[HW→FONT] Building font '{font_name}' char_order={char_order[:10]}")
+            
+            ttf_path, otf_path = build_font(svg_path, font_name, out_dir, char_order=char_order)
+            
+            if not ttf_path:
+                self.json_resp({'success': False, 'error': 'Font generation failed'})
+                return
+            
+            result_files = []
+            for fp in [ttf_path, otf_path]:
+                if fp and os.path.exists(fp):
+                    fname = os.path.basename(fp)
+                    # Copy to main sessions dir for download
+                    sid2, sp2 = new_session()
+                    out2 = os.path.join(sp2, 'output')
+                    os.makedirs(out2, exist_ok=True)
+                    import shutil
+                    dest = os.path.join(out2, fname)
+                    shutil.copy2(fp, dest)
+                    result_files.append({
+                        'filename': fname,
+                        'size': os.path.getsize(fp),
+                        'url': f'/download/{sid2}/{fname}'
+                    })
+            
+            self.json_resp({'success': True, 'files': result_files, 'font_name': font_name})
+            
+        except Exception as e:
+            import traceback
+            print(f"[HW→FONT ERROR] {e}\n{traceback.format_exc()}")
+            self.json_resp({'success': False, 'error': str(e)}, 500)
+
     def do_GET(self):
         path = urlparse(self.path).path
 
@@ -174,6 +286,12 @@ class Handler(BaseHTTPRequestHandler):
             self.serve_static('font-mood.html', 'text/html')
         elif path == '/readability-checker':
             self.serve_static('readability-checker.html', 'text/html')
+        elif path == '/handwriting-font':
+            self.serve_static('handwriting-font.html', 'text/html')
+        elif path == '/api/handwriting-process':
+            self.handle_handwriting_process()
+        elif path == '/api/handwriting-to-font':
+            self.handle_handwriting_to_font()
 
         elif path == '/sitemap.xml':
             self.serve_static('sitemap.xml', 'application/xml')
