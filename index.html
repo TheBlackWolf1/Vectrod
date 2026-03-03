@@ -297,7 +297,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:48px 2
   .tabs{border-radius:16px}
 }
 
-/* ── DROPDOWN (TEMİZ VERSİYON) ────────────────────────────── */
+/* ── MEGA MENU ─────────────────────────────────────────────── */
 .nav-dd{position:relative;display:inline-block}
 .dd-btn{
   display:inline-flex;align-items:center;gap:6px;
@@ -311,71 +311,95 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:48px 2
   cursor:pointer;transition:all .25s;
   white-space:nowrap;
 }
-.dd-btn:hover,.dd-btn.active{
-  border-color:rgba(240,192,96,.5);
-  color:var(--gold);
-}
-.dd-chevron{
-  font-size:9px;opacity:.6;
-  transition:transform .22s;
-  display:inline-block;line-height:1;
-}
+.dd-btn:hover,.dd-btn.active{border-color:rgba(240,192,96,.5);color:var(--gold)}
+.dd-chevron{font-size:9px;opacity:.6;transition:transform .22s;display:inline-block;line-height:1}
 .dd-chevron.up{transform:rotate(180deg);color:var(--gold);opacity:1}
+
+/* MEGA PANEL */
 .dd-panel{
   position:fixed !important;
-  min-width:230px;
-  padding:10px;
-  background:rgba(7,8,24,.98);
-  border:1px solid rgba(240,192,96,.25);
-  border-radius:20px;
-  box-shadow:0 0 0 1px rgba(255,255,255,.04) inset,
-             0 32px 80px rgba(0,0,0,.85),
-             0 0 40px rgba(136,68,238,.15);
-  opacity:0;
-  visibility:hidden;
-  transform:translateY(-6px) scale(.97);
-  transition:opacity .2s,transform .2s,visibility 0s linear .2s;
+  width:min(820px, 96vw);
+  background:rgba(6,7,16,.98);
+  border:1px solid rgba(240,192,96,.2);
+  border-radius:22px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.04) inset,0 40px 100px rgba(0,0,0,.9),0 0 60px rgba(136,68,238,.12);
+  opacity:0;visibility:hidden;
+  transform:translateY(-8px) scale(.97);
+  transition:opacity .22s,transform .22s,visibility 0s linear .22s;
   z-index:2147483647 !important;
   pointer-events:none;
+  overflow:hidden;
 }
 .dd-panel.is-open{
-  opacity:1 !important;
-  visibility:visible !important;
+  opacity:1 !important;visibility:visible !important;
   transform:translateY(0) scale(1);
-  transition:opacity .2s,transform .2s;
+  transition:opacity .22s,transform .22s;
   pointer-events:all !important;
 }
-.dd-label{
-  font-size:9px;color:rgba(237,232,255,.25);
-  font-family:'DM Mono',monospace;
-  letter-spacing:.16em;text-transform:uppercase;
-  padding:6px 14px 4px;
-}
+
+/* MEGA LAYOUT */
+.dd-mega{display:grid;grid-template-columns:1fr 1fr 1fr 220px;min-height:340px}
+.dd-col{padding:18px 6px 18px 18px;border-right:1px solid rgba(255,255,255,.05)}
+.dd-col:last-child{border-right:none}
+.dd-col-title{font-size:9px;color:rgba(240,192,96,.7);font-family:'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;padding:4px 10px 10px;margin-bottom:2px}
+.dd-label{font-size:9px;color:rgba(237,232,255,.2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;padding:10px 10px 3px;display:block}
 .dd-link{
-  display:flex;align-items:center;gap:12px;
-  padding:11px 14px;border-radius:13px;
-  color:rgba(237,232,255,.75);
-  font-family:'Outfit',sans-serif;
-  font-size:13px;font-weight:500;
-  text-decoration:none;
-  transition:background .15s,color .15s;
-  white-space:nowrap;
-  cursor:pointer;
+  display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:11px;
+  color:rgba(237,232,255,.72);font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;
+  text-decoration:none;transition:background .15s,color .15s;white-space:nowrap;
 }
-.dd-link:hover{
-  background:rgba(240,192,96,.12);
-  color:#fff;
+.dd-link:hover{background:rgba(240,192,96,.1);color:#fff}
+.dd-ico{font-size:15px;width:22px;text-align:center;flex-shrink:0}
+.dd-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);margin:6px 10px}
+
+/* RIGHT SIDEBAR */
+.dd-sidebar{background:rgba(0,0,0,.3);padding:18px;display:flex;flex-direction:column;gap:12px}
+.dd-cta-fonts{
+  background:linear-gradient(135deg,rgba(153,68,238,.2),rgba(34,221,153,.1));
+  border:1px solid rgba(153,68,238,.25);border-radius:14px;padding:16px;
+  text-decoration:none;transition:all .2s;display:block;
 }
-.dd-ico{
-  font-size:16px;width:26px;text-align:center;
-  flex-shrink:0;
+.dd-cta-fonts:hover{border-color:rgba(187,119,255,.5);transform:translateY(-2px)}
+.dd-cta-fonts-n{font-family:'DM Mono',monospace;font-size:20px;font-weight:700;color:var(--purple2);line-height:1}
+.dd-cta-fonts-l{font-size:11px;color:rgba(237,232,255,.5);margin-top:3px}
+.dd-cta-fonts-sub{font-size:10px;color:rgba(187,119,255,.7);margin-top:6px;font-family:'DM Mono',monospace}
+
+.dd-cta-make{
+  background:linear-gradient(135deg,rgba(240,192,96,.15),rgba(192,144,64,.1));
+  border:1px solid rgba(240,192,96,.25);border-radius:14px;padding:16px;
+  text-decoration:none;transition:all .2s;display:block;
 }
-.dd-divider{
-  height:1px;
-  background:linear-gradient(90deg,transparent,rgba(240,192,96,.15),transparent);
-  margin:6px 10px;
-}
-/* ── END DROPDOWN ───────────────────────────────────────────── */
+.dd-cta-make:hover{border-color:rgba(240,192,96,.5);transform:translateY(-2px)}
+.dd-cta-make-label{font-size:9px;color:rgba(240,192,96,.6);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.dd-cta-make-text{font-family:'Cinzel',serif;font-size:15px;font-weight:900;color:var(--gold);line-height:1.2}
+.dd-cta-make-arrow{font-size:11px;color:rgba(240,192,96,.6);margin-top:6px;font-family:'DM Mono',monospace}
+
+/* DARK/LIGHT MODE TOGGLE */
+.dd-theme-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:10px 14px}
+.dd-theme-label{font-size:10px;color:rgba(237,232,255,.4);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+.theme-toggle{width:36px;height:20px;background:rgba(153,68,238,.3);border:1px solid rgba(153,68,238,.4);border-radius:100px;cursor:pointer;position:relative;transition:background .2s}
+.theme-toggle.light-mode{background:rgba(240,192,96,.35);border-color:rgba(240,192,96,.5)}
+.theme-toggle::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--purple2);transition:transform .22s,background .2s}
+.theme-toggle.light-mode::after{transform:translateX(16px);background:var(--gold)}
+
+/* BOTTOM BAR */
+.dd-bottom{border-top:1px solid rgba(255,255,255,.05);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.2)}
+.dd-bottom-links{display:flex;gap:6px}
+.dd-bot-link{font-size:10px;color:rgba(237,232,255,.3);font-family:'DM Mono',monospace;text-decoration:none;padding:3px 8px;border-radius:6px;transition:color .15s}
+.dd-bot-link:hover{color:var(--gold)}
+
+/* LIGHT MODE */
+body.light-mode{--bg:#f5f3ff;--bg2:#eeeaff;--tx:#0a0820;background:var(--bg);color:var(--tx)}
+body.light-mode .dd-panel{background:rgba(245,243,255,.98);border-color:rgba(153,68,238,.2)}
+body.light-mode .dd-link{color:rgba(10,8,32,.7)}
+body.light-mode .dd-link:hover{background:rgba(153,68,238,.08);color:rgba(10,8,32,1)}
+body.light-mode .dd-sidebar{background:rgba(153,68,238,.04)}
+body.light-mode .dd-col{border-color:rgba(0,0,0,.06)}
+body.light-mode .dd-cta-fonts{background:linear-gradient(135deg,rgba(153,68,238,.1),rgba(34,221,153,.06));border-color:rgba(153,68,238,.2)}
+body.light-mode .dd-cta-make{background:linear-gradient(135deg,rgba(240,192,96,.12),rgba(192,144,64,.06));border-color:rgba(240,192,96,.2)}
+body.light-mode .dd-theme-row{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.08)}
+body.light-mode .dd-bottom{background:rgba(0,0,0,.03)}
+/* ── END MEGA MENU ──────────────────────────────────────────── */
 
 </style>
 </head>
@@ -866,29 +890,85 @@ document.querySelectorAll('button,a,.drop,.ck,.gstep,.p2s-uc,.faq-q,.gal-item').
 
 </script>
 
-<!-- DROPDOWN PANEL — fixed position, outside normal flow -->
+<!-- MEGA MENU PANEL -->
 <div class="dd-panel" id="ddPanel">
-  <div class="dd-label">Find &amp; Check</div>
-  <a class="dd-link" href="/find-font"><span class="dd-ico">🔍</span>Find Font</a>
-  <a class="dd-link" href="/license-checker"><span class="dd-ico">🛡</span>License Checker</a>
-  <a class="dd-link" href="/font-twin"><span class="dd-ico">♊</span>Font Twin Finder</a>
-  <div class="dd-divider"></div>
-  <div class="dd-label">Design Tools</div>
-  <a class="dd-link" href="/moodboard"><span class="dd-ico">🎨</span>Moodboard Generator</a>
-  <a class="dd-link" href="/font-quiz"><span class="dd-ico">🎯</span>Font Quiz</a>
-  <a class="dd-link" href="/pairing"><span class="dd-ico">⚡</span>Font Pairing</a>
-  <a class="dd-link" href="/css-animation"><span class="dd-ico">✨</span>CSS Animation</a>
-  <div class="dd-divider"></div>
-  <div class="dd-label">Dev Tools</div>
-  <a class="dd-link" href="/css-stack"><span class="dd-ico">💻</span>CSS Font Stack</a>
-  <a class="dd-link" href="/font-size"><span class="dd-ico">📐</span>Font Size Calc</a>
-  <a class="dd-link" href="/variable-fonts"><span class="dd-ico">🎛</span>Variable Fonts</a>
-  <a class="dd-link" href="/preview"><span class="dd-ico">👁</span>Font Preview</a>
-  <div class="dd-divider"></div>
-  <div class="dd-label">Info</div>
-  <a class="dd-link" href="/brands"><span class="dd-ico">🏷</span>Brand Fonts</a>
-  <a class="dd-link" href="/blog"><span class="dd-ico">📝</span>Blog</a>
-  <a class="dd-link" href="/about"><span class="dd-ico">ℹ</span>About</a>
+  <div class="dd-mega">
+
+    <!-- COL 1: Discover -->
+    <div class="dd-col">
+      <div class="dd-col-title">🔍 Discover</div>
+      <a class="dd-link" href="/find-font"><span class="dd-ico">🔍</span>Find Font</a>
+      <a class="dd-link" href="/font-twin"><span class="dd-ico">🔄</span>Font Twin Finder</a>
+      <a class="dd-link" href="/font-quiz"><span class="dd-ico">🎯</span>Font Quiz</a>
+      <a class="dd-link" href="/brands"><span class="dd-ico">🏷</span>Brand Fonts</a>
+      <a class="dd-link" href="/font-mood"><span class="dd-ico">✨</span>Font Mood Matcher</a>
+      <a class="dd-link" href="/font-name-generator"><span class="dd-ico">✏️</span>Name Generator</a>
+      <a class="dd-link" href="/license-checker"><span class="dd-ico">🛡</span>License Checker</a>
+      <div class="dd-divider"></div>
+      <span class="dd-label">Research</span>
+      <a class="dd-link" href="/blog"><span class="dd-ico">📝</span>Typography Blog</a>
+      <a class="dd-link" href="/about"><span class="dd-ico">ℹ</span>About Vectrod</a>
+    </div>
+
+    <!-- COL 2: Design -->
+    <div class="dd-col">
+      <div class="dd-col-title">🎨 Design</div>
+      <a class="dd-link" href="/moodboard"><span class="dd-ico">🎨</span>Moodboard Generator</a>
+      <a class="dd-link" href="/color-palette"><span class="dd-ico">🌈</span>Color Palette</a>
+      <a class="dd-link" href="/pairing"><span class="dd-ico">⚡</span>Font Pairing</a>
+      <a class="dd-link" href="/css-animation"><span class="dd-ico">✨</span>CSS Animations</a>
+      <a class="dd-link" href="/preview"><span class="dd-ico">👁</span>Font Preview</a>
+      <div class="dd-divider"></div>
+      <span class="dd-label">Identity</span>
+      <a class="dd-link" href="/type-scale"><span class="dd-ico">📐</span>Typographic Scale</a>
+    </div>
+
+    <!-- COL 3: Build -->
+    <div class="dd-col">
+      <div class="dd-col-title">💻 Build</div>
+      <a class="dd-link" href="/font-size"><span class="dd-ico">📏</span>Font Size Calc</a>
+      <a class="dd-link" href="/css-stack"><span class="dd-ico">🗂</span>CSS Font Stack</a>
+      <a class="dd-link" href="/variable-fonts"><span class="dd-ico">🎛</span>Variable Fonts</a>
+      <a class="dd-link" href="/contrast-checker"><span class="dd-ico">♿</span>Contrast Checker</a>
+      <a class="dd-link" href="/readability-checker"><span class="dd-ico">📖</span>Readability Checker</a>
+      <div class="dd-divider"></div>
+      <span class="dd-label">All</span>
+      <a class="dd-link" href="/tools" style="color:var(--gold)"><span class="dd-ico">🛠</span><strong>All 16 Tools →</strong></a>
+    </div>
+
+    <!-- COL 4: SIDEBAR -->
+    <div class="dd-sidebar">
+      <!-- 1200 Fonts CTA -->
+      <a class="dd-cta-fonts" href="/fonts">
+        <div class="dd-cta-fonts-n">1,200+</div>
+        <div class="dd-cta-fonts-l">Free Fonts</div>
+        <div class="dd-cta-fonts-sub">Google Fonts · Fontshare<br>All commercial use ✓</div>
+      </a>
+
+      <!-- Make Font CTA -->
+      <a class="dd-cta-make" href="/">
+        <div class="dd-cta-make-label">⭐ Core Tool</div>
+        <div class="dd-cta-make-text">Make Your<br>Own Font</div>
+        <div class="dd-cta-make-arrow">SVG → Font File →</div>
+      </a>
+
+      <!-- Dark/Light toggle -->
+      <div class="dd-theme-row">
+        <span class="dd-theme-label" id="themeLabel">Dark Mode</span>
+        <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()"></div>
+      </div>
+    </div>
+
+  </div>
+  <!-- BOTTOM BAR -->
+  <div class="dd-bottom">
+    <div class="dd-bottom-links">
+      <a class="dd-bot-link" href="/privacy">Privacy</a>
+      <a class="dd-bot-link" href="/terms">Terms</a>
+      <a class="dd-bot-link" href="/about">About</a>
+    </div>
+    <div style="font-size:10px;color:rgba(237,232,255,.2);font-family:'DM Mono',monospace">vectrod.com · 16 free tools</div>
+  </div>
 </div>
 
 <script>
@@ -899,15 +979,32 @@ function ddToggle(e){
   var trigger = document.getElementById('ddTrigger');
   var chev    = document.getElementById('ddChevron');
   var rect    = trigger.getBoundingClientRect();
-  
-  // Panel konumunu trigger'a göre ayarla
+  var pw = Math.min(820, window.innerWidth * 0.96);
+  var right = window.innerWidth - rect.right;
+  if(right + pw > window.innerWidth) right = Math.max(8, window.innerWidth - pw - 8);
   panel.style.top  = (rect.bottom + 10) + 'px';
-  panel.style.right = (window.innerWidth - rect.right) + 'px';
-  
+  panel.style.right = right + 'px';
+  panel.style.left = 'auto';
   var open = panel.classList.toggle('is-open');
   chev.classList.toggle('up', open);
   trigger.classList.toggle('active', open);
 }
+
+function toggleTheme(){
+  var body = document.body;
+  var tog = document.getElementById('themeToggle');
+  var lbl = document.getElementById('themeLabel');
+  var isLight = body.classList.toggle('light-mode');
+  tog.classList.toggle('light-mode', isLight);
+  if(lbl) lbl.textContent = isLight ? 'Light Mode' : 'Dark Mode';
+  try{ localStorage.setItem('vt','theme', isLight?'light':'dark'); }catch(e){}
+}
+
+// restore theme
+try{
+  var saved = localStorage.getItem('vectrod_theme');
+  if(saved==='light'){ document.body.classList.add('light-mode'); var t=document.getElementById('themeToggle'); if(t)t.classList.add('light-mode'); }
+}catch(e){}
 document.addEventListener('click', function(e){
   var panel   = document.getElementById('ddPanel');
   var trigger = document.getElementById('ddTrigger');
