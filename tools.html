@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>All Free Font Tools — Typography Toolkit | Vectrod</title>
+<meta name="description" content="13 free typography tools in one place. Font pairing, moodboard generator, CSS animations, license checker, variable font playground and more.">
+<link rel="canonical" href="https://vectrod.com/tools">
+<meta property="og:title" content="All Free Font Tools | Vectrod">
+<meta property="og:description" content="13 free typography tools. Font pairing, moodboard, animations, license checker and more.">
+<meta property="og:url" content="https://vectrod.com/tools">
+<meta property="og:image" content="https://vectrod.com/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vectrod">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Vectrod Font Tools","description":"13 free typography tools for designers and developers.","url":"https://vectrod.com/tools","publisher":{"@type":"Organization","name":"Vectrod","url":"https://vectrod.com"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020308;--bg2:#06070f;--bg3:#0a0b1a;--sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.07);--br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.13);--tx:#eeeaff;--mt:rgba(238,234,255,.44);--mt2:rgba(238,234,255,.2);--gold:#f0c060;--goldd:#c09040;--ok:#22dd99;--okL:rgba(34,221,153,.1);--purple:#9944ee;--purple2:#bb77ff;--purpleL:rgba(153,68,238,.11);--blue:#4488ff;--blueL:rgba(68,136,255,.1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+.scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.sg{position:absolute;inset:0;background-image:linear-gradient(rgba(153,68,238,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(153,68,238,.03) 1px,transparent 1px);background-size:56px 56px}
+.o1{position:absolute;width:1000px;height:1000px;top:-450px;right:-300px;border-radius:50%;filter:blur(150px);background:radial-gradient(circle,rgba(153,68,238,.13) 0%,transparent 65%);animation:df 38s ease-in-out infinite alternate}
+.o2{position:absolute;width:700px;height:700px;bottom:-300px;left:-200px;border-radius:50%;filter:blur(140px);background:radial-gradient(circle,rgba(34,221,153,.08) 0%,transparent 65%);animation:df 30s ease-in-out infinite alternate}
+.o3{position:absolute;width:500px;height:500px;top:40%;left:30%;border-radius:50%;filter:blur(160px);background:radial-gradient(circle,rgba(240,192,96,.06) 0%,transparent 65%);animation:df 44s ease-in-out infinite alternate}
+@keyframes df{from{transform:translate(0,0)}to{transform:translate(40px,30px)}}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:28px 20px 120px}
+
+/* NAV */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#bb77ff,#22dd99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;text-decoration:none;font-family:'DM Mono',monospace;white-space:nowrap;transition:all .2s}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,var(--goldd),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:64px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--purple2);text-transform:uppercase;border:1px solid rgba(153,68,238,.22);padding:5px 20px;border-radius:100px;background:var(--purpleL);margin-bottom:18px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(30px,5vw,64px);font-weight:900;line-height:.95;margin-bottom:16px}
+.grad{background:linear-gradient(90deg,var(--purple2),var(--gold),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:16px;color:var(--mt);max-width:520px;margin:0 auto;line-height:1.8}
+.hero-stats{display:flex;gap:32px;justify-content:center;margin-top:28px;flex-wrap:wrap}
+.hstat{text-align:center}
+.hstat-n{font-family:'Cinzel',serif;font-size:28px;font-weight:900;background:linear-gradient(90deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hstat-l{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+
+/* CATEGORIES */
+.cat-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.cf{background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;padding:7px 18px;cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace;letter-spacing:.05em}
+.cf:hover,.cf.active{border-color:var(--purple2);color:var(--purple2);background:var(--purpleL)}
+.cf.active{font-weight:700}
+
+/* SECTION */
+.section{margin-bottom:52px}
+.sh{font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.sh::after{content:'';flex:1;height:1px;background:var(--br)}
+.sh-ico{font-size:14px}
+
+/* TOOL GRID */
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.tool-card{background:var(--bg2);border:1.5px solid var(--br);border-radius:22px;overflow:hidden;text-decoration:none;color:inherit;transition:all .25s;display:flex;flex-direction:column;position:relative}
+.tool-card:hover{border-color:rgba(153,68,238,.4);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.tool-card.featured{border-color:rgba(240,192,96,.2);background:linear-gradient(135deg,var(--bg2) 0%,rgba(240,192,96,.03) 100%)}
+.tool-card.featured:hover{border-color:rgba(240,192,96,.4)}
+.tool-card.new-badge::before{content:'NEW';position:absolute;top:14px;right:14px;font-size:8px;font-family:'DM Mono',monospace;font-weight:700;letter-spacing:.12em;color:var(--ok);background:var(--okL);border:1px solid rgba(34,221,153,.25);border-radius:100px;padding:2px 8px}
+.tc-top{padding:26px 24px 18px}
+.tc-ico{font-size:32px;margin-bottom:14px;display:block}
+.tc-title{font-family:'Cinzel',serif;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;line-height:1.2}
+.tc-desc{font-size:13px;color:var(--mt);line-height:1.7}
+.tc-bot{padding:12px 24px 16px;border-top:1px solid var(--br);display:flex;align-items:center;justify-content:space-between}
+.tc-tags{display:flex;gap:5px;flex-wrap:wrap}
+.tc-tag{font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid var(--br);color:var(--mt2);font-family:'DM Mono',monospace}
+.tc-arrow{font-size:16px;color:var(--mt2);transition:transform .2s}
+.tool-card:hover .tc-arrow{transform:translateX(4px);color:var(--purple2)}
+
+/* FEATURED HERO TOOL */
+.hero-tool{background:var(--bg2);border:1.5px solid rgba(240,192,96,.18);border-radius:28px;padding:0;overflow:hidden;margin-bottom:20px;text-decoration:none;color:inherit;display:block;transition:all .25s;position:relative}
+.hero-tool::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--purple2),var(--ok))}
+.hero-tool:hover{border-color:rgba(240,192,96,.35);transform:translateY(-3px)}
+.ht-inner{display:grid;grid-template-columns:1fr auto;gap:0;align-items:stretch}
+@media(max-width:640px){.ht-inner{grid-template-columns:1fr}}
+.ht-content{padding:36px 40px}
+.ht-badge{display:inline-flex;align-items:center;gap:6px;font-size:9px;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(240,192,96,.2);padding:3px 12px;border-radius:100px;background:rgba(240,192,96,.07);margin-bottom:14px}
+.ht-title{font-family:'Cinzel',serif;font-size:clamp(20px,3vw,30px);font-weight:900;margin-bottom:10px;line-height:1.1}
+.ht-desc{font-size:14px;color:var(--mt);line-height:1.75;margin-bottom:18px;max-width:500px}
+.ht-cta{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,var(--goldd),var(--gold));border-radius:100px;color:#000;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:9px 22px;transition:opacity .2s}
+.ht-cta:hover{opacity:.85}
+.ht-visual{background:linear-gradient(135deg,rgba(240,192,96,.06) 0%,rgba(153,68,238,.08) 100%);min-width:180px;display:flex;align-items:center;justify-content:center;font-size:72px;padding:28px}
+@media(max-width:640px){.ht-visual{display:none}}
+
+footer{border-top:1px solid var(--br);padding:32px 0;text-align:center;margin-top:40px}
+.fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.fl a{font-size:11px;color:var(--mt);text-decoration:none}
+.fl a:hover{color:var(--gold)}
+.fc{font-size:11px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="scene"><div class="sg"></div><div class="o1"></div><div class="o2"></div><div class="o3"></div></div>
+<div class="wrap">
+
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="32" height="32" viewBox="0 0 46 46" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#bb77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs><path d="M23 2L42 23L23 44L4 23Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/><path d="M7 10L23 38L39 10L34 10L23 30L12 10Z" fill="url(#lg)"/></svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">All Tools</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nb" href="/fonts">1,200+ Fonts</a>
+    <a class="nb" href="/blog">Blog</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">🛠 16 Free Tools · No Signup · No Ads</div>
+  <h1>Every<br><span class="grad">Typography</span><br>Tool You Need</h1>
+  <p>Font discovery, pairing, color palettes, CSS generators, accessibility checkers — all free, all in one place.</p>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n">16</div><div class="hstat-l">Free Tools</div></div>
+    <div class="hstat"><div class="hstat-n">1,200+</div><div class="hstat-l">Free Fonts</div></div>
+    <div class="hstat"><div class="hstat-n">0</div><div class="hstat-l">Signups Needed</div></div>
+    <div class="hstat"><div class="hstat-n">∞</div><div class="hstat-l">Uses</div></div>
+  </div>
+</div>
+
+<!-- FEATURED -->
+<a class="hero-tool" href="/">
+  <div class="ht-inner">
+    <div class="ht-content">
+      <div class="ht-badge">⭐ Core Tool</div>
+      <div class="ht-title">SVG → Custom Font Creator</div>
+      <div class="ht-desc">Draw or upload SVG shapes and convert them into a real, downloadable font file. The only free tool of its kind on the web.</div>
+      <span class="ht-cta">Start Creating →</span>
+    </div>
+    <div class="ht-visual">✏️</div>
+  </div>
+</a>
+
+<!-- DISCOVER CATEGORY -->
+<div class="section" id="sec-discover">
+  <div class="sh"><span class="sh-ico">🔍</span> Discover & Choose</div>
+  <div class="tool-grid">
+    <a class="tool-card" href="/find-font">
+      <div class="tc-top"><span class="tc-ico">🔍</span><div class="tc-title">Find Font</div><div class="tc-desc">Describe a font or upload an image — instantly get matching free fonts from 1,200+ options.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">search</span><span class="tc-tag">visual</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card" href="/font-quiz">
+      <div class="tc-top"><span class="tc-ico">🎯</span><div class="tc-title">Font Quiz</div><div class="tc-desc">5 questions about your brand → 3 ranked free font recommendations with CSS code and explanation.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">quiz</span><span class="tc-tag">recommend</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card" href="/font-twin">
+      <div class="tc-top"><span class="tc-ico">🔄</span><div class="tc-title">Font Twin Finder</div><div class="tc-desc">Have a paid font you love? Find the closest free alternative. 100+ pairs including Helvetica, Futura, Gotham.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">alternatives</span><span class="tc-tag">free</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card" href="/fonts">
+      <div class="tc-top"><span class="tc-ico">📚</span><div class="tc-title">Free Fonts Library</div><div class="tc-desc">1,200+ free fonts. Filter by style, weight, and use case. All Google Fonts and open-source typefaces.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">library</span><span class="tc-tag">browse</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card" href="/brands">
+      <div class="tc-top"><span class="tc-ico">🏷</span><div class="tc-title">Brand Font Directory</div><div class="tc-desc">What fonts do Apple, Google, Netflix, Spotify use? Find out — with free alternatives for each.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">brands</span><span class="tc-tag">identity</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card new-badge" href="/color-palette">
+      <div class="tc-top"><span class="tc-ico">🎨</span><div class="tc-title">Font + Color Palette</div><div class="tc-desc">Get a complete visual identity — font combination + color palette + CSS variables — matched to your brand vibe.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">color</span><span class="tc-tag">palette</span></div><span class="tc-arrow">→</span></div>
+    </a>
+  </div>
+</div>
+
+<!-- CREATE CATEGORY -->
+<div class="section" id="sec-create">
+  <div class="sh"><span class="sh-ico">✨</span> Create & Design</div>
+  <div class="tool-grid">
+    <a class="tool-card" href="/moodboard">
+      <div class="tc-top"><span class="tc-ico">🎨</span><div class="tc-title">Moodboard Generator</div><div class="tc-desc">Type "minimalist luxury startup" → 3 font combinations + color palette + CSS. Instant brand identity.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">moodboard</span><span class="tc-tag">branding</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card" href="/pairing">
+      <div class="tc-top"><span class="tc-ico">⚡</span><div class="tc-title">Font Pairing</div><div class="tc-desc">18+ curated font pairings for heading + body text. Live preview, copy CSS instantly.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">pairing</span><span class="tc-tag">combinations</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card" href="/css-animation">
+      <div class="tc-top"><span class="tc-ico">🎬</span><div class="tc-title">CSS Font Animations</div><div class="tc-desc">Typewriter, glitch, neon glow, shimmer and 5 more. Pick a font, pick an effect, copy the CSS.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">animation</span><span class="tc-tag">CSS</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card" href="/preview">
+      <div class="tc-top"><span class="tc-ico">👁</span><div class="tc-title">Font Preview</div><div class="tc-desc">Test any Google Font with your own text. Adjust size, weight, line height — see exactly how it looks.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">preview</span><span class="tc-tag">live</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card new-badge" href="/type-scale">
+      <div class="tc-top"><span class="tc-ico">📐</span><div class="tc-title">Typographic Scale</div><div class="tc-desc">Generate a complete CSS type system — h1 through caption — using modular scales. Copy one snippet, done.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">scale</span><span class="tc-tag">system</span></div><span class="tc-arrow">→</span></div>
+    </a>
+  </div>
+</div>
+
+<!-- BUILD CATEGORY -->
+<div class="section" id="sec-build">
+  <div class="sh"><span class="sh-ico">💻</span> Build & Code</div>
+  <div class="tool-grid">
+    <a class="tool-card" href="/font-size">
+      <div class="tc-top"><span class="tc-ico">📏</span><div class="tc-title">Font Size Calculator</div><div class="tc-desc">Convert px → rem, generate CSS clamp() for fluid typography. Copy responsive font-size code instantly.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">px</span><span class="tc-tag">rem</span><span class="tc-tag">clamp</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card" href="/css-stack">
+      <div class="tc-top"><span class="tc-ico">🗂</span><div class="tc-title">CSS Font Stack</div><div class="tc-desc">Generate proper font-family fallback stacks with system fonts. Copy-paste ready CSS.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">fallback</span><span class="tc-tag">system fonts</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card" href="/variable-fonts">
+      <div class="tc-top"><span class="tc-ico">🎛</span><div class="tc-title">Variable Font Lab</div><div class="tc-desc">Explore variable fonts with live sliders. Adjust weight, width, optical size. Copy exact CSS values.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">variable</span><span class="tc-tag">CSS</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card new-badge" href="/contrast-checker">
+      <div class="tc-top"><span class="tc-ico">♿</span><div class="tc-title">Font Contrast Checker</div><div class="tc-desc">Check WCAG AA/AAA accessibility compliance for any font + background color combo. Essential for every project.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">a11y</span><span class="tc-tag">WCAG</span></div><span class="tc-arrow">→</span></div>
+    </a>
+  </div>
+</div>
+
+<!-- RESEARCH CATEGORY -->
+<div class="section" id="sec-research">
+  <div class="sh"><span class="sh-ico">🛡</span> Research & Verify</div>
+  <div class="tool-grid">
+    <a class="tool-card" href="/license-checker">
+      <div class="tc-top"><span class="tc-ico">🛡</span><div class="tc-title">Font License Checker</div><div class="tc-desc">Is this font free for commercial use? Check 500+ font licenses instantly. Avoid costly copyright mistakes.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">license</span><span class="tc-tag">legal</span></div><span class="tc-arrow">→</span></div>
+    </a>
+    <a class="tool-card" href="/blog">
+      <div class="tc-top"><span class="tc-ico">📝</span><div class="tc-title">Typography Blog</div><div class="tc-desc">In-depth guides: free Futura alternatives, logo font picks, font loading performance, pairing rules.</div></div>
+      <div class="tc-bot"><div class="tc-tags"><span class="tc-tag">guides</span><span class="tc-tag">tips</span></div><span class="tc-arrow">→</span></div>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="fl"><a href="/">Home</a><a href="/fonts">Free Fonts</a><a href="/blog">Blog</a><a href="/about">About</a><a href="/privacy">Privacy</a></div>
+  <div class="fc">© 2025 Vectrod · All Tools Free · No Signup Required</div>
+</footer>
+</div>
+</body>
+</html>

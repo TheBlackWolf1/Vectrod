@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>Typographic Scale Generator — CSS Type System | Vectrod</title>
+<meta name="description" content="Generate a complete CSS typographic scale in seconds. Choose your base size and ratio — get h1–h6, body, caption sizes as px, rem and clamp() values.">
+<link rel="canonical" href="https://vectrod.com/type-scale">
+<meta property="og:title" content="Typographic Scale Generator | Vectrod">
+<meta property="og:description" content="Generate a complete CSS type system — h1 to caption — with modular scale. Free, instant, copy-paste.">
+<meta property="og:url" content="https://vectrod.com/type-scale">
+<meta property="og:image" content="https://vectrod.com/og-image.png">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Vectrod">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Typographic Scale Generator","description":"Generate complete CSS typographic scale with modular ratios.","url":"https://vectrod.com/type-scale","applicationCategory":"DesignApplication","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"Vectrod","url":"https://vectrod.com"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020309;--bg2:#06070f;--bg3:#0b0c1c;--sf:rgba(255,255,255,.04);--br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.13);--tx:#eeeaff;--mt:rgba(238,234,255,.44);--mt2:rgba(238,234,255,.2);--gold:#f0c060;--goldd:#c09040;--ok:#22dd99;--okL:rgba(34,221,153,.1);--purple2:#bb77ff;--purpleL:rgba(153,68,238,.11);--blue:#4488ff;--blueL:rgba(68,136,255,.1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+.bg-orb1{position:fixed;width:800px;height:800px;top:-350px;right:-250px;border-radius:50%;filter:blur(150px);background:radial-gradient(circle,rgba(68,136,255,.11) 0%,transparent 65%);pointer-events:none;z-index:0}
+.bg-orb2{position:fixed;width:600px;height:600px;bottom:-250px;left:-150px;border-radius:50%;filter:blur(140px);background:radial-gradient(circle,rgba(34,221,153,.08) 0%,transparent 65%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:28px 20px 120px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:52px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#bb77ff,#22dd99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;text-decoration:none;font-family:'DM Mono',monospace;white-space:nowrap;transition:all .2s}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,var(--goldd),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+.hero{text-align:center;margin-bottom:44px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--blue);text-transform:uppercase;border:1px solid rgba(68,136,255,.22);padding:5px 20px;border-radius:100px;background:var(--blueL);margin-bottom:18px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(26px,5vw,52px);font-weight:900;line-height:1;margin-bottom:10px}
+.grad{background:linear-gradient(90deg,var(--blue),var(--purple2),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:14px;color:var(--mt);max-width:500px;margin:10px auto 0;line-height:1.8}
+
+/* CONTROLS */
+.controls{background:var(--bg2);border:1.5px solid var(--br2);border-radius:24px;padding:28px;margin-bottom:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.ctrl{display:flex;flex-direction:column;gap:8px}
+.ctrl-label{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase}
+.ctrl-row{display:flex;align-items:center;gap:8px}
+.ctrl-val{font-family:'DM Mono',monospace;font-size:15px;font-weight:700;color:var(--tx);min-width:42px;text-align:center}
+input[type=range]{flex:1;-webkit-appearance:none;height:4px;border-radius:100px;background:var(--br2);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--purple2);cursor:pointer;border:2px solid var(--bg2)}
+select{background:var(--bg3);border:1px solid var(--br);border-radius:10px;color:var(--tx);font-family:'DM Mono',monospace;font-size:12px;padding:8px 12px;outline:none;cursor:pointer;flex:1}
+select option{background:var(--bg2)}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--bg2);border:1px solid var(--br);border-radius:12px;padding:4px;margin-bottom:20px;width:fit-content}
+.tab{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:7px 18px;border-radius:9px;cursor:pointer;transition:all .2s;color:var(--mt);border:none;background:none}
+.tab.active{background:var(--purple2);color:#000;-webkit-text-fill-color:#000}
+
+/* SCALE TABLE */
+.scale-table{background:var(--bg2);border:1.5px solid var(--br2);border-radius:22px;overflow:hidden;margin-bottom:20px}
+.st-header{display:grid;grid-template-columns:90px 1fr 80px 80px 80px 80px;gap:0;border-bottom:1px solid var(--br);padding:12px 24px;font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase}
+@media(max-width:680px){.st-header,.st-row{grid-template-columns:80px 1fr 60px 60px}}
+.st-row{display:grid;grid-template-columns:90px 1fr 80px 80px 80px 80px;gap:0;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;transition:background .15s}
+.st-row:hover{background:var(--sf)}
+.st-row:last-child{border-bottom:none}
+.st-tag{font-size:10px;font-family:'DM Mono',monospace;font-weight:700;padding:3px 9px;border-radius:7px;text-align:center;width:fit-content}
+.t-h1{background:rgba(240,192,96,.12);color:var(--gold)}
+.t-h2{background:rgba(187,119,255,.1);color:var(--purple2)}
+.t-h3,.t-h4{background:rgba(68,136,255,.09);color:var(--blue)}
+.t-body,.t-small,.t-caption{background:rgba(34,221,153,.08);color:var(--ok)}
+.st-preview{font-size:clamp(14px,2vw,20px);font-weight:700;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st-num{font-family:'DM Mono',monospace;font-size:12px;color:var(--mt);text-align:right}
+.st-num.hi{color:var(--tx)}
+
+/* CSS OUTPUT */
+.css-card{background:var(--bg2);border:1.5px solid rgba(68,136,255,.18);border-radius:22px;padding:24px;margin-bottom:16px}
+.css-lbl{font-size:9px;color:var(--blue);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.css-code{font-family:'DM Mono',monospace;font-size:12px;color:var(--ok);line-height:1.9;white-space:pre;overflow-x:auto;max-height:420px}
+.act-row{display:flex;gap:10px;flex-wrap:wrap}
+.act{flex:1;min-width:130px;border-radius:12px;padding:11px 16px;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .2s;text-align:center}
+.act-c{background:var(--blueL);border-color:rgba(68,136,255,.25);color:var(--blue)}
+.act-c:hover{background:rgba(68,136,255,.2)}
+.act-c.ok{background:var(--okL);border-color:rgba(34,221,153,.3);color:var(--ok)}
+.act-n{background:var(--sf);border-color:var(--br2);color:var(--mt);text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px}
+.act-n:hover{border-color:var(--gold);color:var(--gold)}
+.sh{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sh::after{content:'';flex:1;height:1px;background:var(--br)}
+footer{border-top:1px solid var(--br);padding:28px 0;text-align:center;margin-top:40px}
+.fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.fl a{font-size:11px;color:var(--mt);text-decoration:none}.fl a:hover{color:var(--gold)}
+.fc{font-size:11px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="bg-orb1"></div><div class="bg-orb2"></div>
+<div class="wrap">
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="32" height="32" viewBox="0 0 46 46" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#bb77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs><path d="M23 2L42 23L23 44L4 23Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/><path d="M7 10L23 38L39 10L34 10L23 30L12 10Z" fill="url(#lg)"/></svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Type Scale</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nb" href="/tools">All Tools</a>
+    <a class="nb" href="/font-size">Font Size</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">📐 Modular Scale · px · rem · clamp()</div>
+  <h1>Typographic<br><span class="grad">Scale Generator</span></h1>
+  <p>Set a base size and ratio — get a complete CSS type system instantly. h1 through caption, with fluid clamp() values.</p>
+</div>
+
+<div class="controls">
+  <div class="ctrl">
+    <div class="ctrl-label">Base Size (px)</div>
+    <div class="ctrl-row">
+      <input type="range" id="baseSlider" min="12" max="24" value="16" oninput="update()">
+      <div class="ctrl-val" id="baseVal">16px</div>
+    </div>
+  </div>
+  <div class="ctrl">
+    <div class="ctrl-label">Scale Ratio</div>
+    <div class="ctrl-row">
+      <select id="ratioSel" onchange="update()">
+        <option value="1.067">Minor Second — 1.067</option>
+        <option value="1.125">Major Second — 1.125</option>
+        <option value="1.200">Minor Third — 1.200</option>
+        <option value="1.250" selected>Major Third — 1.250</option>
+        <option value="1.333">Perfect Fourth — 1.333</option>
+        <option value="1.414">Augmented Fourth — 1.414</option>
+        <option value="1.500">Perfect Fifth — 1.500</option>
+        <option value="1.618">Golden Ratio — 1.618</option>
+      </select>
+    </div>
+  </div>
+  <div class="ctrl">
+    <div class="ctrl-label">Font Family</div>
+    <div class="ctrl-row">
+      <select id="fontSel" onchange="updateFont()">
+        <option value="Inter">Inter</option>
+        <option value="Outfit" selected>Outfit</option>
+        <option value="Montserrat">Montserrat</option>
+        <option value="Playfair Display">Playfair Display</option>
+        <option value="Space Grotesk">Space Grotesk</option>
+        <option value="Cinzel">Cinzel</option>
+        <option value="Lora">Lora</option>
+      </select>
+    </div>
+  </div>
+  <div class="ctrl">
+    <div class="ctrl-label">Unit Output</div>
+    <div class="ctrl-row">
+      <select id="unitSel" onchange="update()">
+        <option value="rem" selected>rem</option>
+        <option value="px">px</option>
+        <option value="clamp">clamp() — fluid</option>
+        <option value="all">All three</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="setTab('preview',this)">Preview</button>
+  <button class="tab" onclick="setTab('css',this)">CSS Variables</button>
+  <button class="tab" onclick="setTab('tailwind',this)">Tailwind Config</button>
+</div>
+
+<div id="previewPane">
+  <div class="scale-table">
+    <div class="st-header"><span>Level</span><span>Preview</span><span>px</span><span>rem</span><span>clamp min</span><span>clamp max</span></div>
+    <div id="scaleRows"></div>
+  </div>
+</div>
+
+<div id="cssPane" style="display:none">
+  <div class="sh">CSS Custom Properties</div>
+  <div class="css-card"><div class="css-lbl">Paste into :root — complete type system</div><pre class="css-code" id="cssOutput"></pre></div>
+  <div class="act-row">
+    <button class="act act-c" id="copyBtn" onclick="copyCSS()">⎘ Copy CSS</button>
+    <a class="act act-n" href="/font-size">Also: px → rem → clamp() Calculator</a>
+  </div>
+</div>
+
+<div id="tailwindPane" style="display:none">
+  <div class="sh">Tailwind CSS Config</div>
+  <div class="css-card"><div class="css-lbl">tailwind.config.js — theme.fontSize</div><pre class="css-code" id="tailwindOutput"></pre></div>
+  <div class="act-row">
+    <button class="act act-c" id="copyBtn2" onclick="copyTailwind()">⎘ Copy Config</button>
+  </div>
+</div>
+
+<footer>
+  <div class="fl"><a href="/tools">All Tools</a><a href="/font-size">Font Size Calc</a><a href="/variable-fonts">Variable Fonts</a><a href="/css-stack">CSS Stack</a></div>
+  <div class="fc">© 2025 Vectrod · Typographic Scale Generator</div>
+</footer>
+</div>
+<script>
+const LEVELS = [
+  {tag:'h1',tagCls:'t-h1',label:'Display / H1',wMult:4,lhMult:1},
+  {tag:'h2',tagCls:'t-h2',label:'H2 Heading',wMult:3,lhMult:1},
+  {tag:'h3',tagCls:'t-h3',label:'H3 Subheading',wMult:2,lhMult:1.1},
+  {tag:'h4',tagCls:'t-h4',label:'H4 Section',wMult:1,lhMult:1.2},
+  {tag:'body',tagCls:'t-body',label:'Body Text',wMult:0,lhMult:1.6},
+  {tag:'small',tagCls:'t-small',label:'Small / UI',wMult:-1,lhMult:1.5},
+  {tag:'caption',tagCls:'t-caption',label:'Caption / Label',wMult:-2,lhMult:1.4},
+];
+
+let currentFont = 'Outfit';
+let loadedFonts = new Set(['Outfit','Cinzel']);
+
+function loadGF(name) {
+  if(loadedFonts.has(name)) return;
+  const slug = name.replace(/ /g,'+');
+  const l = document.createElement('link');
+  l.rel='stylesheet';
+  l.href=`https://fonts.googleapis.com/css2?family=${slug}:wght@300..900&display=swap`;
+  document.head.appendChild(l);
+  loadedFonts.add(name);
+}
+
+function update() {
+  const base = parseInt(document.getElementById('baseSlider').value);
+  const ratio = parseFloat(document.getElementById('ratioSel').value);
+  const unit = document.getElementById('unitSel').value;
+  document.getElementById('baseVal').textContent = base+'px';
+
+  const sizes = LEVELS.map(l => {
+    const px = base * Math.pow(ratio, l.wMult);
+    const rem = px / 16;
+    const minPx = Math.max(px * 0.7, 12);
+    const maxPx = px * 1.3;
+    return { ...l, px: Math.round(px*10)/10, rem: Math.round(rem*1000)/1000, minPx: Math.round(minPx*10)/10, maxPx: Math.round(maxPx*10)/10 };
+  });
+
+  // preview rows
+  const rowsEl = document.getElementById('scaleRows');
+  rowsEl.innerHTML = sizes.map(s => `
+    <div class="st-row">
+      <span><span class="st-tag ${s.tagCls}">${s.tag}</span></span>
+      <span class="st-preview" style="font-family:'${currentFont}',sans-serif;font-size:${Math.min(s.px,36)}px;font-weight:${600+(s.wMult*50)}">${s.label}</span>
+      <span class="st-num hi">${s.px}px</span>
+      <span class="st-num">${s.rem}rem</span>
+      <span class="st-num">${s.minPx}px</span>
+      <span class="st-num">${s.maxPx}px</span>
+    </div>`).join('');
+
+  // CSS output
+  const fontName = document.getElementById('fontSel').value;
+  const cssLines = [`/* Typographic Scale — Base: ${base}px · Ratio: ${ratio} */`,
+    `/* Font: ${fontName} */`,
+    `@import url('https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g,'+')}:wght@300..900&display=swap');`,
+    ``,`:root {`,
+    `  --font-base: '${fontName}', sans-serif;`,
+    `  --font-base-size: ${base}px;`,
+    ``];
+  sizes.forEach(s => {
+    if(unit==='rem') cssLines.push(`  --text-${s.tag}: ${s.rem}rem;`);
+    else if(unit==='px') cssLines.push(`  --text-${s.tag}: ${s.px}px;`);
+    else if(unit==='clamp') cssLines.push(`  --text-${s.tag}: clamp(${s.minPx}px, ${s.rem}rem + 0.5vw, ${s.maxPx}px);`);
+    else {
+      cssLines.push(`  /* ${s.tag} */`);
+      cssLines.push(`  --text-${s.tag}-px: ${s.px}px;`);
+      cssLines.push(`  --text-${s.tag}-rem: ${s.rem}rem;`);
+      cssLines.push(`  --text-${s.tag}-fluid: clamp(${s.minPx}px, ${s.rem}rem + 0.5vw, ${s.maxPx}px);`);
+    }
+  });
+  cssLines.push(`}`);
+  cssLines.push(``);
+  cssLines.push(`/* Usage */`);
+  sizes.forEach(s => {
+    const val = unit==='rem'?`${s.rem}rem`:unit==='px'?`${s.px}px`:unit==='clamp'?`clamp(${s.minPx}px, ${s.rem}rem + 0.5vw, ${s.maxPx}px)`:`var(--text-${s.tag}-fluid)`;
+    cssLines.push(`${s.tag} { font-size: ${val}; }`);
+  });
+  document.getElementById('cssOutput').textContent = cssLines.join('\n');
+
+  // Tailwind
+  const twLines = [`// tailwind.config.js`,`module.exports = {`,`  theme: {`,`    extend: {`,`      fontSize: {`];
+  sizes.forEach(s => {
+    const val = unit==='px'?`'${s.px}px'`:unit==='clamp'?`'clamp(${s.minPx}px, ${s.rem}rem + 0.5vw, ${s.maxPx}px)'`:`'${s.rem}rem'`;
+    twLines.push(`        '${s.tag}': ${val},`);
+  });
+  twLines.push(`      }`,`    }`,`  }`,`}`);
+  document.getElementById('tailwindOutput').textContent = twLines.join('\n');
+}
+
+function updateFont() {
+  currentFont = document.getElementById('fontSel').value;
+  loadGF(currentFont);
+  setTimeout(update, 100);
+}
+
+function setTab(id, btn) {
+  ['previewPane','cssPane','tailwindPane'].forEach(p => document.getElementById(p).style.display='none');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id+'Pane').style.display='block';
+  btn.classList.add('active');
+}
+
+function copyCSS() {
+  navigator.clipboard.writeText(document.getElementById('cssOutput').textContent).then(()=>{
+    const b=document.getElementById('copyBtn'); b.textContent='✓ Copied!'; b.classList.add('ok');
+    setTimeout(()=>{b.textContent='⎘ Copy CSS';b.classList.remove('ok');},2000);
+  });
+}
+function copyTailwind() {
+  navigator.clipboard.writeText(document.getElementById('tailwindOutput').textContent).then(()=>{
+    const b=document.getElementById('copyBtn2'); b.textContent='✓ Copied!'; b.classList.add('ok');
+    setTimeout(()=>{b.textContent='⎘ Copy Config';b.classList.remove('ok');},2000);
+  });
+}
+
+update();
+</script>
+</body>
+</html>

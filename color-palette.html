@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>Font + Color Palette Generator — Brand Identity Tool | Vectrod</title>
+<meta name="description" content="Generate a complete brand identity — font combination + color palette with 50+ curated palettes. Copy hex codes and CSS variables instantly.">
+<link rel="canonical" href="https://vectrod.com/color-palette">
+<meta property="og:title" content="Font + Color Palette Generator | Vectrod">
+<meta property="og:description" content="Complete brand identity: font combo + color palette + CSS. 50+ curated palettes, free.">
+<meta property="og:url" content="https://vectrod.com/color-palette">
+<meta property="og:image" content="https://vectrod.com/og-image.png">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Vectrod">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Font + Color Palette Generator","description":"Generate complete brand identity with fonts and color palettes.","url":"https://vectrod.com/color-palette","applicationCategory":"DesignApplication","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"Vectrod","url":"https://vectrod.com"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020309;--bg2:#060710;--bg3:#0b0c1c;--sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.07);--br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.13);--tx:#eeeaff;--mt:rgba(238,234,255,.44);--mt2:rgba(238,234,255,.2);--gold:#f0c060;--goldd:#c09040;--ok:#22dd99;--okL:rgba(34,221,153,.1);--purple2:#bb77ff;--purpleL:rgba(153,68,238,.11)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+.bg-orb1{position:fixed;width:900px;height:900px;top:-400px;right:-300px;border-radius:50%;filter:blur(150px);background:radial-gradient(circle,rgba(153,68,238,.12) 0%,transparent 65%);pointer-events:none;z-index:0}
+.bg-orb2{position:fixed;width:600px;height:600px;bottom:-250px;left:-150px;border-radius:50%;filter:blur(140px);background:radial-gradient(circle,rgba(240,192,96,.07) 0%,transparent 65%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:28px 20px 120px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#bb77ff,#22dd99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;text-decoration:none;font-family:'DM Mono',monospace;white-space:nowrap;transition:all .2s}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,var(--goldd),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+.hero{text-align:center;margin-bottom:44px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--purple2);text-transform:uppercase;border:1px solid rgba(153,68,238,.22);padding:5px 20px;border-radius:100px;background:var(--purpleL);margin-bottom:16px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(26px,5vw,54px);font-weight:900;line-height:1;margin-bottom:10px}
+.grad{background:linear-gradient(90deg,var(--purple2),var(--gold),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:14px;color:var(--mt);max-width:480px;margin:10px auto 0;line-height:1.8}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:28px;justify-content:center}
+.filt{background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;padding:6px 16px;cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace}
+.filt:hover,.filt.active{border-color:var(--purple2);color:var(--purple2);background:var(--purpleL)}
+
+/* PALETTE GRID */
+.palette-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:48px}
+.pal-card{background:var(--bg2);border:1.5px solid var(--br);border-radius:22px;overflow:hidden;cursor:pointer;transition:all .25s}
+.pal-card:hover{border-color:rgba(153,68,238,.4);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.3)}
+.pal-card.selected{border-color:rgba(187,119,255,.55);box-shadow:0 0 32px rgba(153,68,238,.18)}
+.pal-swatch{height:80px;display:flex}
+.pal-col{flex:1;transition:flex .3s}
+.pal-info{padding:16px 18px}
+.pal-name{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.pal-font{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;margin-bottom:8px}
+.pal-tags{display:flex;gap:5px;flex-wrap:wrap}
+.pal-tag{font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid var(--br);color:var(--mt2);font-family:'DM Mono',monospace}
+
+/* DETAIL VIEW */
+.detail{background:var(--bg2);border:1.5px solid var(--br2);border-radius:26px;overflow:hidden;margin-bottom:28px;animation:su .3s cubic-bezier(.16,1,.3,1) both}
+@keyframes su{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.det-preview{padding:44px;display:flex;flex-direction:column;gap:12px;min-height:200px;justify-content:center;transition:background .3s}
+.det-h{font-size:clamp(28px,5vw,52px);font-weight:800;line-height:1}
+.det-b{font-size:16px;line-height:1.7;max-width:600px}
+.det-swatch-row{padding:24px 28px;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:12px;flex-wrap:wrap;align-items:center;background:rgba(0,0,0,.2)}
+.det-sw{width:56px;height:56px;border-radius:12px;cursor:pointer;border:1.5px solid rgba(255,255,255,.12);transition:transform .2s;position:relative;flex-shrink:0}
+.det-sw:hover{transform:scale(1.1)}
+.det-sw-tip{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;white-space:nowrap;pointer-events:none}
+.det-font-info{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06);display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.det-font-info{grid-template-columns:1fr}}
+.dfi{background:var(--bg3);border:1px solid var(--br);border-radius:12px;padding:14px}
+.dfi-role{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.dfi-name{font-size:15px;font-weight:700;color:var(--tx)}
+.dfi-free{font-size:9px;color:var(--ok);font-family:'DM Mono',monospace;margin-top:3px}
+.det-css{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06)}
+.css-label{font-size:9px;color:var(--purple2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.css-code{font-family:'DM Mono',monospace;font-size:12px;color:var(--ok);line-height:1.9;white-space:pre;overflow-x:auto;background:var(--bg3);border:1px solid var(--br);border-radius:12px;padding:16px}
+.arow{display:flex;gap:9px;flex-wrap:wrap;padding:16px 28px 20px;border-top:1px solid rgba(255,255,255,.06)}
+.act{flex:1;min-width:120px;border-radius:11px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:10px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .2s;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px}
+.act-c{background:var(--purpleL);border-color:rgba(187,119,255,.25);color:var(--purple2)}
+.act-c:hover{background:rgba(187,119,255,.2)}
+.act-c.ok{background:var(--okL);border-color:rgba(34,221,153,.3);color:var(--ok)}
+.act-n{background:var(--sf);border-color:var(--br2);color:var(--mt)}
+.act-n:hover{border-color:var(--gold);color:var(--gold)}
+
+.sh{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.sh::after{content:'';flex:1;height:1px;background:var(--br)}
+footer{border-top:1px solid var(--br);padding:28px 0;text-align:center;margin-top:40px}
+.fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.fl a{font-size:11px;color:var(--mt);text-decoration:none}.fl a:hover{color:var(--gold)}
+.fc{font-size:11px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="bg-orb1"></div><div class="bg-orb2"></div>
+<div class="wrap">
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="32" height="32" viewBox="0 0 46 46" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#bb77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs><path d="M23 2L42 23L23 44L4 23Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/><path d="M7 10L23 38L39 10L34 10L23 30L12 10Z" fill="url(#lg)"/></svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Color Palette</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nb" href="/tools">All Tools</a>
+    <a class="nb" href="/moodboard">Moodboard</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">🎨 50+ Palettes · Font + Color · CSS Export</div>
+  <h1>Font + <span class="grad">Color Palette</span><br>Generator</h1>
+  <p>Browse 50+ curated brand palettes — each paired with the perfect free fonts. Click any palette to get CSS variables instantly.</p>
+</div>
+
+<div class="filter-row" id="filterRow"></div>
+<div id="detailView"></div>
+<div class="sh">All Palettes</div>
+<div class="palette-grid" id="paletteGrid"></div>
+
+<footer>
+  <div class="fl"><a href="/tools">All Tools</a><a href="/moodboard">Moodboard</a><a href="/contrast-checker">Contrast Check</a><a href="/pairing">Font Pairing</a></div>
+  <div class="fc">© 2025 Vectrod · Font + Color Palette Generator</div>
+</footer>
+</div>
+
+<script>
+const PALETTES = [
+  {id:1,name:'Midnight Gold',cat:'Luxury',tags:['dark','gold','luxury','premium'],colors:['#020309','#0e0c1a','#1e1930','#c09040','#f0c060'],headFont:'Cinzel',bodyFont:'Raleway',headGF:'Cinzel:wght@400..900',bodyGF:'Raleway:ital,wght@0,100..900',ph:'Luxury Redefined',pb:'Where craftsmanship meets contemporary vision.',css:'--bg: #020309;\n--surface: #0e0c1a;\n--border: #1e1930;\n--accent: #f0c060;\n--accent-dark: #c09040;\n--text: #f5efe6;'},
+  {id:2,name:'Arctic Blue',cat:'Tech',tags:['blue','tech','startup','clean'],colors:['#020410','#0a0f1e','#1a2540','#00d4ff','#7b00ff'],headFont:'Space Grotesk',bodyFont:'DM Mono',headGF:'Space+Grotesk:wght@300..700',bodyGF:'DM+Mono:wght@400..500',ph:'Built for Scale',pb:'Next-generation infrastructure for modern teams.',css:'--bg: #020410;\n--surface: #0a0f1e;\n--border: #1a2540;\n--accent: #00d4ff;\n--accent2: #7b00ff;\n--text: #e0f0ff;'},
+  {id:3,name:'Forest Sage',cat:'Nature',tags:['green','nature','organic','calm'],colors:['#0f1a0f','#1a2e1a','#2d4a2d','#6db56d','#c8e6c8'],headFont:'Lora',bodyFont:'Work Sans',headGF:'Lora:ital,wght@0,400..700;1,400..700',bodyGF:'Work+Sans:wght@100..900',ph:'Grown with Purpose',pb:'Sustainable design for a conscious generation.',css:'--bg: #0f1a0f;\n--surface: #1a2e1a;\n--accent: #6db56d;\n--light: #c8e6c8;\n--text: #e8f5e8;'},
+  {id:4,name:'Cream & Coffee',cat:'Minimal',tags:['light','minimal','warm','editorial'],colors:['#fdfcfb','#f5f0ea','#e8ddd0','#8b6040','#3d2010'],headFont:'Playfair Display',bodyFont:'Lato',headGF:'Playfair+Display:ital,wght@0,400..900;1,400..900',bodyGF:'Lato:ital,wght@0,100;0,300;0,400;0,700',ph:'Simply Beautiful',pb:'Crafted for those who appreciate the finer details.',css:'--bg: #fdfcfb;\n--surface: #f5f0ea;\n--border: #e8ddd0;\n--accent: #8b6040;\n--dark: #3d2010;\n--text: #2c1a0a;'},
+  {id:5,name:'Neon Night',cat:'Bold',tags:['neon','dark','vibrant','gaming'],colors:['#050510','#0d0d20','#1a1a35','#ff0080','#00ffcc'],headFont:'Bebas Neue',bodyFont:'Barlow',headGF:'Bebas+Neue',bodyGF:'Barlow:wght@300..700',ph:'BREAK THE RULES',pb:'For those who define their own limits.',css:'--bg: #050510;\n--surface: #0d0d20;\n--accent: #ff0080;\n--accent2: #00ffcc;\n--text: #ffffff;'},
+  {id:6,name:'Blush Rose',cat:'Wedding',tags:['pink','wedding','soft','romantic'],colors:['#fdfcfb','#fff0f0','#f9d0d0','#e8909a','#c06070'],headFont:'Great Vibes',bodyFont:'Raleway',headGF:'Great+Vibes',bodyGF:'Raleway:ital,wght@0,100..900',ph:'A Beautiful Beginning',pb:'Two hearts, one story, a lifetime of love.',css:'--bg: #fdfcfb;\n--surface: #fff0f0;\n--blush: #f9d0d0;\n--accent: #e8909a;\n--dark: #c06070;\n--text: #4a2030;'},
+  {id:7,name:'Fire Starter',cat:'Bold',tags:['orange','red','energy','sport'],colors:['#0d0d0d','#141414','#1f0a00','#ff3d00','#ff9500'],headFont:'Oswald',bodyFont:'DM Sans',headGF:'Oswald:wght@200..700',bodyGF:'DM+Sans:ital,opsz,wght@0,9..40,100..1000',ph:'NO LIMITS',pb:'Train harder. Push further. Never settle.',css:'--bg: #0d0d0d;\n--surface: #141414;\n--accent: #ff3d00;\n--accent2: #ff9500;\n--text: #ffffff;'},
+  {id:8,name:'Ocean Depth',cat:'Professional',tags:['blue','professional','calm','corporate'],colors:['#040d18','#081a2e','#0c2440','#1976d2','#64b5f6'],headFont:'Syne',bodyFont:'Inter',headGF:'Syne:wght@400..800',bodyGF:'Inter:ital,opsz,wght@0,14..32,100..900',ph:'Deep Expertise',pb:'Professional solutions built on decades of trust.',css:'--bg: #040d18;\n--surface: #081a2e;\n--accent: #1976d2;\n--light: #64b5f6;\n--text: #e3f2fd;'},
+  {id:9,name:'Paper & Ink',cat:'Editorial',tags:['white','editorial','newspaper','classic'],colors:['#fafaf8','#f0ede6','#e0dbd0','#1a1a1a','#8b0000'],headFont:'Archivo Black',bodyFont:'Crimson Pro',headGF:'Archivo+Black',bodyGF:'Crimson+Pro:ital,wght@0,200..900;1,200..900',ph:'THE DAILY',pb:'When the story matters, typography serves the truth.',css:'--bg: #fafaf8;\n--surface: #f0ede6;\n--border: #e0dbd0;\n--text: #1a1a1a;\n--accent: #8b0000;'},
+  {id:10,name:'Lavender Mist',cat:'Wellness',tags:['purple','wellness','calm','spa'],colors:['#f0eef8','#e8e4f2','#d0c8e8','#7c5cbf','#3d2080'],headFont:'Cormorant Garamond',bodyFont:'Nunito Sans',headGF:'Cormorant+Garamond:ital,wght@0,300..700;1,300..700',bodyGF:'Nunito+Sans:ital,opsz,wght@0,6..12,200..1000',ph:'Find Your Center',pb:'Mindful living begins with intentional choices.',css:'--bg: #f0eef8;\n--surface: #e8e4f2;\n--accent: #7c5cbf;\n--dark: #3d2080;\n--text: #2a1a60;'},
+  {id:11,name:'Olive & Sand',cat:'Nature',tags:['olive','earthy','natural','organic'],colors:['#f5f0e8','#ece4d0','#c8b890','#6b5a38','#2c2010'],headFont:'Josefin Sans',bodyFont:'Karla',headGF:'Josefin+Sans:ital,wght@0,100..700',bodyGF:'Karla:ital,wght@0,200..700',ph:'Back to Roots',pb:'Where nature inspires every design decision.',css:'--bg: #f5f0e8;\n--surface: #ece4d0;\n--accent: #6b5a38;\n--dark: #2c2010;\n--text: #3a2a10;'},
+  {id:12,name:'Electric Violet',cat:'Creative',tags:['purple','creative','vibrant','bold'],colors:['#0a0010','#150025','#25004a','#8800ff','#dd44ff'],headFont:'Syne',bodyFont:'Outfit',headGF:'Syne:wght@400..800',bodyGF:'Outfit:wght@100..900',ph:'Think Different',pb:'Creative solutions for brands that refuse to blend in.',css:'--bg: #0a0010;\n--surface: #150025;\n--accent: #8800ff;\n--accent2: #dd44ff;\n--text: #f0e0ff;'},
+  {id:13,name:'Copper & Stone',cat:'Premium',tags:['copper','warm','premium','industrial'],colors:['#1a1208','#2a1e0c','#3d2c10','#b87333','#e8a060'],headFont:'Cinzel',bodyFont:'Work Sans',headGF:'Cinzel:wght@400..900',bodyGF:'Work+Sans:wght@100..900',ph:'Built to Last',pb:'Premium craftsmanship in every detail.',css:'--bg: #1a1208;\n--surface: #2a1e0c;\n--accent: #b87333;\n--accent-light: #e8a060;\n--text: #f5e8d0;'},
+  {id:14,name:'Sky & Cloud',cat:'Minimal',tags:['light','blue','airy','minimal'],colors:['#f0f7ff','#e0efff','#c0e0ff','#4488ff','#1155cc'],headFont:'Plus Jakarta Sans',bodyFont:'Inter',headGF:'Plus+Jakarta+Sans:ital,wght@0,200..800',bodyGF:'Inter:ital,opsz,wght@0,14..32,100..900',ph:'Clear Horizons',pb:'Simple interfaces. Powerful experiences.',css:'--bg: #f0f7ff;\n--surface: #e0efff;\n--accent: #4488ff;\n--dark: #1155cc;\n--text: #0a1e40;'},
+  {id:15,name:'Charcoal & Citrus',cat:'Startup',tags:['dark','yellow','startup','modern'],colors:['#0a0a0a','#111111','#1c1c1c','#ffcc00','#ff9900'],headFont:'Space Grotesk',bodyFont:'Outfit',headGF:'Space+Grotesk:wght@300..700',bodyGF:'Outfit:wght@100..900',ph:'Move Fast',pb:'Ship product. Iterate quickly. Win together.',css:'--bg: #0a0a0a;\n--surface: #111111;\n--accent: #ffcc00;\n--accent2: #ff9900;\n--text: #ffffff;'},
+  {id:16,name:'Mint Chip',cat:'Fresh',tags:['green','mint','fresh','clean'],colors:['#f0faf5','#e0f5ea','#b8ead0','#22c880','#0a8040'],headFont:'Poppins',bodyFont:'Nunito',headGF:'Poppins:wght@300..800',bodyGF:'Nunito:wght@200..1000',ph:'Fresh Start',pb:'Clean design for brands that care about growth.',css:'--bg: #f0faf5;\n--surface: #e0f5ea;\n--accent: #22c880;\n--dark: #0a8040;\n--text: #0a2a1a;'},
+];
+
+const CATS = ['All', ...new Set(PALETTES.map(p=>p.cat))];
+let activeCat = 'All';
+let selectedPal = null;
+let loadedFonts = new Set(['Outfit','Cinzel']);
+
+function loadGF(gf, cb) {
+  if(loadedFonts.has(gf)){if(cb)setTimeout(cb,30);return;}
+  const l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family='+gf+'&display=swap';
+  l.onload=()=>{loadedFonts.add(gf);if(cb)cb();};
+  l.onerror=()=>{if(cb)cb();};
+  document.head.appendChild(l);
+}
+
+// Build filter row
+const fr = document.getElementById('filterRow');
+CATS.forEach(c => {
+  const b = document.createElement('button');
+  b.className='filt'+(c==='All'?' active':'');
+  b.textContent=c;
+  b.onclick=()=>{activeCat=c;document.querySelectorAll('.filt').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderGrid();};
+  fr.appendChild(b);
+});
+
+function renderGrid() {
+  const grid = document.getElementById('paletteGrid');
+  const pals = activeCat==='All' ? PALETTES : PALETTES.filter(p=>p.cat===activeCat);
+  grid.innerHTML = pals.map(p => `
+    <div class="pal-card ${selectedPal===p.id?'selected':''}" onclick="selectPal(${p.id})">
+      <div class="pal-swatch">${p.colors.map(c=>`<div class="pal-col" style="background:${c}"></div>`).join('')}</div>
+      <div class="pal-info">
+        <div class="pal-name">${p.name}</div>
+        <div class="pal-font">${p.headFont} + ${p.bodyFont}</div>
+        <div class="pal-tags">${p.tags.map(t=>`<span class="pal-tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>`).join('');
+}
+
+function selectPal(id) {
+  const p = PALETTES.find(x=>x.id===id);
+  if(!p) return;
+  selectedPal = id;
+  renderGrid();
+
+  loadGF(p.headGF); loadGF(p.bodyGF);
+
+  const bg = p.colors[0];
+  const textCol = p.colors[4] || '#ffffff';
+  const accCol = p.colors[3] || p.colors[2];
+
+  const swatches = p.colors.map(c =>
+    `<div class="det-sw" style="background:${c}" onclick="copyHex('${c}',this)" title="Click to copy"><span class="det-sw-tip">${c}</span></div>`
+  ).join('');
+
+  const imp1 = `https://fonts.googleapis.com/css2?family=${p.headGF}&display=swap`;
+  const imp2 = `https://fonts.googleapis.com/css2?family=${p.bodyGF}&display=swap`;
+  const cssText = `@import url('${imp1}');\n@import url('${imp2}');\n\n:root {\n  --font-heading: '${p.headFont}', serif;\n  --font-body: '${p.bodyFont}', sans-serif;\n  ${p.css.split('\n').join('\n  ')}\n}`;
+
+  document.getElementById('detailView').innerHTML = `
+    <div class="detail">
+      <div class="det-preview" style="background:${bg}">
+        <div class="det-h" id="dth" style="color:${textCol};font-family:'${p.headFont}',serif">${p.ph}</div>
+        <div class="det-b" id="dtb" style="color:${accCol};font-family:'${p.bodyFont}',sans-serif">${p.pb}</div>
+      </div>
+      <div class="det-swatch-row">${swatches}</div>
+      <div class="det-font-info">
+        <div class="dfi"><div class="dfi-role">Heading Font</div><div class="dfi-name" id="dhf" style="font-family:'${p.headFont}',serif">${p.headFont}</div><div class="dfi-free">✅ Free · Google Fonts</div></div>
+        <div class="dfi"><div class="dfi-role">Body Font</div><div class="dfi-name" id="dbf" style="font-family:'${p.bodyFont}',sans-serif">${p.bodyFont}</div><div class="dfi-free">✅ Free · Google Fonts</div></div>
+      </div>
+      <div class="det-css">
+        <div class="css-label">:root CSS Variables — paste into your project</div>
+        <pre class="css-code" id="detCss">${cssText}</pre>
+      </div>
+      <div class="arow">
+        <button class="act act-c" id="copyCssBtn" onclick="copyPalCSS()">⎘ Copy CSS</button>
+        <a class="act act-n" href="/moodboard">🎨 Moodboard Generator</a>
+        <a class="act act-n" href="/contrast-checker">♿ Check Contrast</a>
+      </div>
+    </div>`;
+
+  loadGF(p.headGF, ()=>{
+    const h=document.getElementById('dth');if(h)h.style.fontFamily=`'${p.headFont}',serif`;
+    const hf=document.getElementById('dhf');if(hf)hf.style.fontFamily=`'${p.headFont}',serif`;
+  });
+  loadGF(p.bodyGF, ()=>{
+    const b=document.getElementById('dtb');if(b)b.style.fontFamily=`'${p.bodyFont}',sans-serif`;
+    const bf=document.getElementById('dbf');if(bf)bf.style.fontFamily=`'${p.bodyFont}',sans-serif`;
+  });
+
+  document.getElementById('detailView').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function copyHex(hex, el) {
+  navigator.clipboard.writeText(hex).then(()=>{
+    el.style.outline='3px solid var(--ok)';
+    setTimeout(()=>el.style.outline='',1200);
+  });
+}
+
+function copyPalCSS() {
+  const code = document.getElementById('detCss')?.textContent||'';
+  navigator.clipboard.writeText(code).then(()=>{
+    const b=document.getElementById('copyCssBtn'); b.textContent='✓ Copied!'; b.classList.add('ok');
+    setTimeout(()=>{b.textContent='⎘ Copy CSS';b.classList.remove('ok');},2000);
+  });
+}
+
+renderGrid();
+</script>
+</body>
+</html>
