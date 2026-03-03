@@ -149,6 +149,18 @@ class Handler(BaseHTTPRequestHandler):
         elif path == '/variable-fonts':
             self.serve_static('variable-fonts.html', 'text/html')
 
+        elif path == '/font-twin':
+            self.serve_static('font-twin.html', 'text/html')
+
+        elif path == '/moodboard':
+            self.serve_static('moodboard.html', 'text/html')
+
+        elif path == '/font-quiz':
+            self.serve_static('font-quiz.html', 'text/html')
+
+        elif path == '/css-animation':
+            self.serve_static('css-animation.html', 'text/html')
+
         elif path == '/sitemap.xml':
             self.serve_static('sitemap.xml', 'application/xml')
 
