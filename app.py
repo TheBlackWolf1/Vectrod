@@ -168,6 +168,12 @@ class Handler(BaseHTTPRequestHandler):
             self.serve_static('contrast-checker.html', 'text/html')
         elif path == '/color-palette':
             self.serve_static('color-palette.html', 'text/html')
+        elif path == '/font-name-generator':
+            self.serve_static('font-name-generator.html', 'text/html')
+        elif path == '/font-mood':
+            self.serve_static('font-mood.html', 'text/html')
+        elif path == '/readability-checker':
+            self.serve_static('readability-checker.html', 'text/html')
 
         elif path == '/sitemap.xml':
             self.serve_static('sitemap.xml', 'application/xml')
