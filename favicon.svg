@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f0c060"/>
+      <stop offset="45%" stop-color="#bb77ff"/>
+      <stop offset="100%" stop-color="#22dd99"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f0c060" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#bb77ff" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="64" height="64" rx="14" fill="#070818"/>
+  <!-- Diamond outline (dim) -->
+  <path d="M32 4L60 32L32 60L4 32Z" stroke="url(#g1)" stroke-width="1.5" fill="none" opacity="0.35"/>
+  <!-- V shape (main logo mark) -->
+  <path d="M10 15L32 52L54 15L47 15L32 43L17 15Z" fill="url(#g1)"/>
+</svg>
