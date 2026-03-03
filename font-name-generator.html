@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>Font Name Generator — Preview Your Brand Name in Any Font | Vectrod</title>
+<meta name="description" content="Type your brand or project name and instantly see it in 30+ curated free fonts. Find the perfect font for your name in seconds.">
+<link rel="canonical" href="https://vectrod.com/font-name-generator">
+<meta property="og:title" content="Font Name Generator — See Your Brand in Every Font | Vectrod">
+<meta property="og:description" content="Type any name and see it in 30+ curated fonts instantly. Find the perfect font for your brand.">
+<meta property="og:url" content="https://vectrod.com/font-name-generator">
+<meta property="og:image" content="https://vectrod.com/og-image.png">
+<meta property="og:site_name" content="Vectrod">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Font Name Generator","description":"Preview your brand name in 30+ curated free fonts instantly.","url":"https://vectrod.com/font-name-generator","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"Vectrod"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020310;--bg2:#07071a;--bg3:#0d0e22;--br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.13);--tx:#eeeaff;--mt:rgba(238,234,255,.44);--mt2:rgba(238,234,255,.18);--gold:#f0c060;--goldd:#c09040;--ok:#22dd99;--okL:rgba(34,221,153,.1);--p2:#bb77ff;--pL:rgba(153,68,238,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh}
+.orb1{position:fixed;width:800px;height:800px;top:-350px;right:-250px;border-radius:50%;filter:blur(150px);background:radial-gradient(circle,rgba(153,68,238,.13) 0%,transparent 65%);pointer-events:none;z-index:0}
+.orb2{position:fixed;width:500px;height:500px;bottom:-200px;left:-100px;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(240,192,96,.08) 0%,transparent 65%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:28px 20px 100px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#bb77ff,#22dd99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nb{background:rgba(255,255,255,.04);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .2s}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,#c09040,#f0c060);color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+.hero{text-align:center;margin-bottom:36px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;border:1px solid rgba(240,192,96,.22);padding:5px 20px;border-radius:100px;background:rgba(240,192,96,.07);margin-bottom:16px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(24px,5vw,50px);font-weight:900;line-height:1;margin-bottom:8px}
+.grad{background:linear-gradient(90deg,var(--gold),var(--p2),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:14px;color:var(--mt);max-width:460px;margin:10px auto 0;line-height:1.8}
+
+/* INPUT */
+.name-input-wrap{background:var(--bg2);border:2px solid var(--br2);border-radius:20px;padding:6px 6px 6px 24px;display:flex;align-items:center;gap:10px;margin-bottom:16px;transition:border-color .2s}
+.name-input-wrap:focus-within{border-color:rgba(153,68,238,.5)}
+.name-input{flex:1;background:none;border:none;color:var(--tx);font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;outline:none;padding:10px 0}
+.name-input::placeholder{color:var(--mt2);font-weight:400}
+.size-btns{display:flex;gap:4px;flex-shrink:0}
+.sz-btn{background:var(--bg3);border:1px solid var(--br);border-radius:8px;color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;font-weight:700;padding:6px 10px;cursor:pointer;transition:all .2s}
+.sz-btn:hover,.sz-btn.active{border-color:var(--p2);color:var(--p2);background:var(--pL)}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:24px;align-items:center}
+.filt-label{font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-right:4px}
+.filt{background:rgba(255,255,255,.04);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;padding:5px 14px;cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace}
+.filt:hover,.filt.active{border-color:var(--p2);color:var(--p2);background:var(--pL)}
+
+/* FONT GRID */
+.font-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.font-tile{background:var(--bg2);border:1.5px solid var(--br);border-radius:18px;overflow:hidden;cursor:pointer;transition:all .22s;position:relative}
+.font-tile:hover{border-color:rgba(153,68,238,.4);transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.3)}
+.font-tile.fav{border-color:rgba(240,192,96,.4)!important}
+.ft-display{padding:20px 20px 12px;min-height:72px;display:flex;align-items:center}
+.ft-text{transition:font-family .2s;font-weight:700;color:var(--tx);line-height:1.1;word-break:break-word}
+.ft-meta{padding:10px 20px 14px;border-top:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ft-name{font-size:12px;font-weight:700;color:var(--mt)}
+.ft-cat{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;padding:2px 7px;border:1px solid var(--br);border-radius:100px}
+.ft-actions{display:flex;gap:5px}
+.ft-act{background:none;border:1px solid var(--br);border-radius:7px;color:var(--mt2);font-family:'DM Mono',monospace;font-size:9px;padding:4px 8px;cursor:pointer;transition:all .2s}
+.ft-act:hover{border-color:var(--gold);color:var(--gold)}
+.ft-act.faved{color:var(--gold);border-color:rgba(240,192,96,.3)}
+.ft-act.copied{color:var(--ok);border-color:rgba(34,221,153,.3)}
+.fav-badge{position:absolute;top:10px;right:10px;font-size:14px;opacity:0;transition:opacity .2s}
+.font-tile.fav .fav-badge{opacity:1}
+
+footer{border-top:1px solid var(--br);padding:28px 0;text-align:center;margin-top:40px}
+.fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.fl a{font-size:11px;color:var(--mt);text-decoration:none}.fl a:hover{color:var(--gold)}
+.fc-c{font-size:11px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="orb1"></div><div class="orb2"></div>
+<div class="wrap">
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="32" height="32" viewBox="0 0 46 46" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#bb77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs><path d="M23 2L42 23L23 44L4 23Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/><path d="M7 10L23 38L39 10L34 10L23 30L12 10Z" fill="url(#lg)"/></svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Name Generator</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nb" href="/font-quiz">🎯 Font Quiz</a>
+    <a class="nb" href="/pairing">⚡ Pairing</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">✏️ Type Name → See in 30+ Fonts</div>
+  <h1>Font <span class="grad">Name</span> Generator</h1>
+  <p>Type your brand, project or business name — see it instantly in 30+ curated free fonts. Copy CSS for any you love.</p>
+</div>
+
+<div class="name-input-wrap">
+  <input class="name-input" id="nameInput" value="Vectrod" placeholder="Type your brand name…" oninput="renderAll()">
+  <div class="size-btns">
+    <button class="sz-btn" onclick="setSize(28)">S</button>
+    <button class="sz-btn active" onclick="setSize(40)">M</button>
+    <button class="sz-btn" onclick="setSize(56)">L</button>
+    <button class="sz-btn" onclick="setSize(72)">XL</button>
+  </div>
+</div>
+
+<div class="filter-row">
+  <span class="filt-label">Style:</span>
+  <button class="filt active" onclick="setFilter('all',this)">All</button>
+  <button class="filt" onclick="setFilter('serif',this)">Serif</button>
+  <button class="filt" onclick="setFilter('sans',this)">Sans-Serif</button>
+  <button class="filt" onclick="setFilter('display',this)">Display</button>
+  <button class="filt" onclick="setFilter('script',this)">Script</button>
+  <button class="filt" onclick="setFilter('mono',this)">Mono</button>
+</div>
+
+<div class="font-grid" id="fontGrid"></div>
+
+<footer>
+  <div class="fl"><a href="/preview">Font Preview</a><a href="/font-quiz">Font Quiz</a><a href="/moodboard">Moodboard</a><a href="/fonts">All Fonts</a></div>
+  <div class="fc-c">© 2025 Vectrod · Font Name Generator</div>
+</footer>
+</div>
+
+<script>
+const FONTS = [
+  {name:'Cinzel',gf:'Cinzel:wght@400..900',cat:'display',weight:700},
+  {name:'Cormorant Garamond',gf:'Cormorant+Garamond:ital,wght@0,300..700',cat:'serif',weight:600},
+  {name:'Playfair Display',gf:'Playfair+Display:ital,wght@0,400..900',cat:'serif',weight:700},
+  {name:'Raleway',gf:'Raleway:ital,wght@0,100..900',cat:'sans',weight:700},
+  {name:'Josefin Sans',gf:'Josefin+Sans:ital,wght@0,100..700',cat:'sans',weight:600},
+  {name:'Montserrat',gf:'Montserrat:ital,wght@0,100..900',cat:'sans',weight:700},
+  {name:'Space Grotesk',gf:'Space+Grotesk:wght@300..700',cat:'sans',weight:700},
+  {name:'Syne',gf:'Syne:wght@400..800',cat:'display',weight:800},
+  {name:'Bebas Neue',gf:'Bebas+Neue',cat:'display',weight:400},
+  {name:'Oswald',gf:'Oswald:wght@200..700',cat:'display',weight:600},
+  {name:'DM Serif Display',gf:'DM+Serif+Display:ital@0;1',cat:'serif',weight:400},
+  {name:'Lora',gf:'Lora:ital,wght@0,400..700',cat:'serif',weight:700},
+  {name:'Fraunces',gf:'Fraunces:ital,opsz,wght@0,9..144,100..900',cat:'serif',weight:700},
+  {name:'Abril Fatface',gf:'Abril+Fatface',cat:'display',weight:400},
+  {name:'Great Vibes',gf:'Great+Vibes',cat:'script',weight:400},
+  {name:'Pacifico',gf:'Pacifico',cat:'script',weight:400},
+  {name:'Dancing Script',gf:'Dancing+Script:wght@400..700',cat:'script',weight:700},
+  {name:'Righteous',gf:'Righteous',cat:'display',weight:400},
+  {name:'Poiret One',gf:'Poiret+One',cat:'display',weight:400},
+  {name:'Philosopher',gf:'Philosopher:ital@0;1',cat:'serif',weight:400},
+  {name:'Plus Jakarta Sans',gf:'Plus+Jakarta+Sans:ital,wght@0,200..800',cat:'sans',weight:700},
+  {name:'Outfit',gf:'Outfit:wght@100..900',cat:'sans',weight:700},
+  {name:'Inter',gf:'Inter:opsz,wght@14..32,100..900',cat:'sans',weight:700},
+  {name:'DM Mono',gf:'DM+Mono:ital,wght@0,300..500',cat:'mono',weight:500},
+  {name:'Space Mono',gf:'Space+Mono:ital,wght@0,400;0,700',cat:'mono',weight:700},
+  {name:'Nunito',gf:'Nunito:wght@200..1000',cat:'sans',weight:800},
+  {name:'Poppins',gf:'Poppins:ital,wght@0,100..900',cat:'sans',weight:700},
+  {name:'Work Sans',gf:'Work+Sans:wght@100..900',cat:'sans',weight:700},
+  {name:'Cinzel Decorative',gf:'Cinzel+Decorative:wght@400;700;900',cat:'display',weight:700},
+  {name:'Libre Baskerville',gf:'Libre+Baskerville:ital,wght@0,400;0,700',cat:'serif',weight:700},
+];
+
+let currentSize = 40;
+let currentFilter = 'all';
+let favorites = new Set();
+let loadedFonts = new Set(['Outfit','Cinzel']);
+
+function loadGF(gf, name) {
+  if(loadedFonts.has(name)) return;
+  const l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family='+gf+'&display=swap';
+  document.head.appendChild(l); loadedFonts.add(name);
+}
+
+function setSize(s) {
+  currentSize = s;
+  document.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.ft-text').forEach(el=>el.style.fontSize=s+'px');
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAll();
+}
+
+function renderAll() {
+  const name = document.getElementById('nameInput').value || 'Your Name';
+  const fonts = currentFilter==='all' ? FONTS : FONTS.filter(f=>f.cat===currentFilter);
+  const grid = document.getElementById('fontGrid');
+
+  grid.innerHTML = fonts.map(f => `
+    <div class="font-tile ${favorites.has(f.name)?'fav':''}" id="tile-${f.name.replace(/ /g,'-')}">
+      <div class="ft-display">
+        <div class="ft-text" id="ftt-${f.name.replace(/ /g,'-')}" style="font-size:${currentSize}px;font-family:'${f.name}',serif;font-weight:${f.weight}">${name}</div>
+      </div>
+      <div class="ft-meta">
+        <div>
+          <div class="ft-name">${f.name}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="ft-cat">${f.cat}</span>
+          <div class="ft-actions">
+            <button class="ft-act ${favorites.has(f.name)?'faved':''}" onclick="toggleFav('${f.name}',this)">♡</button>
+            <button class="ft-act" onclick="copyCSS('${f.name}','${f.gf}',${f.weight},this)">⎘</button>
+            <a class="ft-act" href="https://fonts.google.com/specimen/${f.name.replace(/ /g,'+')}" target="_blank" style="text-decoration:none;display:inline-flex;align-items:center">↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="fav-badge">★</div>
+    </div>`).join('');
+
+  fonts.forEach(f => {
+    loadGF(f.gf, f.name);
+    setTimeout(()=>{
+      const el=document.getElementById('ftt-'+f.name.replace(/ /g,'-'));
+      if(el) el.style.fontFamily=`'${f.name}',serif`;
+    }, 100);
+  });
+}
+
+function toggleFav(name, btn) {
+  if(favorites.has(name)) { favorites.delete(name); } else { favorites.add(name); }
+  const tile = document.getElementById('tile-'+name.replace(/ /g,'-'));
+  if(tile) tile.classList.toggle('fav', favorites.has(name));
+  btn.classList.toggle('faved', favorites.has(name));
+  btn.textContent = favorites.has(name) ? '★' : '♡';
+}
+
+function copyCSS(name, gf, weight, btn) {
+  const css = `@import url('https://fonts.googleapis.com/css2?family=${gf}&display=swap');\n\nfont-family: '${name}', serif;\nfont-weight: ${weight};`;
+  navigator.clipboard.writeText(css).then(()=>{
+    btn.textContent='✓'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='⎘'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+renderAll();
+</script>
+</body>
+</html>

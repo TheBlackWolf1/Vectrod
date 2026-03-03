@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>Font Readability Checker — Test Any Font for Body Text | Vectrod</title>
+<meta name="description" content="Test how readable any font is for body text. Check line length, line height, letter spacing and get a readability score. Free tool for designers and developers.">
+<link rel="canonical" href="https://vectrod.com/readability-checker">
+<meta property="og:title" content="Font Readability Checker | Vectrod">
+<meta property="og:description" content="Score any font's readability for body text. Check line length, spacing and get actionable CSS fixes.">
+<meta property="og:url" content="https://vectrod.com/readability-checker">
+<meta property="og:image" content="https://vectrod.com/og-image.png">
+<meta property="og:site_name" content="Vectrod">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Font Readability Checker","description":"Test font readability for body text with scoring and CSS recommendations.","url":"https://vectrod.com/readability-checker","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"Vectrod"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020310;--bg2:#060714;--bg3:#0c0d1e;--br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.12);--tx:#eeeaff;--mt:rgba(238,234,255,.44);--mt2:rgba(238,234,255,.2);--gold:#f0c060;--goldd:#c09040;--ok:#22dd99;--okL:rgba(34,221,153,.1);--warn:#ffaa00;--warnL:rgba(255,170,0,.1);--fail:#ff4466;--failL:rgba(255,68,102,.1);--p2:#bb77ff;--pL:rgba(153,68,238,.11)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh}
+.orb1{position:fixed;width:700px;height:700px;top:-300px;right:-200px;border-radius:50%;filter:blur(140px);background:radial-gradient(circle,rgba(34,221,153,.1) 0%,transparent 65%);pointer-events:none;z-index:0}
+.orb2{position:fixed;width:500px;height:500px;bottom:-200px;left:-100px;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(153,68,238,.09) 0%,transparent 65%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:28px 20px 100px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#bb77ff,#22dd99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nb{background:rgba(255,255,255,.04);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .2s}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,#c09040,#f0c060);color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+.hero{text-align:center;margin-bottom:40px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--ok);text-transform:uppercase;border:1px solid rgba(34,221,153,.22);padding:5px 20px;border-radius:100px;background:var(--okL);margin-bottom:16px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(24px,5vw,48px);font-weight:900;line-height:1;margin-bottom:8px}
+.grad{background:linear-gradient(90deg,var(--ok),var(--p2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:14px;color:var(--mt);max-width:480px;margin:10px auto 0;line-height:1.8}
+
+/* MAIN LAYOUT */
+.main-grid{display:grid;grid-template-columns:320px 1fr;gap:20px;align-items:start}
+@media(max-width:768px){.main-grid{grid-template-columns:1fr}}
+
+/* CONTROLS PANEL */
+.ctrl-panel{background:var(--bg2);border:1.5px solid var(--br2);border-radius:22px;padding:24px;position:sticky;top:20px}
+.ctrl-section{margin-bottom:22px}
+.ctrl-section:last-child{margin-bottom:0}
+.ctrl-label{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:block}
+select{width:100%;background:var(--bg3);border:1px solid var(--br);border-radius:10px;color:var(--tx);font-family:'DM Mono',monospace;font-size:12px;padding:9px 12px;outline:none;cursor:pointer;margin-bottom:8px}
+select option{background:var(--bg2)}
+.range-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.range-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--tx);min-width:44px;text-align:right}
+input[type=range]{flex:1;-webkit-appearance:none;height:4px;border-radius:100px;background:var(--br2);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--p2);cursor:pointer;border:2px solid var(--bg2)}
+.txt-sample{width:100%;background:var(--bg3);border:1px solid var(--br);border-radius:10px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:12px;padding:9px 12px;resize:vertical;min-height:60px;outline:none;line-height:1.6}
+
+/* SCORE */
+.score-card{background:var(--bg2);border:1.5px solid var(--br2);border-radius:22px;overflow:hidden;margin-bottom:16px}
+.score-header{padding:20px 24px;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:16px}
+.score-circle{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Cinzel',serif;font-size:26px;font-weight:900;border:3px solid}
+.score-info{flex:1}
+.score-grade{font-family:'Cinzel',serif;font-size:20px;font-weight:900}
+.score-sub{font-size:12px;color:var(--mt);margin-top:2px}
+.score-checks{padding:16px 24px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--br)}
+.score-check{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sc-label{font-size:13px;color:var(--mt);flex:1}
+.sc-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:700}
+.sc-badge{font-size:9px;font-family:'DM Mono',monospace;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid}
+.sb-ok{background:var(--okL);border-color:rgba(34,221,153,.3);color:var(--ok)}
+.sb-warn{background:var(--warnL);border-color:rgba(255,170,0,.3);color:var(--warn)}
+.sb-fail{background:var(--failL);border-color:rgba(255,68,102,.3);color:var(--fail)}
+
+/* PREVIEW */
+.preview-card{background:var(--bg2);border:1.5px solid var(--br);border-radius:22px;overflow:hidden;margin-bottom:16px}
+.preview-toolbar{padding:14px 20px;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pt-label{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace}
+.bg-sw{width:24px;height:24px;border-radius:6px;cursor:pointer;border:2px solid rgba(255,255,255,.15);flex-shrink:0;transition:transform .15s}
+.bg-sw:hover{transform:scale(1.15)}
+.bg-sw.active{border-color:var(--p2)!important}
+.preview-body{padding:32px;transition:background .2s}
+.preview-text{transition:all .3s;line-height:1.6;color:#eeeaff}
+
+/* CSS OUTPUT */
+.css-card{background:var(--bg2);border:1.5px solid rgba(34,221,153,.15);border-radius:20px;padding:20px}
+.css-label{font-size:9px;color:var(--ok);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.css-out{font-family:'DM Mono',monospace;font-size:12px;color:var(--ok);line-height:1.9;white-space:pre;overflow-x:auto;max-height:300px}
+.copy-btn{margin-top:12px;background:var(--okL);border:1.5px solid rgba(34,221,153,.25);border-radius:10px;color:var(--ok);font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:9px 18px;cursor:pointer;transition:all .2s}
+.copy-btn:hover{background:rgba(34,221,153,.18)}
+.copy-btn.done{background:var(--okL);color:var(--ok)}
+
+footer{border-top:1px solid var(--br);padding:28px 0;text-align:center;margin-top:40px}
+.fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.fl a{font-size:11px;color:var(--mt);text-decoration:none}.fl a:hover{color:var(--gold)}
+.fc-c{font-size:11px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="orb1"></div><div class="orb2"></div>
+<div class="wrap">
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="32" height="32" viewBox="0 0 46 46" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#bb77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs><path d="M23 2L42 23L23 44L4 23Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/><path d="M7 10L23 38L39 10L34 10L23 30L12 10Z" fill="url(#lg)"/></svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Readability</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nb" href="/contrast-checker">♿ Contrast</a>
+    <a class="nb" href="/font-size">📐 Font Size</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">📖 Readability Score · CSS Fixes · Live Preview</div>
+  <h1>Font <span class="grad">Readability</span> Checker</h1>
+  <p>Test any font for body text readability. Get a score, identify issues, and copy optimized CSS — all instantly.</p>
+</div>
+
+<div class="main-grid">
+  <!-- LEFT: CONTROLS -->
+  <div class="ctrl-panel">
+    <div class="ctrl-section">
+      <span class="ctrl-label">Font</span>
+      <select id="fontSel" onchange="update()">
+        <option value="Inter">Inter — UI Standard</option>
+        <option value="Outfit" selected>Outfit — Modern</option>
+        <option value="Lora">Lora — Literary Serif</option>
+        <option value="Merriweather">Merriweather — Long-form</option>
+        <option value="Source Serif 4">Source Serif 4 — Editorial</option>
+        <option value="Nunito">Nunito — Rounded</option>
+        <option value="DM Sans">DM Sans — Clean</option>
+        <option value="Work Sans">Work Sans — Professional</option>
+        <option value="Playfair Display">Playfair Display — Display</option>
+        <option value="Bebas Neue">Bebas Neue — Display Only</option>
+        <option value="Cinzel">Cinzel — Display Only</option>
+        <option value="Pacifico">Pacifico — Script</option>
+      </select>
+    </div>
+    <div class="ctrl-section">
+      <span class="ctrl-label">Font Size: <span id="fsLabel">16px</span></span>
+      <div class="range-row"><input type="range" id="fsRange" min="12" max="24" value="16" oninput="update()"></div>
+      <span class="ctrl-label">Line Height: <span id="lhLabel">1.6</span></span>
+      <div class="range-row"><input type="range" id="lhRange" min="1.0" max="2.4" step="0.05" value="1.6" oninput="update()"></div>
+      <span class="ctrl-label">Letter Spacing: <span id="lsLabel">0em</span></span>
+      <div class="range-row"><input type="range" id="lsRange" min="-0.05" max="0.15" step="0.005" value="0" oninput="update()"></div>
+      <span class="ctrl-label">Max Line Width: <span id="lwLabel">65ch</span></span>
+      <div class="range-row"><input type="range" id="lwRange" min="30" max="100" value="65" oninput="update()"></div>
+    </div>
+    <div class="ctrl-section">
+      <span class="ctrl-label">Custom Sample Text</span>
+      <textarea class="txt-sample" id="sampleText" oninput="update()">The quick brown fox jumps over the lazy dog. Typography is the art of arranging type to make written language legible, readable, and appealing.</textarea>
+    </div>
+  </div>
+
+  <!-- RIGHT: RESULTS -->
+  <div>
+    <!-- SCORE -->
+    <div class="score-card">
+      <div class="score-header">
+        <div class="score-circle" id="scoreCircle">—</div>
+        <div class="score-info">
+          <div class="score-grade" id="scoreGrade">—</div>
+          <div class="score-sub" id="scoreSub">Adjust settings to see score</div>
+        </div>
+      </div>
+      <div class="score-checks" id="scoreChecks"></div>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="preview-card">
+      <div class="preview-toolbar">
+        <span class="pt-label">Background:</span>
+        <div class="bg-sw active" style="background:#02030f" onclick="setBg('#02030f',this)" title="Dark"></div>
+        <div class="bg-sw" style="background:#111827" onclick="setBg('#111827',this)" title="Dark Gray"></div>
+        <div class="bg-sw" style="background:#fdfcfb" onclick="setBg('#fdfcfb',this)" title="White"></div>
+        <div class="bg-sw" style="background:#f5f0e8" onclick="setBg('#f5f0e8',this)" title="Cream"></div>
+        <div class="bg-sw" style="background:#1a1528" onclick="setBg('#1a1528',this)" title="Deep Purple"></div>
+      </div>
+      <div class="preview-body" id="previewBody" style="background:#02030f">
+        <div class="preview-text" id="previewText"></div>
+      </div>
+    </div>
+
+    <!-- CSS OUTPUT -->
+    <div class="css-card">
+      <div class="css-label">Optimized CSS — copy and use</div>
+      <pre class="css-out" id="cssOut"></pre>
+      <button class="copy-btn" id="copyBtn" onclick="copyCSS()">⎘ Copy CSS</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fl"><a href="/contrast-checker">Contrast Checker</a><a href="/font-size">Font Size Calc</a><a href="/variable-fonts">Variable Fonts</a><a href="/css-stack">CSS Stack</a></div>
+  <div class="fc-c">© 2025 Vectrod · Font Readability Checker</div>
+</footer>
+</div>
+
+<script>
+const GF_MAP = {
+  'Inter':'Inter:ital,opsz,wght@0,14..32,100..900',
+  'Outfit':'Outfit:wght@100..900',
+  'Lora':'Lora:ital,wght@0,400..700;1,400..700',
+  'Merriweather':'Merriweather:ital,wght@0,300;0,400;0,700;1,400',
+  'Source Serif 4':'Source+Serif+4:ital,opsz,wght@0,8..60,200..900',
+  'Nunito':'Nunito:wght@200..1000',
+  'DM Sans':'DM+Sans:ital,opsz,wght@0,9..40,100..1000',
+  'Work Sans':'Work+Sans:wght@100..900',
+  'Playfair Display':'Playfair+Display:ital,wght@0,400..900;1,400..900',
+  'Bebas Neue':'Bebas+Neue',
+  'Cinzel':'Cinzel:wght@400..900',
+  'Pacifico':'Pacifico',
+};
+
+let loadedFonts = new Set(['Outfit','Cinzel']);
+function loadGF(name) {
+  if(loadedFonts.has(name)) return;
+  const gf = GF_MAP[name] || name.replace(/ /g,'+');
+  const l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family='+gf+'&display=swap';
+  document.head.appendChild(l); loadedFonts.add(name);
+}
+
+const DISPLAY_FONTS = ['Bebas Neue','Cinzel','Pacifico','Playfair Display','Abril Fatface'];
+
+function update() {
+  const font = document.getElementById('fontSel').value;
+  const fs = parseInt(document.getElementById('fsRange').value);
+  const lh = parseFloat(document.getElementById('lhRange').value);
+  const ls = parseFloat(document.getElementById('lsRange').value);
+  const lw = parseInt(document.getElementById('lwRange').value);
+  const sample = document.getElementById('sampleText').value;
+
+  document.getElementById('fsLabel').textContent = fs+'px';
+  document.getElementById('lhLabel').textContent = lh.toFixed(2);
+  document.getElementById('lsLabel').textContent = ls.toFixed(3)+'em';
+  document.getElementById('lwLabel').textContent = lw+'ch';
+
+  loadGF(font);
+  setTimeout(() => applyPreview(font, fs, lh, ls, lw, sample), 80);
+}
+
+function applyPreview(font, fs, lh, ls, lw, sample) {
+  const el = document.getElementById('previewText');
+  el.style.fontFamily = `'${font}', serif`;
+  el.style.fontSize = fs+'px';
+  el.style.lineHeight = lh;
+  el.style.letterSpacing = ls+'em';
+  el.style.maxWidth = lw+'ch';
+  el.textContent = sample;
+  calcScore(font, fs, lh, ls, lw);
+  genCSS(font, fs, lh, ls, lw);
+}
+
+function calcScore(font, fs, lh, ls, lw) {
+  const isDisplay = DISPLAY_FONTS.includes(font);
+  const checks = [];
+  let total = 0, max = 0;
+
+  // Font type check
+  const ftPts = isDisplay ? 0 : 20;
+  max += 20; total += ftPts;
+  checks.push({label:'Font type for body text', val: isDisplay?'Display only':'Body-ready',
+    badge: isDisplay?'fail':'ok', pts: ftPts, max:20,
+    tip: isDisplay ? `${font} is a display font — not suitable for long body text` : `${font} works well for body text`});
+
+  // Font size
+  const fsPts = fs>=14&&fs<=20 ? 20 : fs>=12&&fs<=22 ? 12 : 4;
+  max += 20; total += fsPts;
+  checks.push({label:'Font size', val: fs+'px',
+    badge: fsPts>=20?'ok':fsPts>=12?'warn':'fail', pts:fsPts, max:20,
+    tip: fs<14?'Too small — increase to 15–18px for comfort':fs>20?'Large — good for accessibility, verify with design':''});
+
+  // Line height
+  const lhPts = lh>=1.5&&lh<=1.9 ? 20 : lh>=1.3&&lh<=2.2 ? 12 : 4;
+  max += 20; total += lhPts;
+  checks.push({label:'Line height', val: lh.toFixed(2),
+    badge: lhPts>=20?'ok':lhPts>=12?'warn':'fail', pts:lhPts, max:20,
+    tip: lh<1.4?'Too tight — text feels cramped. Try 1.5–1.75':lh>2.1?'Very loose — consider 1.5–1.8 for comfort':''});
+
+  // Letter spacing
+  const lsPts = ls>=-0.01&&ls<=0.04 ? 20 : ls>=-0.03&&ls<=0.08 ? 10 : 4;
+  max += 20; total += lsPts;
+  checks.push({label:'Letter spacing', val: ls.toFixed(3)+'em',
+    badge: lsPts>=20?'ok':lsPts>=10?'warn':'fail', pts:lsPts, max:20,
+    tip: ls<-0.02?'Too tight — reduces legibility':ls>0.06?'Very loose — can reduce reading speed at small sizes':''});
+
+  // Line width
+  const lwPts = lw>=55&&lw<=75 ? 20 : lw>=45&&lw<=85 ? 10 : 4;
+  max += 20; total += lwPts;
+  checks.push({label:'Max line width', val: lw+'ch',
+    badge: lwPts>=20?'ok':lwPts>=10?'warn':'fail', pts:lwPts, max:20,
+    tip: lw<45?'Too narrow — creates too many line breaks':lw>80?'Too wide — eyes struggle to track lines. Aim for 55–75ch':''});
+
+  const pct = Math.round((total/max)*100);
+  const grade = pct>=90?'Excellent':pct>=75?'Good':pct>=55?'Needs Work':'Poor';
+  const gradeColor = pct>=90?'var(--ok)':pct>=75?'var(--gold)':pct>=55?'var(--warn)':'var(--fail)';
+
+  const circle = document.getElementById('scoreCircle');
+  circle.textContent = pct;
+  circle.style.borderColor = gradeColor;
+  circle.style.color = gradeColor;
+  document.getElementById('scoreGrade').textContent = grade;
+  document.getElementById('scoreGrade').style.color = gradeColor;
+  document.getElementById('scoreSub').textContent = `${total}/${max} points — ${checks.filter(c=>c.badge==='fail').length} issues, ${checks.filter(c=>c.badge==='warn').length} warnings`;
+
+  const checksEl = document.getElementById('scoreChecks');
+  checksEl.innerHTML = checks.map(c => `
+    <div class="score-check">
+      <span class="sc-label">${c.label}${c.tip?`<br><small style="color:var(--mt2);font-size:11px">${c.tip}</small>`:''}</span>
+      <span class="sc-val" style="color:${c.badge==='ok'?'var(--ok)':c.badge==='warn'?'var(--warn)':'var(--fail)'}">${c.val}</span>
+      <span class="sc-badge ${c.badge==='ok'?'sb-ok':c.badge==='warn'?'sb-warn':'sb-fail'}">${c.badge==='ok'?'✓ Good':c.badge==='warn'?'⚠ Check':'✗ Fix'}</span>
+    </div>`).join('');
+}
+
+function genCSS(font, fs, lh, ls, lw) {
+  const gf = GF_MAP[font] || font.replace(/ /g,'+');
+  const rem = (fs/16).toFixed(4).replace(/\.?0+$/,'');
+  const css = `@import url('https://fonts.googleapis.com/css2?family=${gf}&display=swap');
+
+body {
+  font-family: '${font}', serif;
+  font-size: ${fs}px;        /* ${rem}rem */
+  line-height: ${lh};
+  letter-spacing: ${ls}em;
+}
+
+p, .body-text {
+  max-width: ${lw}ch;        /* ideal line length */
+  margin-bottom: ${(lh * fs * 0.75).toFixed(0)}px; /* ~0.75em paragraph gap */
+}`;
+  document.getElementById('cssOut').textContent = css;
+}
+
+function setBg(color, sw) {
+  document.getElementById('previewBody').style.background = color;
+  const isLight = ['#fdfcfb','#f5f0e8'].includes(color);
+  document.getElementById('previewText').style.color = isLight ? '#1a1520' : '#eeeaff';
+  document.querySelectorAll('.bg-sw').forEach(s=>s.classList.remove('active'));
+  sw.classList.add('active');
+}
+
+function copyCSS() {
+  navigator.clipboard.writeText(document.getElementById('cssOut').textContent).then(()=>{
+    const b=document.getElementById('copyBtn'); b.textContent='✓ Copied!'; b.classList.add('done');
+    setTimeout(()=>{b.textContent='⎘ Copy CSS';b.classList.remove('done');},2000);
+  });
+}
+
+update();
+</script>
+</body>
+</html>

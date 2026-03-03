@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>Font Mood Matcher — Find Fonts by Feeling | Vectrod</title>
+<meta name="description" content="Pick an emoji or describe a feeling — instantly get matching free fonts. Type 😤 angry, 🌿 calm, 💎 luxury or any mood and see fonts that match it.">
+<link rel="canonical" href="https://vectrod.com/font-mood">
+<meta property="og:title" content="Font Mood Matcher — Emoji to Font | Vectrod">
+<meta property="og:description" content="Pick a mood or emoji, get perfectly matched fonts. Unique tool for creative discovery.">
+<meta property="og:url" content="https://vectrod.com/font-mood">
+<meta property="og:image" content="https://vectrod.com/og-image.png">
+<meta property="og:site_name" content="Vectrod">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Font Mood Matcher","description":"Find fonts by mood, emoji, or feeling. Unique creative font discovery tool.","url":"https://vectrod.com/font-mood","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"Vectrod"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030210;--bg2:#08071a;--bg3:#0e0c22;--br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.12);--tx:#eeeaff;--mt:rgba(238,234,255,.44);--mt2:rgba(238,234,255,.2);--gold:#f0c060;--ok:#22dd99;--okL:rgba(34,221,153,.1);--p2:#bb77ff;--pL:rgba(153,68,238,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh}
+.orb1{position:fixed;width:700px;height:700px;top:-300px;left:-200px;border-radius:50%;filter:blur(140px);background:radial-gradient(circle,rgba(153,68,238,.13) 0%,transparent 65%);pointer-events:none;z-index:0}
+.orb2{position:fixed;width:500px;height:500px;bottom:-200px;right:-100px;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(240,192,96,.08) 0%,transparent 65%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:28px 20px 100px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#bb77ff,#22dd99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nb{background:rgba(255,255,255,.04);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .2s}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,#c09040,#f0c060);color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+
+.hero{text-align:center;margin-bottom:44px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--p2);text-transform:uppercase;border:1px solid rgba(153,68,238,.22);padding:5px 20px;border-radius:100px;background:var(--pL);margin-bottom:16px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(26px,5vw,52px);font-weight:900;line-height:1;margin-bottom:8px}
+.grad{background:linear-gradient(90deg,var(--p2),var(--gold),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:14px;color:var(--mt);max-width:460px;margin:10px auto 0;line-height:1.8}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:24px}
+.search-input{width:100%;background:var(--bg2);border:2px solid var(--br2);border-radius:18px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:18px;padding:18px 58px 18px 22px;outline:none;transition:border-color .2s;caret-color:var(--p2)}
+.search-input::placeholder{color:var(--mt2)}
+.search-input:focus{border-color:rgba(153,68,238,.5)}
+.search-clear{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:18px;cursor:pointer;color:var(--mt2);transition:color .2s;display:none}
+.search-clear:hover{color:var(--p2)}
+
+/* MOOD CHIPS */
+.mood-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;justify-content:center}
+.mood-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1.5px solid var(--br);border-radius:100px;padding:8px 16px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--mt)}
+.mood-chip:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.mood-chip.active{border-width:2px;color:var(--tx);transform:translateY(-2px)}
+.mood-chip span{font-size:18px}
+
+/* RESULTS */
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.results-title{font-family:'Cinzel',serif;font-size:18px;font-weight:700}
+.results-count{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace}
+.font-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.font-card{background:var(--bg2);border:1.5px solid var(--br);border-radius:20px;overflow:hidden;transition:all .22s;animation:su .3s cubic-bezier(.16,1,.3,1) both}
+@keyframes su{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.font-card:hover{border-color:rgba(153,68,238,.35);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.fc-preview{padding:24px 20px 16px;min-height:90px;display:flex;align-items:flex-end}
+.fc-sample{font-size:clamp(22px,3.5vw,34px);font-weight:700;line-height:1.1;color:var(--tx);transition:font-family .3s}
+.fc-meta{padding:12px 20px 16px;border-top:1px solid var(--br)}
+.fc-name{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:3px}
+.fc-why{font-size:12px;color:var(--mt);line-height:1.6;margin-bottom:10px}
+.fc-tags-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.fc-tag{font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid var(--br);color:var(--mt2);font-family:'DM Mono',monospace}
+.fc-actions{display:flex;gap:6px}
+.fc-btn{flex:1;border-radius:9px;padding:8px;font-family:'DM Mono',monospace;font-size:10px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .2s;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px}
+.fc-btn-p{background:var(--pL);border-color:rgba(187,119,255,.25);color:var(--p2)}
+.fc-btn-p:hover{background:rgba(187,119,255,.2)}
+.fc-btn-c{background:rgba(255,255,255,.04);border-color:var(--br2);color:var(--mt)}
+.fc-btn-c:hover{border-color:var(--gold);color:var(--gold)}
+.fc-btn-c.done{background:var(--okL);border-color:rgba(34,221,153,.3);color:var(--ok)}
+
+.empty{text-align:center;padding:60px 20px;color:var(--mt)}
+.empty-ico{font-size:48px;margin-bottom:12px}
+.empty-t{font-family:'Cinzel',serif;font-size:18px;font-weight:700;margin-bottom:8px}
+
+footer{border-top:1px solid var(--br);padding:28px 0;text-align:center;margin-top:40px}
+.fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.fl a{font-size:11px;color:var(--mt);text-decoration:none}.fl a:hover{color:var(--gold)}
+.fc-c{font-size:11px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="orb1"></div><div class="orb2"></div>
+<div class="wrap">
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="32" height="32" viewBox="0 0 46 46" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#bb77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs><path d="M23 2L42 23L23 44L4 23Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/><path d="M7 10L23 38L39 10L34 10L23 30L12 10Z" fill="url(#lg)"/></svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Font Mood</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nb" href="/font-quiz">🎯 Quiz</a>
+    <a class="nb" href="/moodboard">🎨 Moodboard</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">✨ Unique Tool · Emoji → Font</div>
+  <h1>Font <span class="grad">Mood</span> Matcher</h1>
+  <p>Type a feeling, pick an emoji, or describe a vibe — get perfectly matched free fonts instantly.</p>
+</div>
+
+<div class="search-wrap">
+  <input class="search-input" id="searchInput" placeholder="Try: calm 🌿  luxury 💎  playful 🎉  angry 😤  elegant  minimal…" oninput="onSearch(this.value)">
+  <span class="search-clear" id="clearBtn" onclick="clearSearch()">✕</span>
+</div>
+
+<div class="mood-grid" id="moodGrid"></div>
+
+<div class="results-header">
+  <div class="results-title" id="resultsTitle">All Moods</div>
+  <div class="results-count" id="resultsCount"></div>
+</div>
+<div class="font-cards" id="fontCards"></div>
+
+<footer>
+  <div class="fl"><a href="/font-quiz">Font Quiz</a><a href="/moodboard">Moodboard</a><a href="/pairing">Font Pairing</a><a href="/fonts">All Fonts</a></div>
+  <div class="fc-c">© 2025 Vectrod · Font Mood Matcher</div>
+</footer>
+</div>
+
+<script>
+const MOODS = [
+  {emoji:'💎',label:'Luxury',keywords:['luxury','premium','elegant','exclusive','rich','opulent','high-end','fancy','vogue','prestige']},
+  {emoji:'🌿',label:'Calm',keywords:['calm','peaceful','zen','serene','tranquil','relaxed','gentle','soft','nature','organic','wellness']},
+  {emoji:'⚡',label:'Bold',keywords:['bold','strong','powerful','impact','energy','loud','confident','dominant','heavy','aggressive']},
+  {emoji:'🎉',label:'Playful',keywords:['playful','fun','happy','cheerful','joyful','cute','bubbly','friendly','kid','children','whimsical']},
+  {emoji:'🤖',label:'Tech',keywords:['tech','digital','code','modern','startup','innovation','futuristic','ai','data','software','cyber']},
+  {emoji:'📰',label:'Editorial',keywords:['editorial','newspaper','magazine','serious','classic','professional','publication','literary']},
+  {emoji:'🎨',label:'Creative',keywords:['creative','artistic','expressive','unique','design','agency','studio','art','avant-garde']},
+  {emoji:'💼',label:'Corporate',keywords:['corporate','business','professional','formal','law','finance','conservative','serious','reliable']},
+  {emoji:'🌸',label:'Feminine',keywords:['feminine','romantic','soft','wedding','bridal','beauty','fashion','floral','delicate','pink']},
+  {emoji:'💀',label:'Dark',keywords:['dark','goth','horror','metal','underground','edgy','grunge','punk','black','mysterious']},
+  {emoji:'🌊',label:'Fresh',keywords:['fresh','clean','minimal','airy','light','modern','simple','pure','clear','open']},
+  {emoji:'🍂',label:'Vintage',keywords:['vintage','retro','old','classic','nostalgic','heritage','antique','historical','traditional']},
+];
+
+const FONTS = [
+  {name:'Cormorant Garamond',gf:'Cormorant+Garamond:ital,wght@0,300..700;1,300..700',sample:'Luxury Defined',why:'Extreme high-contrast strokes scream luxury. Used by Hermès, Bottega Veneta style brands.',tags:['luxury','elegant','editorial','feminine'],moods:['luxury','editorial','feminine','vintage'],color:'rgba(240,192,96,.15)'},
+  {name:'Cinzel',gf:'Cinzel:wght@400..900',sample:'Timeless Authority',why:'Roman inscription origins. Commands authority and prestige like no other free font.',tags:['luxury','corporate','editorial'],moods:['luxury','corporate','editorial','vintage'],color:'rgba(240,192,96,.12)'},
+  {name:'Bebas Neue',gf:'Bebas+Neue',sample:'MAXIMUM IMPACT',why:'All-caps condensed powerhouse. Stops scrolls, breaks walls, demands attention.',tags:['bold','energy','sport'],moods:['bold','dark','tech'],color:'rgba(255,68,102,.12)'},
+  {name:'Space Grotesk',gf:'Space+Grotesk:wght@300..700',sample:'Built Different',why:'Deliberate quirks make tech brands feel genuinely innovative. Not just another sans-serif.',tags:['tech','startup','bold'],moods:['tech','creative','bold'],color:'rgba(68,136,255,.12)'},
+  {name:'Nunito',gf:'Nunito:wght@200..1000',sample:'Friendly & Warm',why:'Rounded terminals create immediate warmth. Perfect for apps targeting families and consumers.',tags:['playful','friendly','app'],moods:['playful','fresh','feminine'],color:'rgba(34,221,153,.1)'},
+  {name:'Lora',gf:'Lora:ital,wght@0,400..700;1,400..700',sample:'Words Worth Reading',why:'Contemporary serif with calligraphic roots. Exceptional readability for long-form content.',tags:['editorial','calm','literary'],moods:['editorial','calm','vintage'],color:'rgba(187,119,255,.1)'},
+  {name:'Syne',gf:'Syne:wght@400..800',sample:'AVANT-GARDE',why:'Experimental proportions that make headlines genuinely unforgettable. Creative agencies love it.',tags:['creative','bold','modern'],moods:['creative','bold','tech'],color:'rgba(187,119,255,.15)'},
+  {name:'Pacifico',gf:'Pacifico',sample:'Good Vibes Only',why:'Retro-surf script energy. Immediately communicates fun, friendliness and California cool.',tags:['playful','vintage','casual'],moods:['playful','vintage','feminine'],color:'rgba(240,192,96,.1)'},
+  {name:'Inter',gf:'Inter:opsz,wght@14..32,100..900',sample:'Crystal Clear UI',why:'Designed for screens by Rasmus Andersson. The world\'s most trusted UI typeface.',tags:['tech','corporate','minimal'],moods:['tech','corporate','fresh'],color:'rgba(68,136,255,.1)'},
+  {name:'Josefin Sans',gf:'Josefin+Sans:ital,wght@0,100..700',sample:'Geometric Elegance',why:'Bauhaus spirit with refined proportions. Thin weight is breathtakingly luxurious.',tags:['luxury','minimal','editorial'],moods:['luxury','fresh','editorial'],color:'rgba(240,192,96,.1)'},
+  {name:'Abril Fatface',gf:'Abril+Fatface',sample:'BOLD STATEMENT',why:'Ultra-heavy display font from the tradition of Victorian poster type. Maximum visual impact.',tags:['bold','editorial','vintage'],moods:['bold','editorial','dark','vintage'],color:'rgba(255,68,102,.1)'},
+  {name:'DM Serif Display',gf:'DM+Serif+Display:ital@0;1',sample:'Refined Authority',why:'Ink traps and optical refinements give it magazine-quality elegance at display sizes.',tags:['luxury','editorial','corporate'],moods:['luxury','editorial','corporate'],color:'rgba(187,119,255,.12)'},
+  {name:'Quicksand',gf:'Quicksand:wght@300..700',sample:'Soft & Friendly',why:'Rounded geometric — friendly without being childish. Popular in health, wellness and education.',tags:['calm','playful','fresh'],moods:['calm','playful','fresh','feminine'],color:'rgba(34,221,153,.1)'},
+  {name:'Playfair Display',gf:'Playfair+Display:ital,wght@0,400..900;1,400..900',sample:'Editorial Presence',why:'High contrast old-style serif. The go-to for fashion magazines and editorial headlines.',tags:['editorial','luxury','feminine'],moods:['editorial','luxury','feminine','vintage'],color:'rgba(240,192,96,.1)'},
+  {name:'DM Mono',gf:'DM+Mono:ital,wght@0,300..500;1,300..500',sample:'01001000 i',why:'Elegant monospace that makes code beautiful. Used in developer tools and tech documentation.',tags:['tech','minimal','code'],moods:['tech','corporate','dark'],color:'rgba(34,221,153,.08)'},
+  {name:'Oswald',gf:'Oswald:wght@200..700',sample:'BUILT DIFFERENT',why:'Condensed grotesque with serious visual authority. Excellent for sport, fitness and bold brands.',tags:['bold','sport','energy'],moods:['bold','corporate','dark'],color:'rgba(255,68,102,.1)'},
+  {name:'Great Vibes',gf:'Great+Vibes',sample:'Elegance in Motion',why:'Flowing calligraphic script that feels genuinely hand-crafted. Perfect for weddings and luxury.',tags:['feminine','luxury','wedding'],moods:['feminine','luxury','vintage'],color:'rgba(187,119,255,.1)'},
+  {name:'Fraunces',gf:'Fraunces:ital,opsz,wght@0,9..144,100..900',sample:'Wonderfully Odd',why:'Variable font with a "wonkiness" axis — unique letterforms unlike anything else available free.',tags:['creative','editorial','vintage'],moods:['creative','editorial','vintage'],color:'rgba(240,192,96,.1)'},
+  {name:'Poppins',gf:'Poppins:ital,wght@0,100..900',sample:'Modern Clean',why:'Geometric circular design with global appeal. The most versatile free font in existence.',tags:['fresh','minimal','corporate'],moods:['fresh','tech','corporate','calm'],color:'rgba(68,136,255,.08)'},
+  {name:'Creepster',gf:'Creepster',sample:'Something Wicked',why:'Dripping horror display font. Perfect for Halloween, spooky brands, and anything that needs to unsettle.',tags:['dark','horror','edgy'],moods:['dark'],color:'rgba(255,68,102,.15)'},
+];
+
+let activeMood = null;
+let loadedFonts = new Set(['Outfit','Cinzel']);
+
+function loadGF(gf) {
+  if(loadedFonts.has(gf)) return;
+  const l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family='+gf+'&display=swap';
+  document.head.appendChild(l); loadedFonts.add(gf);
+}
+
+// Build mood chips
+const mg = document.getElementById('moodGrid');
+MOODS.forEach(m => {
+  const chip = document.createElement('div');
+  chip.className = 'mood-chip';
+  chip.innerHTML = `<span>${m.emoji}</span>${m.label}`;
+  chip.style.setProperty('--hc', m.color || 'rgba(153,68,238,.2)');
+  chip.onclick = () => selectMood(m, chip);
+  mg.appendChild(chip);
+});
+
+function selectMood(m, chip) {
+  if(activeMood === m.label) {
+    activeMood = null;
+    document.querySelectorAll('.mood-chip').forEach(c=>c.classList.remove('active'));
+    document.getElementById('searchInput').value = '';
+    document.getElementById('clearBtn').style.display = 'none';
+    renderFonts(FONTS, 'All Moods');
+    return;
+  }
+  activeMood = m.label;
+  document.querySelectorAll('.mood-chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  chip.style.borderColor = 'rgba(187,119,255,.6)';
+  chip.style.color = '#fff';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('clearBtn').style.display = 'none';
+  const filtered = FONTS.filter(f => f.moods.includes(m.label.toLowerCase()));
+  renderFonts(filtered, `${m.emoji} ${m.label} Fonts`);
+}
+
+function onSearch(val) {
+  document.getElementById('clearBtn').style.display = val ? 'block' : 'none';
+  document.querySelectorAll('.mood-chip').forEach(c=>c.classList.remove('active'));
+  activeMood = null;
+  if(!val.trim()) { renderFonts(FONTS, 'All Moods'); return; }
+  const q = val.toLowerCase();
+  const matched = FONTS.filter(f => {
+    if(f.name.toLowerCase().includes(q)) return true;
+    if(f.tags.some(t=>t.includes(q))) return true;
+    if(f.why.toLowerCase().includes(q)) return true;
+    const matchedMood = MOODS.find(m=>m.keywords.some(k=>k.includes(q)||q.includes(k)));
+    if(matchedMood) return f.moods.includes(matchedMood.label.toLowerCase());
+    return false;
+  });
+  renderFonts(matched, `Results for "${val}"`);
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('clearBtn').style.display = 'none';
+  renderFonts(FONTS, 'All Moods');
+}
+
+function renderFonts(fonts, title) {
+  document.getElementById('resultsTitle').textContent = title;
+  document.getElementById('resultsCount').textContent = fonts.length + ' fonts';
+  const container = document.getElementById('fontCards');
+  if(!fonts.length) {
+    container.innerHTML = '<div class="empty"><div class="empty-ico">🔍</div><div class="empty-t">No matches</div><p style="color:var(--mt);font-size:13px">Try a different mood or keyword</p></div>';
+    return;
+  }
+  container.innerHTML = fonts.map((f,i) => `
+    <div class="font-card" style="animation-delay:${i*0.04}s">
+      <div class="fc-preview" style="background:${f.color}">
+        <div class="fc-sample" id="fs-${f.name.replace(/ /g,'-')}">${f.sample}</div>
+      </div>
+      <div class="fc-meta">
+        <div class="fc-name">${f.name}</div>
+        <div class="fc-why">${f.why}</div>
+        <div class="fc-tags-row">${f.tags.map(t=>`<span class="fc-tag">${t}</span>`).join('')}</div>
+        <div class="fc-actions">
+          <a class="fc-btn fc-btn-p" href="https://fonts.google.com/specimen/${f.name.replace(/ /g,'+')}" target="_blank">Download Free</a>
+          <button class="fc-btn fc-btn-c" id="cb-${f.name.replace(/ /g,'-')}" onclick="copyCSS('${f.name}','${f.gf}',this)">⎘ CSS</button>
+        </div>
+      </div>
+    </div>`).join('');
+  fonts.forEach(f => {
+    loadGF(f.gf);
+    const fname = f.name.replace(/ /g,'-');
+    const el = document.getElementById('fs-'+fname);
+    if(el) {
+      // Apply font after small delay
+      setTimeout(()=>{ el.style.fontFamily=`'${f.name}',serif`; }, 120);
+    }
+  });
+}
+
+function copyCSS(name, gf, btn) {
+  const css = `@import url('https://fonts.googleapis.com/css2?family=${gf}&display=swap');\n\nfont-family: '${name}', sans-serif;`;
+  navigator.clipboard.writeText(css).then(()=>{
+    btn.textContent='✓ Done'; btn.classList.add('done');
+    setTimeout(()=>{ btn.textContent='⎘ CSS'; btn.classList.remove('done'); }, 2000);
+  });
+}
+
+renderFonts(FONTS, 'All Moods');
+</script>
+</body>
+</html>
