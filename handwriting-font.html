@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>Handwriting to Font — Turn Your Handwriting Into a Real Font | Vectrod</title>
+<meta name="description" content="Take a photo of your handwriting and download it as a real font file. Free handwriting to font converter — no app, no signup, works in your browser.">
+<link rel="canonical" href="https://vectrod.com/handwriting-font">
+<meta property="og:title" content="Handwriting to Font | Vectrod">
+<meta property="og:description" content="Photo your handwriting → download a real .ttf font. Free, instant, no signup.">
+<meta property="og:url" content="https://vectrod.com/handwriting-font">
+<meta property="og:image" content="https://vectrod.com/og-image.png">
+<meta property="og:site_name" content="Vectrod">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Handwriting to Font","description":"Convert handwriting photos to real TTF/OTF font files free.","url":"https://vectrod.com/handwriting-font","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"Vectrod"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#020309;--bg2:#07071a;--bg3:#0d0e24;
+  --br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.13);
+  --tx:#eeeaff;--mt:rgba(238,234,255,.5);--mt2:rgba(238,234,255,.22);
+  --gold:#f0c060;--goldd:#c09040;
+  --ok:#22dd99;--okL:rgba(34,221,153,.12);
+  --p2:#bb77ff;--pL:rgba(153,68,238,.12);
+  --blue:#4488ff;--blueL:rgba(68,136,255,.1);
+  --fail:#ff4466;--failL:rgba(255,68,102,.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* BG */
+.bg-wrap{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(153,68,238,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(153,68,238,.03) 1px,transparent 1px);background-size:52px 52px}
+.bg-o1{position:absolute;width:900px;height:900px;top:-400px;right:-300px;border-radius:50%;filter:blur(150px);background:radial-gradient(circle,rgba(153,68,238,.14) 0%,transparent 65%);animation:df 36s ease-in-out infinite alternate}
+.bg-o2{position:absolute;width:600px;height:600px;bottom:-250px;left:-150px;border-radius:50%;filter:blur(140px);background:radial-gradient(circle,rgba(240,192,96,.08) 0%,transparent 65%);animation:df 28s ease-in-out infinite alternate}
+.bg-o3{position:absolute;width:400px;height:400px;top:40%;left:35%;border-radius:50%;filter:blur(150px);background:radial-gradient(circle,rgba(34,221,153,.06) 0%,transparent 65%);animation:df 42s ease-in-out infinite alternate}
+@keyframes df{from{transform:translate(0,0)}to{transform:translate(35px,25px)}}
+
+/* LAYOUT */
+.wrap{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:28px 20px 120px}
+
+/* NAV */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#bb77ff,#22dd99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt2);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nb{background:rgba(255,255,255,.05);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;text-decoration:none;font-family:'DM Mono',monospace;white-space:nowrap;transition:all .2s}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,var(--goldd),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:52px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--p2);text-transform:uppercase;border:1px solid rgba(153,68,238,.25);padding:5px 22px;border-radius:100px;background:var(--pL);margin-bottom:20px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(28px,5.5vw,64px);font-weight:900;line-height:.95;margin-bottom:16px}
+.hero h1 .line2{display:block;background:linear-gradient(90deg,var(--gold),var(--p2),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:16px;color:var(--mt);max-width:540px;margin:0 auto 28px;line-height:1.8}
+.hero-stats{display:flex;gap:28px;justify-content:center;flex-wrap:wrap}
+.hst{text-align:center}
+.hst-n{font-family:'Cinzel',serif;font-size:22px;font-weight:900;background:linear-gradient(90deg,var(--gold),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hst-l{font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px}
+@media(max-width:600px){.steps{grid-template-columns:1fr}}
+.step{background:var(--bg2);border:1.5px solid var(--br);border-radius:20px;padding:22px 20px;text-align:center;position:relative}
+.step::before{content:attr(data-n);position:absolute;top:-1px;left:50%;transform:translateX(-50%);font-size:9px;font-family:'DM Mono',monospace;font-weight:700;letter-spacing:.12em;background:var(--bg2);color:var(--mt2);padding:0 10px}
+.step-ico{font-size:36px;display:block;margin-bottom:10px}
+.step-t{font-family:'Cinzel',serif;font-size:14px;font-weight:700;margin-bottom:6px}
+.step-d{font-size:12px;color:var(--mt);line-height:1.7}
+
+/* MAIN CARD */
+.main-card{background:var(--bg2);border:1.5px solid var(--br2);border-radius:28px;overflow:hidden;margin-bottom:24px}
+.mc-top{padding:28px 28px 0;border-bottom:1px solid var(--br)}
+
+/* MODE TABS */
+.mode-tabs{display:flex;gap:0;background:rgba(0,0,0,.2);border-radius:14px;padding:4px;margin-bottom:24px;width:fit-content}
+.mode-tab{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:8px 20px;border-radius:10px;cursor:pointer;transition:all .2s;color:var(--mt);border:none;background:none;white-space:nowrap}
+.mode-tab.active{background:var(--p2);color:#000;-webkit-text-fill-color:#000}
+
+/* MODE DESCRIPTIONS */
+.mode-desc{font-size:13px;color:var(--mt);line-height:1.7;margin-bottom:20px;padding:14px 16px;background:rgba(153,68,238,.06);border:1px solid rgba(153,68,238,.15);border-radius:12px}
+.mode-desc strong{color:var(--p2)}
+
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed rgba(153,68,238,.3);border-radius:20px;padding:44px 24px;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:20px;position:relative;overflow:hidden}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--p2);background:rgba(153,68,238,.05)}
+.upload-zone.has-file{border-style:solid;border-color:rgba(34,221,153,.35);background:rgba(34,221,153,.04)}
+.uz-ico{font-size:48px;display:block;margin-bottom:12px;transition:transform .2s}
+.upload-zone:hover .uz-ico{transform:scale(1.1)}
+.uz-title{font-family:'Cinzel',serif;font-size:18px;font-weight:700;margin-bottom:6px}
+.uz-sub{font-size:13px;color:var(--mt);margin-bottom:14px}
+.uz-btn{display:inline-flex;align-items:center;gap:8px;background:var(--pL);border:1.5px solid rgba(153,68,238,.25);border-radius:100px;color:var(--p2);font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:9px 22px;transition:all .2s}
+.uz-btn:hover{background:rgba(153,68,238,.2)}
+.uz-preview{max-width:100%;max-height:220px;border-radius:12px;margin-top:14px;object-fit:contain;display:none}
+input[type=file]{display:none}
+
+/* TEXT INPUT */
+.text-field-wrap{margin-bottom:20px}
+.tf-label{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:block}
+.text-field{width:100%;background:var(--bg3);border:1.5px solid var(--br2);border-radius:14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:16px;padding:14px 18px;outline:none;transition:border-color .2s;caret-color:var(--p2)}
+.text-field:focus{border-color:rgba(153,68,238,.5)}
+.text-field::placeholder{color:var(--mt2)}
+.tf-hint{font-size:11px;color:var(--mt2);font-family:'DM Mono',monospace;margin-top:6px}
+
+/* FONT NAME */
+.font-name-row{display:flex;gap:12px;align-items:flex-end;margin-bottom:20px;flex-wrap:wrap}
+.fn-group{flex:1;min-width:200px}
+.fn-input{width:100%;background:var(--bg3);border:1.5px solid var(--br2);border-radius:14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;padding:12px 18px;outline:none;transition:border-color .2s}
+.fn-input:focus{border-color:rgba(240,192,96,.5)}
+
+/* PROCESS BTN */
+.process-btn{width:100%;background:linear-gradient(135deg,rgba(153,68,238,.9),rgba(119,68,238,.9));border:none;border-radius:16px;color:#fff;-webkit-text-fill-color:#fff;font-family:'DM Mono',monospace;font-size:14px;font-weight:700;padding:18px;cursor:pointer;transition:all .25s;letter-spacing:.08em;margin-bottom:0}
+.process-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 36px rgba(153,68,238,.35)}
+.process-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.process-btn.loading{background:linear-gradient(135deg,rgba(68,136,255,.8),rgba(34,221,153,.8))}
+
+/* PROGRESS */
+.progress-wrap{display:none;padding:0 28px 24px}
+.progress-steps{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.ps-item{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--mt);transition:color .3s}
+.ps-item.active{color:var(--p2)}
+.ps-item.done{color:var(--ok)}
+.ps-ico{width:24px;height:24px;border-radius:50%;border:2px solid var(--br);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .3s}
+.ps-item.active .ps-ico{border-color:var(--p2);background:var(--pL);animation:pulse 1.2s infinite}
+.ps-item.done .ps-ico{border-color:var(--ok);background:var(--okL);color:var(--ok)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(153,68,238,.4)}50%{box-shadow:0 0 0 6px rgba(153,68,238,0)}}
+
+/* RESULTS */
+.results-wrap{display:none;padding:28px}
+.rw-title{font-family:'Cinzel',serif;font-size:20px;font-weight:900;margin-bottom:6px}
+.rw-sub{font-size:13px;color:var(--mt);margin-bottom:20px}
+
+/* PREVIEW IMAGE */
+.preview-img-wrap{background:rgba(0,0,0,.3);border-radius:16px;padding:20px;margin-bottom:20px;text-align:center;border:1px solid var(--br)}
+.preview-img-wrap img{max-width:100%;border-radius:10px;image-rendering:crisp-edges}
+.pi-label{font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+
+/* CHAR PILLS */
+.char-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.char-pill{background:var(--pL);border:1px solid rgba(153,68,238,.2);border-radius:8px;padding:4px 10px;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--p2)}
+
+/* DOWNLOAD BTNS */
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+@media(max-width:500px){.dl-grid{grid-template-columns:1fr}}
+.dl-btn{display:flex;align-items:center;gap:10px;padding:16px 20px;border-radius:16px;text-decoration:none;transition:all .2s;border:1.5px solid}
+.dl-ttf{background:rgba(240,192,96,.1);border-color:rgba(240,192,96,.25);color:var(--gold)}
+.dl-ttf:hover{background:rgba(240,192,96,.18);transform:translateY(-2px)}
+.dl-otf{background:var(--pL);border-color:rgba(153,68,238,.25);color:var(--p2)}
+.dl-otf:hover{background:rgba(153,68,238,.2);transform:translateY(-2px)}
+.dl-ico{font-size:28px}
+.dl-info{flex:1}
+.dl-name{font-family:'DM Mono',monospace;font-size:13px;font-weight:700}
+.dl-desc{font-size:11px;opacity:.7;margin-top:2px}
+.dl-size{font-size:10px;opacity:.5;font-family:'DM Mono',monospace}
+
+.retry-btn{width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--br2);border-radius:12px;color:var(--mt);font-family:'DM Mono',monospace;font-size:12px;font-weight:700;padding:12px;cursor:pointer;transition:all .2s;margin-bottom:0}
+.retry-btn:hover{border-color:var(--p2);color:var(--p2)}
+
+/* ERROR */
+.error-box{display:none;background:var(--failL);border:1.5px solid rgba(255,68,102,.25);border-radius:14px;padding:16px 20px;color:var(--fail);font-size:13px;margin:16px 28px}
+
+/* TEMPLATE */
+.template-section{background:var(--bg2);border:1.5px solid var(--br);border-radius:24px;padding:24px;margin-bottom:24px}
+.ts-title{font-family:'Cinzel',serif;font-size:16px;font-weight:700;margin-bottom:8px}
+.ts-desc{font-size:13px;color:var(--mt);line-height:1.7;margin-bottom:16px}
+.ts-download{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1.5px solid var(--br2);border-radius:100px;color:var(--tx);font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:9px 20px;text-decoration:none;transition:all .2s}
+.ts-download:hover{border-color:var(--gold);color:var(--gold)}
+
+/* TIPS */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px}
+.tip{background:var(--bg2);border:1px solid var(--br);border-radius:16px;padding:16px}
+.tip-ico{font-size:24px;margin-bottom:8px;display:block}
+.tip-t{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.tip-d{font-size:12px;color:var(--mt);line-height:1.6}
+
+.sh{font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sh::after{content:'';flex:1;height:1px;background:var(--br)}
+
+footer{border-top:1px solid var(--br);padding:28px 0;text-align:center;margin-top:40px}
+.fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.fl a{font-size:11px;color:var(--mt);text-decoration:none}.fl a:hover{color:var(--gold)}
+.fc{font-size:11px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="bg-wrap"><div class="bg-grid"></div><div class="bg-o1"></div><div class="bg-o2"></div><div class="bg-o3"></div></div>
+<div class="wrap">
+
+<!-- NAV -->
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="32" height="32" viewBox="0 0 46 46" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#bb77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs><path d="M23 2L42 23L23 44L4 23Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/><path d="M7 10L23 38L39 10L34 10L23 30L12 10Z" fill="url(#lg)"/></svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Handwriting → Font</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nb" href="/tools">All Tools</a>
+    <a class="nb" href="/fonts">Free Fonts</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">✍️ World's First · Free · No App Needed</div>
+  <h1>Your Handwriting<span class="line2">Becomes a Font</span></h1>
+  <p class="hero-sub">Write on paper. Take a photo. Download your handwriting as a real .ttf font file — type with it anywhere.</p>
+  <div class="hero-stats">
+    <div class="hst"><div class="hst-n">Free</div><div class="hst-l">Forever</div></div>
+    <div class="hst"><div class="hst-n">TTF+OTF</div><div class="hst-l">Output</div></div>
+    <div class="hst"><div class="hst-n">30sec</div><div class="hst-l">Processing</div></div>
+    <div class="hst"><div class="hst-n">No App</div><div class="hst-l">Browser Only</div></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="steps">
+  <div class="step" data-n="STEP 01">
+    <span class="step-ico">✍️</span>
+    <div class="step-t">Write on Paper</div>
+    <div class="step-d">Write letters clearly on white paper. Good pen contrast = better results. Use the template below for best accuracy.</div>
+  </div>
+  <div class="step" data-n="STEP 02">
+    <span class="step-ico">📸</span>
+    <div class="step-t">Photo or Scan</div>
+    <div class="step-d">Take a flat, well-lit photo. No shadows. Or scan it — 300dpi+ recommended. Upload JPG, PNG or PDF.</div>
+  </div>
+  <div class="step" data-n="STEP 03">
+    <span class="step-ico">⬇️</span>
+    <div class="step-t">Download Your Font</div>
+    <div class="step-d">We detect each character, vectorize it, and build a real font. Download and install — type with your handwriting anywhere.</div>
+  </div>
+</div>
+
+<!-- TEMPLATE DOWNLOAD -->
+<div class="template-section">
+  <div class="ts-title">📄 Download the Writing Template</div>
+  <div class="ts-desc">For the most accurate results, print this template and fill in each box with one letter. The grid layout makes character detection near-perfect. Works with any pen on white paper.</div>
+  <a class="ts-download" href="/handwriting-template.pdf" download onclick="return showTemplateTip()">⬇️ Download Template PDF</a>
+  <span style="margin-left:12px;font-size:12px;color:var(--mt)">— or use "Sentence Mode" for a quick test</span>
+</div>
+
+<!-- TIPS -->
+<div class="sh">📋 Photo Tips for Best Results</div>
+<div class="tips-grid">
+  <div class="tip"><span class="tip-ico">💡</span><div class="tip-t">Good Lighting</div><div class="tip-d">Natural daylight or bright lamp. Avoid shadows across the page.</div></div>
+  <div class="tip"><span class="tip-ico">📐</span><div class="tip-t">Flat Photo</div><div class="tip-d">Hold phone directly above — no angle. Paper should be flat, not curved.</div></div>
+  <div class="tip"><span class="tip-ico">🖊️</span><div class="tip-t">Dark Pen</div><div class="tip-d">Black or dark blue ink on white paper. High contrast = best detection.</div></div>
+  <div class="tip"><span class="tip-ico">🔤</span><div class="tip-t">Write Clearly</div><div class="tip-d">Slightly bigger letters than normal. Don't connect letters (unless you want it cursive).</div></div>
+</div>
+
+<!-- MAIN CONVERTER CARD -->
+<div class="main-card">
+  <div class="mc-top" style="padding-bottom:24px">
+
+    <!-- MODE SELECTOR -->
+    <div class="mode-tabs">
+      <button class="mode-tab active" onclick="setMode('sentence',this)">✍️ Sentence Mode</button>
+      <button class="mode-tab" onclick="setMode('grid',this)">📋 Template Sheet</button>
+    </div>
+
+    <!-- MODE DESCRIPTIONS -->
+    <div class="mode-desc" id="modeDesc">
+      <strong>Sentence Mode:</strong> Write any sentence or word on paper, take a photo, and tell us what you wrote. Great for a quick test — we'll extract one copy of each unique character.
+    </div>
+
+    <!-- UPLOAD ZONE -->
+    <div class="upload-zone" id="uploadZone"
+         onclick="document.getElementById('fileInput').click()"
+         ondragover="event.preventDefault();this.classList.add('drag')"
+         ondragleave="this.classList.remove('drag')"
+         ondrop="handleDrop(event)">
+      <span class="uz-ico" id="uzIco">📷</span>
+      <div class="uz-title" id="uzTitle">Drop photo here or click to upload</div>
+      <div class="uz-sub" id="uzSub">JPG, PNG, HEIC · Max 20MB · Phone photos work great</div>
+      <span class="uz-btn">Choose Photo</span>
+      <img class="uz-preview" id="uzPreview" alt="preview">
+    </div>
+    <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect(this)">
+
+    <!-- SENTENCE MODE EXTRA -->
+    <div id="sentenceExtras">
+      <div class="text-field-wrap">
+        <span class="tf-label">What did you write? (type it here)</span>
+        <input type="text" class="text-field" id="expectedText" 
+               placeholder="e.g.: Elma yiyelim mi? Hello World!" 
+               maxlength="200">
+        <div class="tf-hint">We'll map each unique character from your photo to what you wrote. Include all letters you wrote.</div>
+      </div>
+    </div>
+
+    <!-- FONT NAME -->
+    <div class="font-name-row">
+      <div class="fn-group">
+        <span class="tf-label" style="display:block;margin-bottom:8px">Font Name</span>
+        <input type="text" class="fn-input" id="fontName" value="MyHandwriting" maxlength="40" placeholder="MyHandwriting">
+      </div>
+    </div>
+
+    <!-- PROCESS BUTTON -->
+    <button class="process-btn" id="processBtn" onclick="processHandwriting()" disabled>
+      ✍️ Detect Characters & Build Font
+    </button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-steps" id="progressSteps">
+      <div class="ps-item" id="ps1"><div class="ps-ico">1</div><span>Uploading & preprocessing image…</span></div>
+      <div class="ps-item" id="ps2"><div class="ps-ico">2</div><span>Detecting & segmenting characters…</span></div>
+      <div class="ps-item" id="ps3"><div class="ps-ico">3</div><span>Vectorizing handwriting strokes…</span></div>
+      <div class="ps-item" id="ps4"><div class="ps-ico">4</div><span>Building font file (TTF + OTF)…</span></div>
+      <div class="ps-item" id="ps5"><div class="ps-ico">5</div><span>Packaging for download…</span></div>
+    </div>
+  </div>
+
+  <!-- ERROR -->
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- RESULTS -->
+  <div class="results-wrap" id="resultsWrap">
+    <div class="rw-title" id="rwTitle">Your Font is Ready! 🎉</div>
+    <div class="rw-sub" id="rwSub"></div>
+
+    <!-- Glyph preview -->
+    <div class="preview-img-wrap" id="previewImgWrap" style="display:none">
+      <div class="pi-label">Detected Characters</div>
+      <img id="previewImg" src="" alt="glyph preview">
+    </div>
+
+    <!-- Character pills -->
+    <div class="char-pills" id="charPills"></div>
+
+    <!-- Download buttons -->
+    <div class="dl-grid" id="dlGrid"></div>
+
+    <button class="retry-btn" onclick="resetAll()">↩ Start Over — Upload Another Photo</button>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="/">Font Creator</a>
+    <a href="/tools">All Tools</a>
+    <a href="/fonts">Free Fonts</a>
+    <a href="/blog">Blog</a>
+    <a href="/about">About</a>
+  </div>
+  <div class="fc">© 2025 Vectrod · Handwriting to Font · Free Forever</div>
+</footer>
+</div>
+
+<script>
+let uploadedFile = null;
+let currentMode = 'sentence';
+let sessionId = null;
+let processingResult = null;
+
+// ─── MODE SWITCH ───────────────────────────────────────────
+function setMode(mode, btn) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  const desc = document.getElementById('modeDesc');
+  const extras = document.getElementById('sentenceExtras');
+  
+  if (mode === 'sentence') {
+    desc.innerHTML = '<strong>Sentence Mode:</strong> Write any sentence on paper, take a photo, then type what you wrote below. We extract one copy of each unique character automatically.';
+    extras.style.display = 'block';
+  } else {
+    desc.innerHTML = '<strong>Template Sheet Mode:</strong> Print our template, fill every box with the correct letter, photo it. We read the fixed grid — extremely accurate, covers all 52 letters + digits.';
+    extras.style.display = 'none';
+  }
+}
+
+// ─── FILE HANDLING ─────────────────────────────────────────
+function handleFileSelect(input) {
+  if (input.files && input.files[0]) {
+    setFile(input.files[0]);
+  }
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    setFile(file);
+  }
+}
+
+function setFile(file) {
+  uploadedFile = file;
+  
+  const zone = document.getElementById('uploadZone');
+  const preview = document.getElementById('uzPreview');
+  const ico = document.getElementById('uzIco');
+  const title = document.getElementById('uzTitle');
+  const sub = document.getElementById('uzSub');
+  
+  // Show preview
+  const reader = new FileReader();
+  reader.onload = e => {
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+  
+  zone.classList.add('has-file');
+  ico.textContent = '✅';
+  title.textContent = file.name;
+  sub.textContent = `${(file.size / 1024 / 1024).toFixed(1)} MB · Click to change`;
+  
+  document.getElementById('processBtn').disabled = false;
+  hideError();
+}
+
+// ─── MAIN PROCESS ──────────────────────────────────────────
+async function processHandwriting() {
+  if (!uploadedFile) return;
+  
+  const fontName = document.getElementById('fontName').value.trim() || 'MyHandwriting';
+  const expectedText = document.getElementById('expectedText').value.trim();
+  
+  if (currentMode === 'sentence' && !expectedText) {
+    showError('Please type what you wrote in the photo. This helps us map characters correctly.');
+    return;
+  }
+  
+  // Show progress
+  showProgress();
+  
+  try {
+    // STEP 1+2: Upload & detect
+    setStep(1, 'active'); setStep(2, 'active');
+    
+    const formData = new FormData();
+    formData.append('image', uploadedFile);
+    formData.append('mode', currentMode);
+    formData.append('expected_text', expectedText);
+    
+    const processResp = await fetch('/api/handwriting-process', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const processData = await processResp.json();
+    
+    if (!processData.success) {
+      throw new Error(processData.error || 'Character detection failed');
+    }
+    
+    setStep(1, 'done'); setStep(2, 'done');
+    processingResult = processData;
+    sessionId = processData.session_id;
+    
+    // STEP 3: Vectorize (already done on server, show progress)
+    setStep(3, 'active');
+    await delay(600);
+    setStep(3, 'done');
+    
+    // STEP 4: Build font
+    setStep(4, 'active');
+    
+    const fontResp = await fetch('/api/handwriting-to-font', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: sessionId,
+        font_name: fontName,
+        expected_text: expectedText
+      })
+    });
+    
+    const fontData = await fontResp.json();
+    
+    if (!fontData.success) {
+      throw new Error(fontData.error || 'Font building failed');
+    }
+    
+    setStep(4, 'done');
+    setStep(5, 'active');
+    await delay(400);
+    setStep(5, 'done');
+    
+    // Show results
+    showResults(processData, fontData);
+    
+  } catch (err) {
+    hideProgress();
+    showError(err.message);
+    document.getElementById('processBtn').disabled = false;
+  }
+}
+
+// ─── UI HELPERS ────────────────────────────────────────────
+function showProgress() {
+  document.getElementById('processBtn').disabled = true;
+  document.getElementById('processBtn').textContent = '⚙️ Processing…';
+  document.getElementById('processBtn').classList.add('loading');
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('resultsWrap').style.display = 'none';
+  hideError();
+  // Reset steps
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('ps'+i);
+    el.classList.remove('active','done');
+  }
+}
+
+function hideProgress() {
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('processBtn').disabled = false;
+  document.getElementById('processBtn').textContent = '✍️ Detect Characters & Build Font';
+  document.getElementById('processBtn').classList.remove('loading');
+}
+
+function setStep(n, state) {
+  const el = document.getElementById('ps'+n);
+  el.classList.remove('active','done');
+  if (state) el.classList.add(state);
+}
+
+function showResults(processData, fontData) {
+  hideProgress();
+  
+  const wrap = document.getElementById('resultsWrap');
+  wrap.style.display = 'block';
+  
+  // Title
+  document.getElementById('rwTitle').textContent = `Your Font is Ready! 🎉`;
+  document.getElementById('rwSub').textContent = 
+    `Detected ${processData.char_count} characters · Font: ${fontData.font_name}`;
+  
+  // Preview image
+  if (processData.preview) {
+    const prevWrap = document.getElementById('previewImgWrap');
+    prevWrap.style.display = 'block';
+    document.getElementById('previewImg').src = 'data:image/png;base64,' + processData.preview;
+  }
+  
+  // Character pills
+  const pills = document.getElementById('charPills');
+  pills.innerHTML = (processData.detected_chars || []).map(c =>
+    `<span class="char-pill">${c === ' ' ? '␣' : c}</span>`
+  ).join('');
+  
+  // Download buttons
+  const dlGrid = document.getElementById('dlGrid');
+  dlGrid.innerHTML = (fontData.files || []).map(f => {
+    const isTTF = f.filename.endsWith('.ttf');
+    return `<a class="dl-btn ${isTTF ? 'dl-ttf' : 'dl-otf'}" href="${f.url}" download>
+      <div class="dl-ico">${isTTF ? '📦' : '✨'}</div>
+      <div class="dl-info">
+        <div class="dl-name">${f.filename}</div>
+        <div class="dl-desc">${isTTF ? 'TTF — Windows, Mac, Android' : 'OTF — Mac, Adobe, Pro apps'}</div>
+        <div class="dl-size">${(f.size/1024).toFixed(0)} KB</div>
+      </div>
+      <div style="font-size:20px">⬇</div>
+    </a>`;
+  }).join('');
+  
+  // Smooth scroll to results
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function showError(msg) {
+  const box = document.getElementById('errorBox');
+  box.textContent = '❌ ' + msg;
+  box.style.display = 'block';
+}
+
+function hideError() {
+  document.getElementById('errorBox').style.display = 'none';
+}
+
+function resetAll() {
+  uploadedFile = null;
+  sessionId = null;
+  processingResult = null;
+  
+  document.getElementById('uploadZone').classList.remove('has-file');
+  document.getElementById('uzPreview').style.display = 'none';
+  document.getElementById('uzIco').textContent = '📷';
+  document.getElementById('uzTitle').textContent = 'Drop photo here or click to upload';
+  document.getElementById('uzSub').textContent = 'JPG, PNG, HEIC · Max 20MB · Phone photos work great';
+  document.getElementById('fileInput').value = '';
+  document.getElementById('processBtn').disabled = true;
+  document.getElementById('processBtn').textContent = '✍️ Detect Characters & Build Font';
+  document.getElementById('resultsWrap').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  hideError();
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showTemplateTip() {
+  alert('Template coming soon! For now use Sentence Mode — write a sentence that includes the letters you want, take a photo, and type what you wrote.');
+  return false;
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+</script>
+</body>
+</html>
