@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>Font Moodboard Generator — Type a Vibe, Get 3 Font Combos + Colors | Vectrod</title>
+<meta name="description" content="Type any brand vibe — 'minimalist luxury startup', 'dark tech', 'playful kids' — and instantly get 3 curated font combinations + color palette + CSS code.">
+<link rel="canonical" href="https://vectrod.com/moodboard">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030409;--bg2:#07080f;--bg3:#0d0e1a;--sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.06);--br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.13);--tx:#eeeaff;--mt:rgba(238,234,255,.44);--mt2:rgba(238,234,255,.2);--gold:#f0c060;--goldd:#c09040;--ok:#22dd99;--okL:rgba(34,221,153,.1);--purple:#9944ee;--purple2:#bb77ff;--purpleL:rgba(153,68,238,.11)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+.scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.sg{position:absolute;inset:0;background-image:linear-gradient(rgba(153,68,238,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(153,68,238,.03) 1px,transparent 1px);background-size:56px 56px}
+.o1{position:absolute;width:900px;height:900px;top:-400px;right:-200px;border-radius:50%;filter:blur(140px);background:radial-gradient(circle,rgba(153,68,238,.14) 0%,transparent 65%);animation:df 38s ease-in-out infinite alternate}
+.o2{position:absolute;width:600px;height:600px;bottom:-250px;left:-150px;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(34,221,153,.09) 0%,transparent 65%);animation:df 30s ease-in-out infinite alternate}
+@keyframes df{from{transform:translate(0,0)}to{transform:translate(50px,35px)}}
+.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:28px 20px 120px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:52px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#bb77ff,#22dd99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace;white-space:nowrap}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,var(--goldd),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+.hero{text-align:center;margin-bottom:48px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--purple2);text-transform:uppercase;border:1px solid rgba(153,68,238,.22);padding:5px 20px;border-radius:100px;background:var(--purpleL);margin-bottom:18px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(28px,5vw,60px);font-weight:900;line-height:1;margin-bottom:12px}
+.grad{background:linear-gradient(90deg,var(--purple2),var(--gold),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:15px;color:var(--mt);max-width:520px;margin:14px auto 0;line-height:1.8}
+.sbox{display:flex;background:var(--bg2);border:1.5px solid var(--br2);border-radius:18px;overflow:hidden;transition:border-color .3s;max-width:700px;margin:0 auto 18px}
+.sbox:focus-within{border-color:rgba(187,119,255,.35)}
+.sinp{flex:1;background:none;border:none;outline:none;color:var(--tx);font-family:'Outfit',sans-serif;font-size:17px;font-weight:500;padding:16px 22px;min-width:0}
+.sinp::placeholder{color:var(--mt2)}
+.sbtn{background:linear-gradient(90deg,var(--purple),var(--purple2));border:none;color:#fff;-webkit-text-fill-color:#fff;font-family:'DM Mono',monospace;font-size:12px;font-weight:700;padding:0 28px;cursor:pointer;transition:opacity .2s;white-space:nowrap;letter-spacing:.05em}
+.sbtn:hover{opacity:.85}
+.vibes{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:48px}
+.vibe{background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;padding:6px 16px;cursor:pointer;transition:all .2s}
+.vibe:hover{border-color:var(--purple2);color:var(--purple2);background:var(--purpleL)}
+.sh{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sh::after{content:'';flex:1;height:1px;background:var(--br)}
+.result-section{margin-bottom:40px;animation:su .35s cubic-bezier(.16,1,.3,1) both}
+@keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+/* palette */
+.palette-card{background:var(--bg2);border:1.5px solid var(--br2);border-radius:22px;padding:24px 28px;margin-bottom:16px}
+.palette-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.swatch{width:52px;height:52px;border-radius:12px;cursor:pointer;border:1px solid rgba(255,255,255,.1);transition:transform .2s;flex-shrink:0;position:relative}
+.swatch:hover{transform:scale(1.1)}
+.swatch-tip{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;white-space:nowrap;pointer-events:none}
+.palette-desc{font-size:13px;color:var(--mt);line-height:1.7}
+/* combos */
+.combos{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:14px;margin-bottom:20px}
+.combo{background:var(--bg2);border:1.5px solid var(--br);border-radius:22px;overflow:hidden;cursor:pointer;transition:all .25s}
+.combo:hover{border-color:rgba(153,68,238,.4);transform:translateY(-3px)}
+.combo.active{border-color:rgba(187,119,255,.55);box-shadow:0 0 32px rgba(153,68,238,.15)}
+.combo-rank{padding:5px 16px;font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.r1{background:rgba(240,192,96,.1);color:var(--gold);border-bottom:1px solid rgba(240,192,96,.12)}
+.r2{background:rgba(187,119,255,.08);color:var(--purple2);border-bottom:1px solid rgba(153,68,238,.12)}
+.r3{background:rgba(34,221,153,.07);color:var(--ok);border-bottom:1px solid rgba(34,221,153,.1)}
+.combo-preview{padding:26px 22px;min-height:120px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.cprev-h{font-size:26px;font-weight:800;line-height:1;color:var(--tx)}
+.cprev-b{font-size:12px;color:var(--mt);line-height:1.65}
+.combo-info{padding:12px 18px;border-top:1px solid var(--br);display:flex;flex-direction:column;gap:5px}
+.cfrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.crole{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+.cname{font-size:12px;font-weight:700;color:var(--tx)}
+.cfree{font-size:9px;color:var(--ok);font-family:'DM Mono',monospace;padding:2px 7px;border-radius:100px;background:var(--okL);border:1px solid rgba(34,221,153,.2)}
+.cwhy{font-size:11px;color:var(--mt);padding:10px 18px 14px;border-top:1px solid var(--br);line-height:1.65}
+/* css */
+.css-card{background:var(--bg2);border:1.5px solid rgba(153,68,238,.18);border-radius:22px;padding:22px;margin-bottom:14px}
+.css-lbl{font-size:9px;color:var(--purple2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.css-code{font-family:'DM Mono',monospace;font-size:12px;color:var(--ok);line-height:1.9;white-space:pre;overflow-x:auto}
+.arow{display:flex;gap:10px;flex-wrap:wrap}
+.act{flex:1;min-width:130px;border-radius:12px;padding:11px 16px;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .2s;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px}
+.act-copy{background:var(--purpleL);border-color:rgba(187,119,255,.25);color:var(--purple2)}
+.act-copy:hover{background:rgba(187,119,255,.2)}
+.act-copy.ok{background:var(--okL);border-color:rgba(34,221,153,.3);color:var(--ok)}
+.act-dl{background:var(--okL);border-color:rgba(34,221,153,.25);color:var(--ok);text-decoration:none}
+.act-dl:hover{background:rgba(34,221,153,.18)}
+.act-n{background:var(--sf);border-color:var(--br2);color:var(--mt)}
+.act-n:hover{border-color:var(--gold);color:var(--gold)}
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:52px}
+.gc{background:var(--sf2);border:1px solid var(--br);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .22s}
+.gc:hover{border-color:rgba(187,119,255,.3);transform:translateY(-3px)}
+.gc-sw{height:72px;display:flex}
+.gc-col{flex:1}
+.gc-lbl{padding:10px 12px;font-size:12px;font-weight:600;color:var(--tx)}
+.gc-sub{padding:0 12px 10px;font-size:10px;color:var(--mt);font-family:'DM Mono',monospace}
+footer{border-top:1px solid var(--br);padding:32px 0;text-align:center;margin-top:40px}
+.fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.fl a{font-size:11px;color:var(--mt);text-decoration:none}
+.fl a:hover{color:var(--gold)}
+.fc{font-size:11px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="scene"><div class="sg"></div><div class="o1"></div><div class="o2"></div></div>
+<div class="wrap">
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="32" height="32" viewBox="0 0 46 46" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#bb77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs><path d="M23 2L42 23L23 44L4 23Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/><path d="M7 10L23 38L39 10L34 10L23 30L12 10Z" fill="url(#lg)"/></svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Moodboard</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nb" href="/font-quiz">🎯 Font Quiz</a>
+    <a class="nb" href="/pairing">⚡ Pairing</a>
+    <a class="nb" href="/fonts">Free Fonts</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+<div class="hero">
+  <div class="hero-badge">🎨 3 Combos + Palette + CSS · Instant · No Signup</div>
+  <h1>Font<br><span class="grad">Moodboard</span><br>Generator</h1>
+  <p>Type any brand vibe and get <strong>3 different font combinations</strong>, a color palette, and ready-to-use CSS — all free fonts, instantly.</p>
+</div>
+<div class="sbox">
+  <input class="sinp" id="si" type="text" placeholder="minimalist luxury startup, dark tech, playful kids..." autocomplete="off" onkeydown="if(event.key==='Enter')generate()">
+  <button class="sbtn" onclick="generate()">Generate →</button>
+</div>
+<div class="vibes" id="vibeRow"></div>
+<div id="result"></div>
+<div class="sh">Example Moodboards — Click Any</div>
+<div class="gallery" id="gallery"></div>
+<footer>
+  <div class="fl"><a href="/">Home</a><a href="/fonts">Free Fonts</a><a href="/pairing">Pairing</a><a href="/font-twin">Font Twin</a><a href="/font-quiz">Quiz</a><a href="/css-animation">Animations</a></div>
+  <div class="fc">© 2025 Vectrod · Font Moodboard Generator</div>
+</footer>
+</div>
+<script>
+const MOODS=[{key:'minimalist luxury startup',kw:['minimalist','luxury','startup','minimal','premium','elegant','refined','high-end','boutique','exclusive'],palette:['#0a0a0f','#1a1528','#8b6914','#d4a843','#f5efe6'],pdesc:'Deep midnight base with warm gold accents — exclusivity and restraint.',combos:[{rank:'🥇 Best Match',rankCls:'r1',h:'Cormorant Garamond',hGF:'Cormorant+Garamond:ital,wght@0,300..700;1,300..700',b:'DM Sans',bGF:'DM+Sans:ital,opsz,wght@0,9..40,100..1000',ph:'Elevate Your Brand',pb:'Where luxury meets innovation. Crafted for those who refuse to compromise on quality.',why:"Cormorant Garamond's extreme high contrast signals luxury instantly. DM Sans grounds it with modern clarity — the tension between them is exactly what premium startups need.",css:'--font-heading: "Cormorant Garamond", serif;\n--font-body: "DM Sans", sans-serif;\n--color-bg: #0a0a0f;\n--color-surface: #1a1528;\n--color-accent: #d4a843;\n--color-text: #f5efe6;'},{rank:'🥈 Bolder Take',rankCls:'r2',h:'Cinzel',hGF:'Cinzel:wght@400..900',b:'Raleway',bGF:'Raleway:ital,wght@0,100..900;1,100..900',ph:'By Appointment Only',pb:'A curated selection of the finest. Limited availability. Uncompromising standards.',why:"Cinzel's Roman inscription style communicates authority and timelessness. Raleway adds geometric elegance that feels contemporary without losing the luxury positioning.",css:'--font-heading: "Cinzel", serif;\n--font-body: "Raleway", sans-serif;\n--color-bg: #0a0a0f;\n--color-accent: #d4a843;\n--color-text: #f5efe6;'},{rank:'🥉 Modern Twist',rankCls:'r3',h:'Playfair Display',hGF:'Playfair+Display:ital,wght@0,400..900;1,400..900',b:'Work Sans',bGF:'Work+Sans:wght@100..900',ph:'The Art of Excellence',pb:'Every detail considered. Every material chosen with purpose. This is extraordinary.',why:"Playfair Display's dramatic contrast pops on dark backgrounds. Work Sans brings rational clarity — the combination feels like a luxury magazine editorial.",css:'--font-heading: "Playfair Display", serif;\n--font-body: "Work Sans", sans-serif;\n--color-bg: #0a0a0f;\n--color-accent: #d4a843;\n--color-text: #f5efe6;'}]},{key:'dark tech',kw:['dark','tech','technology','developer','code','cyber','crypto','ai','engineering','software','saas','fintech','startup'],palette:['#020410','#0a0f1e','#1a2540','#00d4ff','#7b00ff'],pdesc:'Deep space blues with electric cyan and violet — technical, forward-looking, powerful.',combos:[{rank:'🥇 Best Match',rankCls:'r1',h:'Space Grotesk',hGF:'Space+Grotesk:wght@300..700',b:'DM Mono',bGF:'DM+Mono:wght@400..500',ph:'Built for Tomorrow',pb:'Zero latency. Infinite scale. Your infrastructure just got smarter.',why:"Space Grotesk has just enough quirk to feel engineered without being gimmicky. DM Mono in body text signals technical precision that developers trust.",css:'--font-heading: "Space Grotesk", sans-serif;\n--font-body: "DM Mono", monospace;\n--color-bg: #020410;\n--color-surface: #0a0f1e;\n--color-accent: #00d4ff;\n--color-accent2: #7b00ff;\n--color-text: #e0f0ff;'},{rank:'🥈 Sharper Edge',rankCls:'r2',h:'Syne',hGF:'Syne:wght@400..800',b:'Inter',bGF:'Inter:ital,opsz,wght@0,14..32,100..900',ph:'System Override',pb:'Real-time processing at the edge. Milliseconds matter. Every packet counts.',why:"Syne's unusual geometric construction feels genuinely futuristic. Paired with Inter's legendary screen legibility, you get UI that feels designed inside a simulation.",css:'--font-heading: "Syne", sans-serif;\n--font-body: "Inter", sans-serif;\n--color-bg: #020410;\n--color-accent: #00d4ff;\n--color-text: #e0f0ff;'},{rank:'🥉 Maximum Impact',rankCls:'r3',h:'Bebas Neue',hGF:'Bebas+Neue',b:'Barlow',bGF:'Barlow:wght@300..700',ph:'MAXIMUM THROUGHPUT',pb:'When milliseconds define your advantage, infrastructure is your product.',why:"Bebas Neue's all-caps condensed style looks incredible in dark UIs — bold like a terminal output. Barlow's industrial character keeps body copy clean.",css:'--font-heading: "Bebas Neue", display;\n--font-body: "Barlow", sans-serif;\n--color-bg: #020410;\n--color-accent: #00d4ff;\n--color-text: #e0f0ff;'}]},{key:'playful kids',kw:['playful','kids','children','fun','colorful','friendly','cute','school','education','game','toy','family','cheerful','bright'],palette:['#fff9f0','#ffe8d6','#ff6b6b','#ffd93d','#6bcb77'],pdesc:'Warm cream base with bold primary pops — energetic, safe, and joyful.',combos:[{rank:'🥇 Best Match',rankCls:'r1',h:'Nunito',hGF:'Nunito:wght@400..900',b:'Nunito',bGF:'Nunito:wght@400..700',ph:"Let's Play!",pb:'Every adventure starts here. Discover, create, and have fun every single day!',why:"Nunito was designed with rounded terminals for maximum friendliness. Using it for both heading and body creates visual harmony — the whole page feels warm like a hug.",css:"--font-heading: \"Nunito\", sans-serif;\n--font-body: \"Nunito\", sans-serif;\n--color-bg: #fff9f0;\n--color-surface: #ffe8d6;\n--color-red: #ff6b6b;\n--color-yellow: #ffd93d;\n--color-green: #6bcb77;\n--color-text: #2d2d2d;"},{rank:'🥈 More Personality',rankCls:'r2',h:'Fredoka One',hGF:'Fredoka+One',b:'Quicksand',bGF:'Quicksand:wght@300..700',ph:'Time to Explore!',pb:'Jump, run, imagine. A world full of color is waiting just for you.',why:"Fredoka One's bubbly ultra-bold rounds feel hand-drawn and playful. Quicksand keeps body text readable while staying in the same rounded universe.",css:'--font-heading: "Fredoka One", cursive;\n--font-body: "Quicksand", sans-serif;\n--color-bg: #fff9f0;\n--color-accent: #ff6b6b;\n--color-yellow: #ffd93d;\n--color-text: #2d2d2d;'},{rank:'🥉 Clean & Friendly',rankCls:'r3',h:'Pacifico',hGF:'Pacifico',b:'Cabin',bGF:'Cabin:wght@400..700',ph:'So Much Fun!',pb:'Stories, games, learning and laughter — all in one magical place made for kids.',why:"Pacifico's flowing script feels like a birthday invitation. Cabin brings readability to body text while its humanist warmth keeps the playful energy alive.",css:'--font-heading: "Pacifico", cursive;\n--font-body: "Cabin", sans-serif;\n--color-bg: #fff9f0;\n--color-accent: #ff6b6b;\n--color-text: #2d2d2d;'}]},{key:'minimal zen',kw:['minimal','zen','calm','simple','meditate','wellness','spa','yoga','mindful','peaceful','quiet','serene','breathe'],palette:['#f8f6f2','#ede9e1','#c8bfb0','#6b6560','#2c2926'],pdesc:'Warm paper whites fading to earthy browns — stillness, nature, intentional living.',combos:[{rank:'🥇 Best Match',rankCls:'r1',h:'Cormorant Garamond',hGF:'Cormorant+Garamond:ital,wght@0,300..700;1,300..700',b:'Work Sans',bGF:'Work+Sans:wght@100..900',ph:'Less is More',pb:'Find clarity in silence. A mindful approach to design that invites the eye to rest.',why:"Cormorant Garamond's thin strokes breathe — they don't demand attention, they invite it. Work Sans Light provides body text so weightless it feels like it floats.",css:'--font-heading: "Cormorant Garamond", serif;\n--font-body: "Work Sans", sans-serif;\n--color-bg: #f8f6f2;\n--color-surface: #ede9e1;\n--color-muted: #c8bfb0;\n--color-text: #2c2926;'},{rank:'🥈 Warmer Feel',rankCls:'r2',h:'Lora',hGF:'Lora:ital,wght@0,400..700;1,400..700',b:'Karla',bGF:'Karla:ital,wght@0,200..700;1,200..700',ph:'Simply Be',pb:'Return to what matters. Breathe deeply. The present moment is enough.',why:"Lora's brushed calligraphic origins give it human warmth. Karla's slightly irregular spacing feels hand-set — together they feel like a beautifully printed book.",css:'--font-heading: "Lora", serif;\n--font-body: "Karla", sans-serif;\n--color-bg: #f8f6f2;\n--color-text: #2c2926;'},{rank:'🥉 Modern Edge',rankCls:'r3',h:'Josefin Sans',hGF:'Josefin+Sans:ital,wght@0,100..700;1,100..700',b:'Nunito Sans',bGF:'Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000',ph:'Space & Silence',pb:'Designed for those who live intentionally. Every detail considered.',why:"Josefin Sans Thin is achingly elegant — it barely touches the screen. Nunito Sans Light matches the restraint while remaining perfectly readable.",css:'--font-heading: "Josefin Sans", sans-serif;\n--font-body: "Nunito Sans", sans-serif;\n--color-bg: #f8f6f2;\n--color-text: #2c2926;'}]},{key:'bold startup',kw:['bold','startup','disrupt','modern','hustle','product','launch','growth','scale','innovation','aggressive','venture'],palette:['#0d0d0d','#141414','#ff3d00','#ff9500','#ffffff'],pdesc:'Pure black with fire orange-red — maximum energy, zero compromise.',combos:[{rank:'🥇 Best Match',rankCls:'r1',h:'Syne',hGF:'Syne:wght@400..800',b:'Inter',bGF:'Inter:ital,opsz,wght@0,14..32,100..900',ph:"We're Changing Everything",pb:'Move fast. Ship bold. This is what the next generation of companies looks like.',why:"Syne ExtraBold says 'we don't follow trends, we set them.' Inter keeps your product copy clean and scannable. Perfect for B2C and B2B startups alike.",css:'--font-heading: "Syne", sans-serif;\n--font-body: "Inter", sans-serif;\n--color-bg: #0d0d0d;\n--color-surface: #141414;\n--color-accent: #ff3d00;\n--color-accent2: #ff9500;\n--color-text: #ffffff;'},{rank:'🥈 More Attitude',rankCls:'r2',h:'Space Grotesk',hGF:'Space+Grotesk:wght@300..700',b:'Outfit',bGF:'Outfit:wght@100..900',ph:'Ship It. Now.',pb:"Perfection is the enemy of done. We build in the open and win together.",why:"Space Grotesk's technical edge signals engineering-first culture. Outfit's clean geometric keeps the brand human — perfect balance for modern startups.",css:'--font-heading: "Space Grotesk", sans-serif;\n--font-body: "Outfit", sans-serif;\n--color-bg: #0d0d0d;\n--color-accent: #ff3d00;\n--color-text: #ffffff;'},{rank:'🥉 Maximum Impact',rankCls:'r3',h:'Oswald',hGF:'Oswald:wght@200..700',b:'DM Sans',bGF:'DM+Sans:ital,opsz,wght@0,9..40,100..1000',ph:'NO LIMITS',pb:'10x your growth. We give you the infrastructure. You bring the ambition.',why:"Oswald Bold Condensed was built for maximum visual impact — every hero, every CTA hits harder. DM Sans keeps everything between the punches clean.",css:'--font-heading: "Oswald", sans-serif;\n--font-body: "DM Sans", sans-serif;\n--color-bg: #0d0d0d;\n--color-accent: #ff3d00;\n--color-text: #ffffff;'}]},{key:'wedding luxury',kw:['wedding','bride','romance','love','bridal','floral','ceremony','bloom','occasion','formal','celebration','marriage'],palette:['#fdfcfb','#f5f0ea','#e8d5c4','#c9a882','#7a5c3a'],pdesc:'Ivory to warm caramel — soft, romantic, and timelessly beautiful.',combos:[{rank:'🥇 Best Match',rankCls:'r1',h:'Great Vibes',hGF:'Great+Vibes',b:'Raleway',bGF:'Raleway:ital,wght@0,100..900;1,100..900',ph:'A Beautiful Beginning',pb:'Every detail tells your story. Timeless elegance for your most precious day.',why:"Great Vibes is the definitive wedding script — flowing, romantic, impossible to ignore. Raleway Light brings editorial sophistication without competing.",css:'--font-script: "Great Vibes", cursive;\n--font-body: "Raleway", sans-serif;\n--color-bg: #fdfcfb;\n--color-cream: #f5f0ea;\n--color-blush: #e8d5c4;\n--color-gold: #c9a882;'},{rank:'🥈 More Modern',rankCls:'r2',h:'Cormorant Garamond',hGF:'Cormorant+Garamond:ital,wght@0,300..700;1,300..700',b:'Lato',bGF:'Lato:ital,wght@0,100;0,300;0,400;0,700;1,300;1,400',ph:'Forever Starts Today',pb:"Two hearts. One story. An evening you'll remember for a lifetime.",why:"Cormorant Garamond Italic is breathtakingly romantic — its thin strokes look almost hand-drawn. Lato Light keeps invitations and programs clean.",css:'--font-heading: "Cormorant Garamond", serif;\n--font-body: "Lato", sans-serif;\n--color-bg: #fdfcfb;\n--color-gold: #c9a882;'},{rank:'🥉 Dramatic & Classic',rankCls:'r3',h:'Playfair Display',hGF:'Playfair+Display:ital,wght@0,400..900;1,400..900',b:'EB Garamond',bGF:'EB+Garamond:ital,wght@0,400..800;1,400..800',ph:'Together, Always',pb:'Celebrated in the presence of those we love most. Join us as we begin.',why:"Playfair Display Italic looks stunning on cream. EB Garamond body text nods to centuries of love letters and invitation traditions.",css:'--font-heading: "Playfair Display", serif;\n--font-body: "EB Garamond", serif;\n--color-bg: #fdfcfb;\n--color-gold: #c9a882;'}]},{key:'editorial magazine',kw:['editorial','magazine','publish','journalism','media','newspaper','culture','arts','feature','story','writing','blog'],palette:['#fafaf8','#f0ede6','#1a1a1a','#8b0000','#c4960f'],pdesc:'Clean newsprint whites with deep red and gold — authority, culture, voice.',combos:[{rank:'🥇 Best Match',rankCls:'r1',h:'Playfair Display',hGF:'Playfair+Display:ital,wght@0,400..900;1,400..900',b:'Lato',bGF:'Lato:ital,wght@0,100;0,300;0,400;0,700;1,300;1,400',ph:'The Art of Storytelling',pb:'Great journalism demands great typography. Words that command attention, then hold it.',why:"Playfair Display dominates magazine design for good reason — extreme contrast works at large sizes, italics are beautiful. Lato Light keeps long articles readable.",css:'--font-heading: "Playfair Display", serif;\n--font-body: "Lato", sans-serif;\n--color-bg: #fafaf8;\n--color-text: #1a1a1a;\n--color-accent: #8b0000;\n--color-gold: #c4960f;'},{rank:'🥈 More Contemporary',rankCls:'r2',h:'Archivo Black',hGF:'Archivo+Black',b:'Crimson Pro',bGF:'Crimson+Pro:ital,wght@0,200..900;1,200..900',ph:'BREAKING NOW',pb:'Investigative reporting that holds power to account. News you can trust.',why:"Archivo Black is brutally punchy for headlines — tabloid energy in the best way. Crimson Pro keeps body text in the old-style serif tradition of long-form reading.",css:'--font-heading: "Archivo Black", sans-serif;\n--font-body: "Crimson Pro", serif;\n--color-bg: #fafaf8;\n--color-text: #1a1a1a;\n--color-accent: #8b0000;'},{rank:'🥉 Modern Culture Mag',rankCls:'r3',h:'DM Serif Display',hGF:'DM+Serif+Display:ital@0;1',b:'DM Sans',bGF:'DM+Sans:ital,opsz,wght@0,9..40,100..1000',ph:'Culture in Focus',pb:'Art, music, film, and ideas. We cover what matters most in contemporary culture.',why:"DM Serif Display and DM Sans are made for each other — same family, perfect editorial contrast. Feels current and confident like Monocle or The Atlantic.",css:'--font-heading: "DM Serif Display", serif;\n--font-body: "DM Sans", sans-serif;\n--color-bg: #fafaf8;\n--color-text: #1a1a1a;\n--color-accent: #8b0000;'}]},{key:'fitness sport',kw:['fitness','sport','gym','workout','athletic','training','health','power','strong','hustle','results','champion'],palette:['#0a0a0a','#111111','#ff0040','#ff6600','#ffffff'],pdesc:'Pure black with aggressive red and orange — no mercy, no excuses.',combos:[{rank:'🥇 Best Match',rankCls:'r1',h:'Bebas Neue',hGF:'Bebas+Neue',b:'Barlow',bGF:'Barlow:wght@300..700',ph:'NO LIMITS',pb:'Train harder. Push further. Every rep counts. Built for those who never quit.',why:"Bebas Neue is THE sports font — all caps, condensed, relentless. On gym walls worldwide for good reason. Barlow's industrial character keeps body copy tough.",css:'--font-heading: "Bebas Neue", display;\n--font-body: "Barlow", sans-serif;\n--color-bg: #0a0a0a;\n--color-red: #ff0040;\n--color-orange: #ff6600;\n--color-text: #ffffff;'},{rank:'🥈 More Technical',rankCls:'r2',h:'Oswald',hGF:'Oswald:wght@200..700',b:'Work Sans',bGF:'Work+Sans:wght@100..900',ph:'EARN IT DAILY',pb:'Precision training plans. Real-time performance metrics. Built by athletes.',why:"Oswald Bold feels technical rather than just loud — perfect for sports apps. Work Sans Medium keeps program details and stats sharp.",css:'--font-heading: "Oswald", sans-serif;\n--font-body: "Work Sans", sans-serif;\n--color-bg: #0a0a0a;\n--color-accent: #ff0040;\n--color-text: #ffffff;'},{rank:'🥉 Powerful & Clean',rankCls:'r3',h:'Anton',hGF:'Anton',b:'Inter',bGF:'Inter:ital,opsz,wght@0,14..32,100..900',ph:'PUSH YOUR LIMITS',pb:'Your next PR is waiting. Track every set, every sprint, every milestone.',why:"Anton is the free Impact — massive presence at hero sizes. Inter handles all the UI details, stats and tracking with perfect clarity.",css:'--font-heading: "Anton", display;\n--font-body: "Inter", sans-serif;\n--color-bg: #0a0a0a;\n--color-accent: #ff0040;\n--color-text: #ffffff;'}]}];
+
+function findMood(q){
+  q=q.toLowerCase().replace(/[^a-z0-9 ]/g,' ');
+  const words=q.split(/\s+/).filter(Boolean);
+  let best=null,bestScore=0;
+  MOODS.forEach(m=>{
+    let score=0;
+    words.forEach(w=>{
+      m.kw.forEach(k=>{
+        if(k===w) score+=3;
+        else if(k.startsWith(w)||w.startsWith(k)) score+=2;
+        else if(k.includes(w)||w.includes(k)) score+=1;
+      });
+    });
+    if(score>bestScore){bestScore=score;best=m;}
+  });
+  return best||MOODS[Math.floor(Math.random()*MOODS.length)];
+}
+
+let loaded=new Set();
+function loadGF(gf,cb){
+  if(loaded.has(gf)){if(cb)setTimeout(cb,30);return;}
+  const l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family='+gf+'&display=swap';
+  l.onload=()=>{loaded.add(gf);if(cb)cb();};
+  l.onerror=()=>{if(cb)cb();};
+  document.head.appendChild(l);
+}
+
+function generate(){
+  const q=document.getElementById('si').value.trim()||'minimalist luxury startup';
+  showMoodboard(findMood(q));
+}
+
+function showMoodboard(m){
+  m.combos.forEach(c=>{loadGF(c.hGF);loadGF(c.bGF);});
+
+  const swatches=m.palette.map(c=>`<div class="swatch" style="background:${c}" onclick="copySwatch('${c}',this)"><span class="swatch-tip">${c}</span></div>`).join('');
+
+  const cards=m.combos.map((c,i)=>`
+    <div class="combo ${i===0?'active':''}" id="combo${i}" onclick="selectCombo(${i})">
+      <div class="combo-rank ${c.rankCls}">${c.rank}</div>
+      <div class="combo-preview">
+        <div class="cprev-h" id="ch${i}">${c.ph}</div>
+        <div class="cprev-b" id="cb${i}">${c.pb}</div>
+      </div>
+      <div class="combo-info">
+        <div class="cfrow"><span class="crole">Heading</span><span class="cname" id="chn${i}">${c.h}</span><span class="cfree">Free ✓</span></div>
+        <div class="cfrow"><span class="crole">Body</span><span class="cname" id="cbn${i}">${c.b}</span><span class="cfree">Free ✓</span></div>
+      </div>
+      <div class="cwhy">${c.why}</div>
+    </div>`).join('');
+
+  const fc=m.combos[0];
+  const imp=`@import url('https://fonts.googleapis.com/css2?family=${fc.hGF}&display=swap');\n@import url('https://fonts.googleapis.com/css2?family=${fc.bGF}&display=swap');`;
+  const css=`${imp}\n\n:root {\n  ${fc.css.split('\n').join('\n  ')}\n}`;
+
+  document.getElementById('result').innerHTML=`
+    <div class="result-section">
+      <div class="sh">Color Palette — Click to Copy Hex</div>
+      <div class="palette-card"><div class="palette-row">${swatches}</div><div class="palette-desc">${m.pdesc}</div></div>
+      <div class="sh">3 Font Combinations — Click to Select & Get CSS</div>
+      <div class="combos">${cards}</div>
+      <div class="sh">CSS Code — <span id="cssLbl">${fc.h} + ${fc.b}</span></div>
+      <div class="css-card"><div class="css-lbl">:root variables — paste into your project</div><div class="css-code" id="cssCode">${css}</div></div>
+      <div class="arow">
+        <button class="act act-copy" id="copyBtn" onclick="copyCSS()">⎘ Copy CSS</button>
+        <a class="act act-dl" id="dlBtn" href="https://fonts.google.com/specimen/${encodeURIComponent(fc.h)}" target="_blank">↓ Download ${fc.h}</a>
+        <a class="act act-n" href="/fonts">Browse 1,200+ Free Fonts</a>
+      </div>
+    </div>`;
+
+  window._mood=m;
+
+  m.combos.forEach((c,i)=>{
+    loadGF(c.hGF,()=>{
+      const h=document.getElementById('ch'+i);const hn=document.getElementById('chn'+i);
+      if(h)h.style.fontFamily=`'${c.h}',serif`;if(hn)hn.style.fontFamily=`'${c.h}',serif`;
+    });
+    loadGF(c.bGF,()=>{
+      const b=document.getElementById('cb'+i);const bn=document.getElementById('cbn'+i);
+      if(b)b.style.fontFamily=`'${c.b}',sans-serif`;if(bn)bn.style.fontFamily=`'${c.b}',sans-serif`;
+    });
+  });
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function selectCombo(i){
+  const m=window._mood;if(!m)return;
+  document.querySelectorAll('.combo').forEach((el,j)=>el.classList.toggle('active',j===i));
+  const c=m.combos[i];
+  const imp=`@import url('https://fonts.googleapis.com/css2?family=${c.hGF}&display=swap');\n@import url('https://fonts.googleapis.com/css2?family=${c.bGF}&display=swap');`;
+  const css=`${imp}\n\n:root {\n  ${c.css.split('\n').join('\n  ')}\n}`;
+  const el=document.getElementById('cssCode');if(el)el.textContent=css;
+  const lbl=document.getElementById('cssLbl');if(lbl)lbl.textContent=`${c.h} + ${c.b}`;
+  const dl=document.getElementById('dlBtn');if(dl){dl.textContent=`↓ Download ${c.h}`;dl.href=`https://fonts.google.com/specimen/${encodeURIComponent(c.h)}`;}
+}
+
+function copyCSS(){
+  const code=document.getElementById('cssCode')?.textContent||'';
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn=document.getElementById('copyBtn');if(!btn)return;
+    btn.textContent='✓ Copied!';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='⎘ Copy CSS';btn.classList.remove('ok');},2000);
+  });
+}
+
+function copySwatch(hex,el){
+  navigator.clipboard.writeText(hex).then(()=>{
+    el.style.outline='3px solid var(--ok)';
+    setTimeout(()=>el.style.outline='',1200);
+  });
+}
+
+const vibes=['minimalist luxury startup','dark tech','playful kids','minimal zen','bold startup','wedding luxury','editorial magazine','fitness sport'];
+const vr=document.getElementById('vibeRow');
+vibes.forEach(v=>{
+  const b=document.createElement('button');b.className='vibe';b.textContent=v;
+  b.onclick=()=>{document.getElementById('si').value=v;generate();};
+  vr.appendChild(b);
+});
+
+const gal=document.getElementById('gallery');
+MOODS.forEach(m=>{
+  const div=document.createElement('div');div.className='gc';
+  div.innerHTML=`<div class="gc-sw">${m.palette.map(c=>`<div class="gc-col" style="background:${c}"></div>`).join('')}</div><div class="gc-lbl">${m.key.split(' ').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</div><div class="gc-sub">${m.combos[0].h} · ${m.combos[0].b}</div>`;
+  div.onclick=()=>{document.getElementById('si').value=m.key;showMoodboard(m);window.scrollTo({top:0,behavior:'smooth'});};
+  gal.appendChild(div);
+});
+</script>
+</body>
+</html>

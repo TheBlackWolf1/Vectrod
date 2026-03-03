@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<title>What Font Should I Use? Quiz — 3 Free Font Recommendations | Vectrod</title>
+<meta name="description" content="Answer 5 questions about your brand and get 3 perfect free font recommendations with CSS code and a detailed explanation of why each font fits your project.">
+<link rel="canonical" href="https://vectrod.com/font-quiz">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#02040e;--bg2:#060814;--bg3:#0a0c1c;--sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.06);--br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.13);--tx:#ecebff;--mt:rgba(236,235,255,.42);--mt2:rgba(236,235,255,.2);--gold:#f0c060;--goldd:#c09040;--ok:#22dd99;--okL:rgba(34,221,153,.1);--blue:#4488ff;--blueL:rgba(68,136,255,.1);--purple2:#bb77ff;--purpleL:rgba(153,68,238,.11)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+.scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.sg{position:absolute;inset:0;background-image:linear-gradient(rgba(68,136,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(68,136,255,.03) 1px,transparent 1px);background-size:54px 54px}
+.o1{position:absolute;width:800px;height:800px;top:-350px;left:-200px;border-radius:50%;filter:blur(140px);background:radial-gradient(circle,rgba(68,136,255,.12) 0%,transparent 65%);animation:df 36s ease-in-out infinite alternate}
+.o2{position:absolute;width:600px;height:600px;bottom:-250px;right:-150px;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(240,192,96,.09) 0%,transparent 65%);animation:df 28s ease-in-out infinite alternate}
+@keyframes df{from{transform:translate(0,0)}to{transform:translate(50px,35px)}}
+.wrap{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:28px 20px 120px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:52px;flex-wrap:wrap;gap:12px}
+.logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#4488ff,#22dd99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace;white-space:nowrap}
+.nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb.cta{background:linear-gradient(90deg,var(--goldd),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
+.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+/* progress */
+.prog-wrap{margin-bottom:36px}
+.prog-top{display:flex;justify-content:space-between;font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;margin-bottom:8px}
+.prog-bar{height:4px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
+.prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--blue),var(--ok));transition:width .5s cubic-bezier(.16,1,.3,1)}
+/* quiz card */
+.qcard{background:var(--bg2);border:1.5px solid var(--br2);border-radius:28px;padding:36px;animation:su .35s cubic-bezier(.16,1,.3,1) both}
+@keyframes su{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.qnum{font-size:10px;color:var(--blue);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.qtext{font-family:'Cinzel',serif;font-size:clamp(18px,3vw,26px);font-weight:700;line-height:1.25;margin-bottom:26px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{background:var(--bg3);border:1.5px solid var(--br);border-radius:15px;padding:14px 18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:13px}
+.opt:hover{border-color:rgba(68,136,255,.3);background:var(--blueL);transform:translateX(4px)}
+.opt.sel{border-color:rgba(68,136,255,.5);background:rgba(68,136,255,.12)}
+.opt-ico{font-size:20px;flex-shrink:0;width:28px;text-align:center}
+.opt-text{font-size:14px;font-weight:600;color:var(--tx)}
+.opt-sub{font-size:11px;color:var(--mt);margin-top:2px}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:26px}
+.nbtn{background:none;border:1.5px solid var(--br);border-radius:100px;color:var(--mt);font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:9px 22px;cursor:pointer;transition:all .2s}
+.nbtn:hover{border-color:var(--gold);color:var(--gold)}
+.nbtn.primary{background:linear-gradient(90deg,var(--blue),#66aaff);border-color:transparent;color:#fff;-webkit-text-fill-color:#fff}
+.nbtn.primary:hover{opacity:.85}
+.nbtn:disabled{opacity:.3;pointer-events:none}
+/* RESULT - 3 cards */
+.result-hero{text-align:center;margin-bottom:28px;animation:su .3s cubic-bezier(.16,1,.3,1) both}
+.result-hero h2{font-family:'Cinzel',serif;font-size:clamp(22px,4vw,36px);font-weight:900;margin-bottom:8px}
+.result-hero p{font-size:14px;color:var(--mt);line-height:1.75}
+.rcards{display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+.rcard{background:var(--bg2);border:1.5px solid var(--br2);border-radius:24px;overflow:hidden;animation:su .35s cubic-bezier(.16,1,.3,1) both}
+.rcard:nth-child(2){animation-delay:.07s}
+.rcard:nth-child(3){animation-delay:.14s}
+.rtop{padding:5px 20px;font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.rank1 .rtop{background:rgba(240,192,96,.1);color:var(--gold);border-bottom:1px solid rgba(240,192,96,.12)}
+.rank2 .rtop{background:rgba(187,119,255,.08);color:var(--purple2);border-bottom:1px solid rgba(153,68,238,.1)}
+.rank3 .rtop{background:rgba(34,221,153,.07);color:var(--ok);border-bottom:1px solid rgba(34,221,153,.09)}
+.rprev{padding:32px 28px;background:var(--bg3);border-bottom:1px solid var(--br);display:flex;flex-direction:column;gap:10px}
+.rprev-h{font-size:38px;font-weight:800;line-height:1;color:var(--tx)}
+.rprev-b{font-size:14px;color:var(--mt);line-height:1.7}
+.rinfo{padding:18px 24px;border-bottom:1px solid var(--br);display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+@media(max-width:520px){.rinfo{grid-template-columns:1fr 1fr}}
+.ri{background:var(--bg3);border:1px solid var(--br);border-radius:11px;padding:10px 12px}
+.ri-l{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.ri-v{font-size:12px;font-weight:700;color:var(--tx)}
+.rwhy{padding:14px 24px 18px;font-size:13px;color:var(--mt);line-height:1.8;border-bottom:1px solid var(--br)}
+.ract{padding:14px 20px;display:flex;gap:8px;flex-wrap:wrap}
+.ra{flex:1;min-width:110px;border-radius:10px;padding:9px 14px;font-family:'DM Mono',monospace;font-size:10px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .2s;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px}
+.ra-dl{background:var(--okL);border-color:rgba(34,221,153,.25);color:var(--ok)}
+.ra-dl:hover{background:rgba(34,221,153,.18)}
+.ra-css{background:var(--blueL);border-color:rgba(68,136,255,.25);color:var(--blue)}
+.ra-css:hover{background:rgba(68,136,255,.18)}
+.ra-css.ok{background:var(--okL);border-color:rgba(34,221,153,.3);color:var(--ok)}
+/* retry */
+.retry-row{text-align:center;margin-bottom:52px;animation:su .4s cubic-bezier(.16,1,.3,1) .2s both}
+.retry-btn{background:var(--sf);border:1.5px solid var(--br2);border-radius:100px;color:var(--mt);font-family:'DM Mono',monospace;font-size:12px;font-weight:700;padding:11px 28px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.retry-btn:hover{border-color:var(--gold);color:var(--gold)}
+footer{border-top:1px solid var(--br);padding:32px 0;text-align:center;margin-top:40px}
+.fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.fl a{font-size:11px;color:var(--mt);text-decoration:none}
+.fl a:hover{color:var(--gold)}
+.fc{font-size:11px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="scene"><div class="sg"></div><div class="o1"></div><div class="o2"></div></div>
+<div class="wrap">
+<div class="topbar">
+  <a class="logo-a" href="/">
+    <svg width="32" height="32" viewBox="0 0 46 46" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#4488ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs><path d="M23 2L42 23L23 44L4 23Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/><path d="M7 10L23 38L39 10L34 10L23 30L12 10Z" fill="url(#lg)"/></svg>
+    <div><div class="logo-n">VECTROD</div><div class="logo-s">Font Quiz</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nb" href="/moodboard">🎨 Moodboard</a>
+    <a class="nb" href="/pairing">⚡ Pairing</a>
+    <a class="nb cta" href="/">Make Font →</a>
+  </div>
+</div>
+<div style="text-align:center;margin-bottom:36px">
+  <div style="display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--blue);text-transform:uppercase;border:1px solid rgba(68,136,255,.2);padding:5px 20px;border-radius:100px;background:var(--blueL);margin-bottom:18px;font-family:'DM Mono',monospace">🎯 5 Questions · 3 Font Picks · Free · Instant</div>
+  <h1 style="font-family:'Cinzel',serif;font-size:clamp(26px,5vw,50px);font-weight:900;line-height:1;margin-bottom:12px">What Font<br>Should You Use?</h1>
+  <p style="font-size:15px;color:var(--mt);max-width:440px;margin:14px auto 0;line-height:1.8">Answer 5 questions and get <strong>3 ranked font recommendations</strong> — each with a full explanation of why it fits your project.</p>
+</div>
+<div class="prog-wrap" id="progWrap">
+  <div class="prog-top"><span id="progLabel">Question 1 of 5</span><span id="progPct">20%</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:20%"></div></div>
+</div>
+<div id="quizArea"></div>
+<footer>
+  <div class="fl"><a href="/">Home</a><a href="/fonts">Free Fonts</a><a href="/moodboard">Moodboard</a><a href="/pairing">Pairing</a><a href="/font-twin">Font Twin</a></div>
+  <div class="fc">© 2025 Vectrod · Font Quiz</div>
+</footer>
+</div>
+
+<script>
+const Qs=[
+  {q:'What are you designing?',opts:[
+    {ico:'🌐',t:'Website or App',s:'UI, landing page, SaaS',tag:'web'},
+    {ico:'🏷',t:'Logo or Brand',s:'Identity, packaging, print',tag:'brand'},
+    {ico:'📄',t:'Document or Print',s:'Report, brochure, book',tag:'print'},
+    {ico:'📱',t:'Social Media Post',s:'Instagram, ads, banners',tag:'social'},
+  ]},
+  {q:'What feeling should your brand give?',opts:[
+    {ico:'💼',t:'Professional & Trustworthy',s:'Corporate, serious, reliable',tag:'pro'},
+    {ico:'✨',t:'Elegant & Luxury',s:'Premium, refined, exclusive',tag:'luxury'},
+    {ico:'🚀',t:'Modern & Bold',s:'Startup, energetic, disruptive',tag:'bold'},
+    {ico:'😊',t:'Friendly & Approachable',s:'Warm, casual, playful',tag:'friendly'},
+  ]},
+  {q:'Who is your audience?',opts:[
+    {ico:'👔',t:'Business Professionals',s:'B2B, enterprise, decision-makers',tag:'biz'},
+    {ico:'🎨',t:'Creative People',s:'Designers, artists, makers',tag:'creative'},
+    {ico:'🛍',t:'General Consumers',s:'B2C, wide demographic',tag:'consumer'},
+    {ico:'🎓',t:'Students or Young Adults',s:'Education, Gen Z, families',tag:'young'},
+  ]},
+  {q:'What visual style suits you?',opts:[
+    {ico:'◻',t:'Minimal & Clean',s:'Lots of whitespace, restrained',tag:'minimal'},
+    {ico:'◆',t:'Geometric & Precise',s:'Sharp angles, structured grids',tag:'geo'},
+    {ico:'〰',t:'Organic & Warm',s:'Humanist curves, hand-crafted',tag:'organic'},
+    {ico:'📰',t:'Editorial & Classic',s:'Serif, timeless, authoritative',tag:'editorial'},
+  ]},
+  {q:'How much text will be shown?',opts:[
+    {ico:'🔤',t:'Just Headlines',s:'Short, big, impactful only',tag:'display'},
+    {ico:'📝',t:'Short Paragraphs',s:'Cards, descriptions, captions',tag:'short'},
+    {ico:'📖',t:'Long-Form Reading',s:'Articles, books, documentation',tag:'longform'},
+    {ico:'🔢',t:'UI & Data',s:'Dashboards, tables, small text',tag:'data'},
+  ]},
+];
+
+// Each result has 3 ranked fonts with why-explanations
+const RESULTS=[
+  {
+    tags:['web','pro','biz','geo','data'],
+    fonts:[
+      {name:'Inter',gf:'Inter:ital,opsz,wght@0,14..32,100..900',rank:'🥇 Perfect Match',rankCls:'rank1',ph:'Your Product Headline',pb:'This is how Inter looks in body text. Designed for screens — neutral, professional, and readable.',why:"Inter was designed specifically for screen interfaces by Rasmus Andersson. It's the world's most-used UI font — in Figma, Notion, GitHub, Linear. Its subtle optical adjustments make it nearly invisible, letting your content shine.",free:'SIL OFL · Variable font · All weights'},
+      {name:'DM Sans',gf:'DM+Sans:ital,opsz,wght@0,9..40,100..1000',rank:'🥈 Great Alternative',rankCls:'rank2',ph:'Build Better Products',pb:'DM Sans optimized for data-heavy interfaces. Clear at any size, from 10px to 100px.',why:"DM Sans shares Inter's screen-first philosophy but has slightly warmer proportions. Excellent for dashboards and data-heavy interfaces where you need both clarity at 10px and elegance at display sizes.",free:'SIL OFL · Variable font · Optical sizes'},
+      {name:'Work Sans',gf:'Work+Sans:wght@100..900',rank:'🥉 Also Works Well',rankCls:'rank3',ph:'Professional Typography',pb:'Work Sans brings systematic clarity to any interface. Clean, rational, trustworthy.',why:"Work Sans takes its inspiration from Works by Stephenson Blake, Leeds, and shares the same rationalist Swiss grotesque approach. It performs well in dense UI environments and is a great Univers alternative.",free:'SIL OFL · Variable font'},
+    ]
+  },
+  {
+    tags:['brand','luxury','creative','editorial','display'],
+    fonts:[
+      {name:'Cormorant Garamond',gf:'Cormorant+Garamond:ital,wght@0,300..700;1,300..700',rank:'🥇 Perfect Match',rankCls:'rank1',ph:'Exceptional by Design',pb:'Cormorant Garamond brings centuries of typographic refinement to your brand.',why:"Cormorant Garamond's extreme high-contrast thin strokes evoke luxury print — Vogue, Hermès, Bottega Veneta. The italics are breathtaking. No free font better communicates 'exclusive' or 'premium' for logos and editorial headlines.",free:'SIL OFL · Variable font · Italics included'},
+      {name:'Cinzel',gf:'Cinzel:wght@400..900',rank:'🥈 Great Alternative',rankCls:'rank2',ph:'Authority & Elegance',pb:'Cinzel\'s Roman inscription heritage signals prestige, authority, and permanence.',why:"Cinzel is modeled on Roman stone inscriptions — the letterforms used by empires and institutions for 2,000 years. Perfect for law firms, luxury brands, premium hospitality, and any brand that wants to communicate lasting authority.",free:'SIL OFL · Variable font'},
+      {name:'Playfair Display',gf:'Playfair+Display:ital,wght@0,400..900;1,400..900',rank:'🥉 Also Works Well',rankCls:'rank3',ph:'The Finest Details',pb:'Playfair Display headlines stand out at large sizes — perfect for luxury editorial.',why:"Playfair Display was designed by Claus Eggers Sørensen specifically for large editorial headlines where its high contrast and refined serifs can shine. The free Didot — used by Zara, luxury magazines, and high-end brands worldwide.",free:'SIL OFL · Variable font · Beautiful italics'},
+    ]
+  },
+  {
+    tags:['brand','bold','consumer','geo','display'],
+    fonts:[
+      {name:'Montserrat',gf:'Montserrat:wght@100..900',rank:'🥇 Perfect Match',rankCls:'rank1',ph:'Your Brand Here',pb:'Montserrat delivers bold confidence for any brand that wants to be noticed.',why:"Julieta Ulanovsky designed Montserrat inspired by Buenos Aires signage. It's the free Gotham — the font used by Obama's campaign, Tesla, and Warner Bros. Its geometric boldness works perfectly for logos and brand identities.",free:'SIL OFL · Variable font · 18 weights'},
+      {name:'Raleway',gf:'Raleway:ital,wght@0,100..900;1,100..900',rank:'🥈 Great Alternative',rankCls:'rank2',ph:'Distinctly Different',pb:"Raleway's elegant geometry and distinctive W make it instantly recognizable in logos.",why:"Raleway has a unique character that makes logos memorable — particularly its distinctive W and M. Used by countless design agencies and creative studios. Its thin weights are exceptionally elegant, bold weights pack real punch.",free:'SIL OFL · Variable font'},
+      {name:'Josefin Sans',gf:'Josefin+Sans:ital,wght@0,100..700;1,100..700',rank:'🥉 Also Works Well',rankCls:'rank3',ph:'Geometric Precision',pb:'Josefin Sans captures the Bauhaus geometric spirit — timeless and architectural.',why:"Josefin Sans is one of the best free Futura alternatives, capturing its Bauhaus geometric spirit. Thin weights feel ultra-modern and luxury; bold weights feel strong and structural. Highly versatile for brand identities.",free:'SIL OFL · Variable font'},
+    ]
+  },
+  {
+    tags:['web','friendly','consumer','organic','short'],
+    fonts:[
+      {name:'Poppins',gf:'Poppins:wght@300..800',rank:'🥇 Perfect Match',rankCls:'rank1',ph:'Welcome to Something Great',pb:'Poppins feels friendly, modern, and approachable — exactly right for consumer brands.',why:"Poppins is the perfect all-rounder — geometric, clean, and incredibly versatile. Its slightly circular letter forms feel warm and modern without being trendy. The most-used font on Canva, Squarespace, and consumer product sites globally.",free:'SIL OFL · 18 styles'},
+      {name:'Nunito',gf:'Nunito:wght@200..1000',rank:'🥈 Great Alternative',rankCls:'rank2',ph:'Friendly & Welcoming',pb:'Nunito\'s rounded terminals create instant warmth — people trust it immediately.',why:"Nunito was designed with deliberately rounded terminals to maximize friendliness and warmth. It's the best free alternative to Circular (Spotify, Airbnb) and Gotham Rounded. Any consumer brand targeting a warm, approachable feel.",free:'SIL OFL · Variable font'},
+      {name:'Cabin',gf:'Cabin:wght@400..700',rank:'🥉 Also Works Well',rankCls:'rank3',ph:'Humanist & Approachable',pb:'Cabin brings a human warmth to any interface while maintaining professional clarity.',why:"Cabin is directly inspired by Gill Sans, bringing that humanist warm personality in a screen-optimized package. Better web rendering than the original, free, and with enough character to be memorable without being distracting.",free:'SIL OFL · Variable font'},
+    ]
+  },
+  {
+    tags:['print','editorial','biz','editorial','longform'],
+    fonts:[
+      {name:'Lora',gf:'Lora:ital,wght@0,400..700;1,400..700',rank:'🥇 Perfect Match',rankCls:'rank1',ph:'Words That Matter',pb:'Lora brings warmth and readability to long-form content. Perfect for articles and books.',why:"Lora was designed by Olga Karpushina with brushed curves that give it a calligraphic warmth rarely found in digital serifs. It performs beautifully on screens at reading sizes and works elegantly in print. The go-to for blogs, publications, and books.",free:'SIL OFL · Variable font'},
+      {name:'Libre Baskerville',gf:'Libre+Baskerville:ital,wght@0,400..700;1,400',rank:'🥈 Great Alternative',rankCls:'rank2',ph:'The Written Word',pb:'Libre Baskerville carries the authority of centuries of print in a free, web-ready package.',why:"Impallari Type's free version of Baskerville was specifically optimized for screen readability at text sizes. It carries all the authority of the original 1757 design — used by newspapers, law firms, and academic publishers for a reason.",free:'SIL OFL'},
+      {name:'Merriweather',gf:'Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400',rank:'🥉 Also Works Well',rankCls:'rank3',ph:'Designed to Be Read',pb:'Merriweather was engineered for screen readability — heavy serifs guide the eye through long text.',why:"Merriweather was explicitly designed by Sorkin Type to be readable at small sizes on screens. Its generous x-height, strong serifs, and open apertures make it one of the best-performing fonts for long-form reading in any device.",free:'SIL OFL'},
+    ]
+  },
+  {
+    tags:['social','bold','consumer','geo','display'],
+    fonts:[
+      {name:'Bebas Neue',gf:'Bebas+Neue',rank:'🥇 Perfect Match',rankCls:'rank1',ph:'MAKE YOUR MARK',pb:'Bebas Neue commands attention — all caps, condensed, impossible to ignore.',why:"Bebas Neue was engineered for maximum visual impact. All-caps condensed sans that works beautifully on posters, banners, and social media graphics where you need to stop the scroll immediately. One of the most downloaded display fonts in history.",free:'SIL OFL · All-caps display'},
+      {name:'Anton',gf:'Anton',rank:'🥈 Great Alternative',rankCls:'rank2',ph:'STOP THE SCROLL',pb:'Anton delivers Impact-level visual power with modern proportions and better rendering.',why:"Anton is the best free Impact alternative — more refined proportions, better hinting, and a slightly softer edge. Incredibly effective on social media graphics, YouTube thumbnails, sports content, and anywhere you need explosive visual presence.",free:'SIL OFL · Display font'},
+      {name:'Oswald',gf:'Oswald:wght@200..700',rank:'🥉 Also Works Well',rankCls:'rank3',ph:'HEADLINE AUTHORITY',pb:'Oswald brings condensed impact with variable weight control for versatile use.',why:"Oswald condenses the classic trade gothic newspaper headline style into a free variable font. Unlike Anton and Bebas Neue it offers multiple weights, letting you use 200 for elegant subheads and 700 for punchy main headlines in the same project.",free:'SIL OFL · Variable font · 6 weights'},
+    ]
+  },
+  {
+    tags:['web','pro','creative','minimal','short'],
+    fonts:[
+      {name:'Plus Jakarta Sans',gf:'Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800',rank:'🥇 Perfect Match',rankCls:'rank1',ph:'Where Ideas Become Reality',pb:'Plus Jakarta Sans brings contemporary technical clarity to modern creative work.',why:"Plus Jakarta Sans by Tokotype feels fresh and contemporary — it has Inter's clarity but with slightly more personality and distinctive features that make it memorable. Excellent for modern SaaS, creative agencies, and design-forward products.",free:'SIL OFL · Variable font'},
+      {name:'Space Grotesk',gf:'Space+Grotesk:wght@300..700',rank:'🥈 Great Alternative',rankCls:'rank2',ph:'Built Different',pb:'Space Grotesk adds just enough personality to stand out without trying too hard.',why:"Space Grotesk has deliberate quirks — a slightly unusual lowercase g, distinctive terminals — that make it memorable without being weird. Perfect for tech-forward creative brands that want to signal 'we're different' in their typography.",free:'SIL OFL · Variable font'},
+      {name:'Outfit',gf:'Outfit:wght@100..900',rank:'🥉 Also Works Well',rankCls:'rank3',ph:'Fresh Perspective',pb:'Outfit brings clean geometric clarity with enough character to be distinctive.',why:"Outfit is a modern geometric sans with excellent variable font implementation. It shares Graphik's clean tech-forward personality and GT Walsheim's geometric precision, but completely free. Extremely popular for startups and SaaS products.",free:'SIL OFL · Variable font'},
+    ]
+  },
+];
+
+let cur=0,answers=[],sel=null;
+
+function scoreResult(r){
+  let s=0;
+  answers.forEach(a=>{if(r.tags.includes(a))s++;});
+  return s;
+}
+
+function renderQ(){
+  const q=Qs[cur];
+  const pct=Math.round(((cur+1)/Qs.length)*100);
+  document.getElementById('progLabel').textContent=`Question ${cur+1} of ${Qs.length}`;
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('quizArea').innerHTML=`
+    <div class="qcard">
+      <div class="qnum">Question ${cur+1} / ${Qs.length}</div>
+      <div class="qtext">${q.q}</div>
+      <div class="opts" id="opts">
+        ${q.opts.map((o,i)=>`
+          <div class="opt" id="opt${i}" onclick="selectOpt(${i},'${o.tag}')">
+            <span class="opt-ico">${o.ico}</span>
+            <div><div class="opt-text">${o.t}</div><div class="opt-sub">${o.s}</div></div>
+          </div>`).join('')}
+      </div>
+      <div class="nav-row">
+        <button class="nbtn" onclick="back()" ${cur===0?'disabled':''}>← Back</button>
+        <button class="nbtn primary" id="nextBtn" onclick="next()" disabled>${cur===Qs.length-1?'See My Fonts →':'Next →'}</button>
+      </div>
+    </div>`;
+  sel=null;
+}
+
+function selectOpt(i,tag){
+  document.querySelectorAll('.opt').forEach(el=>el.classList.remove('sel'));
+  document.getElementById('opt'+i).classList.add('sel');
+  sel=tag;
+  document.getElementById('nextBtn').disabled=false;
+}
+
+function next(){
+  if(!sel)return;
+  answers[cur]=sel;
+  if(cur<Qs.length-1){cur++;renderQ();}
+  else showResult();
+}
+
+function back(){
+  if(cur>0){cur--;renderQ();}
+}
+
+function showResult(){
+  // get top 3 scoring results
+  const scored=RESULTS.map(r=>({r,s:scoreResult(r)})).sort((a,b)=>b.s-a.s);
+  // pick top 3 unique results
+  const top3=[];
+  const usedFonts=new Set();
+  scored.forEach(({r})=>{
+    if(top3.length>=3)return;
+    const mainFont=r.fonts[0].name;
+    if(!usedFonts.has(mainFont)){usedFonts.add(mainFont);top3.push(r);}
+  });
+  while(top3.length<3)top3.push(RESULTS[top3.length]);
+
+  document.getElementById('progWrap').style.display='none';
+
+  // load all fonts
+  top3.forEach(r=>r.fonts.forEach(f=>loadGF(f.gf)));
+
+  const cards=top3.map((r,ri)=>{
+    const fonts=r.fonts; // each result has 3 fonts; show the #1 pick from each result
+    const f=fonts[0];
+    return `
+      <div class="rcard ${f.rankCls}">
+        <div class="rtop">${['🥇 Best Overall Pick','🥈 Strong Alternative','🥉 Also Consider'][ri]}</div>
+        <div class="rprev">
+          <div class="rprev-h" id="rh${ri}" style="font-family:sans-serif">${f.ph}</div>
+          <div class="rprev-b" id="rb${ri}">${f.pb}</div>
+        </div>
+        <div class="rinfo">
+          <div class="ri"><div class="ri-l">Font</div><div class="ri-v" id="rn${ri}">${f.name}</div></div>
+          <div class="ri"><div class="ri-l">License</div><div class="ri-v" style="color:var(--ok)">✅ Free</div></div>
+          <div class="ri"><div class="ri-l">Source</div><div class="ri-v">Google Fonts</div></div>
+        </div>
+        <div class="rwhy">${f.why}</div>
+        <div class="ract">
+          <a class="ra ra-dl" href="https://fonts.google.com/specimen/${encodeURIComponent(f.name)}" target="_blank">↓ Download</a>
+          <button class="ra ra-css" id="cssBtn${ri}" data-ri="${ri}" data-font="${f.name}" data-gf="${f.gf}" onclick="copyCSS(this)">⎘ Copy CSS</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('quizArea').innerHTML=`
+    <div class="result-hero">
+      <h2>Your 3 Font Picks</h2>
+      <p>Based on your answers — all free, all on Google Fonts. Each scored differently based on your specific combination of project type, brand feel, audience, and style.</p>
+    </div>
+    <div class="rcards">${cards}</div>
+    <div class="retry-row">
+      <button class="retry-btn" onclick="restart()">↺ Retake Quiz</button>
+    </div>`;
+
+  top3.forEach((r,ri)=>{
+    const f=r.fonts[0];
+    loadGF(f.gf,()=>{
+      const h=document.getElementById('rh'+ri);
+      const b=document.getElementById('rb'+ri);
+      const n=document.getElementById('rn'+ri);
+      if(h)h.style.fontFamily=`'${f.name}',sans-serif`;
+      if(b)b.style.fontFamily=`'${f.name}',sans-serif`;
+      if(n)n.style.fontFamily=`'${f.name}',sans-serif`;
+    });
+  });
+}
+
+function copyCSS(btn){
+  const font=btn.dataset.font;
+  const gf=btn.dataset.gf;
+  const css=`@import url('https://fonts.googleapis.com/css2?family=${gf}&display=swap');\n\nfont-family: '${font}', sans-serif;`;
+  navigator.clipboard.writeText(css).then(()=>{
+    btn.textContent='✓ Copied!';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='⎘ Copy CSS';btn.classList.remove('ok');},2000);
+  });
+}
+
+function restart(){
+  cur=0;answers=[];sel=null;
+  document.getElementById('progWrap').style.display='block';
+  renderQ();
+}
+
+let loaded=new Set();
+function loadGF(gf,cb){
+  if(loaded.has(gf)){if(cb)setTimeout(cb,30);return;}
+  const l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family='+gf+'&display=swap';
+  l.onload=()=>{loaded.add(gf);if(cb)cb();};
+  l.onerror=()=>{if(cb)cb();};
+  document.head.appendChild(l);
+}
+
+renderQ();
+</script>
+</body>
+</html>
