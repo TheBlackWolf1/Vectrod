@@ -22,4 +22,7 @@
   <url><loc>https://vectrod.com/type-scale</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://vectrod.com/contrast-checker</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://vectrod.com/color-palette</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vectrod.com/font-mood</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vectrod.com/font-name-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vectrod.com/readability-checker</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
