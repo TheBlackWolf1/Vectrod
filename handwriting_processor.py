@@ -1,525 +1,309 @@
 """
-Handwriting → Font Processor
-Fotoğraftaki el yazısını okur, karakterleri segmente eder, SVG'ye çevirir
+Handwriting → Font Processor  v2
+Fotoğraftaki el yazısını okur → karakterleri segmente eder → SVG + TTF üretir
 """
-import cv2
-import numpy as np
-from PIL import Image, ImageEnhance, ImageFilter
-import io, os, json, base64
+import cv2, numpy as np, os, base64, re
 from lxml import etree
 
-# ─────────────────────────────────────────
-# CONSTANTS
-# ─────────────────────────────────────────
-GRID_CHARS = [
-    ['A','B','C','D','E','F'],
-    ['G','H','I','J','K','L'],
-    ['M','N','O','P','Q','R'],
-    ['S','T','U','V','W','X'],
-    ['Y','Z','a','b','c','d'],
-    ['e','f','g','h','i','j'],
-    ['k','l','m','n','o','p'],
-    ['q','r','s','t','u','v'],
-    ['w','x','y','z','0','1'],
-    ['2','3','4','5','6','7'],
-    ['8','9','!','?',',','.'],
-]
+# ──────────────────────────────────────────────────────────────
+# STEP 1: IMAGE PREPROCESSING
+# ──────────────────────────────────────────────────────────────
+def preprocess(img_bytes):
+    """Raw bytes → clean binary (ink=255, bg=0)"""
+    arr  = np.frombuffer(img_bytes, np.uint8)
+    bgr  = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+    if bgr is None:
+        raise ValueError("Cannot decode image — try JPG or PNG")
 
-SINGLE_LINE_CHARS = list('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')
+    # Resize to max 2800px wide (keeps quality, speeds processing)
+    h, w = bgr.shape[:2]
+    if w > 2800:
+        s = 2800 / w
+        bgr = cv2.resize(bgr, (2800, int(h*s)), interpolation=cv2.INTER_LANCZOS4)
 
-# ─────────────────────────────────────────
-# IMAGE PREPROCESSING
-# ─────────────────────────────────────────
-def preprocess_image(img_bytes):
-    """Raw image bytes → clean binary numpy array"""
-    nparr = np.frombuffer(img_bytes, np.uint8)
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    if img is None:
-        raise ValueError("Could not decode image")
-    
-    # Resize if too large (max 3000px wide)
-    h, w = img.shape[:2]
-    if w > 3000:
-        scale = 3000 / w
-        img = cv2.resize(img, (3000, int(h * scale)), interpolation=cv2.INTER_LANCZOS4)
-    
-    # Convert to grayscale
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    
-    # Deskew
-    gray = deskew(gray)
-    
-    # Enhance contrast
+    gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
+
+    # CLAHE – fixes uneven phone lighting
     clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8,8))
-    gray = clahe.apply(gray)
-    
+    gray  = clahe.apply(gray)
+
     # Denoise
-    gray = cv2.fastNlMeansDenoising(gray, h=10)
-    
-    # Adaptive threshold — handles uneven lighting perfectly
+    gray = cv2.fastNlMeansDenoising(gray, h=12)
+
+    # Adaptive threshold → white ink on black bg
     binary = cv2.adaptiveThreshold(
         gray, 255,
         cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-        cv2.THRESH_BINARY_INV,  # black text on white → white text on black
-        blockSize=25,
-        C=8
+        cv2.THRESH_BINARY_INV,
+        blockSize=31, C=10
     )
-    
-    # Morphological cleanup — connect broken strokes
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2,2))
-    binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)
-    
-    return binary, img
 
-def deskew(gray):
-    """Detect and correct page tilt"""
-    edges = cv2.Canny(gray, 50, 150, apertureSize=3)
-    lines = cv2.HoughLines(edges, 1, np.pi/180, threshold=100)
-    if lines is None:
-        return gray
-    
-    angles = []
-    for line in lines[:20]:
-        rho, theta = line[0]
-        angle = (theta - np.pi/2) * 180 / np.pi
-        if abs(angle) < 15:  # only small corrections
-            angles.append(angle)
-    
-    if not angles:
-        return gray
-    
-    median_angle = np.median(angles)
-    if abs(median_angle) < 0.5:
-        return gray
-    
-    h, w = gray.shape
-    center = (w//2, h//2)
-    M = cv2.getRotationMatrix2D(center, median_angle, 1.0)
-    return cv2.warpAffine(gray, M, (w, h), flags=cv2.INTER_CUBIC,
-                          borderMode=cv2.BORDER_REPLICATE)
+    # Close small gaps in strokes
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2,2))
+    binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, k)
 
-# ─────────────────────────────────────────
-# GRID-BASED SEGMENTATION (template sheet)
-# ─────────────────────────────────────────
-def segment_grid(binary, grid_chars=None):
+    return binary
+
+# ──────────────────────────────────────────────────────────────
+# STEP 2: SENTENCE-MODE SEGMENTATION
+# Writes "Hello World" → photo → tell us "Hello World"
+# We detect blobs, sort left→right / top→bottom, map to unique chars
+# ──────────────────────────────────────────────────────────────
+def segment_sentence(binary, expected_text):
     """
-    For template sheets where chars are in a known grid.
-    Divides image into rows × cols cells and extracts each glyph.
+    Detect connected components, sort into reading order,
+    map to the unique characters in expected_text.
+    Returns {char: cropped_glyph_binary}
     """
-    if grid_chars is None:
-        grid_chars = GRID_CHARS
-    
-    rows = len(grid_chars)
-    cols = max(len(row) for row in grid_chars)
-    
-    h, w = binary.shape
-    cell_h = h // rows
-    cell_w = w // cols
-    
-    results = {}
-    
-    for row_idx, row in enumerate(grid_chars):
-        for col_idx, char in enumerate(row):
-            if not char:
-                continue
-            
-            # Extract cell with padding
-            y1 = row_idx * cell_h
-            y2 = min((row_idx + 1) * cell_h, h)
-            x1 = col_idx * cell_w
-            x2 = min((col_idx + 1) * cell_w, w)
-            
+    # Get unique chars preserving order (skip spaces)
+    unique_chars = list(dict.fromkeys(c for c in expected_text if not c.isspace()))
+    if not unique_chars:
+        raise ValueError("No characters in expected text")
+
+    H, W = binary.shape
+    n_lbl, labels, stats, cents = cv2.connectedComponentsWithStats(binary, connectivity=8)
+
+    # Filter components by reasonable size
+    min_area = H * W * 0.00008
+    max_area = H * W * 0.12
+    comps = []
+    for i in range(1, n_lbl):
+        a = stats[i, cv2.CC_STAT_AREA]
+        if not (min_area <= a <= max_area): continue
+        cw = stats[i, cv2.CC_STAT_WIDTH]
+        ch = stats[i, cv2.CC_STAT_HEIGHT]
+        if cw/max(ch,1) > 10 or ch/max(cw,1) > 10: continue  # too thin/flat = noise
+        comps.append({
+            'i': i,
+            'x': stats[i, cv2.CC_STAT_LEFT],
+            'y': stats[i, cv2.CC_STAT_TOP],
+            'w': cw, 'h': ch,
+            'cx': cents[i][0], 'cy': cents[i][1], 'area': a
+        })
+
+    if not comps:
+        raise ValueError("No ink detected. Check lighting and contrast.")
+
+    # Group into lines by Y-proximity
+    comps_s = sorted(comps, key=lambda c: c['cy'])
+    med_h   = float(np.median([c['h'] for c in comps_s]))
+    thr     = med_h * 0.55
+    lines   = [[comps_s[0]]]
+    for c in comps_s[1:]:
+        if abs(c['cy'] - np.mean([x['cy'] for x in lines[-1]])) < thr:
+            lines[-1].append(c)
+        else:
+            lines.append([c])
+
+    # Sort each line left→right, flatten
+    ordered = []
+    for ln in lines:
+        ordered.extend(sorted(ln, key=lambda c: c['x']))
+
+    # Map to unique chars (take first N blobs = N unique chars)
+    glyphs = {}
+    for idx, char in enumerate(unique_chars):
+        if idx >= len(ordered): break
+        comp = ordered[idx]
+        pad = 8
+        x1 = max(0, comp['x'] - pad)
+        y1 = max(0, comp['y'] - pad)
+        x2 = min(W, comp['x'] + comp['w'] + pad)
+        y2 = min(H, comp['y'] + comp['h'] + pad)
+        mask = ((labels == comp['i']).astype(np.uint8) * 255)
+        glyphs[char] = mask[y1:y2, x1:x2]
+
+    return glyphs
+
+# ──────────────────────────────────────────────────────────────
+# STEP 2b: GRID-MODE SEGMENTATION (template sheet)
+# ──────────────────────────────────────────────────────────────
+GRID_LAYOUT = [
+    list('ABCDEF'), list('GHIJKL'), list('MNOPQR'), list('STUVWX'),
+    list('YZabcd'), list('efghij'), list('klmnop'), list('qrstuv'),
+    list('wxyz01'), list('234567'), list('89!?,.'),
+]
+
+def segment_grid(binary, layout=None):
+    if layout is None:
+        layout = GRID_LAYOUT
+    rows = len(layout)
+    cols = max(len(r) for r in layout)
+    H, W = binary.shape
+    cH, cW = H // rows, W // cols
+    glyphs = {}
+    for ri, row in enumerate(layout):
+        for ci, ch in enumerate(row):
+            y1, y2 = ri*cH, min((ri+1)*cH, H)
+            x1, x2 = ci*cW, min((ci+1)*cW, W)
             cell = binary[y1:y2, x1:x2]
-            glyph = extract_glyph_from_cell(cell)
-            
-            if glyph is not None:
-                results[char] = glyph
-    
-    return results
+            coords = cv2.findNonZero(cell)
+            if coords is None: continue
+            ink = np.sum(cell > 0) / cell.size
+            if ink < 0.005 or ink > 0.95: continue
+            bx, by, bw, bh = cv2.boundingRect(coords)
+            pad = max(6, min(bw,bh)//8)
+            cx1 = max(0, bx-pad); cy1 = max(0, by-pad)
+            cx2 = min(cell.shape[1], bx+bw+pad)
+            cy2 = min(cell.shape[0], by+bh+pad)
+            glyphs[ch] = cell[cy1:cy2, cx1:cx2]
+    return glyphs
 
-def extract_glyph_from_cell(cell):
-    """Extract tight bounding box of ink from a cell"""
-    if cell is None or cell.size == 0:
-        return None
-    
-    # Find ink pixels
-    coords = cv2.findNonZero(cell)
-    if coords is None:
-        return None
-    
-    # Check if enough ink
-    ink_ratio = np.sum(cell > 0) / cell.size
-    if ink_ratio < 0.005 or ink_ratio > 0.95:
-        return None
-    
-    # Tight crop
-    x, y, w, h = cv2.boundingRect(coords)
-    
-    # Add padding
-    pad = max(8, min(w, h) // 8)
-    x1 = max(0, x - pad)
-    y1 = max(0, y - pad)
-    x2 = min(cell.shape[1], x + w + pad)
-    y2 = min(cell.shape[0], y + h + pad)
-    
-    cropped = cell[y1:y2, x1:x2]
-    return cropped
-
-# ─────────────────────────────────────────
-# FREE-FORM SEGMENTATION (sentence/word photo)
-# ─────────────────────────────────────────
-def segment_freeform(binary, expected_chars=None):
-    """
-    For photos of written text — detect characters by connected components
-    and line analysis. Returns dict of position→glyph.
-    """
-    # Find connected components
-    num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(
-        binary, connectivity=8
-    )
-    
-    h, w = binary.shape
-    min_area = (h * w) * 0.0001  # at least 0.01% of image
-    max_area = (h * w) * 0.15    # at most 15% of image
-    
-    components = []
-    for i in range(1, num_labels):  # skip background (0)
-        area = stats[i, cv2.CC_STAT_AREA]
-        if min_area <= area <= max_area:
-            x = stats[i, cv2.CC_STAT_LEFT]
-            y = stats[i, cv2.CC_STAT_TOP]
-            cw = stats[i, cv2.CC_STAT_WIDTH]
-            ch = stats[i, cv2.CC_STAT_HEIGHT]
-            cx, cy = centroids[i]
-            
-            # Filter out noise (too thin or too flat)
-            aspect = cw / max(ch, 1)
-            if aspect > 8 or aspect < 0.08:
-                continue
-            
-            components.append({
-                'label': i, 'x': x, 'y': y, 'w': cw, 'h': ch,
-                'cx': cx, 'cy': cy, 'area': area
-            })
-    
-    if not components:
-        return {}
-    
-    # Group into lines
-    lines = group_into_lines(components, h)
-    
-    # Sort each line left to right
-    results = {}
-    char_idx = 0
-    for line in lines:
-        line_sorted = sorted(line, key=lambda c: c['x'])
-        for comp in line_sorted:
-            # Extract glyph
-            pad = 4
-            x1 = max(0, comp['x'] - pad)
-            y1 = max(0, comp['y'] - pad)
-            x2 = min(w, comp['x'] + comp['w'] + pad)
-            y2 = min(h, comp['y'] + comp['h'] + pad)
-            
-            # Get the actual component pixels (not all ink in bbox)
-            mask = (labels == comp['label']).astype(np.uint8) * 255
-            glyph = mask[y1:y2, x1:x2]
-            
-            if expected_chars and char_idx < len(expected_chars):
-                results[expected_chars[char_idx]] = glyph
-            else:
-                results[char_idx] = glyph
-            char_idx += 1
-    
-    return results
-
-def group_into_lines(components, img_height):
-    """Group components into text lines using Y-coordinate clustering"""
-    if not components:
-        return []
-    
-    # Sort by Y
-    sorted_comps = sorted(components, key=lambda c: c['cy'])
-    
-    # Estimate line height
-    heights = [c['h'] for c in components]
-    median_h = np.median(heights)
-    line_threshold = median_h * 0.6
-    
-    lines = []
-    current_line = [sorted_comps[0]]
-    
-    for comp in sorted_comps[1:]:
-        # Check if same line as last component
-        last_cy = np.mean([c['cy'] for c in current_line])
-        if abs(comp['cy'] - last_cy) < line_threshold:
-            current_line.append(comp)
-        else:
-            lines.append(current_line)
-            current_line = [comp]
-    
-    lines.append(current_line)
-    return lines
-
-# ─────────────────────────────────────────
-# GLYPH → SVG PATH CONVERSION
-# ─────────────────────────────────────────
-def glyph_to_svg_path(glyph_binary, target_size=500):
-    """Convert binary glyph image to SVG path string"""
-    if glyph_binary is None or glyph_binary.size == 0:
+# ──────────────────────────────────────────────────────────────
+# STEP 3: GLYPH → SVG PATH (vectorize)
+# ──────────────────────────────────────────────────────────────
+def glyph_to_paths(glyph_bin, target=520):
+    """Binary glyph → SVG path string (smooth cubic bezier)"""
+    if glyph_bin is None or glyph_bin.size == 0:
         return None, 0, 0
-    
-    h, w = glyph_binary.shape
-    
-    # Upscale for better path quality
-    scale = max(target_size / max(w, h), 1.0)
-    new_w = int(w * scale)
-    new_h = int(h * scale)
-    
-    if scale > 1:
-        upscaled = cv2.resize(glyph_binary, (new_w, new_h), 
-                              interpolation=cv2.INTER_CUBIC)
-        # Re-threshold after upscale
-        _, upscaled = cv2.threshold(upscaled, 127, 255, cv2.THRESH_BINARY)
-    else:
-        upscaled = glyph_binary.copy()
-        new_w, new_h = w, h
-    
-    # Smooth edges
-    upscaled = cv2.GaussianBlur(upscaled, (3,3), 0)
-    _, upscaled = cv2.threshold(upscaled, 127, 255, cv2.THRESH_BINARY)
-    
-    # Find contours
-    contours, hierarchy = cv2.findContours(
-        upscaled, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS
-    )
-    
+
+    h, w = glyph_bin.shape
+    scale = max(target / max(w, h, 1), 1.0)
+    nw, nh = int(w*scale), int(h*scale)
+    up = cv2.resize(glyph_bin, (nw, nh), interpolation=cv2.INTER_CUBIC)
+    _, up = cv2.threshold(up, 127, 255, cv2.THRESH_BINARY)
+
+    # Slight smooth
+    up = cv2.GaussianBlur(up, (3,3), 0)
+    _, up = cv2.threshold(up, 127, 255, cv2.THRESH_BINARY)
+
+    contours, _ = cv2.findContours(up, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS)
     if not contours:
-        return None, new_w, new_h
-    
-    path_parts = []
-    
-    for i, contour in enumerate(contours):
-        if len(contour) < 3:
-            continue
-        
-        # Simplify contour
-        epsilon = 0.008 * cv2.arcLength(contour, True)
-        approx = cv2.approxPolyDP(contour, epsilon, True)
-        
-        if len(approx) < 2:
-            continue
-        
-        # Convert to SVG path
-        pts = approx.reshape(-1, 2)
-        
-        # Start point
-        path = f"M {pts[0][0]:.1f} {pts[0][1]:.1f}"
-        
-        # Use smooth curves (catmull-rom → cubic bezier)
-        if len(pts) >= 4:
-            path += smooth_path(pts)
-        else:
-            for pt in pts[1:]:
-                path += f" L {pt[0]:.1f} {pt[1]:.1f}"
-        
-        path += " Z"
-        path_parts.append(path)
-    
-    if not path_parts:
-        return None, new_w, new_h
-    
-    return " ".join(path_parts), new_w, new_h
+        return None, nw, nh
 
-def smooth_path(pts):
-    """Convert points to smooth cubic bezier path"""
-    result = ""
-    n = len(pts)
-    
-    for i in range(1, n):
-        # Simple smooth curve using neighboring points as control points
-        p0 = pts[max(0, i-2)]
-        p1 = pts[i-1]
-        p2 = pts[i]
-        p3 = pts[min(n-1, i+1)]
-        
-        # Control points (Catmull-Rom → Bezier conversion)
-        tension = 0.3
-        cp1x = p1[0] + tension * (p2[0] - p0[0]) / 6
-        cp1y = p1[1] + tension * (p2[1] - p0[1]) / 6
-        cp2x = p2[0] - tension * (p3[0] - p1[0]) / 6
-        cp2y = p2[1] - tension * (p3[1] - p1[1]) / 6
-        
-        result += f" C {cp1x:.1f} {cp1y:.1f} {cp2x:.1f} {cp2y:.1f} {p2[0]:.1f} {p2[1]:.1f}"
-    
-    return result
+    parts = []
+    for cnt in contours:
+        if len(cnt) < 3: continue
+        eps = 0.006 * cv2.arcLength(cnt, True)
+        approx = cv2.approxPolyDP(cnt, eps, True).reshape(-1, 2)
+        if len(approx) < 2: continue
 
-# ─────────────────────────────────────────
-# BUILD MULTI-GLYPH SVG
-# ─────────────────────────────────────────
-def glyphs_to_svg(glyph_dict, canvas_size=600, glyphs_per_row=6):
-    """Pack multiple glyphs into one SVG file for font building"""
-    chars = list(glyph_dict.keys())
-    
+        d = f"M {approx[0][0]:.1f} {approx[0][1]:.1f}"
+        n = len(approx)
+        for i in range(1, n):
+            p0 = approx[max(0,i-2)]
+            p1 = approx[i-1]
+            p2 = approx[i]
+            p3 = approx[min(n-1,i+1)]
+            t = 0.28
+            cp1x = p1[0] + t*(p2[0]-p0[0])/6
+            cp1y = p1[1] + t*(p2[1]-p0[1])/6
+            cp2x = p2[0] - t*(p3[0]-p1[0])/6
+            cp2y = p2[1] - t*(p3[1]-p1[1])/6
+            d += f" C {cp1x:.1f},{cp1y:.1f} {cp2x:.1f},{cp2y:.1f} {p2[0]:.1f},{p2[1]:.1f}"
+        d += " Z"
+        parts.append(d)
+
+    return " ".join(parts) if parts else None, nw, nh
+
+# ──────────────────────────────────────────────────────────────
+# STEP 4: BUILD MULTI-GLYPH SVG (input to engine.py)
+# ──────────────────────────────────────────────────────────────
+def build_svg(glyph_dict, cell=620):
+    chars = [c for c in glyph_dict if glyph_dict[c] is not None]
     if not chars:
         return None
-    
-    # Calculate grid
-    n_chars = len(chars)
-    n_cols = min(glyphs_per_row, n_chars)
-    n_rows = (n_chars + n_cols - 1) // n_cols
-    
-    cell = canvas_size
-    total_w = n_cols * cell
-    total_h = n_rows * cell
-    
-    svg_root = etree.Element('svg')
-    svg_root.set('xmlns', 'http://www.w3.org/2000/svg')
-    svg_root.set('width', str(total_w))
-    svg_root.set('height', str(total_h))
-    svg_root.set('viewBox', f'0 0 {total_w} {total_h}')
-    
-    for idx, char in enumerate(chars):
-        glyph = glyph_dict[char]
-        if glyph is None:
-            continue
-        
-        row = idx // n_cols
-        col = idx % n_cols
-        
-        x_offset = col * cell
-        y_offset = row * cell
-        
-        path_data, gw, gh = glyph_to_svg_path(glyph, target_size=int(cell * 0.8))
-        
-        if not path_data:
-            continue
-        
-        # Center in cell
-        cx = x_offset + (cell - gw) // 2
-        cy = y_offset + (cell - gh) // 2
-        
-        # Flip Y (SVG top-down vs font bottom-up)
-        cy_center = y_offset + cell // 2
-        
-        g = etree.SubElement(svg_root, 'g')
-        g.set('id', f'char_{ord(char) if isinstance(char, str) else char}')
-        g.set('transform', f'translate({cx},{cy})')
-        
-        path_el = etree.SubElement(g, 'path')
-        path_el.set('d', path_data)
-        path_el.set('fill', 'black')
-    
-    return etree.tostring(svg_root, pretty_print=True, xml_declaration=True, 
-                          encoding='UTF-8').decode()
 
-# ─────────────────────────────────────────
-# PREVIEW GENERATION
-# ─────────────────────────────────────────
-def generate_preview_image(glyph_dict, max_chars=52):
-    """Generate a preview PNG showing all detected glyphs"""
-    chars = list(glyph_dict.keys())[:max_chars]
-    if not chars:
-        return None
-    
-    cell_size = 80
+    cols = min(6, len(chars))
+    rows = (len(chars) + cols - 1) // cols
+    W, H = cols * cell, rows * cell
+
+    root = etree.Element('svg')
+    root.set('xmlns', 'http://www.w3.org/2000/svg')
+    root.set('width', str(W))
+    root.set('height', str(H))
+    root.set('viewBox', f'0 0 {W} {H}')
+
+    for idx, ch in enumerate(chars):
+        g_bin = glyph_dict[ch]
+        path_d, gw, gh = glyph_to_paths(g_bin, target=int(cell*0.82))
+        if not path_d: continue
+
+        col = idx % cols
+        row = idx // cols
+        ox  = col * cell + (cell - gw) // 2
+        oy  = row * cell + (cell - gh) // 2
+
+        g = etree.SubElement(root, 'g')
+        g.set('id', f'char_{ord(ch):04X}')
+        g.set('transform', f'translate({ox},{oy})')
+        pe = etree.SubElement(g, 'path')
+        pe.set('d', path_d)
+        pe.set('fill', '#000000')
+
+    return etree.tostring(root, pretty_print=True,
+                          xml_declaration=True, encoding='UTF-8').decode()
+
+# ──────────────────────────────────────────────────────────────
+# STEP 5: PREVIEW IMAGE (for UI)
+# ──────────────────────────────────────────────────────────────
+def build_preview(glyph_dict):
+    chars = [c for c in glyph_dict if glyph_dict[c] is not None]
+    if not chars: return None
+    cell = 90
     cols = min(13, len(chars))
     rows = (len(chars) + cols - 1) // cols
-    
-    canvas = np.ones((rows * cell_size, cols * cell_size), dtype=np.uint8) * 240
-    
-    for idx, char in enumerate(chars):
-        glyph = glyph_dict[char]
-        if glyph is None:
-            continue
-        
-        row = idx // cols
-        col = idx % cols
-        
-        y1 = row * cell_size + 4
-        y2 = (row + 1) * cell_size - 4
-        x1 = col * cell_size + 4
-        x2 = (col + 1) * cell_size - 4
-        
-        cell_h = y2 - y1
-        cell_w = x2 - x1
-        
-        # Resize glyph to fit cell
-        g_h, g_w = glyph.shape
-        scale = min(cell_h / max(g_h, 1), cell_w / max(g_w, 1))
-        new_h = max(1, int(g_h * scale))
-        new_w = max(1, int(g_w * scale))
-        
-        resized = cv2.resize(glyph, (new_w, new_h), interpolation=cv2.INTER_AREA)
-        
-        # Center in cell
-        dy = (cell_h - new_h) // 2
-        dx = (cell_w - new_w) // 2
-        
-        py1, py2 = y1 + dy, y1 + dy + new_h
-        px1, px2 = x1 + dx, x1 + dx + new_w
-        
-        # Invert (glyph is white-on-black, canvas is light)
-        glyph_inv = 255 - resized
-        canvas[py1:py2, px1:px2] = np.minimum(canvas[py1:py2, px1:px2], glyph_inv)
-        
-        # Draw cell border
-        cv2.rectangle(canvas, (x1-4, y1-4), (x2+4, y2+4), 200, 1)
-    
-    # Convert to PNG bytes
+    canvas = np.full((rows*cell, cols*cell), 245, dtype=np.uint8)
+
+    for idx, ch in enumerate(chars):
+        g = glyph_dict[ch]
+        if g is None: continue
+        row, col = idx//cols, idx%cols
+        y1, x1 = row*cell+6, col*cell+6
+        y2, x2 = (row+1)*cell-6, (col+1)*cell-6
+        ch_h, cw_h = y2-y1, x2-x1
+        gh, gw = g.shape
+        s = min(ch_h/max(gh,1), cw_h/max(gw,1))
+        rh, rw = max(1,int(gh*s)), max(1,int(gw*s))
+        resized = cv2.resize(g, (rw, rh), interpolation=cv2.INTER_AREA)
+        dy, dx = (ch_h-rh)//2, (cw_h-rw)//2
+        py1, py2 = y1+dy, y1+dy+rh
+        px1, px2 = x1+dx, x1+dx+rw
+        inv = 255 - resized
+        canvas[py1:py2, px1:px2] = np.minimum(canvas[py1:py2, px1:px2], inv)
+        cv2.rectangle(canvas, (x1-6,y1-6), (x2+6,y2+6), 210, 1)
+
     _, buf = cv2.imencode('.png', canvas)
     return base64.b64encode(buf.tobytes()).decode()
 
-# ─────────────────────────────────────────
-# MAIN ENTRY POINT
-# ─────────────────────────────────────────
-def process_handwriting(img_bytes, mode='grid', expected_text=None, grid_chars=None):
+# ──────────────────────────────────────────────────────────────
+# MAIN API
+# ──────────────────────────────────────────────────────────────
+def process_handwriting(img_bytes, mode='sentence', expected_text=None):
     """
-    Main function called from app.py
-    
-    mode: 'grid' = template sheet, 'freeform' = photo of text, 'sentence' = known text photo
-    expected_text: for 'sentence' mode, the text written in the photo
-    
-    Returns: {
-        'glyphs': dict of char→binary_glyph,
-        'svg': SVG string,
-        'preview': base64 PNG,
-        'char_count': int,
-        'detected_chars': list
-    }
+    Returns dict with keys: success, svg, preview, char_count, detected_chars
+    Or: success=False, error=str
     """
-    binary, original = preprocess_image(img_bytes)
-    
-    if mode == 'grid':
-        chars_grid = grid_chars or GRID_CHARS
-        glyph_dict = segment_grid(binary, chars_grid)
-    
-    elif mode == 'sentence' and expected_text:
-        # User tells us what's written → segment and map
-        clean_text = expected_text.replace(' ', '')
-        expected_chars = list(dict.fromkeys(clean_text))  # unique, preserve order
-        glyph_dict = segment_freeform(binary, expected_chars)
-    
-    else:  # freeform
-        glyph_dict = segment_freeform(binary, None)
-    
-    if not glyph_dict:
-        return {'error': 'No characters detected. Try better lighting or a clearer photo.'}
-    
-    svg_content = glyphs_to_svg(glyph_dict)
-    preview_b64 = generate_preview_image(glyph_dict)
-    
-    detected = [str(c) for c in glyph_dict.keys() if isinstance(c, str)]
-    
-    return {
-        'glyphs': {str(k): True for k in glyph_dict.keys()},
-        'svg': svg_content,
-        'preview': preview_b64,
-        'char_count': len(glyph_dict),
-        'detected_chars': detected,
-        'mode': mode
-    }
+    try:
+        binary = preprocess(img_bytes)
+
+        if mode == 'grid':
+            glyphs = segment_grid(binary)
+        else:
+            if not expected_text:
+                expected_text = "The quick brown fox"
+            glyphs = segment_sentence(binary, expected_text)
+
+        if not glyphs:
+            return {'success': False, 'error': 'No characters detected. Try better lighting or higher contrast.'}
+
+        svg_str  = build_svg(glyphs)
+        preview  = build_preview(glyphs)
+        detected = [c for c in glyphs if isinstance(c, str)]
+
+        return {
+            'success':        True,
+            'svg':            svg_str or '',
+            'preview':        preview,
+            'char_count':     len(glyphs),
+            'detected_chars': detected,
+            'mode':           mode,
+        }
+
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return {'success': False, 'error': str(e)}
 
 if __name__ == '__main__':
-    print("Handwriting processor ready")
-    print(f"Grid template: {sum(len(r) for r in GRID_CHARS)} chars across {len(GRID_CHARS)} rows")
+    print("handwriting_processor v2 — ready")
+    print(f"Grid: {sum(len(r) for r in GRID_LAYOUT)} chars / {len(GRID_LAYOUT)} rows")
