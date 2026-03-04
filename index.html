@@ -129,6 +129,22 @@ body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-s
 @keyframes bffSpin{0%,100%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.2)}}
 .bff-text{font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;color:#fff;-webkit-text-fill-color:#fff;letter-spacing:.04em;white-space:nowrap}
 .bff-badge{background:var(--gold);color:#000;-webkit-text-fill-color:#000;font-family:'DM Mono',monospace;font-size:8px;font-weight:900;letter-spacing:.1em;padding:2px 6px;border-radius:100px;animation:bffBadge 1.5s ease-in-out infinite}
+/* ── AI FONT GENERATOR BUTTON ── */
+.btn-ai{position:relative;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:100px;border:none;cursor:pointer;text-decoration:none;overflow:hidden;font-family:'DM Mono',monospace;font-size:11px;font-weight:900;letter-spacing:.07em;white-space:nowrap;background:linear-gradient(90deg,#0a0820,#0a0820);color:#fff;-webkit-text-fill-color:#fff}
+.btn-ai-border{position:absolute;inset:-1.5px;border-radius:100px;background:linear-gradient(90deg,#f0c060,#ee44aa,#9944ee,#22dd99,#4488ff,#f0c060);background-size:300% auto;animation:aiBorderSpin 2.5s linear infinite;z-index:-1}
+.btn-ai-glow{position:absolute;inset:-4px;border-radius:100px;background:linear-gradient(90deg,rgba(240,192,96,.3),rgba(153,68,238,.3),rgba(34,221,153,.3));background-size:300% auto;animation:aiBorderSpin 2.5s linear infinite;filter:blur(8px);z-index:-2;opacity:.7}
+.btn-ai-spark{position:absolute;top:-1px;left:50%;width:6px;height:6px;border-radius:50%;background:#fff;transform:translateX(-50%);animation:aiSpark 2.5s linear infinite;opacity:0}
+.btn-ai-ico{font-size:14px;animation:aiPulse 2s ease-in-out infinite}
+.btn-ai-label{position:relative;z-index:1}
+.btn-ai-tag{background:linear-gradient(90deg,#f0c060,#ee44aa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:8px;font-weight:900;letter-spacing:.12em;margin-left:2px;animation:aiTagPulse 1.8s ease-in-out infinite}
+.btn-ai:hover{transform:translateY(-2px) scale(1.04)}
+.btn-ai:hover .btn-ai-glow{opacity:1}
+@keyframes aiBorderSpin{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+@keyframes aiSpark{0%,100%{opacity:0;transform:translateX(-50%) scale(0)}40%{opacity:1;transform:translateX(-50%) scale(1)}60%{opacity:1}80%{opacity:0;transform:translateX(-50%) scale(0)}}
+@keyframes aiPulse{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.2) rotate(15deg)}}
+@keyframes aiTagPulse{0%,100%{opacity:.7}50%{opacity:1}}
+/* light mode */
+body.light-mode .btn-ai{background:linear-gradient(90deg,#f0f0ff,#f0f0ff);color:#0a0820;-webkit-text-fill-color:#0a0820}
 @keyframes bffBadge{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
 .hero{text-align:center;margin-bottom:68px;animation:slideDown .8s var(--ease-out) .1s both}
 .hero-badge{display:inline-flex;align-items:center;gap:9px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;border:1px solid rgba(240,192,96,.22);padding:6px 18px;border-radius:100px;background:rgba(240,192,96,.05);backdrop-filter:blur(10px);margin-bottom:28px}
@@ -757,6 +773,15 @@ body.light-mode .act-n {
       <div><div class="logo-name">VECTROD</div><div class="logo-sub">Free SVG → Font Converter</div></div>
     </a>
     <div class="nav-r">
+      <!-- AI Font Generator CTA -->
+      <a class="btn-ai" href="/ai-font-generator" id="aiFontBtn">
+        <span class="btn-ai-border"></span>
+        <span class="btn-ai-glow"></span>
+        <span class="btn-ai-spark"></span>
+        <span class="btn-ai-ico">✦</span>
+        <span class="btn-ai-label">AI Font Generator</span>
+        <span class="btn-ai-tag">NEW AI</span>
+      </a>
       <!-- Tools dropdown -->
       <div class="nav-dd" id="navDd">
         <button class="dd-btn" id="ddTrigger" onclick="ddToggle(event)">
