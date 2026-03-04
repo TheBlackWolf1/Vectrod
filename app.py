@@ -560,27 +560,30 @@ Be accurate. Respond with ONLY the JSON."""
                         'url': f'/download/{sid}/{fname}'
                     })
 
-            # Get glyph info from font file
-            glyph_count = len(result_files[0]['filename']) if result_files else 0
-            font_url = result_files[0]['url'] if result_files else None
-            
-            # Try to get actual glyph count from TTF
-            try:
-                from fontTools.ttLib import TTFont
-                tt = TTFont(ttf_path)
-                glyph_count = len(tt.getGlyphOrder()) - 1  # minus .notdef
-                generated_chars = [g for g in tt.getGlyphOrder() 
-                                   if g != '.notdef' and len(g)==1][:52]
-                tt.close()
-            except:
-                generated_chars = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-                glyph_count = len(generated_chars)
+            # Embed font as base64 so browser loads instantly (no second request)
+            import base64
+            font_b64 = None
+            glyph_count = 0
+            generated_chars = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
+            if ttf_path and os.path.exists(ttf_path):
+                with open(ttf_path, 'rb') as ff:
+                    font_b64 = base64.b64encode(ff.read()).decode('ascii')
+                try:
+                    from fontTools.ttLib import TTFont
+                    tt = TTFont(ttf_path)
+                    glyph_count = len(tt.getGlyphOrder()) - 1
+                    generated_chars = [g for g in tt.getGlyphOrder()
+                                       if g != '.notdef' and len(g) == 1][:62]
+                    tt.close()
+                except Exception:
+                    glyph_count = 83
 
             self.json_resp({
-                'success': True, 
-                'files': result_files, 
+                'success': True,
+                'files': result_files,
                 'session': sid,
-                'font_url': font_url,
+                'font_b64': font_b64,
                 'glyph_count': glyph_count,
                 'generated_chars': generated_chars,
             })
@@ -822,27 +825,30 @@ Be accurate. Respond with ONLY the JSON."""
                         'url': f'/download/{sid}/{fname}'
                     })
 
-            # Get glyph info from font file
-            glyph_count = len(result_files[0]['filename']) if result_files else 0
-            font_url = result_files[0]['url'] if result_files else None
-            
-            # Try to get actual glyph count from TTF
-            try:
-                from fontTools.ttLib import TTFont
-                tt = TTFont(ttf_path)
-                glyph_count = len(tt.getGlyphOrder()) - 1  # minus .notdef
-                generated_chars = [g for g in tt.getGlyphOrder() 
-                                   if g != '.notdef' and len(g)==1][:52]
-                tt.close()
-            except:
-                generated_chars = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-                glyph_count = len(generated_chars)
+            # Embed font as base64 so browser loads instantly (no second request)
+            import base64
+            font_b64 = None
+            glyph_count = 0
+            generated_chars = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
+            if ttf_path and os.path.exists(ttf_path):
+                with open(ttf_path, 'rb') as ff:
+                    font_b64 = base64.b64encode(ff.read()).decode('ascii')
+                try:
+                    from fontTools.ttLib import TTFont
+                    tt = TTFont(ttf_path)
+                    glyph_count = len(tt.getGlyphOrder()) - 1
+                    generated_chars = [g for g in tt.getGlyphOrder()
+                                       if g != '.notdef' and len(g) == 1][:62]
+                    tt.close()
+                except Exception:
+                    glyph_count = 83
 
             self.json_resp({
-                'success': True, 
-                'files': result_files, 
+                'success': True,
+                'files': result_files,
                 'session': sid,
-                'font_url': font_url,
+                'font_b64': font_b64,
                 'glyph_count': glyph_count,
                 'generated_chars': generated_chars,
             })
