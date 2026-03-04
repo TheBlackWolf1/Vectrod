@@ -294,6 +294,8 @@ class Handler(BaseHTTPRequestHandler):
             self.serve_static('readability-checker.html', 'text/html')
         elif path == '/handwriting-font':
             self.serve_static('handwriting-font.html', 'text/html')
+        elif path == '/ai-font-generator':
+            self.serve_static('ai-font-generator.html', 'text/html')
 
         elif path == '/sitemap.xml':
             self.serve_static('sitemap.xml', 'application/xml')
@@ -558,7 +560,30 @@ Be accurate. Respond with ONLY the JSON."""
                         'url': f'/download/{sid}/{fname}'
                     })
 
-            self.json_resp({'success': True, 'files': result_files, 'session': sid})
+            # Get glyph info from font file
+            glyph_count = len(result_files[0]['filename']) if result_files else 0
+            font_url = result_files[0]['url'] if result_files else None
+            
+            # Try to get actual glyph count from TTF
+            try:
+                from fontTools.ttLib import TTFont
+                tt = TTFont(ttf_path)
+                glyph_count = len(tt.getGlyphOrder()) - 1  # minus .notdef
+                generated_chars = [g for g in tt.getGlyphOrder() 
+                                   if g != '.notdef' and len(g)==1][:52]
+                tt.close()
+            except:
+                generated_chars = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+                glyph_count = len(generated_chars)
+
+            self.json_resp({
+                'success': True, 
+                'files': result_files, 
+                'session': sid,
+                'font_url': font_url,
+                'glyph_count': glyph_count,
+                'generated_chars': generated_chars,
+            })
 
         except Exception as e:
             import traceback
@@ -797,7 +822,30 @@ Be accurate. Respond with ONLY the JSON."""
                         'url': f'/download/{sid}/{fname}'
                     })
 
-            self.json_resp({'success': True, 'files': result_files, 'session': sid})
+            # Get glyph info from font file
+            glyph_count = len(result_files[0]['filename']) if result_files else 0
+            font_url = result_files[0]['url'] if result_files else None
+            
+            # Try to get actual glyph count from TTF
+            try:
+                from fontTools.ttLib import TTFont
+                tt = TTFont(ttf_path)
+                glyph_count = len(tt.getGlyphOrder()) - 1  # minus .notdef
+                generated_chars = [g for g in tt.getGlyphOrder() 
+                                   if g != '.notdef' and len(g)==1][:52]
+                tt.close()
+            except:
+                generated_chars = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+                glyph_count = len(generated_chars)
+
+            self.json_resp({
+                'success': True, 
+                'files': result_files, 
+                'session': sid,
+                'font_url': font_url,
+                'glyph_count': glyph_count,
+                'generated_chars': generated_chars,
+            })
 
         except Exception as e:
             print(f"[CONVERT ERROR] {e}\n{traceback.format_exc()}")
