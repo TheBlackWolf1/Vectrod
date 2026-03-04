@@ -745,18 +745,22 @@ Return ONLY the JSON object, no other text.`;
 let currentGlyphs = {};
 const EM = 700, BASE_Y = 560;
 
+// Font coord system: CAP=100 (top of letters), BASE=560 (baseline), all Y going DOWN
+// No flip needed — just scale so CAP→0px and BASE→height px
+const F_CAP = 100, F_BASE = 560;
+
 function glyphsToSVG(text, glyphs, height=90, color='currentColor') {
   if(!glyphs || !Object.keys(glyphs).length) return null;
-  const scale = height / EM;
+  const scale = height / (F_BASE - F_CAP);        // scale so cap-to-base = height
+  const offsetY = -F_CAP * scale;                  // shift so CAP maps to y=0
   let x = 0;
   const paths = [];
   for(const ch of text) {
     if(ch === ' ') { x += 280 * scale; continue; }
     const g = glyphs[ch];
     if(!g) { x += 320 * scale; continue; }
-    // Flip Y (SVG coords are top-down, font coords baseline up)
     paths.push(
-      `<g transform="translate(${x.toFixed(1)},${(height).toFixed(1)}) scale(${scale.toFixed(4)},${(-scale).toFixed(4)})">`+
+      `<g transform="translate(${x.toFixed(1)},${offsetY.toFixed(1)}) scale(${scale.toFixed(4)})">`+
       `<path d="${g.d}" fill="${color}"/>`+
       `</g>`
     );
