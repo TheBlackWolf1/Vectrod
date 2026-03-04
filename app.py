@@ -560,7 +560,6 @@ Be accurate. Respond with ONLY the JSON."""
                         'url': f'/download/{sid}/{fname}'
                     })
 
-            # Embed font as base64 so browser loads instantly (no second request)
             import base64
             font_b64 = None
             glyph_count = 0
@@ -579,6 +578,26 @@ Be accurate. Respond with ONLY the JSON."""
                 except Exception:
                     glyph_count = 83
 
+            # Also return raw SVG glyph paths for direct canvas/SVG rendering
+            # This bypasses @font-face browser restrictions entirely
+            glyph_svgs = {}
+            try:
+                prompt_text = data.get('prompt', '')
+                from ai_font_geo import GlyphDrawer, analyze_prompt as geo_analyze
+                style = geo_analyze(prompt_text)
+                drawer = GlyphDrawer(style)
+                all_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?-_()'
+                for ch in all_chars:
+                    try:
+                        path, adv = drawer.draw(ch)
+                        if path:
+                            glyph_svgs[ch] = {'d': path, 'adv': adv}
+                    except Exception:
+                        pass
+                print(f"[AI] glyph_svgs: {len(glyph_svgs)} chars")
+            except Exception as e:
+                print(f"[AI] glyph_svgs error: {e}")
+
             self.json_resp({
                 'success': True,
                 'files': result_files,
@@ -586,6 +605,7 @@ Be accurate. Respond with ONLY the JSON."""
                 'font_b64': font_b64,
                 'glyph_count': glyph_count,
                 'generated_chars': generated_chars,
+                'glyph_svgs': glyph_svgs,
             })
 
         except Exception as e:
@@ -825,7 +845,6 @@ Be accurate. Respond with ONLY the JSON."""
                         'url': f'/download/{sid}/{fname}'
                     })
 
-            # Embed font as base64 so browser loads instantly (no second request)
             import base64
             font_b64 = None
             glyph_count = 0
@@ -844,6 +863,26 @@ Be accurate. Respond with ONLY the JSON."""
                 except Exception:
                     glyph_count = 83
 
+            # Also return raw SVG glyph paths for direct canvas/SVG rendering
+            # This bypasses @font-face browser restrictions entirely
+            glyph_svgs = {}
+            try:
+                prompt_text = data.get('prompt', '')
+                from ai_font_geo import GlyphDrawer, analyze_prompt as geo_analyze
+                style = geo_analyze(prompt_text)
+                drawer = GlyphDrawer(style)
+                all_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?-_()'
+                for ch in all_chars:
+                    try:
+                        path, adv = drawer.draw(ch)
+                        if path:
+                            glyph_svgs[ch] = {'d': path, 'adv': adv}
+                    except Exception:
+                        pass
+                print(f"[AI] glyph_svgs: {len(glyph_svgs)} chars")
+            except Exception as e:
+                print(f"[AI] glyph_svgs error: {e}")
+
             self.json_resp({
                 'success': True,
                 'files': result_files,
@@ -851,6 +890,7 @@ Be accurate. Respond with ONLY the JSON."""
                 'font_b64': font_b64,
                 'glyph_count': glyph_count,
                 'generated_chars': generated_chars,
+                'glyph_svgs': glyph_svgs,
             })
 
         except Exception as e:
