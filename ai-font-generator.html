@@ -577,12 +577,14 @@ function toggleAdv(){
 // ── Font preview ──────────────────────────────────────────
 let currentFontName=null;
 function updatePreview(val){
-  document.getElementById('fontPreview').textContent=val||'Aa Bb Cc';
+  renderGlyphPreview(val||'Aa Bb Cc');
 }
 function setSize(btn,px){
   document.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   document.getElementById('fontPreview').style.fontSize=px+'px';
+  const cur=document.getElementById('prevInput').value||'Aa Bb Cc';
+  renderGlyphPreview(cur);
 }
 
 // ── Progress log ──────────────────────────────────────────
@@ -737,47 +739,83 @@ Make the letterforms genuinely reflect the described style.
 Return ONLY the JSON object, no other text.`;
 }
 
+// ── GLYPH SVG RENDERER ────────────────────────────────────
+// Renders text directly as inline SVG using raw glyph path data.
+// Zero @font-face, zero browser restrictions, works everywhere.
+let currentGlyphs = {};
+const EM = 700, BASE_Y = 560;
+
+function glyphsToSVG(text, glyphs, height=90, color='currentColor') {
+  if(!glyphs || !Object.keys(glyphs).length) return null;
+  const scale = height / EM;
+  let x = 0;
+  const paths = [];
+  for(const ch of text) {
+    if(ch === ' ') { x += 280 * scale; continue; }
+    const g = glyphs[ch];
+    if(!g) { x += 320 * scale; continue; }
+    // Flip Y (SVG coords are top-down, font coords baseline up)
+    paths.push(
+      `<g transform="translate(${x.toFixed(1)},${(height).toFixed(1)}) scale(${scale.toFixed(4)},${(-scale).toFixed(4)})">`+
+      `<path d="${g.d}" fill="${color}"/>`+
+      `</g>`
+    );
+    x += g.adv * scale + 2;
+  }
+  if(!paths.length) return null;
+  const W = Math.max(x + 20, 80);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W.toFixed(0)}" height="${height}" viewBox="0 0 ${W.toFixed(0)} ${height}">${paths.join('')}</svg>`;
+}
+
+function renderGlyphPreview(text) {
+  const el = document.getElementById('fontPreview');
+  if(!Object.keys(currentGlyphs).length) { el.textContent = text; return; }
+  const h = parseInt(el.style.fontSize) || 72;
+  const isDark = !document.body.classList.contains('light-mode');
+  const svg = glyphsToSVG(text, currentGlyphs, h, isDark ? '#f0eeff' : '#08071e');
+  if(svg) {
+    el.innerHTML = svg;
+  } else {
+    el.textContent = text;
+  }
+}
+
 // ── SHOW RESULT ───────────────────────────────────────────
-async function showResult(data, fontName, prompt) {
+function showResult(data, fontName, prompt) {
   document.getElementById('progress').style.display='none';
   document.getElementById('genBtn').disabled=false;
   document.getElementById('genBtnLabel').textContent='Generate Font with AI';
 
-  const panel=document.getElementById('previewPanel');
-  panel.style.display='block';
+  const panel = document.getElementById('previewPanel');
+  panel.style.display = 'block';
 
-  document.getElementById('prevTitle').textContent=fontName+'_Regular';
-  document.getElementById('prevMeta').textContent=`Generated from: "${prompt.substring(0,60)}${prompt.length>60?'…':''}"  ·  ${data.glyph_count||0} glyphs`;
+  document.getElementById('prevTitle').textContent = fontName + '_Regular';
+  document.getElementById('prevMeta').textContent =
+    `Generated from: "${prompt.substring(0,60)}${prompt.length>60?'…':''}"  ·  ${data.glyph_count||0} glyphs`;
 
-  // Load font from base64 using FontFace API — waits until truly loaded
+  // Store glyph data globally
+  currentGlyphs = data.glyph_svgs || {};
+  console.log('[Vectrod] Glyph paths received:', Object.keys(currentGlyphs).length);
+
+  // Render preview immediately — pure SVG, no font loading needed
+  renderGlyphPreview('Aa Bb Cc Dd Ee');
+
+  // Also try loading the real font in background (for download verification)
   if(data.font_b64) {
     try {
-      // Remove old font with same name if exists
-      document.fonts.forEach(f=>{ if(f.family===`'${fontName}'`||f.family===fontName) document.fonts.delete(f); });
-      
       const fontUrl = `data:font/truetype;base64,${data.font_b64}`;
       const ff = new FontFace(fontName, `url('${fontUrl}')`);
-      const loaded = await ff.load();   // ← WAITS until font is ready
-      document.fonts.add(loaded);
-      currentFontName = fontName;
-      
-      // Now safe to render — font is guaranteed loaded
-      const applyFont = `'${fontName}', Georgia, serif`;
-      document.getElementById('fontPreview').style.fontFamily = applyFont;
-      document.getElementById('fontPreview').classList.add('loaded');
-      document.getElementById('prevInput').style.fontFamily = applyFont;
-      
-      // Update char map with same font
-      renderCharMap(data.generated_chars || [], fontName);
-      
-      // Inject @font-face for any other uses
-      document.getElementById('dynFont').textContent =
-        `@font-face{font-family:'${fontName}';src:url('${fontUrl}') format('truetype');}`;
-    } catch(err) {
-      console.error('Font load failed:', err);
-      showErr('Font loaded but preview failed: ' + err.message);
-    }
+      ff.load().then(loaded => {
+        document.fonts.add(loaded);
+        document.getElementById('dynFont').textContent =
+          `@font-face{font-family:'${fontName}';src:url('${fontUrl}') format('truetype');}`;
+        console.log('[Vectrod] TTF font also loaded via FontFace API');
+      }).catch(()=>{});
+    } catch(e) {}
   }
+
+  // Char map — rendered as small inline SVGs
+  renderCharMap(data.generated_chars || Object.keys(currentGlyphs).filter(c=>c.length===1));
 
   // Downloads
   renderDownloads(data.files || [], fontName);
@@ -785,15 +823,22 @@ async function showResult(data, fontName, prompt) {
   panel.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function renderCharMap(chars, fontName) {
+function renderCharMap(chars) {
   const map = document.getElementById('charMap');
   map.innerHTML = '';
-  const fontStr = `'${fontName}', Georgia, serif`;
-  (chars.length ? chars : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')).forEach(ch => {
+  const isDark = !document.body.classList.contains('light-mode');
+  const col = isDark ? '#f0eeff' : '#08071e';
+  chars.slice(0,62).forEach(ch => {
     const cell = document.createElement('div');
     cell.className = 'char-cell';
-    cell.style.fontFamily = fontStr;
-    cell.textContent = ch;
+    cell.title = ch + ' (U+' + ch.charCodeAt(0).toString(16).toUpperCase().padStart(4,'0') + ')';
+    if(currentGlyphs[ch]) {
+      const svg = glyphsToSVG(ch, currentGlyphs, 28, col);
+      if(svg) { cell.innerHTML = svg; cell.style.display='flex'; cell.style.alignItems='center'; cell.style.justifyContent='center'; }
+      else cell.textContent = ch;
+    } else {
+      cell.textContent = ch;
+    }
     const lbl = document.createElement('span');
     lbl.className = 'char-cell-lbl';
     lbl.textContent = ch.charCodeAt(0);
@@ -805,6 +850,10 @@ function renderCharMap(chars, fontName) {
 function renderDownloads(files, fontName) {
   const dlRow = document.getElementById('dlRow');
   dlRow.innerHTML = '';
+  if(!files.length) {
+    dlRow.innerHTML = '<div style="color:var(--mt);font-size:12px;font-family:DM Mono,monospace">Download links will appear here after generation.</div>';
+    return;
+  }
   files.forEach(f => {
     const isTTF = f.filename.endsWith('.ttf');
     const a = document.createElement('a');
