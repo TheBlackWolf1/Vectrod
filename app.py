@@ -114,25 +114,34 @@ class Handler(BaseHTTPRequestHandler):
         """Handwriting image → glyph preview + session SVG"""
         try:
             fields, files = self.read_body()
+            print(f"[HW-PROCESS] fields={list(fields.keys())} files={list(files.keys())}")
+
             if 'image' not in files:
-                self.json_resp({'success': False, 'error': 'No image uploaded'}, 400)
+                self.json_resp({'success': False, 'error': 'No image uploaded — check form field name'}, 400)
                 return
 
-            from handwriting_processor import process_handwriting
-            import shutil
+            img_data = files['image'].get('data', b'')
+            if len(img_data) < 100:
+                self.json_resp({'success': False, 'error': f'Image too small ({len(img_data)} bytes) — upload failed'}, 400)
+                return
 
-            img_bytes     = files['image']['data']
             mode          = fields.get('mode', 'sentence')
             expected_text = fields.get('expected_text', '').strip()
+            print(f"[HW-PROCESS] img={len(img_data)} bytes mode={mode} text='{expected_text[:60]}'")
 
-            print(f"[HW-PROCESS] mode={mode} text='{expected_text[:60]}'")
+            # Import processor (it's in same directory, sys.path already set)
+            try:
+                from handwriting_processor import process_handwriting
+            except ImportError as ie:
+                self.json_resp({'success': False, 'error': f'Processor module error: {ie}'}, 500)
+                return
 
-            result = process_handwriting(img_bytes, mode=mode,
+            result = process_handwriting(img_data, mode=mode,
                                          expected_text=expected_text or None)
 
             if not result.get('success'):
                 self.json_resp({'success': False,
-                                'error': result.get('error','Detection failed')})
+                                'error': result.get('error', 'Character detection failed')})
                 return
 
             # Save SVG to temp session
@@ -140,9 +149,15 @@ class Handler(BaseHTTPRequestHandler):
             tmp_dir = f'/tmp/hw_{sid}'
             os.makedirs(tmp_dir, exist_ok=True)
             svg_path = os.path.join(tmp_dir, 'handwriting.svg')
-            with open(svg_path, 'w', encoding='utf-8') as svgf:
-                svgf.write(result['svg'])
+            svg_content = result.get('svg', '')
+            if not svg_content:
+                self.json_resp({'success': False, 'error': 'SVG generation returned empty — no glyphs built'})
+                return
 
+            with open(svg_path, 'w', encoding='utf-8') as svgf:
+                svgf.write(svg_content)
+
+            print(f"[HW-PROCESS] OK sid={sid[:8]} chars={result.get('char_count')} svg={len(svg_content)}")
             self.json_resp({
                 'success':        True,
                 'preview':        result.get('preview'),
@@ -154,7 +169,7 @@ class Handler(BaseHTTPRequestHandler):
 
         except Exception as e:
             print(f"[HW-PROCESS ERROR] {e}\n{traceback.format_exc()}")
-            self.json_resp({'success': False, 'error': str(e)}, 500)
+            self.json_resp({'success': False, 'error': f'Server error: {str(e)}'}, 500)
 
     def handle_handwriting_to_font(self):
         """Session SVG → TTF + OTF download"""
