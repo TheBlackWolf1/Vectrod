@@ -673,7 +673,7 @@ async function generate(){
     stopStages();
     await new Promise(r=>setTimeout(r,400));
 
-    showResult(data, fontName, prompt);
+    await showResult(data, fontName, prompt);
 
   } catch(err) {
     stopStages();
@@ -738,7 +738,7 @@ Return ONLY the JSON object, no other text.`;
 }
 
 // ── SHOW RESULT ───────────────────────────────────────────
-function showResult(data, fontName, prompt) {
+async function showResult(data, fontName, prompt) {
   document.getElementById('progress').style.display='none';
   document.getElementById('genBtn').disabled=false;
   document.getElementById('genBtnLabel').textContent='Generate Font with AI';
@@ -749,53 +749,77 @@ function showResult(data, fontName, prompt) {
   document.getElementById('prevTitle').textContent=fontName+'_Regular';
   document.getElementById('prevMeta').textContent=`Generated from: "${prompt.substring(0,60)}${prompt.length>60?'…':''}"  ·  ${data.glyph_count||0} glyphs`;
 
-  // Inject font via @font-face
-  if(data.font_url) {
-    const css=`@font-face{font-family:'${fontName}';src:url('${data.font_url}') format('truetype');font-weight:normal;font-style:normal}`;
-    document.getElementById('dynFont').textContent=css;
-    currentFontName=fontName;
-    const prev=document.getElementById('fontPreview');
-    prev.style.fontFamily=`'${fontName}', serif`;
-    prev.classList.add('loaded');
-    // Also update preview input font
-    document.getElementById('prevInput').style.fontFamily=`'${fontName}', serif`;
+  // Load font from base64 using FontFace API — waits until truly loaded
+  if(data.font_b64) {
+    try {
+      // Remove old font with same name if exists
+      document.fonts.forEach(f=>{ if(f.family===`'${fontName}'`||f.family===fontName) document.fonts.delete(f); });
+      
+      const fontUrl = `data:font/truetype;base64,${data.font_b64}`;
+      const ff = new FontFace(fontName, `url('${fontUrl}')`);
+      const loaded = await ff.load();   // ← WAITS until font is ready
+      document.fonts.add(loaded);
+      currentFontName = fontName;
+      
+      // Now safe to render — font is guaranteed loaded
+      const applyFont = `'${fontName}', Georgia, serif`;
+      document.getElementById('fontPreview').style.fontFamily = applyFont;
+      document.getElementById('fontPreview').classList.add('loaded');
+      document.getElementById('prevInput').style.fontFamily = applyFont;
+      
+      // Update char map with same font
+      renderCharMap(data.generated_chars || [], fontName);
+      
+      // Inject @font-face for any other uses
+      document.getElementById('dynFont').textContent =
+        `@font-face{font-family:'${fontName}';src:url('${fontUrl}') format('truetype');}`;
+    } catch(err) {
+      console.error('Font load failed:', err);
+      showErr('Font loaded but preview failed: ' + err.message);
+    }
   }
 
-  // Char map
-  const map=document.getElementById('charMap');
-  map.innerHTML='';
-  const chars=data.generated_chars||'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  chars.forEach(ch=>{
-    const cell=document.createElement('div');
-    cell.className='char-cell';
-    cell.style.fontFamily=currentFontName?`'${currentFontName}',serif`:'serif';
-    cell.textContent=ch;
-    const lbl=document.createElement('span');
-    lbl.className='char-cell-lbl';
-    lbl.textContent=ch.charCodeAt(0);
+  // Downloads
+  renderDownloads(data.files || [], fontName);
+
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function renderCharMap(chars, fontName) {
+  const map = document.getElementById('charMap');
+  map.innerHTML = '';
+  const fontStr = `'${fontName}', Georgia, serif`;
+  (chars.length ? chars : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')).forEach(ch => {
+    const cell = document.createElement('div');
+    cell.className = 'char-cell';
+    cell.style.fontFamily = fontStr;
+    cell.textContent = ch;
+    const lbl = document.createElement('span');
+    lbl.className = 'char-cell-lbl';
+    lbl.textContent = ch.charCodeAt(0);
     cell.appendChild(lbl);
     map.appendChild(cell);
   });
+}
 
-  // Downloads
-  const dlRow=document.getElementById('dlRow');
-  dlRow.innerHTML='';
-  if(data.files){
-    data.files.forEach(f=>{
-      const isTTF=f.filename.endsWith('.ttf');
-      const a=document.createElement('a');
-      a.href=f.url; a.download='';
-      a.className='dl-btn '+(isTTF?'dl-ttf':'dl-otf');
-      a.innerHTML=`<div class="dl-ico">${isTTF?'📦':'✨'}</div>
-        <div><div class="dl-info-name">${f.filename}</div>
+function renderDownloads(files, fontName) {
+  const dlRow = document.getElementById('dlRow');
+  dlRow.innerHTML = '';
+  files.forEach(f => {
+    const isTTF = f.filename.endsWith('.ttf');
+    const a = document.createElement('a');
+    a.href = f.url;
+    a.download = f.filename;
+    a.className = 'dl-btn ' + (isTTF ? 'dl-ttf' : 'dl-otf');
+    a.innerHTML = `<div class="dl-ico">${isTTF?'📦':'✨'}</div>
+      <div>
+        <div class="dl-info-name">${f.filename}</div>
         <div class="dl-info-desc">${isTTF?'Windows · Android · Universal':'Mac · Adobe · Pro Apps'}</div>
-        <div class="dl-info-sz">${(f.size/1024).toFixed(0)} KB</div></div>
-        <span class="dl-arr">⬇</span>`;
-      dlRow.appendChild(a);
-    });
-  }
-
-  panel.scrollIntoView({behavior:'smooth', block:'start'});
+        <div class="dl-info-sz">${(f.size/1024).toFixed(0)} KB</div>
+      </div>
+      <span class="dl-arr">⬇</span>`;
+    dlRow.appendChild(a);
+  });
 }
 
 // ── ERROR ─────────────────────────────────────────────────
