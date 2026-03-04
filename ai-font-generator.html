@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Font Generator — Describe Any Font, Download It | Vectrod</title>
+<meta name="description" content="Type what you want — bold retro 70s, elegant serif, futuristic tech — and get a real downloadable font in seconds. Free AI font creation.">
+<link rel="canonical" href="https://vectrod.com/ai-font-generator">
+<meta property="og:title" content="AI Font Generator | Vectrod">
+<meta property="og:description" content="Describe any font in words → download real TTF/OTF. Free, instant, no signup.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────────────── */
+:root{
+  --bg:#03020d;--bg2:#08071e;--bg3:#0f0e2a;--bg4:#151336;
+  --br:rgba(255,255,255,.06);--br2:rgba(255,255,255,.11);--br3:rgba(255,255,255,.18);
+  --tx:#f0eeff;--mt:rgba(240,238,255,.5);--mt2:rgba(240,238,255,.22);--mt3:rgba(240,238,255,.1);
+  --gold:#f0c060;--gold2:#ffe066;--goldl:rgba(240,192,96,.1);--goldg:rgba(240,192,96,.18);
+  --pk:#ee44aa;--pkl:rgba(238,68,170,.1);
+  --p:#9944ee;--p2:#bb77ff;--pl:rgba(153,68,238,.1);--pl2:rgba(153,68,238,.2);
+  --ok:#22dd99;--okl:rgba(34,221,153,.1);
+  --bl:#4488ff;--bll:rgba(68,136,255,.1);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,::before,::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;cursor:default}
+
+/* ── ANIMATED BG ─────────────────────────────────────── */
+.scene{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+
+/* Grain overlay */
+.grain{position:absolute;inset:-50%;width:200%;height:200%;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  animation:grainMove 0.8s steps(2) infinite;opacity:.4}
+@keyframes grainMove{0%{transform:translate(0,0)}25%{transform:translate(-2%,1%)}50%{transform:translate(1%,-2%)}75%{transform:translate(-1%,2%)}100%{transform:translate(2%,-1%)}}
+
+/* Aurora orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(100px);mix-blend-mode:screen}
+.orb1{width:900px;height:900px;top:-300px;left:-200px;background:radial-gradient(circle,rgba(153,68,238,.18) 0%,transparent 65%);animation:orbFloat1 25s ease-in-out infinite alternate}
+.orb2{width:700px;height:700px;bottom:-200px;right:-100px;background:radial-gradient(circle,rgba(238,68,170,.12) 0%,transparent 65%);animation:orbFloat2 30s ease-in-out infinite alternate}
+.orb3{width:500px;height:500px;top:40%;left:40%;background:radial-gradient(circle,rgba(34,221,153,.08) 0%,transparent 65%);animation:orbFloat3 20s ease-in-out infinite alternate}
+@keyframes orbFloat1{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,40px) scale(1.1)}}
+@keyframes orbFloat2{from{transform:translate(0,0)}to{transform:translate(-50px,-30px)}}
+@keyframes orbFloat3{from{transform:translate(0,0) scale(0.9)}to{transform:translate(30px,50px) scale(1.1)}}
+
+/* Grid */
+.grid-bg{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(153,68,238,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(153,68,238,.03) 1px,transparent 1px);
+  background-size:60px 60px}
+
+/* Floating letters bg */
+.float-letters{position:absolute;inset:0;overflow:hidden}
+.fl-char{position:absolute;font-family:'Cinzel',serif;font-weight:900;opacity:.025;pointer-events:none;user-select:none;animation:floatChar linear infinite}
+@keyframes floatChar{0%{transform:translateY(110vh) rotate(0deg)}100%{transform:translateY(-20vh) rotate(360deg)}}
+
+/* ── LAYOUT ─────────────────────────────────────────── */
+.wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:28px 20px 100px}
+
+/* ── NAV ──────────────────────────────────────────────── */
+.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:70px;gap:10px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:34px;height:34px;flex-shrink:0}
+.logo-name{font-family:'Cinzel',serif;font-size:17px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#bb77ff,#22dd99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-sub{font-size:8px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-top:1px}
+.nav-r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.nbtn{background:rgba(255,255,255,.04);border:1px solid var(--br);color:var(--mt);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;padding:8px 15px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center}
+.nbtn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── HERO ─────────────────────────────────────────────── */
+.hero{text-align:center;margin-bottom:54px;animation:heroIn .9s var(--ease) both}
+@keyframes heroIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+.ai-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px 6px 8px;border-radius:100px;border:1px solid rgba(238,68,170,.3);background:rgba(238,68,170,.07);margin-bottom:22px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--pk)}
+.ai-badge-dot{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#ee44aa,#9944ee);display:flex;align-items:center;justify-content:center;font-size:11px;animation:badgePulse 2s ease-in-out infinite;box-shadow:0 0 12px rgba(238,68,170,.5)}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 8px rgba(238,68,170,.4)}50%{box-shadow:0 0 20px rgba(238,68,170,.7)}}
+
+h1{font-family:'Cinzel',serif;font-size:clamp(32px,6vw,72px);font-weight:900;line-height:.9;letter-spacing:-.02em;margin-bottom:16px}
+.h1-line1{display:block;color:var(--tx)}
+.h1-line2{display:block;background:linear-gradient(90deg,var(--gold),var(--pk),var(--p2),var(--ok));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShift 4s linear infinite;filter:drop-shadow(0 0 40px rgba(238,68,170,.25))}
+@keyframes gradShift{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+
+.hero-sub{font-size:17px;color:var(--mt);max-width:500px;margin:0 auto 30px;line-height:1.8;font-weight:400}
+.hero-sub em{color:var(--gold);font-style:normal;font-weight:700}
+
+/* Stats row */
+.hstats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+.hstat{text-align:center}
+.hstat-n{font-family:'Cinzel',serif;font-size:20px;font-weight:900}
+.hstat-n.g{background:linear-gradient(90deg,var(--gold),var(--pk));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hstat-n.p{background:linear-gradient(90deg,var(--p2),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hstat-n.b{background:linear-gradient(90deg,var(--bl),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hstat-l{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+
+/* ── STYLE CARDS (quick presets) ─────────────────── */
+.section-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--mt2);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--br2),transparent)}
+
+.presets{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:28px}
+.preset{background:var(--bg2);border:1.5px solid var(--br);border-radius:16px;padding:14px 14px 12px;cursor:pointer;transition:all .2s;text-align:center;position:relative;overflow:hidden}
+.preset::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s}
+.preset:hover{transform:translateY(-3px);border-color:var(--br3)}
+.preset:hover::before{opacity:1}
+.preset.on{border-color:var(--pk);background:rgba(238,68,170,.07)}
+.preset.on::before{background:radial-gradient(circle at 50% 0%,rgba(238,68,170,.12),transparent 70%);opacity:1}
+.preset-sample{font-size:28px;font-weight:900;letter-spacing:-.02em;margin-bottom:6px;line-height:1;transition:all .2s}
+.preset-name{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+.preset-tag{display:inline-block;font-size:8px;font-family:'DM Mono',monospace;padding:2px 6px;border-radius:100px;margin-top:4px;font-weight:700}
+
+/* Preset color themes */
+.preset-bold .preset-sample{background:linear-gradient(135deg,var(--gold),#ff8800);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.preset-bold .preset-tag{background:rgba(240,192,96,.15);color:var(--gold)}
+.preset-elegant .preset-sample{background:linear-gradient(135deg,#e8d5b7,#c8a87a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.preset-elegant .preset-tag{background:rgba(200,168,122,.12);color:#c8a87a}
+.preset-tech .preset-sample{background:linear-gradient(135deg,var(--ok),var(--bl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.preset-tech .preset-tag{background:rgba(34,221,153,.12);color:var(--ok)}
+.preset-retro .preset-sample{background:linear-gradient(135deg,#ff6644,#ff9922);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.preset-retro .preset-tag{background:rgba(255,102,68,.12);color:#ff8844}
+.preset-horror .preset-sample{background:linear-gradient(135deg,#cc2244,#880022);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.preset-horror .preset-tag{background:rgba(204,34,68,.12);color:#cc4455}
+.preset-cute .preset-sample{background:linear-gradient(135deg,#ff77cc,#ffaaee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.preset-cute .preset-tag{background:rgba(255,119,204,.12);color:#ff88cc}
+.preset-minimal .preset-sample{color:var(--tx)}
+.preset-minimal .preset-tag{background:var(--mt3);color:var(--mt)}
+.preset-cyber .preset-sample{background:linear-gradient(135deg,var(--pk),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.preset-cyber .preset-tag{background:rgba(153,68,238,.14);color:var(--p2)}
+
+/* ── PROMPT BOX ───────────────────────────────────── */
+.prompt-wrap{position:relative;margin-bottom:20px;animation:promptIn .9s var(--ease) .15s both}
+@keyframes promptIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.prompt-border{position:absolute;inset:-1.5px;border-radius:22px;background:linear-gradient(90deg,var(--gold),var(--pk),var(--p2),var(--ok),var(--bl),var(--gold));background-size:300% auto;animation:borderSpin 4s linear infinite;opacity:0;transition:opacity .3s;border-radius:22px}
+.prompt-wrap:focus-within .prompt-border{opacity:.8}
+.prompt-box{position:relative;background:var(--bg2);border:1.5px solid var(--br2);border-radius:20px;overflow:hidden;transition:border-color .3s}
+.prompt-box:focus-within{border-color:transparent}
+@keyframes borderSpin{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+
+.prompt-top{display:flex;align-items:center;gap:10px;padding:16px 18px 10px}
+.prompt-ico{font-size:20px;flex-shrink:0}
+.prompt-input{flex:1;background:none;border:none;color:var(--tx);font-family:'Outfit',sans-serif;font-size:16px;font-weight:500;outline:none;caret-color:var(--pk);resize:none;height:56px;line-height:1.6;padding:4px 0}
+.prompt-input::placeholder{color:var(--mt2);font-weight:400}
+
+.prompt-bottom{display:flex;align-items:center;justify-content:space-between;padding:10px 18px 14px;border-top:1px solid var(--br)}
+.prompt-chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.06em;padding:4px 10px;border-radius:100px;border:1px solid var(--br2);color:var(--mt);background:rgba(255,255,255,.03);cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--pk);color:var(--pk);background:var(--pkl)}
+.chip.active{border-color:var(--pk);color:var(--pk);background:var(--pkl)}
+.chip-ico{font-size:9px}
+
+.char-count{font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace}
+
+/* ── ADVANCED OPTIONS ──────────────────────────────── */
+.adv-toggle{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.08em;cursor:pointer;width:fit-content;margin-bottom:14px;padding:6px 12px;border-radius:100px;border:1px solid var(--br);background:rgba(255,255,255,.02);transition:all .18s}
+.adv-toggle:hover{border-color:var(--br3);color:var(--tx)}
+.adv-chevron{transition:transform .2s;font-size:10px}
+.adv-chevron.open{transform:rotate(180deg)}
+
+.adv-panel{display:none;background:var(--bg2);border:1px solid var(--br);border-radius:18px;padding:20px;margin-bottom:18px;animation:fadeIn .2s var(--ease)}
+.adv-panel.open{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:540px){.adv-panel.open{grid-template-columns:1fr}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+.adv-field label{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--mt2);margin-bottom:8px}
+.adv-select,.adv-input{width:100%;background:var(--bg3);border:1.5px solid var(--br2);border-radius:10px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:13px;padding:10px 14px;outline:none;transition:border-color .2s;appearance:none}
+.adv-select{cursor:pointer}
+.adv-select:focus,.adv-input:focus{border-color:rgba(238,68,170,.4)}
+.adv-select option{background:var(--bg3)}
+
+/* ── GENERATE BUTTON ───────────────────────────────── */
+.gen-btn{position:relative;width:100%;padding:18px;border:none;border-radius:16px;font-family:'DM Mono',monospace;font-size:14px;font-weight:900;letter-spacing:.1em;cursor:pointer;overflow:hidden;transition:all .25s;margin-bottom:10px}
+.gen-btn-bg{position:absolute;inset:0;background:linear-gradient(90deg,#c06000,#ee44aa,#9944ee,#22dd99,#ee44aa,#c06000);background-size:300% auto;animation:borderSpin 3s linear infinite;transition:filter .25s}
+.gen-btn:hover .gen-btn-bg{filter:brightness(1.15)}
+.gen-btn:hover{transform:translateY(-2px);box-shadow:0 16px 50px rgba(238,68,170,.35)}
+.gen-btn:active{transform:translateY(0)}
+.gen-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.gen-btn-label{position:relative;z-index:1;color:#fff;-webkit-text-fill-color:#fff;display:flex;align-items:center;justify-content:center;gap:10px}
+.gen-btn-ico{font-size:18px;animation:btnIcoPulse 2s ease-in-out infinite}
+@keyframes btnIcoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15) rotate(10deg)}}
+.gen-btn:disabled .gen-btn-ico{animation:none}
+
+/* ── PROGRESS ─────────────────────────────────────── */
+.progress{display:none;margin-bottom:20px;background:var(--bg2);border:1px solid var(--br);border-radius:20px;padding:24px 26px;overflow:hidden;position:relative}
+.progress::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(238,68,170,.04),rgba(153,68,238,.04));pointer-events:none}
+
+.prog-stage{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--pk);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.prog-spinner{width:14px;height:14px;border:2px solid rgba(238,68,170,.2);border-top-color:var(--pk);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.prog-bar-wrap{background:rgba(255,255,255,.05);border-radius:100px;height:4px;margin-bottom:18px;overflow:hidden}
+.prog-bar{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--pk),var(--p2),var(--ok));background-size:200% auto;animation:borderSpin 2s linear infinite;transition:width .4s var(--ease);width:0%}
+
+.prog-log{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;line-height:2;max-height:80px;overflow:hidden}
+.prog-log-line{opacity:0;transform:translateY(4px);animation:logIn .3s var(--ease) forwards}
+.prog-log-line.done{color:var(--ok)}
+@keyframes logIn{to{opacity:1;transform:translateY(0)}}
+
+/* ── PREVIEW PANEL ────────────────────────────────── */
+.preview-panel{display:none;background:var(--bg2);border:1.5px solid var(--br2);border-radius:24px;overflow:hidden;margin-bottom:20px;animation:panelIn .5s var(--ease) both}
+@keyframes panelIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+.preview-header{padding:20px 24px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.preview-title{font-family:'Cinzel',serif;font-size:20px;font-weight:900}
+.preview-meta{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace}
+
+/* Font render area */
+.font-stage{padding:28px 24px;min-height:180px;position:relative}
+.font-stage-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(238,68,170,.03),rgba(153,68,238,.03));pointer-events:none}
+
+/* The actual font preview using @font-face */
+.font-preview-text{font-size:clamp(36px,8vw,80px);font-weight:400;line-height:1.1;letter-spacing:-.01em;color:var(--tx);transition:font-size .2s;word-break:break-word;min-height:90px;position:relative;z-index:1}
+.font-preview-text.loaded{color:var(--tx)}
+.font-preview-text.loading{opacity:.4}
+
+.preview-controls{padding:0 24px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--br)}
+.preview-input{flex:1;min-width:200px;background:var(--bg3);border:1px solid var(--br2);border-radius:10px;color:var(--mt);font-family:'Outfit',sans-serif;font-size:13px;padding:9px 14px;outline:none;transition:border-color .2s}
+.preview-input:focus{border-color:rgba(238,68,170,.4);color:var(--tx)}
+.sz-btn{background:rgba(255,255,255,.04);border:1px solid var(--br);border-radius:8px;color:var(--mt);font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:7px 13px;cursor:pointer;transition:all .15s}
+.sz-btn:hover,.sz-btn.on{background:var(--pkl);border-color:var(--pk);color:var(--pk)}
+.sz-label{font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.1em;color:var(--mt2);text-transform:uppercase;white-space:nowrap}
+
+/* Char map */
+.char-map-wrap{padding:16px 24px;border-bottom:1px solid var(--br)}
+.char-map-label{font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mt2);margin-bottom:10px}
+.char-map{display:flex;flex-wrap:wrap;gap:5px}
+.char-cell{width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:1px solid var(--br);border-radius:8px;font-size:18px;cursor:default;transition:all .15s;position:relative}
+.char-cell:hover{border-color:var(--pk);background:var(--pkl);transform:scale(1.1)}
+.char-cell-lbl{position:absolute;bottom:1px;right:2px;font-size:6px;font-family:'DM Mono',monospace;color:var(--mt2);opacity:.5}
+
+/* Downloads */
+.dl-area{padding:20px 24px}
+.dl-title{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--mt2);margin-bottom:12px}
+.dl-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:420px){.dl-row{grid-template-columns:1fr}}
+.dl-btn{display:flex;align-items:center;gap:12px;padding:15px 18px;border-radius:14px;text-decoration:none;transition:all .2s;border:1.5px solid}
+.dl-ttf{background:var(--goldl);border-color:rgba(240,192,96,.2);color:var(--gold)}
+.dl-ttf:hover{background:rgba(240,192,96,.18);transform:translateY(-2px)}
+.dl-otf{background:var(--pkl);border-color:rgba(238,68,170,.2);color:var(--pk)}
+.dl-otf:hover{background:rgba(238,68,170,.15);transform:translateY(-2px)}
+.dl-ico{font-size:26px;flex-shrink:0}
+.dl-info-name{font-family:'DM Mono',monospace;font-size:12px;font-weight:700}
+.dl-info-desc{font-size:10px;opacity:.6;margin-top:1px}
+.dl-info-sz{font-size:9px;opacity:.4;font-family:'DM Mono',monospace;margin-top:2px}
+.dl-arr{margin-left:auto;font-size:18px;opacity:.5}
+
+/* Regenerate */
+.regen-btn{width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--br2);border-radius:12px;color:var(--mt);font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:12px;cursor:pointer;transition:all .2s;margin-top:10px;letter-spacing:.06em}
+.regen-btn:hover{border-color:var(--pk);color:var(--pk);background:var(--pkl)}
+
+/* ── ERROR ────────────────────────────────────────── */
+.err-box{display:none;background:rgba(255,68,102,.07);border:1.5px solid rgba(255,68,102,.2);border-radius:14px;padding:16px 20px;font-size:13px;color:#ff4466;margin-bottom:16px;line-height:1.6}
+
+/* ── EXAMPLES (inspiration) ───────────────────────── */
+.inspo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:36px}
+.inspo-card{background:var(--bg2);border:1px solid var(--br);border-radius:18px;padding:20px;cursor:pointer;transition:all .22s;overflow:hidden;position:relative}
+.inspo-card::after{content:'Try this →';position:absolute;bottom:14px;right:16px;font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.1em;color:var(--mt2);opacity:0;transition:opacity .2s}
+.inspo-card:hover{border-color:var(--br3);transform:translateY(-3px)}
+.inspo-card:hover::after{opacity:1}
+.inspo-big{font-family:'Cinzel',serif;font-size:36px;font-weight:900;line-height:1;margin-bottom:8px;background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShift 5s linear infinite}
+.inspo-prompt{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;line-height:1.6}
+.inspo-tag{display:inline-flex;margin-top:8px;font-size:9px;font-family:'DM Mono',monospace;font-weight:700;letter-spacing:.1em;padding:3px 9px;border-radius:100px}
+
+/* Light mode */
+body.light-mode{--bg:#f5f4ff;--bg2:#eceaff;--bg3:#e0deff;--br:rgba(0,0,0,.08);--br2:rgba(0,0,0,.12);--br3:rgba(0,0,0,.18);--tx:#08071e;--mt:rgba(8,7,30,.55);--mt2:rgba(8,7,30,.3);--mt3:rgba(8,7,30,.07);--gold:#b07000;--pk:#cc2288;--p:#6620bb;--p2:#6620bb;--ok:#0a7a50;--bl:#2255cc}
+body.light-mode .scene{opacity:.2}
+body.light-mode .prompt-box,body.light-mode .preview-panel,body.light-mode .progress,body.light-mode .adv-panel{background:var(--bg2)!important;border-color:var(--br)!important}
+body.light-mode .adv-select,body.light-mode .adv-input,body.light-mode .preview-input,body.light-mode .font-preview-text{background:#fff!important;border-color:var(--br)!important;color:var(--tx)!important}
+body.light-mode .preset{background:var(--bg2)!important;border-color:var(--br)!important}
+body.light-mode .nbtn{background:rgba(0,0,0,.05)!important;border-color:rgba(0,0,0,.14)!important;color:rgba(8,7,30,.6)!important;-webkit-text-fill-color:rgba(8,7,30,.6)!important}
+
+footer{border-top:1px solid var(--br);padding:30px 0;text-align:center;margin-top:20px}
+.fl{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.fl a{font-size:11px;color:var(--mt);text-decoration:none}.fl a:hover{color:var(--gold)}
+.fc{font-size:11px;color:var(--mt2)}
+</style>
+</head>
+<body>
+<div class="scene">
+  <div class="grain"></div>
+  <div class="grid-bg"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="float-letters" id="floatLetters"></div>
+</div>
+
+<div class="wrap">
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="logo" href="/">
+    <svg class="logo-mark" viewBox="0 0 46 46" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#bb77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs><path d="M23 2L42 23L23 44L4 23Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".35"/><path d="M7 10L23 38L39 10L34 10L23 30L12 10Z" fill="url(#lg)"/></svg>
+    <div><div class="logo-name">VECTROD</div><div class="logo-sub">AI Font Generator</div></div>
+  </a>
+  <div class="nav-r">
+    <a class="nbtn" href="/tools">⚙️ Tools</a>
+    <a class="nbtn" href="/fonts">1,200+ Fonts</a>
+    <a class="nbtn" href="/">Make Font</a>
+    <button class="nbtn" id="themeBtn" onclick="toggleTheme()">☀ Light</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="ai-badge">
+    <div class="ai-badge-dot">✦</div>
+    <span>POWERED BY CLAUDE AI — FREE — NO SIGNUP</span>
+  </div>
+  <h1>
+    <span class="h1-line1">Describe Any Font.</span>
+    <span class="h1-line2">Download It Instantly.</span>
+  </h1>
+  <p class="hero-sub">
+    Type <em>"bold retro 70s"</em>, <em>"elegant serif wedding"</em>, or <em>"cyberpunk neon"</em> — AI generates a real, installable font just for you.
+  </p>
+  <div class="hstats">
+    <div class="hstat"><div class="hstat-n g">∞</div><div class="hstat-l">Possibilities</div></div>
+    <div class="hstat"><div class="hstat-n p">TTF+OTF</div><div class="hstat-l">Output</div></div>
+    <div class="hstat"><div class="hstat-n b">~20s</div><div class="hstat-l">Generation</div></div>
+    <div class="hstat"><div class="hstat-n g">Free</div><div class="hstat-l">Forever</div></div>
+  </div>
+</div>
+
+<!-- STYLE PRESETS -->
+<div class="section-label">Quick Styles — click to fill</div>
+<div class="presets">
+  <div class="preset preset-bold" onclick="fillPreset(this,'Bold, heavy, strong — aggressive display font with thick strokes and sharp angles')">
+    <div class="preset-sample">Ag</div>
+    <div class="preset-name">Bold Impact</div>
+    <div class="preset-tag">Display</div>
+  </div>
+  <div class="preset preset-elegant" onclick="fillPreset(this,'Elegant, refined serif font — luxury magazine style with delicate thin strokes and high contrast')">
+    <div class="preset-sample">Ag</div>
+    <div class="preset-name">Elegant Serif</div>
+    <div class="preset-tag">Luxury</div>
+  </div>
+  <div class="preset preset-tech" onclick="fillPreset(this,'Futuristic tech font — geometric, monospace inspired, sci-fi feel with sharp precise letterforms')">
+    <div class="preset-sample">Ag</div>
+    <div class="preset-name">Tech Future</div>
+    <div class="preset-tag">Sci-Fi</div>
+  </div>
+  <div class="preset preset-retro" onclick="fillPreset(this,'Retro 1970s groovy font — rounded bubbly letterforms, warm funky vibes, vintage poster style')">
+    <div class="preset-sample">Ag</div>
+    <div class="preset-name">Retro 70s</div>
+    <div class="preset-tag">Vintage</div>
+  </div>
+  <div class="preset preset-horror" onclick="fillPreset(this,'Creepy horror font — dripping irregular letterforms, unsettling and dark, halloween style')">
+    <div class="preset-sample">Ag</div>
+    <div class="preset-name">Dark Horror</div>
+    <div class="preset-tag">Spooky</div>
+  </div>
+  <div class="preset preset-cute" onclick="fillPreset(this,'Cute kawaii font — round bubbly soft letterforms, playful and friendly, pastel vibes')">
+    <div class="preset-sample">Ag</div>
+    <div class="preset-name">Kawaii Cute</div>
+    <div class="preset-tag">Playful</div>
+  </div>
+  <div class="preset preset-minimal" onclick="fillPreset(this,'Ultra minimal geometric font — clean hairline strokes, Swiss design style, pure modernist')">
+    <div class="preset-sample">Ag</div>
+    <div class="preset-name">Minimal Swiss</div>
+    <div class="preset-tag">Modern</div>
+  </div>
+  <div class="preset preset-cyber" onclick="fillPreset(this,'Cyberpunk neon font — glitchy, angular, electric, dark web aesthetic with sharp edges')">
+    <div class="preset-sample">Ag</div>
+    <div class="preset-name">Cyberpunk</div>
+    <div class="preset-tag">Neon</div>
+  </div>
+</div>
+
+<!-- PROMPT -->
+<div class="section-label">Describe your font</div>
+<div class="prompt-wrap">
+  <div class="prompt-border"></div>
+  <div class="prompt-box">
+    <div class="prompt-top">
+      <span class="prompt-ico">✦</span>
+      <textarea class="prompt-input" id="promptInput" rows="2"
+        placeholder="bold 1970s retro, rounded, warm orange vibes, poster style…"
+        maxlength="300" oninput="onPromptInput()"></textarea>
+    </div>
+    <div class="prompt-bottom">
+      <div class="prompt-chips">
+        <span class="chip" onclick="addChip('bold')"><span class="chip-ico">💪</span>bold</span>
+        <span class="chip" onclick="addChip('elegant')"><span class="chip-ico">✨</span>elegant</span>
+        <span class="chip" onclick="addChip('geometric')"><span class="chip-ico">◆</span>geometric</span>
+        <span class="chip" onclick="addChip('handwritten')"><span class="chip-ico">✍️</span>handwritten</span>
+        <span class="chip" onclick="addChip('serif')"><span class="chip-ico">📰</span>serif</span>
+        <span class="chip" onclick="addChip('futuristic')"><span class="chip-ico">🚀</span>futuristic</span>
+      </div>
+      <span class="char-count" id="charCount">0/300</span>
+    </div>
+  </div>
+</div>
+
+<!-- FONT NAME -->
+<div style="display:flex;gap:10px;margin-bottom:14px;align-items:center">
+  <div style="flex:1">
+    <label style="display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--mt2);margin-bottom:7px">Font Name</label>
+    <input type="text" id="fontNameInput" value="MyAIFont" maxlength="40" placeholder="MyAIFont"
+      style="width:100%;background:var(--bg2);border:1.5px solid var(--br2);border-radius:12px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;padding:11px 15px;outline:none;transition:border-color .2s"
+      onfocus="this.style.borderColor='rgba(238,68,170,.4)'" onblur="this.style.borderColor='var(--br2)'">
+  </div>
+</div>
+
+<!-- ADVANCED -->
+<div class="adv-toggle" id="advToggle" onclick="toggleAdv()">
+  <span>⚙️</span><span>Advanced Options</span><span class="adv-chevron" id="advChevron">▾</span>
+</div>
+<div class="adv-panel" id="advPanel">
+  <div class="adv-field">
+    <label>Font Category</label>
+    <select class="adv-select" id="catSelect">
+      <option value="auto">Auto (AI decides)</option>
+      <option value="sans">Sans-Serif</option>
+      <option value="serif">Serif</option>
+      <option value="display">Display / Decorative</option>
+      <option value="mono">Monospace</option>
+      <option value="script">Script / Handwritten</option>
+    </select>
+  </div>
+  <div class="adv-field">
+    <label>Weight</label>
+    <select class="adv-select" id="weightSelect">
+      <option value="auto">Auto</option>
+      <option value="thin">Thin / Light</option>
+      <option value="regular">Regular</option>
+      <option value="medium">Medium</option>
+      <option value="bold">Bold</option>
+      <option value="black">Black / Heavy</option>
+    </select>
+  </div>
+  <div class="adv-field">
+    <label>Characters to Include</label>
+    <select class="adv-select" id="charSetSelect">
+      <option value="az">Uppercase A–Z only (faster)</option>
+      <option value="azlower">A–Z + a–z</option>
+      <option value="full">A–Z + a–z + 0–9 + punctuation</option>
+    </select>
+  </div>
+  <div class="adv-field">
+    <label>Inspiration (optional)</label>
+    <input type="text" class="adv-input" id="inspoInput" placeholder="like Futura, but warmer…">
+  </div>
+</div>
+
+<!-- ERROR -->
+<div class="err-box" id="errBox"></div>
+
+<!-- GENERATE BUTTON -->
+<button class="gen-btn" id="genBtn" onclick="generate()">
+  <div class="gen-btn-bg"></div>
+  <div class="gen-btn-label">
+    <span class="gen-btn-ico">✦</span>
+    <span id="genBtnLabel">Generate Font with AI</span>
+  </div>
+</button>
+
+<!-- PROGRESS -->
+<div class="progress" id="progress">
+  <div class="prog-stage"><div class="prog-spinner"></div><span id="progStage">Initializing AI…</span></div>
+  <div class="prog-bar-wrap"><div class="prog-bar" id="progBar"></div></div>
+  <div class="prog-log" id="progLog"></div>
+</div>
+
+<!-- PREVIEW PANEL -->
+<div class="preview-panel" id="previewPanel">
+  <div class="preview-header">
+    <div>
+      <div class="preview-title" id="prevTitle">Your Font</div>
+      <div class="preview-meta" id="prevMeta"></div>
+    </div>
+    <button class="regen-btn" style="width:auto;padding:8px 18px;margin-top:0" onclick="generate()">↻ Regenerate</button>
+  </div>
+  <div class="font-stage">
+    <div class="font-stage-bg"></div>
+    <div class="font-preview-text" id="fontPreview">Aa Bb Cc</div>
+  </div>
+  <div class="preview-controls">
+    <input class="preview-input" type="text" id="prevInput" value="Aa Bb Cc Dd Ee Ff" oninput="updatePreview(this.value)" placeholder="Type to preview…">
+    <span class="sz-label">Size:</span>
+    <button class="sz-btn on" onclick="setSize(this,48)">S</button>
+    <button class="sz-btn" onclick="setSize(this,72)">M</button>
+    <button class="sz-btn" onclick="setSize(this,96)">L</button>
+    <button class="sz-btn" onclick="setSize(this,130)">XL</button>
+  </div>
+  <div class="char-map-wrap">
+    <div class="char-map-label">Generated Characters</div>
+    <div class="char-map" id="charMap"></div>
+  </div>
+  <div class="dl-area">
+    <div class="dl-title">Download Your Font</div>
+    <div class="dl-row" id="dlRow"></div>
+  </div>
+</div>
+
+<!-- INSPIRATION -->
+<div class="section-label" style="margin-top:50px">Need inspiration? Try these</div>
+<div class="inspo-grid">
+  <div class="inspo-card" onclick="fillPreset(this.querySelector('.inspo-prompt').textContent)">
+    <div class="inspo-big" style="background-image:linear-gradient(90deg,#f0c060,#ff8800)">Vogue</div>
+    <div class="inspo-prompt">High fashion editorial serif — razor thin strokes, dramatic contrast, luxury magazine</div>
+    <div class="inspo-tag" style="background:rgba(240,192,96,.1);color:#f0c060">FASHION</div>
+  </div>
+  <div class="inspo-card" onclick="fillPreset(this.querySelector('.inspo-prompt').textContent)">
+    <div class="inspo-big" style="background-image:linear-gradient(90deg,#22dd99,#4488ff)">BYTE</div>
+    <div class="inspo-prompt">Monospace technical font — pixel-perfect grid alignment, code editor aesthetic, clean</div>
+    <div class="inspo-tag" style="background:rgba(34,221,153,.1);color:#22dd99">TECH</div>
+  </div>
+  <div class="inspo-card" onclick="fillPreset(this.querySelector('.inspo-prompt').textContent)">
+    <div class="inspo-big" style="background-image:linear-gradient(90deg,#ee44aa,#9944ee)">WILD</div>
+    <div class="inspo-prompt">Wild western wood type — rough edges, slab serif, vintage American poster, worn texture</div>
+    <div class="inspo-tag" style="background:rgba(238,68,170,.1);color:#ee44aa">VINTAGE</div>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="/">Font Creator</a><a href="/tools">All Tools</a><a href="/fonts">Free Fonts</a>
+    <a href="/handwriting-font">Handwriting Font</a><a href="/blog">Blog</a>
+  </div>
+  <div class="fc">© 2025 Vectrod · AI Font Generator · Free Forever</div>
+</footer>
+</div><!-- /wrap -->
+
+<!-- Dynamic @font-face injection -->
+<style id="dynFont"></style>
+
+<script>
+// ── Theme ─────────────────────────────────────────────────
+try{if(localStorage.getItem('vectrod_theme')==='light'){document.body.classList.add('light-mode');document.getElementById('themeBtn').textContent='🌙 Dark';}}catch(e){}
+function toggleTheme(){const l=document.body.classList.toggle('light-mode');try{localStorage.setItem('vectrod_theme',l?'light':'dark');}catch(e){}document.getElementById('themeBtn').textContent=l?'🌙 Dark':'☀ Light';}
+
+// ── Floating letters ──────────────────────────────────────
+const CHARS='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#&';
+const fl=document.getElementById('floatLetters');
+for(let i=0;i<28;i++){
+  const el=document.createElement('div');
+  el.className='fl-char';
+  el.textContent=CHARS[Math.floor(Math.random()*CHARS.length)];
+  const sz=Math.random()*80+30;
+  el.style.cssText=`left:${Math.random()*100}%;font-size:${sz}px;animation-duration:${Math.random()*20+15}s;animation-delay:-${Math.random()*20}s`;
+  fl.appendChild(el);
+}
+
+// ── Prompt ────────────────────────────────────────────────
+function onPromptInput(){
+  const v=document.getElementById('promptInput').value;
+  document.getElementById('charCount').textContent=v.length+'/300';
+}
+function addChip(word){
+  const inp=document.getElementById('promptInput');
+  if(!inp.value.toLowerCase().includes(word)){
+    inp.value=(inp.value.trim()+' '+word).trim();
+    onPromptInput();
+  }
+}
+function fillPreset(el, txt){
+  const prompt = typeof el === 'string' ? el : txt;
+  document.getElementById('promptInput').value=prompt;
+  onPromptInput();
+  // Highlight active preset
+  if(typeof el !== 'string'){
+    document.querySelectorAll('.preset').forEach(p=>p.classList.remove('on'));
+    el.classList.add('on');
+  }
+  document.getElementById('promptInput').focus();
+}
+
+// ── Advanced ─────────────────────────────────────────────
+function toggleAdv(){
+  const p=document.getElementById('advPanel');
+  const c=document.getElementById('advChevron');
+  const open=p.classList.toggle('open');
+  c.classList.toggle('open',open);
+}
+
+// ── Font preview ──────────────────────────────────────────
+let currentFontName=null;
+function updatePreview(val){
+  document.getElementById('fontPreview').textContent=val||'Aa Bb Cc';
+}
+function setSize(btn,px){
+  document.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('fontPreview').style.fontSize=px+'px';
+}
+
+// ── Progress log ──────────────────────────────────────────
+const STAGES=[
+  {label:'Analyzing your description…',pct:8},
+  {label:'Designing letterform geometry…',pct:22},
+  {label:'Calculating stroke weights & proportions…',pct:38},
+  {label:'Building A–Z uppercase glyphs…',pct:52},
+  {label:'Building a–z lowercase glyphs…',pct:66},
+  {label:'Adding numerals & punctuation…',pct:78},
+  {label:'Vectorizing Bezier curves…',pct:88},
+  {label:'Compiling TTF & OTF files…',pct:96},
+  {label:'Done! Packaging your font…',pct:100},
+];
+let stageIdx=0, stageTimer=null;
+
+function startStages(){
+  stageIdx=0;
+  document.getElementById('progLog').innerHTML='';
+  runStage();
+}
+function runStage(){
+  if(stageIdx>=STAGES.length) return;
+  const s=STAGES[stageIdx];
+  document.getElementById('progStage').textContent=s.label;
+  document.getElementById('progBar').style.width=s.pct+'%';
+  const line=document.createElement('div');
+  line.className='prog-log-line';
+  line.textContent='› '+s.label;
+  document.getElementById('progLog').appendChild(line);
+  stageIdx++;
+  const delay=stageIdx===1?400:stageIdx===STAGES.length?200:Math.random()*900+400;
+  stageTimer=setTimeout(runStage,delay);
+}
+function stopStages(){
+  clearTimeout(stageTimer);
+  document.getElementById('progBar').style.width='100%';
+}
+
+// ── MAIN GENERATE ─────────────────────────────────────────
+async function generate(){
+  const prompt=document.getElementById('promptInput').value.trim();
+  const fontName=(document.getElementById('fontNameInput').value.trim()||'MyAIFont').replace(/[^a-zA-Z0-9_-]/g,'');
+  const category=document.getElementById('catSelect').value;
+  const weight=document.getElementById('weightSelect').value;
+  const charSet=document.getElementById('charSetSelect').value;
+  const inspo=document.getElementById('inspoInput').value.trim();
+
+  if(!prompt){
+    showErr('Please describe your font first — try one of the presets above!');
+    document.getElementById('promptInput').focus();
+    return;
+  }
+
+  // UI: loading state
+  const btn=document.getElementById('genBtn');
+  btn.disabled=true;
+  document.getElementById('genBtnLabel').textContent='Generating…';
+  document.getElementById('progress').style.display='block';
+  document.getElementById('previewPanel').style.display='none';
+  document.getElementById('errBox').style.display='none';
+  startStages();
+
+  try {
+    // Build AI prompt for font SVG generation
+    const systemPrompt = buildSystemPrompt(category, weight, charSet, inspo);
+    const userPrompt = buildUserPrompt(prompt, fontName, charSet);
+
+    // Call Anthropic API via backend proxy
+    const response = await fetch('/ai-generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        prompt: userPrompt,
+        system: systemPrompt,
+        font_name: fontName,
+        char_set: charSet,
+      })
+    });
+
+    const raw = await response.text();
+    let data;
+    try { data = JSON.parse(raw); }
+    catch(e) { throw new Error(`Server error (${response.status}): ${raw.substring(0,200)}`); }
+
+    if(!data.success) throw new Error(data.error || 'Font generation failed');
+
+    stopStages();
+    await new Promise(r=>setTimeout(r,400));
+
+    showResult(data, fontName, prompt);
+
+  } catch(err) {
+    stopStages();
+    showErr(err.message);
+    btn.disabled=false;
+    document.getElementById('genBtnLabel').textContent='Generate Font with AI';
+    document.getElementById('progress').style.display='none';
+  }
+}
+
+function buildSystemPrompt(category, weight, charSet, inspo) {
+  return `You are a professional type designer and font engineer. Your job is to generate SVG glyph data for custom fonts.
+
+CRITICAL: You must respond ONLY with valid JSON. No markdown, no explanation, no backticks.
+
+You will generate SVG path data for font glyphs. Each glyph should be:
+- On a 1000-unit em square
+- Baseline at y=800, cap-height at y=150, x-height at y=400
+- Consistent stroke weight and style throughout
+- Readable and well-proportioned
+
+Font category hint: ${category === 'auto' ? 'choose the best category for the description' : category}
+Weight hint: ${weight === 'auto' ? 'choose appropriate weight' : weight}
+${inspo ? `Inspiration: ${inspo}` : ''}
+
+Return this exact JSON structure:
+{
+  "font_meta": {
+    "name": "FontName",
+    "category": "sans|serif|display|mono|script",
+    "weight": 400,
+    "description": "brief description",
+    "cap_height": 650,
+    "x_height": 450,
+    "ascender": 750,
+    "descender": -200
+  },
+  "glyphs": {
+    "A": "M 100,800 L 500,100 L 900,800 M 220,560 L 780,560",
+    "B": "M 100,100 L 100,800 ...",
+    ...more glyphs...
+  }
+}
+
+The "glyphs" object maps each character to its SVG path data string (the 'd' attribute value).
+Use M (moveto), L (lineto), C (curveto), Z (closepath) commands.
+Make paths that look like that font style — don't use generic paths.`;
+}
+
+function buildUserPrompt(prompt, fontName, charSet) {
+  let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if(charSet === 'azlower') chars += 'abcdefghijklmnopqrstuvwxyz';
+  if(charSet === 'full') chars += 'abcdefghijklmnopqrstuvwxyz0123456789.,!?';
+
+  return `Create a font with this style: "${prompt}"
+
+Font name: ${fontName}
+Generate glyphs for these characters: ${chars}
+
+Make the letterforms genuinely reflect the described style. 
+Return ONLY the JSON object, no other text.`;
+}
+
+// ── SHOW RESULT ───────────────────────────────────────────
+function showResult(data, fontName, prompt) {
+  document.getElementById('progress').style.display='none';
+  document.getElementById('genBtn').disabled=false;
+  document.getElementById('genBtnLabel').textContent='Generate Font with AI';
+
+  const panel=document.getElementById('previewPanel');
+  panel.style.display='block';
+
+  document.getElementById('prevTitle').textContent=fontName+'_Regular';
+  document.getElementById('prevMeta').textContent=`Generated from: "${prompt.substring(0,60)}${prompt.length>60?'…':''}"  ·  ${data.glyph_count||0} glyphs`;
+
+  // Inject font via @font-face
+  if(data.font_url) {
+    const css=`@font-face{font-family:'${fontName}';src:url('${data.font_url}') format('truetype');font-weight:normal;font-style:normal}`;
+    document.getElementById('dynFont').textContent=css;
+    currentFontName=fontName;
+    const prev=document.getElementById('fontPreview');
+    prev.style.fontFamily=`'${fontName}', serif`;
+    prev.classList.add('loaded');
+    // Also update preview input font
+    document.getElementById('prevInput').style.fontFamily=`'${fontName}', serif`;
+  }
+
+  // Char map
+  const map=document.getElementById('charMap');
+  map.innerHTML='';
+  const chars=data.generated_chars||'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  chars.forEach(ch=>{
+    const cell=document.createElement('div');
+    cell.className='char-cell';
+    cell.style.fontFamily=currentFontName?`'${currentFontName}',serif`:'serif';
+    cell.textContent=ch;
+    const lbl=document.createElement('span');
+    lbl.className='char-cell-lbl';
+    lbl.textContent=ch.charCodeAt(0);
+    cell.appendChild(lbl);
+    map.appendChild(cell);
+  });
+
+  // Downloads
+  const dlRow=document.getElementById('dlRow');
+  dlRow.innerHTML='';
+  if(data.files){
+    data.files.forEach(f=>{
+      const isTTF=f.filename.endsWith('.ttf');
+      const a=document.createElement('a');
+      a.href=f.url; a.download='';
+      a.className='dl-btn '+(isTTF?'dl-ttf':'dl-otf');
+      a.innerHTML=`<div class="dl-ico">${isTTF?'📦':'✨'}</div>
+        <div><div class="dl-info-name">${f.filename}</div>
+        <div class="dl-info-desc">${isTTF?'Windows · Android · Universal':'Mac · Adobe · Pro Apps'}</div>
+        <div class="dl-info-sz">${(f.size/1024).toFixed(0)} KB</div></div>
+        <span class="dl-arr">⬇</span>`;
+      dlRow.appendChild(a);
+    });
+  }
+
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── ERROR ─────────────────────────────────────────────────
+function showErr(msg){
+  const b=document.getElementById('errBox');
+  b.textContent='❌ '+msg;
+  b.style.display='block';
+}
+</script>
+</body>
+</html>
