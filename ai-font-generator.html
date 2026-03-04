@@ -761,7 +761,7 @@ function glyphsToSVG(text, glyphs, height=90, color='currentColor') {
     if(!g) { x += 320 * scale; continue; }
     paths.push(
       `<g transform="translate(${x.toFixed(1)},${offsetY.toFixed(1)}) scale(${scale.toFixed(4)})">`+
-      `<path d="${g.d}" fill="${color}"/>`+
+      `<path d="${g.d}" fill="${color}" fill-rule="evenodd"/>`+
       `</g>`
     );
     x += g.adv * scale + 2;
