@@ -8,7 +8,7 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
 <title>Handwriting to Font — Turn Your Handwriting Into a Real Font | Vectrod</title>
-<meta name="description" content="Take a photo of your handwriting and download it as a real font file. Free handwriting to font converter — no app, no signup, works in your browser.">
+<meta name="description" content="Take a photo of your handwriting and download it as a real .ttf font. Free handwriting to font converter — no app, no signup, works in your browser.">
 <link rel="canonical" href="https://vectrod.com/handwriting-font">
 <meta property="og:title" content="Handwriting to Font | Vectrod">
 <meta property="og:description" content="Photo your handwriting → download a real .ttf font. Free, instant, no signup.">
@@ -27,161 +27,136 @@
   --gold:#f0c060;--goldd:#c09040;
   --ok:#22dd99;--okL:rgba(34,221,153,.12);
   --p2:#bb77ff;--pL:rgba(153,68,238,.12);
-  --blue:#4488ff;--blueL:rgba(68,136,255,.1);
   --fail:#ff4466;--failL:rgba(255,68,102,.1);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
-
-/* BG */
 .bg-wrap{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(153,68,238,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(153,68,238,.03) 1px,transparent 1px);background-size:52px 52px}
 .bg-o1{position:absolute;width:900px;height:900px;top:-400px;right:-300px;border-radius:50%;filter:blur(150px);background:radial-gradient(circle,rgba(153,68,238,.14) 0%,transparent 65%);animation:df 36s ease-in-out infinite alternate}
 .bg-o2{position:absolute;width:600px;height:600px;bottom:-250px;left:-150px;border-radius:50%;filter:blur(140px);background:radial-gradient(circle,rgba(240,192,96,.08) 0%,transparent 65%);animation:df 28s ease-in-out infinite alternate}
-.bg-o3{position:absolute;width:400px;height:400px;top:40%;left:35%;border-radius:50%;filter:blur(150px);background:radial-gradient(circle,rgba(34,221,153,.06) 0%,transparent 65%);animation:df 42s ease-in-out infinite alternate}
 @keyframes df{from{transform:translate(0,0)}to{transform:translate(35px,25px)}}
-
-/* LAYOUT */
-.wrap{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:28px 20px 120px}
+.wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:28px 20px 120px}
 
 /* NAV */
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px;flex-wrap:wrap;gap:12px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:52px;flex-wrap:wrap;gap:12px}
 .logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
 .logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#bb77ff,#22dd99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .logo-s{font-size:9px;color:var(--mt2);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
-.nb{background:rgba(255,255,255,.05);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;text-decoration:none;font-family:'DM Mono',monospace;white-space:nowrap;transition:all .2s}
+.nb{background:rgba(255,255,255,.05);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .2s}
 .nb:hover{border-color:var(--gold);color:var(--gold)}
 .nb.cta{background:linear-gradient(90deg,var(--goldd),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
-.nav-r{display:flex;gap:8px;flex-wrap:wrap}
+.nav-r{display:flex;gap:8px}
 
 /* HERO */
-.hero{text-align:center;margin-bottom:52px}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--p2);text-transform:uppercase;border:1px solid rgba(153,68,238,.25);padding:5px 22px;border-radius:100px;background:var(--pL);margin-bottom:20px;font-family:'DM Mono',monospace}
-.hero h1{font-family:'Cinzel',serif;font-size:clamp(28px,5.5vw,64px);font-weight:900;line-height:.95;margin-bottom:16px}
-.hero h1 .line2{display:block;background:linear-gradient(90deg,var(--gold),var(--p2),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:16px;color:var(--mt);max-width:540px;margin:0 auto 28px;line-height:1.8}
-.hero-stats{display:flex;gap:28px;justify-content:center;flex-wrap:wrap}
-.hst{text-align:center}
+.hero{text-align:center;margin-bottom:44px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--p2);text-transform:uppercase;border:1px solid rgba(153,68,238,.25);padding:5px 22px;border-radius:100px;background:var(--pL);margin-bottom:18px;font-family:'DM Mono',monospace}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(28px,6vw,62px);font-weight:900;line-height:.95;margin-bottom:14px}
+.grad{background:linear-gradient(90deg,var(--gold),var(--p2),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15px;color:var(--mt);max-width:520px;margin:0 auto 26px;line-height:1.8}
+.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap}
 .hst-n{font-family:'Cinzel',serif;font-size:22px;font-weight:900;background:linear-gradient(90deg,var(--gold),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hst-l{font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+.hst-l{font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-top:2px;text-align:center}
 
 /* STEPS */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px}
-@media(max-width:600px){.steps{grid-template-columns:1fr}}
-.step{background:var(--bg2);border:1.5px solid var(--br);border-radius:20px;padding:22px 20px;text-align:center;position:relative}
-.step::before{content:attr(data-n);position:absolute;top:-1px;left:50%;transform:translateX(-50%);font-size:9px;font-family:'DM Mono',monospace;font-weight:700;letter-spacing:.12em;background:var(--bg2);color:var(--mt2);padding:0 10px}
-.step-ico{font-size:36px;display:block;margin-bottom:10px}
-.step-t{font-family:'Cinzel',serif;font-size:14px;font-weight:700;margin-bottom:6px}
-.step-d{font-size:12px;color:var(--mt);line-height:1.7}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:36px}
+@media(max-width:580px){.steps{grid-template-columns:1fr}}
+.step{background:var(--bg2);border:1.5px solid var(--br);border-radius:18px;padding:20px;text-align:center}
+.step-n{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.step-ico{font-size:32px;display:block;margin-bottom:10px}
+.step-t{font-family:'Cinzel',serif;font-size:13px;font-weight:700;margin-bottom:5px}
+.step-d{font-size:12px;color:var(--mt);line-height:1.6}
+
+/* EXAMPLE BOX */
+.example-box{background:linear-gradient(135deg,rgba(34,221,153,.07),rgba(153,68,238,.07));border:1.5px solid rgba(34,221,153,.18);border-radius:20px;padding:20px 24px;margin-bottom:28px;display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.ex-ico{font-size:28px;flex-shrink:0;margin-top:2px}
+.ex-title{font-size:13px;font-weight:700;color:var(--ok);font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.ex-text{font-size:13px;color:var(--mt);line-height:1.7}
+.ex-sentence{font-family:'DM Mono',monospace;font-size:14px;color:var(--tx);background:rgba(0,0,0,.3);border:1px solid var(--br2);border-radius:10px;padding:10px 16px;margin-top:8px;display:inline-block;letter-spacing:.04em}
 
 /* MAIN CARD */
-.main-card{background:var(--bg2);border:1.5px solid var(--br2);border-radius:28px;overflow:hidden;margin-bottom:24px}
-.mc-top{padding:28px 28px 0;border-bottom:1px solid var(--br)}
+.card{background:var(--bg2);border:1.5px solid var(--br2);border-radius:26px;overflow:hidden;margin-bottom:20px}
+.card-body{padding:28px}
 
 /* MODE TABS */
-.mode-tabs{display:flex;gap:0;background:rgba(0,0,0,.2);border-radius:14px;padding:4px;margin-bottom:24px;width:fit-content}
-.mode-tab{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:8px 20px;border-radius:10px;cursor:pointer;transition:all .2s;color:var(--mt);border:none;background:none;white-space:nowrap}
+.mode-tabs{display:flex;gap:0;background:rgba(0,0,0,.25);border-radius:14px;padding:4px;margin-bottom:22px;width:fit-content}
+.mode-tab{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:8px 18px;border-radius:10px;cursor:pointer;transition:all .2s;color:var(--mt);border:none;background:none;white-space:nowrap}
 .mode-tab.active{background:var(--p2);color:#000;-webkit-text-fill-color:#000}
+.mode-hint{font-size:12px;color:var(--mt);line-height:1.7;margin-bottom:20px;padding:12px 16px;background:rgba(153,68,238,.06);border:1px solid rgba(153,68,238,.14);border-radius:12px}
+.mode-hint b{color:var(--p2)}
 
-/* MODE DESCRIPTIONS */
-.mode-desc{font-size:13px;color:var(--mt);line-height:1.7;margin-bottom:20px;padding:14px 16px;background:rgba(153,68,238,.06);border:1px solid rgba(153,68,238,.15);border-radius:12px}
-.mode-desc strong{color:var(--p2)}
-
-/* UPLOAD ZONE */
-.upload-zone{border:2px dashed rgba(153,68,238,.3);border-radius:20px;padding:44px 24px;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:20px;position:relative;overflow:hidden}
+/* UPLOAD */
+.upload-zone{border:2px dashed rgba(153,68,238,.3);border-radius:18px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .22s;margin-bottom:18px;position:relative}
 .upload-zone:hover,.upload-zone.drag{border-color:var(--p2);background:rgba(153,68,238,.05)}
 .upload-zone.has-file{border-style:solid;border-color:rgba(34,221,153,.35);background:rgba(34,221,153,.04)}
-.uz-ico{font-size:48px;display:block;margin-bottom:12px;transition:transform .2s}
-.upload-zone:hover .uz-ico{transform:scale(1.1)}
-.uz-title{font-family:'Cinzel',serif;font-size:18px;font-weight:700;margin-bottom:6px}
-.uz-sub{font-size:13px;color:var(--mt);margin-bottom:14px}
-.uz-btn{display:inline-flex;align-items:center;gap:8px;background:var(--pL);border:1.5px solid rgba(153,68,238,.25);border-radius:100px;color:var(--p2);font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:9px 22px;transition:all .2s}
+.uz-ico{font-size:44px;display:block;margin-bottom:10px;transition:transform .2s}
+.upload-zone:hover .uz-ico{transform:scale(1.1) rotate(-5deg)}
+.uz-t{font-family:'Cinzel',serif;font-size:16px;font-weight:700;margin-bottom:5px}
+.uz-s{font-size:12px;color:var(--mt);margin-bottom:12px}
+.uz-btn{display:inline-flex;align-items:center;gap:7px;background:var(--pL);border:1.5px solid rgba(153,68,238,.25);border-radius:100px;color:var(--p2);font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:8px 20px;transition:all .2s}
 .uz-btn:hover{background:rgba(153,68,238,.2)}
-.uz-preview{max-width:100%;max-height:220px;border-radius:12px;margin-top:14px;object-fit:contain;display:none}
+.uz-prev{max-width:100%;max-height:200px;border-radius:10px;margin-top:12px;object-fit:contain;display:none}
 input[type=file]{display:none}
 
-/* TEXT INPUT */
-.text-field-wrap{margin-bottom:20px}
-.tf-label{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:block}
-.text-field{width:100%;background:var(--bg3);border:1.5px solid var(--br2);border-radius:14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:16px;padding:14px 18px;outline:none;transition:border-color .2s;caret-color:var(--p2)}
-.text-field:focus{border-color:rgba(153,68,238,.5)}
-.text-field::placeholder{color:var(--mt2)}
-.tf-hint{font-size:11px;color:var(--mt2);font-family:'DM Mono',monospace;margin-top:6px}
-
-/* FONT NAME */
-.font-name-row{display:flex;gap:12px;align-items:flex-end;margin-bottom:20px;flex-wrap:wrap}
-.fn-group{flex:1;min-width:200px}
-.fn-input{width:100%;background:var(--bg3);border:1.5px solid var(--br2);border-radius:14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;padding:12px 18px;outline:none;transition:border-color .2s}
-.fn-input:focus{border-color:rgba(240,192,96,.5)}
+/* INPUTS */
+.lbl{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:block}
+.field{width:100%;background:var(--bg3);border:1.5px solid var(--br2);border-radius:13px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:15px;padding:12px 16px;outline:none;transition:border-color .2s;caret-color:var(--p2)}
+.field:focus{border-color:rgba(153,68,238,.5)}
+.field::placeholder{color:var(--mt2)}
+.field-hint{font-size:11px;color:var(--mt2);font-family:'DM Mono',monospace;margin-top:5px;line-height:1.5}
+.fg{margin-bottom:18px}
 
 /* PROCESS BTN */
-.process-btn{width:100%;background:linear-gradient(135deg,rgba(153,68,238,.9),rgba(119,68,238,.9));border:none;border-radius:16px;color:#fff;-webkit-text-fill-color:#fff;font-family:'DM Mono',monospace;font-size:14px;font-weight:700;padding:18px;cursor:pointer;transition:all .25s;letter-spacing:.08em;margin-bottom:0}
-.process-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 36px rgba(153,68,238,.35)}
-.process-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.process-btn.loading{background:linear-gradient(135deg,rgba(68,136,255,.8),rgba(34,221,153,.8))}
+.process-btn{width:100%;background:linear-gradient(135deg,rgba(153,68,238,.95),rgba(100,50,220,.95));border:none;border-radius:16px;color:#fff;-webkit-text-fill-color:#fff;font-family:'DM Mono',monospace;font-size:14px;font-weight:700;padding:18px;cursor:pointer;transition:all .25s;letter-spacing:.06em}
+.process-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 40px rgba(153,68,238,.35)}
+.process-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.process-btn.loading{background:linear-gradient(135deg,rgba(68,136,255,.85),rgba(34,221,153,.85))}
 
 /* PROGRESS */
-.progress-wrap{display:none;padding:0 28px 24px}
-.progress-steps{display:flex;flex-direction:column;gap:8px;margin-top:16px}
-.ps-item{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--mt);transition:color .3s}
+.progress-wrap{display:none;padding:20px 28px 24px;border-top:1px solid var(--br)}
+.ps-list{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.ps-item{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--mt);transition:all .3s}
 .ps-item.active{color:var(--p2)}
 .ps-item.done{color:var(--ok)}
-.ps-ico{width:24px;height:24px;border-radius:50%;border:2px solid var(--br);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .3s}
-.ps-item.active .ps-ico{border-color:var(--p2);background:var(--pL);animation:pulse 1.2s infinite}
-.ps-item.done .ps-ico{border-color:var(--ok);background:var(--okL);color:var(--ok)}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(153,68,238,.4)}50%{box-shadow:0 0 0 6px rgba(153,68,238,0)}}
-
-/* RESULTS */
-.results-wrap{display:none;padding:28px}
-.rw-title{font-family:'Cinzel',serif;font-size:20px;font-weight:900;margin-bottom:6px}
-.rw-sub{font-size:13px;color:var(--mt);margin-bottom:20px}
-
-/* PREVIEW IMAGE */
-.preview-img-wrap{background:rgba(0,0,0,.3);border-radius:16px;padding:20px;margin-bottom:20px;text-align:center;border:1px solid var(--br)}
-.preview-img-wrap img{max-width:100%;border-radius:10px;image-rendering:crisp-edges}
-.pi-label{font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
-
-/* CHAR PILLS */
-.char-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
-.char-pill{background:var(--pL);border:1px solid rgba(153,68,238,.2);border-radius:8px;padding:4px 10px;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--p2)}
-
-/* DOWNLOAD BTNS */
-.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-@media(max-width:500px){.dl-grid{grid-template-columns:1fr}}
-.dl-btn{display:flex;align-items:center;gap:10px;padding:16px 20px;border-radius:16px;text-decoration:none;transition:all .2s;border:1.5px solid}
-.dl-ttf{background:rgba(240,192,96,.1);border-color:rgba(240,192,96,.25);color:var(--gold)}
-.dl-ttf:hover{background:rgba(240,192,96,.18);transform:translateY(-2px)}
-.dl-otf{background:var(--pL);border-color:rgba(153,68,238,.25);color:var(--p2)}
-.dl-otf:hover{background:rgba(153,68,238,.2);transform:translateY(-2px)}
-.dl-ico{font-size:28px}
-.dl-info{flex:1}
-.dl-name{font-family:'DM Mono',monospace;font-size:13px;font-weight:700}
-.dl-desc{font-size:11px;opacity:.7;margin-top:2px}
-.dl-size{font-size:10px;opacity:.5;font-family:'DM Mono',monospace}
-
-.retry-btn{width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--br2);border-radius:12px;color:var(--mt);font-family:'DM Mono',monospace;font-size:12px;font-weight:700;padding:12px;cursor:pointer;transition:all .2s;margin-bottom:0}
-.retry-btn:hover{border-color:var(--p2);color:var(--p2)}
+.ps-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--br2);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:all .3s;font-family:'DM Mono',monospace}
+.ps-item.active .ps-dot{border-color:var(--p2);background:var(--pL);animation:spin 1s linear infinite}
+.ps-item.done .ps-dot{border-color:var(--ok);background:var(--okL);color:var(--ok)}
+@keyframes spin{0%,100%{box-shadow:0 0 0 0 rgba(153,68,238,.5)}50%{box-shadow:0 0 0 5px rgba(153,68,238,0)}}
 
 /* ERROR */
-.error-box{display:none;background:var(--failL);border:1.5px solid rgba(255,68,102,.25);border-radius:14px;padding:16px 20px;color:var(--fail);font-size:13px;margin:16px 28px}
+.err-box{display:none;margin:16px 28px;background:var(--failL);border:1.5px solid rgba(255,68,102,.25);border-radius:13px;padding:14px 18px;color:var(--fail);font-size:13px;line-height:1.6}
 
-/* TEMPLATE */
-.template-section{background:var(--bg2);border:1.5px solid var(--br);border-radius:24px;padding:24px;margin-bottom:24px}
-.ts-title{font-family:'Cinzel',serif;font-size:16px;font-weight:700;margin-bottom:8px}
-.ts-desc{font-size:13px;color:var(--mt);line-height:1.7;margin-bottom:16px}
-.ts-download{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1.5px solid var(--br2);border-radius:100px;color:var(--tx);font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:9px 20px;text-decoration:none;transition:all .2s}
-.ts-download:hover{border-color:var(--gold);color:var(--gold)}
+/* RESULTS */
+.results-wrap{display:none;padding:28px;border-top:1px solid var(--br)}
+.rw-head{font-family:'Cinzel',serif;font-size:22px;font-weight:900;margin-bottom:4px}
+.rw-sub{font-size:13px;color:var(--mt);margin-bottom:22px}
+.preview-wrap{background:rgba(255,255,255,.04);border:1px solid var(--br);border-radius:16px;padding:18px;margin-bottom:18px;text-align:center}
+.preview-lbl{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.preview-wrap img{max-width:100%;border-radius:8px;image-rendering:pixelated}
+.char-pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px}
+.cp{background:var(--pL);border:1px solid rgba(153,68,238,.2);border-radius:7px;padding:3px 9px;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--p2)}
+.dl-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:480px){.dl-row{grid-template-columns:1fr}}
+.dl-btn{display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:15px;text-decoration:none;transition:all .2s;border:1.5px solid}
+.dl-ttf{background:rgba(240,192,96,.09);border-color:rgba(240,192,96,.22);color:var(--gold)}
+.dl-otf{background:var(--pL);border-color:rgba(153,68,238,.22);color:var(--p2)}
+.dl-ttf:hover,.dl-otf:hover{transform:translateY(-2px)}
+.dl-ico{font-size:26px;flex-shrink:0}
+.dl-info{flex:1}
+.dl-name{font-family:'DM Mono',monospace;font-size:12px;font-weight:700}
+.dl-desc{font-size:11px;opacity:.65;margin-top:2px}
+.dl-sz{font-size:10px;opacity:.45;font-family:'DM Mono',monospace}
+.retry-btn{width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--br2);border-radius:12px;color:var(--mt);font-family:'DM Mono',monospace;font-size:12px;font-weight:700;padding:11px;cursor:pointer;transition:all .2s}
+.retry-btn:hover{border-color:var(--p2);color:var(--p2)}
 
 /* TIPS */
-.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px}
-.tip{background:var(--bg2);border:1px solid var(--br);border-radius:16px;padding:16px}
-.tip-ico{font-size:24px;margin-bottom:8px;display:block}
-.tip-t{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:28px}
+.tip{background:var(--bg2);border:1px solid var(--br);border-radius:15px;padding:16px}
+.tip-ico{font-size:22px;margin-bottom:7px;display:block}
+.tip-t{font-size:13px;font-weight:700;margin-bottom:3px}
 .tip-d{font-size:12px;color:var(--mt);line-height:1.6}
-
-.sh{font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sh{font-size:10px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
 .sh::after{content:'';flex:1;height:1px;background:var(--br)}
-
 footer{border-top:1px solid var(--br);padding:28px 0;text-align:center;margin-top:40px}
 .fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
 .fl a{font-size:11px;color:var(--mt);text-decoration:none}.fl a:hover{color:var(--gold)}
@@ -189,423 +164,310 @@ footer{border-top:1px solid var(--br);padding:28px 0;text-align:center;margin-to
 </style>
 </head>
 <body>
-<div class="bg-wrap"><div class="bg-grid"></div><div class="bg-o1"></div><div class="bg-o2"></div><div class="bg-o3"></div></div>
+<div class="bg-wrap"><div class="bg-grid"></div><div class="bg-o1"></div><div class="bg-o2"></div></div>
 <div class="wrap">
 
-<!-- NAV -->
 <div class="topbar">
   <a class="logo-a" href="/">
     <svg width="32" height="32" viewBox="0 0 46 46" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f0c060"/><stop offset="40%" stop-color="#bb77ff"/><stop offset="100%" stop-color="#22dd99"/></linearGradient></defs><path d="M23 2L42 23L23 44L4 23Z" stroke="url(#lg)" stroke-width="1.5" fill="none" opacity=".4"/><path d="M7 10L23 38L39 10L34 10L23 30L12 10Z" fill="url(#lg)"/></svg>
     <div><div class="logo-n">VECTROD</div><div class="logo-s">Handwriting → Font</div></div>
   </a>
   <div class="nav-r">
-    <a class="nb" href="/tools">All Tools</a>
-    <a class="nb" href="/fonts">Free Fonts</a>
+    <a class="nb" href="/tools">Tools</a>
     <a class="nb cta" href="/">Make Font →</a>
   </div>
 </div>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">✍️ World's First · Free · No App Needed</div>
-  <h1>Your Handwriting<span class="line2">Becomes a Font</span></h1>
-  <p class="hero-sub">Write on paper. Take a photo. Download your handwriting as a real .ttf font file — type with it anywhere.</p>
+  <div class="hero-badge">✍️ Free · No App · No Signup</div>
+  <h1>Your Handwriting<br><span class="grad">Becomes a Font</span></h1>
+  <p class="hero-sub">Write on paper, take a photo, download your handwriting as a real .ttf font file. Type with it anywhere.</p>
   <div class="hero-stats">
-    <div class="hst"><div class="hst-n">Free</div><div class="hst-l">Forever</div></div>
-    <div class="hst"><div class="hst-n">TTF+OTF</div><div class="hst-l">Output</div></div>
-    <div class="hst"><div class="hst-n">30sec</div><div class="hst-l">Processing</div></div>
-    <div class="hst"><div class="hst-n">No App</div><div class="hst-l">Browser Only</div></div>
+    <div><div class="hst-n">TTF+OTF</div><div class="hst-l">Output</div></div>
+    <div><div class="hst-n">~30s</div><div class="hst-l">Processing</div></div>
+    <div><div class="hst-n">Free</div><div class="hst-l">Always</div></div>
   </div>
 </div>
 
-<!-- HOW IT WORKS -->
+<!-- STEPS -->
 <div class="steps">
-  <div class="step" data-n="STEP 01">
-    <span class="step-ico">✍️</span>
-    <div class="step-t">Write on Paper</div>
-    <div class="step-d">Write letters clearly on white paper. Good pen contrast = better results. Use the template below for best accuracy.</div>
-  </div>
-  <div class="step" data-n="STEP 02">
-    <span class="step-ico">📸</span>
-    <div class="step-t">Photo or Scan</div>
-    <div class="step-d">Take a flat, well-lit photo. No shadows. Or scan it — 300dpi+ recommended. Upload JPG, PNG or PDF.</div>
-  </div>
-  <div class="step" data-n="STEP 03">
-    <span class="step-ico">⬇️</span>
-    <div class="step-t">Download Your Font</div>
-    <div class="step-d">We detect each character, vectorize it, and build a real font. Download and install — type with your handwriting anywhere.</div>
-  </div>
+  <div class="step"><div class="step-n">Step 01</div><span class="step-ico">✍️</span><div class="step-t">Write on Paper</div><div class="step-d">Write clearly on white paper with a dark pen. Include all letters you want in your font.</div></div>
+  <div class="step"><div class="step-n">Step 02</div><span class="step-ico">📸</span><div class="step-t">Take a Photo</div><div class="step-d">Flat, well-lit photo from directly above. No shadows, no angle. Phone camera works perfectly.</div></div>
+  <div class="step"><div class="step-n">Step 03</div><span class="step-ico">⬇️</span><div class="step-t">Download Font</div><div class="step-d">We detect each letter, vectorize your strokes, and build a real font file. Install and type.</div></div>
 </div>
 
-<!-- TEMPLATE DOWNLOAD -->
-<div class="template-section">
-  <div class="ts-title">📄 Download the Writing Template</div>
-  <div class="ts-desc">For the most accurate results, print this template and fill in each box with one letter. The grid layout makes character detection near-perfect. Works with any pen on white paper.</div>
-  <a class="ts-download" href="/handwriting-template.pdf" download onclick="return showTemplateTip()">⬇️ Download Template PDF</a>
-  <span style="margin-left:12px;font-size:12px;color:var(--mt)">— or use "Sentence Mode" for a quick test</span>
+<!-- EXAMPLE BOX -->
+<div class="example-box">
+  <div class="ex-ico">💡</div>
+  <div>
+    <div class="ex-title">How to get the best result</div>
+    <div class="ex-text">Write a sentence that contains all the letters you want in your font. A good example covering all common letters:</div>
+    <div class="ex-sentence">The quick brown fox jumps over the lazy dog</div>
+    <div class="ex-text" style="margin-top:8px">This single sentence contains all 26 lowercase English letters. Then type <em>exactly</em> what you wrote in the field below — we match each character automatically.</div>
+  </div>
 </div>
 
 <!-- TIPS -->
-<div class="sh">📋 Photo Tips for Best Results</div>
+<div class="sh">📋 Photo Tips</div>
 <div class="tips-grid">
-  <div class="tip"><span class="tip-ico">💡</span><div class="tip-t">Good Lighting</div><div class="tip-d">Natural daylight or bright lamp. Avoid shadows across the page.</div></div>
-  <div class="tip"><span class="tip-ico">📐</span><div class="tip-t">Flat Photo</div><div class="tip-d">Hold phone directly above — no angle. Paper should be flat, not curved.</div></div>
-  <div class="tip"><span class="tip-ico">🖊️</span><div class="tip-t">Dark Pen</div><div class="tip-d">Black or dark blue ink on white paper. High contrast = best detection.</div></div>
-  <div class="tip"><span class="tip-ico">🔤</span><div class="tip-t">Write Clearly</div><div class="tip-d">Slightly bigger letters than normal. Don't connect letters (unless you want it cursive).</div></div>
+  <div class="tip"><span class="tip-ico">💡</span><div class="tip-t">Good Lighting</div><div class="tip-d">Natural daylight or bright overhead lamp. No shadows across the letters.</div></div>
+  <div class="tip"><span class="tip-ico">📐</span><div class="tip-t">Shoot Flat</div><div class="tip-d">Hold phone straight above. Paper must be flat — table surface, not hand-held.</div></div>
+  <div class="tip"><span class="tip-ico">🖊️</span><div class="tip-t">Dark Pen, White Paper</div><div class="tip-d">Black or dark blue ink gives the cleanest detection. Avoid pencil if possible.</div></div>
+  <div class="tip"><span class="tip-ico">✂️</span><div class="tip-t">Write Each Letter Separate</div><div class="tip-d">Don't connect letters unless you want a cursive font. Leave small gaps between chars.</div></div>
 </div>
 
-<!-- MAIN CONVERTER CARD -->
-<div class="main-card">
-  <div class="mc-top" style="padding-bottom:24px">
+<!-- CONVERTER CARD -->
+<div class="card">
+  <div class="card-body">
 
-    <!-- MODE SELECTOR -->
+    <!-- MODE TABS -->
     <div class="mode-tabs">
       <button class="mode-tab active" onclick="setMode('sentence',this)">✍️ Sentence Mode</button>
-      <button class="mode-tab" onclick="setMode('grid',this)">📋 Template Sheet</button>
+      <button class="mode-tab" onclick="setMode('grid',this)">📋 Template Grid</button>
     </div>
 
-    <!-- MODE DESCRIPTIONS -->
-    <div class="mode-desc" id="modeDesc">
-      <strong>Sentence Mode:</strong> Write any sentence or word on paper, take a photo, and tell us what you wrote. Great for a quick test — we'll extract one copy of each unique character.
+    <div class="mode-hint" id="modeHint">
+      <b>Sentence Mode:</b> Write any sentence on paper, take a photo, then type exactly what you wrote below. We extract one copy of each unique letter automatically.
     </div>
 
-    <!-- UPLOAD ZONE -->
+    <!-- UPLOAD -->
     <div class="upload-zone" id="uploadZone"
          onclick="document.getElementById('fileInput').click()"
          ondragover="event.preventDefault();this.classList.add('drag')"
          ondragleave="this.classList.remove('drag')"
-         ondrop="handleDrop(event)">
+         ondrop="onDrop(event)">
       <span class="uz-ico" id="uzIco">📷</span>
-      <div class="uz-title" id="uzTitle">Drop photo here or click to upload</div>
-      <div class="uz-sub" id="uzSub">JPG, PNG, HEIC · Max 20MB · Phone photos work great</div>
+      <div class="uz-t" id="uzTitle">Drop photo here or click to upload</div>
+      <div class="uz-s" id="uzSub">JPG · PNG · HEIC · Max 20MB</div>
       <span class="uz-btn">Choose Photo</span>
-      <img class="uz-preview" id="uzPreview" alt="preview">
+      <img class="uz-prev" id="uzPrev" alt="">
     </div>
-    <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect(this)">
+    <input type="file" id="fileInput" accept="image/*" onchange="onFileSelect(this)">
 
-    <!-- SENTENCE MODE EXTRA -->
+    <!-- SENTENCE EXTRAS -->
     <div id="sentenceExtras">
-      <div class="text-field-wrap">
-        <span class="tf-label">What did you write? (type it here)</span>
-        <input type="text" class="text-field" id="expectedText" 
-               placeholder="e.g.: Elma yiyelim mi? Hello World!" 
-               maxlength="200">
-        <div class="tf-hint">We'll map each unique character from your photo to what you wrote. Include all letters you wrote.</div>
+      <div class="fg">
+        <span class="lbl">What did you write? (type it here exactly)</span>
+        <input type="text" class="field" id="expectedText"
+               placeholder='e.g.: The quick brown fox jumps over the lazy dog'
+               maxlength="300">
+        <div class="field-hint">Type exactly what's in your photo — every letter, space, punctuation. We map each unique character to what we see in the image.</div>
       </div>
     </div>
 
     <!-- FONT NAME -->
-    <div class="font-name-row">
-      <div class="fn-group">
-        <span class="tf-label" style="display:block;margin-bottom:8px">Font Name</span>
-        <input type="text" class="fn-input" id="fontName" value="MyHandwriting" maxlength="40" placeholder="MyHandwriting">
-      </div>
+    <div class="fg">
+      <span class="lbl">Font Name</span>
+      <input type="text" class="field" id="fontName" value="MyHandwriting" maxlength="40">
     </div>
 
-    <!-- PROCESS BUTTON -->
-    <button class="process-btn" id="processBtn" onclick="processHandwriting()" disabled>
-      ✍️ Detect Characters & Build Font
+    <button class="process-btn" id="processBtn" onclick="run()" disabled>
+      ✍️ Detect Characters &amp; Build Font
     </button>
   </div>
 
   <!-- PROGRESS -->
   <div class="progress-wrap" id="progressWrap">
-    <div class="progress-steps" id="progressSteps">
-      <div class="ps-item" id="ps1"><div class="ps-ico">1</div><span>Uploading & preprocessing image…</span></div>
-      <div class="ps-item" id="ps2"><div class="ps-ico">2</div><span>Detecting & segmenting characters…</span></div>
-      <div class="ps-item" id="ps3"><div class="ps-ico">3</div><span>Vectorizing handwriting strokes…</span></div>
-      <div class="ps-item" id="ps4"><div class="ps-ico">4</div><span>Building font file (TTF + OTF)…</span></div>
-      <div class="ps-item" id="ps5"><div class="ps-ico">5</div><span>Packaging for download…</span></div>
+    <div class="ps-list">
+      <div class="ps-item" id="ps1"><div class="ps-dot">1</div><span>Uploading and preprocessing image…</span></div>
+      <div class="ps-item" id="ps2"><div class="ps-dot">2</div><span>Detecting and segmenting characters…</span></div>
+      <div class="ps-item" id="ps3"><div class="ps-dot">3</div><span>Vectorizing handwriting strokes…</span></div>
+      <div class="ps-item" id="ps4"><div class="ps-dot">4</div><span>Building font file (TTF + OTF)…</span></div>
+      <div class="ps-item" id="ps5"><div class="ps-dot">5</div><span>Packaging for download…</span></div>
     </div>
   </div>
 
   <!-- ERROR -->
-  <div class="error-box" id="errorBox"></div>
+  <div class="err-box" id="errBox"></div>
 
   <!-- RESULTS -->
   <div class="results-wrap" id="resultsWrap">
-    <div class="rw-title" id="rwTitle">Your Font is Ready! 🎉</div>
+    <div class="rw-head">Your Font is Ready! 🎉</div>
     <div class="rw-sub" id="rwSub"></div>
-
-    <!-- Glyph preview -->
-    <div class="preview-img-wrap" id="previewImgWrap" style="display:none">
-      <div class="pi-label">Detected Characters</div>
-      <img id="previewImg" src="" alt="glyph preview">
+    <div class="preview-wrap" id="prevWrap" style="display:none">
+      <div class="preview-lbl">Detected Characters Preview</div>
+      <img id="prevImg" src="" alt="detected glyphs">
     </div>
-
-    <!-- Character pills -->
     <div class="char-pills" id="charPills"></div>
-
-    <!-- Download buttons -->
-    <div class="dl-grid" id="dlGrid"></div>
-
-    <button class="retry-btn" onclick="resetAll()">↩ Start Over — Upload Another Photo</button>
+    <div class="dl-row" id="dlRow"></div>
+    <button class="retry-btn" onclick="reset()">↩ Start Over</button>
   </div>
 </div>
 
 <footer>
-  <div class="fl">
-    <a href="/">Font Creator</a>
-    <a href="/tools">All Tools</a>
-    <a href="/fonts">Free Fonts</a>
-    <a href="/blog">Blog</a>
-    <a href="/about">About</a>
-  </div>
+  <div class="fl"><a href="/">Font Creator</a><a href="/tools">All Tools</a><a href="/fonts">Free Fonts</a><a href="/blog">Blog</a></div>
   <div class="fc">© 2025 Vectrod · Handwriting to Font · Free Forever</div>
 </footer>
 </div>
 
 <script>
-let uploadedFile = null;
-let currentMode = 'sentence';
-let sessionId = null;
-let processingResult = null;
+let file = null, sid = null, mode = 'sentence';
 
-// ─── MODE SWITCH ───────────────────────────────────────────
-function setMode(mode, btn) {
-  currentMode = mode;
-  document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
+function setMode(m, btn) {
+  mode = m;
+  document.querySelectorAll('.mode-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  
-  const desc = document.getElementById('modeDesc');
+  const hint = document.getElementById('modeHint');
   const extras = document.getElementById('sentenceExtras');
-  
-  if (mode === 'sentence') {
-    desc.innerHTML = '<strong>Sentence Mode:</strong> Write any sentence on paper, take a photo, then type what you wrote below. We extract one copy of each unique character automatically.';
-    extras.style.display = 'block';
+  if(m==='sentence'){
+    hint.innerHTML = '<b>Sentence Mode:</b> Write any sentence on paper, take a photo, then type exactly what you wrote. We detect each unique letter and map it automatically.';
+    extras.style.display='block';
   } else {
-    desc.innerHTML = '<strong>Template Sheet Mode:</strong> Print our template, fill every box with the correct letter, photo it. We read the fixed grid — extremely accurate, covers all 52 letters + digits.';
-    extras.style.display = 'none';
+    hint.innerHTML = '<b>Template Grid Mode:</b> Print our template sheet, write one letter per box, photo it. No need to type what you wrote — the grid layout is fixed.';
+    extras.style.display='none';
   }
 }
 
-// ─── FILE HANDLING ─────────────────────────────────────────
-function handleFileSelect(input) {
-  if (input.files && input.files[0]) {
-    setFile(input.files[0]);
-  }
-}
-
-function handleDrop(e) {
+function onFileSelect(inp){if(inp.files[0]) setFile(inp.files[0]);}
+function onDrop(e){
   e.preventDefault();
   document.getElementById('uploadZone').classList.remove('drag');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) {
-    setFile(file);
-  }
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/')) setFile(f);
+}
+function setFile(f){
+  file=f;
+  const r=new FileReader();
+  r.onload=e=>{const p=document.getElementById('uzPrev');p.src=e.target.result;p.style.display='block';};
+  r.readAsDataURL(f);
+  const z=document.getElementById('uploadZone');
+  z.classList.add('has-file');
+  document.getElementById('uzIco').textContent='✅';
+  document.getElementById('uzTitle').textContent=f.name;
+  document.getElementById('uzSub').textContent=(f.size/1024/1024).toFixed(1)+' MB · Click to change';
+  document.getElementById('processBtn').disabled=false;
+  hideErr();
 }
 
-function setFile(file) {
-  uploadedFile = file;
-  
-  const zone = document.getElementById('uploadZone');
-  const preview = document.getElementById('uzPreview');
-  const ico = document.getElementById('uzIco');
-  const title = document.getElementById('uzTitle');
-  const sub = document.getElementById('uzSub');
-  
-  // Show preview
-  const reader = new FileReader();
-  reader.onload = e => {
-    preview.src = e.target.result;
-    preview.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
-  
-  zone.classList.add('has-file');
-  ico.textContent = '✅';
-  title.textContent = file.name;
-  sub.textContent = `${(file.size / 1024 / 1024).toFixed(1)} MB · Click to change`;
-  
-  document.getElementById('processBtn').disabled = false;
-  hideError();
-}
-
-// ─── MAIN PROCESS ──────────────────────────────────────────
-async function processHandwriting() {
-  if (!uploadedFile) return;
-  
-  const fontName = document.getElementById('fontName').value.trim() || 'MyHandwriting';
-  const expectedText = document.getElementById('expectedText').value.trim();
-  
-  if (currentMode === 'sentence' && !expectedText) {
-    showError('Please type what you wrote in the photo. This helps us map characters correctly.');
+async function run(){
+  if(!file) return;
+  const expText = document.getElementById('expectedText').value.trim();
+  const fontName= document.getElementById('fontName').value.trim()||'MyHandwriting';
+  if(mode==='sentence'&&!expText){
+    showErr('Please type exactly what you wrote in the photo.');
     return;
   }
-  
-  // Show progress
   showProgress();
-  
-  try {
-    // STEP 1+2: Upload & detect
-    setStep(1, 'active'); setStep(2, 'active');
+  try{
+    // STEP 1+2
+    step(1,'active'); step(2,'active');
+    const fd=new FormData();
+    fd.append('image',file);
+    fd.append('mode',mode);
+    fd.append('expected_text',expText);
+
+    const r1=await fetch('/api/handwriting-process',{method:'POST',body:fd});
+    if(!r1.ok){ throw new Error(`Server error ${r1.status}: ${r1.statusText}`); }
     
-    const formData = new FormData();
-    formData.append('image', uploadedFile);
-    formData.append('mode', currentMode);
-    formData.append('expected_text', expectedText);
+    let d1;
+    try{ d1=await r1.json(); }
+    catch(e){ throw new Error('Server returned invalid response. Check server logs.'); }
     
-    const processResp = await fetch('/api/handwriting-process', {
-      method: 'POST',
-      body: formData
+    if(!d1.success) throw new Error(d1.error||'Detection failed');
+    step(1,'done'); step(2,'done');
+    sid=d1.session_id;
+
+    // STEP 3
+    step(3,'active');
+    await wait(500);
+    step(3,'done');
+
+    // STEP 4+5 — build font
+    step(4,'active');
+    const r2=await fetch('/api/handwriting-to-font',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({session_id:sid,font_name:fontName,expected_text:expText})
     });
+    if(!r2.ok){ throw new Error(`Server error ${r2.status}: ${r2.statusText}`); }
     
-    const processData = await processResp.json();
+    let d2;
+    try{ d2=await r2.json(); }
+    catch(e){ throw new Error('Font build returned invalid response.'); }
     
-    if (!processData.success) {
-      throw new Error(processData.error || 'Character detection failed');
-    }
-    
-    setStep(1, 'done'); setStep(2, 'done');
-    processingResult = processData;
-    sessionId = processData.session_id;
-    
-    // STEP 3: Vectorize (already done on server, show progress)
-    setStep(3, 'active');
-    await delay(600);
-    setStep(3, 'done');
-    
-    // STEP 4: Build font
-    setStep(4, 'active');
-    
-    const fontResp = await fetch('/api/handwriting-to-font', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        session_id: sessionId,
-        font_name: fontName,
-        expected_text: expectedText
-      })
-    });
-    
-    const fontData = await fontResp.json();
-    
-    if (!fontData.success) {
-      throw new Error(fontData.error || 'Font building failed');
-    }
-    
-    setStep(4, 'done');
-    setStep(5, 'active');
-    await delay(400);
-    setStep(5, 'done');
-    
-    // Show results
-    showResults(processData, fontData);
-    
-  } catch (err) {
+    if(!d2.success) throw new Error(d2.error||'Font build failed');
+    step(4,'done'); step(5,'active');
+    await wait(350);
+    step(5,'done');
+
+    showResults(d1,d2);
+  }catch(err){
     hideProgress();
-    showError(err.message);
-    document.getElementById('processBtn').disabled = false;
+    showErr(err.message);
+    document.getElementById('processBtn').disabled=false;
   }
 }
 
-// ─── UI HELPERS ────────────────────────────────────────────
-function showProgress() {
-  document.getElementById('processBtn').disabled = true;
-  document.getElementById('processBtn').textContent = '⚙️ Processing…';
+function showProgress(){
+  document.getElementById('processBtn').disabled=true;
+  document.getElementById('processBtn').textContent='⚙️ Processing…';
   document.getElementById('processBtn').classList.add('loading');
-  document.getElementById('progressWrap').style.display = 'block';
-  document.getElementById('resultsWrap').style.display = 'none';
-  hideError();
-  // Reset steps
-  for (let i = 1; i <= 5; i++) {
-    const el = document.getElementById('ps'+i);
-    el.classList.remove('active','done');
-  }
+  document.getElementById('progressWrap').style.display='block';
+  document.getElementById('resultsWrap').style.display='none';
+  hideErr();
+  for(let i=1;i<=5;i++) step(i,'');
 }
-
-function hideProgress() {
-  document.getElementById('progressWrap').style.display = 'none';
-  document.getElementById('processBtn').disabled = false;
-  document.getElementById('processBtn').textContent = '✍️ Detect Characters & Build Font';
-  document.getElementById('processBtn').classList.remove('loading');
+function hideProgress(){
+  document.getElementById('progressWrap').style.display='none';
+  const b=document.getElementById('processBtn');
+  b.disabled=false; b.textContent='✍️ Detect Characters & Build Font';
+  b.classList.remove('loading');
 }
-
-function setStep(n, state) {
-  const el = document.getElementById('ps'+n);
+function step(n,s){
+  const el=document.getElementById('ps'+n);
   el.classList.remove('active','done');
-  if (state) el.classList.add(state);
+  if(s) el.classList.add(s);
 }
-
-function showResults(processData, fontData) {
+function showResults(d1,d2){
   hideProgress();
-  
-  const wrap = document.getElementById('resultsWrap');
-  wrap.style.display = 'block';
-  
-  // Title
-  document.getElementById('rwTitle').textContent = `Your Font is Ready! 🎉`;
-  document.getElementById('rwSub').textContent = 
-    `Detected ${processData.char_count} characters · Font: ${fontData.font_name}`;
-  
-  // Preview image
-  if (processData.preview) {
-    const prevWrap = document.getElementById('previewImgWrap');
-    prevWrap.style.display = 'block';
-    document.getElementById('previewImg').src = 'data:image/png;base64,' + processData.preview;
+  const w=document.getElementById('resultsWrap');
+  w.style.display='block';
+  document.getElementById('rwSub').textContent=
+    `${d1.char_count} characters detected · Font: ${d2.font_name}`;
+  if(d1.preview){
+    document.getElementById('prevWrap').style.display='block';
+    document.getElementById('prevImg').src='data:image/png;base64,'+d1.preview;
   }
-  
-  // Character pills
-  const pills = document.getElementById('charPills');
-  pills.innerHTML = (processData.detected_chars || []).map(c =>
-    `<span class="char-pill">${c === ' ' ? '␣' : c}</span>`
-  ).join('');
-  
-  // Download buttons
-  const dlGrid = document.getElementById('dlGrid');
-  dlGrid.innerHTML = (fontData.files || []).map(f => {
-    const isTTF = f.filename.endsWith('.ttf');
-    return `<a class="dl-btn ${isTTF ? 'dl-ttf' : 'dl-otf'}" href="${f.url}" download>
-      <div class="dl-ico">${isTTF ? '📦' : '✨'}</div>
-      <div class="dl-info">
-        <div class="dl-name">${f.filename}</div>
-        <div class="dl-desc">${isTTF ? 'TTF — Windows, Mac, Android' : 'OTF — Mac, Adobe, Pro apps'}</div>
-        <div class="dl-size">${(f.size/1024).toFixed(0)} KB</div>
-      </div>
-      <div style="font-size:20px">⬇</div>
-    </a>`;
-  }).join('');
-  
-  // Smooth scroll to results
-  wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('charPills').innerHTML=
+    (d1.detected_chars||[]).map(c=>`<span class="cp">${c==' '?'␣':c}</span>`).join('');
+  document.getElementById('dlRow').innerHTML=
+    (d2.files||[]).map(f=>{
+      const ttf=f.filename.endsWith('.ttf');
+      return `<a class="dl-btn ${ttf?'dl-ttf':'dl-otf'}" href="${f.url}" download>
+        <div class="dl-ico">${ttf?'📦':'✨'}</div>
+        <div class="dl-info">
+          <div class="dl-name">${f.filename}</div>
+          <div class="dl-desc">${ttf?'TTF — Windows, Mac, Android':'OTF — Mac, Adobe apps'}</div>
+          <div class="dl-sz">${(f.size/1024).toFixed(0)} KB</div>
+        </div>⬇
+      </a>`;
+    }).join('');
+  w.scrollIntoView({behavior:'smooth',block:'start'});
 }
-
-function showError(msg) {
-  const box = document.getElementById('errorBox');
-  box.textContent = '❌ ' + msg;
-  box.style.display = 'block';
+function showErr(msg){
+  const b=document.getElementById('errBox');
+  b.textContent='❌ '+msg; b.style.display='block';
+  b.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
-
-function hideError() {
-  document.getElementById('errorBox').style.display = 'none';
+function hideErr(){ document.getElementById('errBox').style.display='none'; }
+function reset(){
+  file=null; sid=null;
+  const z=document.getElementById('uploadZone');
+  z.classList.remove('has-file');
+  document.getElementById('uzPrev').style.display='none';
+  document.getElementById('uzIco').textContent='📷';
+  document.getElementById('uzTitle').textContent='Drop photo here or click to upload';
+  document.getElementById('uzSub').textContent='JPG · PNG · HEIC · Max 20MB';
+  document.getElementById('fileInput').value='';
+  document.getElementById('processBtn').disabled=true;
+  document.getElementById('processBtn').textContent='✍️ Detect Characters & Build Font';
+  document.getElementById('resultsWrap').style.display='none';
+  document.getElementById('progressWrap').style.display='none';
+  hideErr();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-
-function resetAll() {
-  uploadedFile = null;
-  sessionId = null;
-  processingResult = null;
-  
-  document.getElementById('uploadZone').classList.remove('has-file');
-  document.getElementById('uzPreview').style.display = 'none';
-  document.getElementById('uzIco').textContent = '📷';
-  document.getElementById('uzTitle').textContent = 'Drop photo here or click to upload';
-  document.getElementById('uzSub').textContent = 'JPG, PNG, HEIC · Max 20MB · Phone photos work great';
-  document.getElementById('fileInput').value = '';
-  document.getElementById('processBtn').disabled = true;
-  document.getElementById('processBtn').textContent = '✍️ Detect Characters & Build Font';
-  document.getElementById('resultsWrap').style.display = 'none';
-  document.getElementById('progressWrap').style.display = 'none';
-  hideError();
-  
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function showTemplateTip() {
-  alert('Template coming soon! For now use Sentence Mode — write a sentence that includes the letters you want, take a photo, and type what you wrote.');
-  return false;
-}
-
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+function wait(ms){return new Promise(r=>setTimeout(r,ms));}
 </script>
 </body>
 </html>
