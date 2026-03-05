@@ -578,14 +578,15 @@ Be accurate. Respond with ONLY the JSON."""
                 except Exception:
                     glyph_count = 83
 
-            # Also return raw SVG glyph paths for direct canvas/SVG rendering
-            # This bypasses @font-face browser restrictions entirely
+            # NEW: Skeleton + AI Distortion pipeline
+            # Uses Gemini Brain if key available, else heuristic fallback
             glyph_svgs = {}
             try:
                 prompt_text = data.get('prompt', '')
+                gemini_key = os.environ.get('GEMINI_API_KEY', '')
                 from ai_font_geo import GlyphDrawer, analyze_prompt as geo_analyze
                 style = geo_analyze(prompt_text)
-                drawer = GlyphDrawer(style)
+                drawer = GlyphDrawer(style, style.get('_recipe'))
                 all_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?-_()'
                 for ch in all_chars:
                     try:
@@ -594,7 +595,7 @@ Be accurate. Respond with ONLY the JSON."""
                             glyph_svgs[ch] = {'d': path, 'adv': adv}
                     except Exception:
                         pass
-                print(f"[AI] glyph_svgs: {len(glyph_svgs)} chars")
+                print(f"[AI] glyph_svgs: {len(glyph_svgs)} chars, family={style['family']}, recipe={style.get('_recipe',{}).get('effects',[])}")
             except Exception as e:
                 print(f"[AI] glyph_svgs error: {e}")
 
@@ -863,14 +864,15 @@ Be accurate. Respond with ONLY the JSON."""
                 except Exception:
                     glyph_count = 83
 
-            # Also return raw SVG glyph paths for direct canvas/SVG rendering
-            # This bypasses @font-face browser restrictions entirely
+            # NEW: Skeleton + AI Distortion pipeline
+            # Uses Gemini Brain if key available, else heuristic fallback
             glyph_svgs = {}
             try:
                 prompt_text = data.get('prompt', '')
+                gemini_key = os.environ.get('GEMINI_API_KEY', '')
                 from ai_font_geo import GlyphDrawer, analyze_prompt as geo_analyze
                 style = geo_analyze(prompt_text)
-                drawer = GlyphDrawer(style)
+                drawer = GlyphDrawer(style, style.get('_recipe'))
                 all_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?-_()'
                 for ch in all_chars:
                     try:
@@ -879,7 +881,7 @@ Be accurate. Respond with ONLY the JSON."""
                             glyph_svgs[ch] = {'d': path, 'adv': adv}
                     except Exception:
                         pass
-                print(f"[AI] glyph_svgs: {len(glyph_svgs)} chars")
+                print(f"[AI] glyph_svgs: {len(glyph_svgs)} chars, family={style['family']}, recipe={style.get('_recipe',{}).get('effects',[])}")
             except Exception as e:
                 print(f"[AI] glyph_svgs error: {e}")
 
