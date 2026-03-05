@@ -26,13 +26,31 @@ _FAMS = {'sans','serif','script','display','mono'}
 # ════════════════════════════════════════════════════════
 
 def _oval_path(cx, cy, rx, ry) -> str:
-    """Perfect smooth ellipse, cubic Bezier, k=0.5523."""
+    """
+    Smooth ellipse — CLOCKWISE (CW) in SVG coords (y-down).
+    Used for OUTER contours.
+    CW: top → right → bottom → left → top
+    """
     k = 0.5523; kx = rx*k; ky = ry*k
     return (f"M{cx:.2f},{cy-ry:.2f} "
             f"C{cx+kx:.2f},{cy-ry:.2f} {cx+rx:.2f},{cy-ky:.2f} {cx+rx:.2f},{cy:.2f} "
             f"C{cx+rx:.2f},{cy+ky:.2f} {cx+kx:.2f},{cy+ry:.2f} {cx:.2f},{cy+ry:.2f} "
             f"C{cx-kx:.2f},{cy+ry:.2f} {cx-rx:.2f},{cy+ky:.2f} {cx-rx:.2f},{cy:.2f} "
             f"C{cx-rx:.2f},{cy-ky:.2f} {cx-kx:.2f},{cy-ry:.2f} {cx:.2f},{cy-ry:.2f} Z")
+
+def _oval_path_ccw(cx, cy, rx, ry) -> str:
+    """
+    Smooth ellipse — COUNTER-CLOCKWISE (CCW) in SVG coords (y-down).
+    Used for COUNTER/HOLE contours.
+    fontTools nonzero winding: CW outer + CCW inner = hole punched.
+    CCW: top → left → bottom → right → top
+    """
+    k = 0.5523; kx = rx*k; ky = ry*k
+    return (f"M{cx:.2f},{cy-ry:.2f} "
+            f"C{cx-kx:.2f},{cy-ry:.2f} {cx-rx:.2f},{cy-ky:.2f} {cx-rx:.2f},{cy:.2f} "
+            f"C{cx-rx:.2f},{cy+ky:.2f} {cx-kx:.2f},{cy+ry:.2f} {cx:.2f},{cy+ry:.2f} "
+            f"C{cx+kx:.2f},{cy+ry:.2f} {cx+rx:.2f},{cy+ky:.2f} {cx+rx:.2f},{cy:.2f} "
+            f"C{cx+rx:.2f},{cy-ky:.2f} {cx+kx:.2f},{cy-ry:.2f} {cx:.2f},{cy-ry:.2f} Z")
 
 def _rect_path(x, y, w, h, r=0) -> str:
     if r > 0:
@@ -107,6 +125,9 @@ def stroke_to_path(s: dict) -> str:
         return _diag_path(p['x1'], p['y1'], p['x2'], p['y2'], p['sw'])
     
     elif t == 'oval':
+        # Counters MUST be CCW so fontTools nonzero winding punches holes
+        if s.get('is_counter', False):
+            return _oval_path_ccw(p['cx'], p['cy'], p['rx'], p['ry'])
         return _oval_path(p['cx'], p['cy'], p['rx'], p['ry'])
     
     elif t == 'arc':
