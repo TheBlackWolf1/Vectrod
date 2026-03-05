@@ -532,7 +532,8 @@ Be accurate. Respond with ONLY the JSON."""
             out_dir = os.path.join(sp, 'output')
             os.makedirs(out_dir, exist_ok=True)
 
-            print(f"\n[AI-GENERATE] session={sid[:8]} prompt=\"{prompt[:60]}\" font={font_name}")
+            print(f"\n[AI-GENERATE] v7.1 session={sid[:8]} prompt=\"{prompt[:60]}\" font={font_name}")
+            print(f"  [VERSION] app=v7.1 engine={__import__('engine').__dict__.get('__ENGINE_VERSION__','?')}")
 
             # ── NEW: Skeleton + AI Distortion pipeline ──
             from ai_font_geo import GlyphDrawer, analyze_prompt as geo_analyze
@@ -582,25 +583,17 @@ Be accurate. Respond with ONLY the JSON."""
                     ox = col * CELL; oy = row * CELL
                     g = glyph_svgs[ch]
                     svgf.write(f'  <g id="glyph_{ord(ch)}" transform="translate({ox},{oy})">\n')
-                    svgf.write(f'    <path d="{g["d"]}" fill="black" fill-rule="evenodd"/>\n')
+                    svgf.write(f'    <path d="{g["d"]}" fill="black" fill-rule="nonzero"/>\n')
                     svgf.write(f'  </g>\n')
                 svgf.write('</svg>\n')
 
-            # Convert SVG → TTF/OTF via existing converter
-            from ai_font import generate_ai_font as _legacy_convert
-            def _dummy_progress(msg, pct=None): print(f"  [AI] {msg}")
-
-            # Convert SVG grid → TTF/OTF using engine.py
-            try:
-                from engine import build_font as engine_build_font
-                engine_build_font(svg_grid, font_name, out_dir)
-                ttf_path = os.path.join(out_dir, f"{font_name}_Regular.ttf")
-                otf_path = os.path.join(out_dir, f"{font_name}_Regular.otf")
-                if not os.path.exists(ttf_path): ttf_path = None
-                if not os.path.exists(otf_path): otf_path = None
-            except Exception as conv_err:
-                print(f"  [AI] engine error: {conv_err}, falling back to legacy")
-                ttf_path, otf_path = _legacy_convert(prompt=prompt, font_name=font_name, output_dir=out_dir, progress_callback=_dummy_progress)
+            # Convert SVG grid → TTF/OTF using engine.py (pathops-ready)
+            from engine import build_font as engine_build_font
+            engine_build_font(svg_grid, font_name, out_dir)
+            ttf_path = os.path.join(out_dir, f"{font_name}_Regular.ttf")
+            otf_path = os.path.join(out_dir, f"{font_name}_Regular.otf")
+            if not os.path.exists(ttf_path): ttf_path = None
+            if not os.path.exists(otf_path): otf_path = None
 
             if not ttf_path:
                 self.json_resp({'success': False, 'error': 'Font generation failed'}, 500)
