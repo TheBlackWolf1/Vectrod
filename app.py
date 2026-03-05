@@ -231,6 +231,14 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = urlparse(self.path).path
 
+        # Railway health check endpoint
+        if path == '/health':
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(b'OK')
+            return
+
         if path in ('/', '/index.html'):
             self.serve_static('index.html', 'text/html')
 
@@ -385,7 +393,10 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(data)
         else:
-            self.send_error(404)
+            # Graceful 404 — never crash, redirect to home
+            self.send_response(302)
+            self.send_header('Location', '/')
+            self.end_headers()
 
     def serve_file(self, filepath):
         with open(filepath, 'rb') as f:
