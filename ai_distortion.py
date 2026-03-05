@@ -1,3 +1,4 @@
+__VERSION__ = "v7.1-gemini-shapes"
 """
 ai_distortion.py — GEMINI CHIEF DESIGNER + DECORATION ENGINE  v6
 ==================================================================
