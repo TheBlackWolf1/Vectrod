@@ -226,43 +226,62 @@ def scale_path(d, sx, sy, tx, ty):
 
 def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baseline_y=None):
     """
-    Bir grubu glyph'e çevir.
-    
-    ref_height: büyük harf yüksekliği (SVG birimlerinde) — orantılı scale için
-    svg_baseline_y: SVG'de baseline'ın y koordinatı (büyük harflerin y_max ortalaması)
+    Convert a glyph group to a TTF glyph.
+    Uses FIXED metric system — immune to decorative effect bbox inflation.
+
+    SVG grid: each glyph sits in a 700×700 cell at translate(col*700, row*700).
+    group['tx'], group['ty'] = cell top-left corner in absolute SVG coords.
+    LOCAL coords: glyph path coords are relative to cell origin.
+
+    Fixed constants (must match font_skeletons.py):
+      SVG_CAP=80, SVG_BASE=560, SVG_CELL=700
+      ref_height  = 480  (BASE - CAP)
+      svg_baseline_y = 560  (BASE, local to cell)
     """
-    bb = get_group_bbox(group)
-    if bb is None:
-        return None, 500
-    
-    x0, y0, x1, y1 = bb
-    src_w = x1 - x0
-    src_h = y1 - y0
-    
-    if src_w <= 0 or src_h <= 0:
-        return None, 500
-    
+    # Use cell origin as left margin — NOT bbox x0 (bbox inflated by spikes/tremor)
+    cell_tx = group.get('tx', 0)
+    cell_ty = group.get('ty', 0)
+
+    # Fixed SVG metric constants
+    SVG_CAP    =  80.0
+    SVG_BASE   = 560.0
+    SVG_CELL   = 700.0
+    SVG_LEFT   =  44.0   # standard left margin in our skeleton (= L constant)
+
     if ref_height and ref_height > 0 and svg_baseline_y is not None:
-        # Scale faktörü: büyük harf yüksekliği = font ascender
-        scale = ascender / ref_height
-        target_w = int(src_w * scale)
-        
-        # SVG Y aşağı gider, font Y yukarı
-        # svg_baseline_y → font'ta 0 (baseline)
-        # SVG'de yukarı gitmek = font'ta yukarı gitmek
-        sx = scale
-        sy = -scale
-        # x: sol kenarı 0'a al
-        tx = -x0 * sx
-        # y: SVG baseline'ı → font baseline (0)
-        # font_y = (svg_baseline_y - svg_y) * scale
-        # yani: font_y = svg_baseline_y * scale - svg_y * scale
-        ty = svg_baseline_y * scale  # bu baseline'ı 0'a alır, yukarısı pozitif
+        # Scale: cap height (480 SVG units) maps to font ascender (800 units)
+        scale     = ascender / ref_height          # 800/480 = 1.667
+        sx        = scale
+        sy        = -scale                          # flip Y: SVG down → font up
+
+        # X: cell left edge → glyph x=0 (no left sidebearing baked in)
+        # Glyph path coords are LOCAL (already relative to cell due to how
+        # collect_groups works — paths are at absolute coords, cell_tx is offset)
+        # Paths use LOCAL coords (relative to cell, 0–700 range)
+        # tx: shift left margin to x=0 (paths start at SVG_LEFT=44)
+        tx = -SVG_LEFT * sx
+
+        # ty: LOCAL baseline (y=560 in path coords) → font baseline (y=0)
+        # font_y = (SVG_BASE - svg_local_y) * scale
+        #        = SVG_BASE*scale - svg_local_y*scale
+        #        = ty + svg_local_y*sy   where sy=-scale, ty=SVG_BASE*scale
+        ty = SVG_BASE * scale
+
+        # Advance width: use actual glyph advance from skeleton (stored in SVG adv)
+        # Estimate from cell: typical advance ≈ 520/700 of cell width
+        target_w  = int((SVG_CELL - SVG_LEFT * 2) * scale)
     else:
-        scale = (ascender - descender) / src_h
+        # Fallback: bbox-based (should not be reached with our fixed metrics)
+        bb = get_group_bbox(group)
+        if bb is None:
+            return None, 500
+        x0, y0, x1, y1 = bb
+        src_w = x1 - x0; src_h = y1 - y0
+        if src_w <= 0 or src_h <= 0:
+            return None, 500
+        scale    = (ascender - descender) / src_h
         target_w = int(src_w * scale)
-        sx = scale
-        sy = -scale
+        sx = scale; sy = -scale
         tx = -x0 * sx
         ty = ascender + y0 * scale
     
@@ -409,22 +428,14 @@ def build_font(svg_file, font_name, output_dir,
         glyphs['space'] = make_empty_glyph()
         metrics['space'] = (250, 0)
 
-    # Referans: büyük harflerden baseline ve cap yüksekliği hesapla
-    ref_cap_heights = []
-    ref_baseline_ys = []  # SVG'de baseline y koordinatları (y_max büyük harfler)
-    for ch in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-        if ch in char_map:
-            bb = get_group_bbox(char_map[ch])
-            if bb:
-                ref_cap_heights.append(bb[3] - bb[1])  # yükseklik
-                ref_baseline_ys.append(bb[3])           # y_max = baseline
-    
-    ref_height = sum(ref_cap_heights) / len(ref_cap_heights) if ref_cap_heights else None
-    svg_baseline_y = sum(ref_baseline_ys) / len(ref_baseline_ys) if ref_baseline_ys else None
-    
-    if ref_height:
-        print(f"      Referans cap yüksekliği: {ref_height:.1f} birim")
-        print(f"      SVG baseline Y: {svg_baseline_y:.2f}")
+    # ── FIXED METRIC SYSTEM ─────────────────────────────────────────
+    # Our SVG grid uses known constants from font_skeletons.py:
+    #   CAP=80 (top of capitals), BASE=560 (baseline), CELL=700 (em)
+    # Using FIXED values bypasses bbox measurement entirely —
+    # decorative effects (crystal spikes, drips, tremor) never distort scaling.
+    ref_height     = 480.0   # BASE(560) - CAP(80) = cap height in SVG units
+    svg_baseline_y = 560.0   # LOCAL baseline y per glyph cell (= BASE constant)
+    print(f"      Fixed metrics: cap_height={ref_height:.0f}  baseline_y={svg_baseline_y:.0f}")
 
     ok = 0
     fail = 0
