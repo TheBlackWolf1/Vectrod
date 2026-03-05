@@ -543,7 +543,11 @@ Be accurate. Respond with ONLY the JSON."""
             print(f"  [AI] Gemini key: {'YES' if gemini_key else 'NO - heuristic fallback'}")
 
             # Get effect recipe from Gemini or heuristic
+            import time as _time
+            _t0 = _time.time()
+            print(f"  [AI] Analyzing prompt with {'Gemini Brain' if gemini_key else 'heuristic engine'}...")
             recipe = get_effect_recipe(prompt, gemini_key)
+            print(f"  [AI] Recipe ready in {_time.time()-_t0:.1f}s")
             print(f"  [AI] Recipe: {recipe['base_family']} sw={recipe['stroke_weight']} effects={[e['name'] for e in recipe.get('effects',[])]}")
 
             style = {
