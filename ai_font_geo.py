@@ -27,23 +27,10 @@ _FAMS = {'sans','serif','script','display','mono'}
 
 def _oval_path(cx, cy, rx, ry) -> str:
     """
-    Smooth ellipse — CLOCKWISE (CW) in SVG coords (y-down).
-    Used for OUTER contours.
-    CW: top → right → bottom → left → top
-    """
-    k = 0.5523; kx = rx*k; ky = ry*k
-    return (f"M{cx:.2f},{cy-ry:.2f} "
-            f"C{cx+kx:.2f},{cy-ry:.2f} {cx+rx:.2f},{cy-ky:.2f} {cx+rx:.2f},{cy:.2f} "
-            f"C{cx+rx:.2f},{cy+ky:.2f} {cx+kx:.2f},{cy+ry:.2f} {cx:.2f},{cy+ry:.2f} "
-            f"C{cx-kx:.2f},{cy+ry:.2f} {cx-rx:.2f},{cy+ky:.2f} {cx-rx:.2f},{cy:.2f} "
-            f"C{cx-rx:.2f},{cy-ky:.2f} {cx-kx:.2f},{cy-ry:.2f} {cx:.2f},{cy-ry:.2f} Z")
-
-def _oval_path_ccw(cx, cy, rx, ry) -> str:
-    """
-    Smooth ellipse — COUNTER-CLOCKWISE (CCW) in SVG coords (y-down).
-    Used for COUNTER/HOLE contours.
-    fontTools nonzero winding: CW outer + CCW inner = hole punched.
-    CCW: top → left → bottom → right → top
+    Smooth ellipse — CLOCKWISE (CW) in SVG y-down coords.
+    Used for OUTER contours. CW = negative signed area.
+    After engine reverse_direction=True → CCW = standard font outer winding.
+    Goes: top → LEFT → bottom → RIGHT (CW in screen/y-down)
     """
     k = 0.5523; kx = rx*k; ky = ry*k
     return (f"M{cx:.2f},{cy-ry:.2f} "
@@ -52,14 +39,35 @@ def _oval_path_ccw(cx, cy, rx, ry) -> str:
             f"C{cx+kx:.2f},{cy+ry:.2f} {cx+rx:.2f},{cy+ky:.2f} {cx+rx:.2f},{cy:.2f} "
             f"C{cx+rx:.2f},{cy-ky:.2f} {cx+kx:.2f},{cy-ry:.2f} {cx:.2f},{cy-ry:.2f} Z")
 
+def _oval_path_ccw(cx, cy, rx, ry) -> str:
+    """
+    Smooth ellipse — COUNTER-CLOCKWISE (CCW) in SVG y-down coords.
+    Used for COUNTER/HOLE contours. CCW = positive signed area.
+    After engine reverse_direction=True → CW = standard font inner/hole winding.
+    Goes: top → RIGHT → bottom → LEFT (CCW in screen/y-down)
+    """
+    k = 0.5523; kx = rx*k; ky = ry*k
+    return (f"M{cx:.2f},{cy-ry:.2f} "
+            f"C{cx+kx:.2f},{cy-ry:.2f} {cx+rx:.2f},{cy-ky:.2f} {cx+rx:.2f},{cy:.2f} "
+            f"C{cx+rx:.2f},{cy+ky:.2f} {cx+kx:.2f},{cy+ry:.2f} {cx:.2f},{cy+ry:.2f} "
+            f"C{cx-kx:.2f},{cy+ry:.2f} {cx-rx:.2f},{cy+ky:.2f} {cx-rx:.2f},{cy:.2f} "
+            f"C{cx-rx:.2f},{cy-ky:.2f} {cx-kx:.2f},{cy-ry:.2f} {cx:.2f},{cy-ry:.2f} Z")
+
 def _rect_path(x, y, w, h, r=0) -> str:
+    """
+    Rectangle path — CLOCKWISE (CW) in SVG y-down coords.
+    CW = negative signed area = after engine reverse_direction=True → CCW = outer fill.
+    Winding: top-left → bottom-left → bottom-right → top-right → close
+    """
     if r > 0:
         r = min(r, w//2, h//2)
-        return (f"M{x+r:.1f},{y:.1f} L{x+w-r:.1f},{y:.1f} Q{x+w:.1f},{y:.1f} {x+w:.1f},{y+r:.1f} "
-                f"L{x+w:.1f},{y+h-r:.1f} Q{x+w:.1f},{y+h:.1f} {x+w-r:.1f},{y+h:.1f} "
-                f"L{x+r:.1f},{y+h:.1f} Q{x:.1f},{y+h:.1f} {x:.1f},{y+h-r:.1f} "
-                f"L{x:.1f},{y+r:.1f} Q{x:.1f},{y:.1f} {x+r:.1f},{y:.1f} Z")
-    return f"M{x:.1f},{y:.1f} L{x+w:.1f},{y:.1f} L{x+w:.1f},{y+h:.1f} L{x:.1f},{y+h:.1f} Z"
+        # CW rounded rect: go down first, then right, then up, then left
+        return (f"M{x+r:.1f},{y:.1f} L{x:.1f},{y:.1f} Q{x:.1f},{y:.1f} {x:.1f},{y+r:.1f} "
+                f"L{x:.1f},{y+h-r:.1f} Q{x:.1f},{y+h:.1f} {x+r:.1f},{y+h:.1f} "
+                f"L{x+w-r:.1f},{y+h:.1f} Q{x+w:.1f},{y+h:.1f} {x+w:.1f},{y+h-r:.1f} "
+                f"L{x+w:.1f},{y+r:.1f} Q{x+w:.1f},{y:.1f} {x+w-r:.1f},{y:.1f} Z")
+    # CW: top-left → bottom-left → bottom-right → top-right
+    return f"M{x:.1f},{y:.1f} L{x:.1f},{y+h:.1f} L{x+w:.1f},{y+h:.1f} L{x+w:.1f},{y:.1f} Z"
 
 def _vbar_path(cx, y1, y2, sw, radius=0) -> str:
     return _rect_path(cx - sw/2, y1, sw, y2-y1, radius)
