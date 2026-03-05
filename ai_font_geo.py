@@ -83,23 +83,84 @@ def _diag_path(x1, y1, x2, y2, sw) -> str:
     return (f"M{x1+nx:.2f},{y1+ny:.2f} L{x2+nx:.2f},{y2+ny:.2f} "
             f"L{x2-nx:.2f},{y2-ny:.2f} L{x1-nx:.2f},{y1-ny:.2f} Z")
 
+def _arc_bezier_segment(cx, cy, rx, ry, a1, a2):
+    """
+    Single cubic Bezier segment approximating an elliptical arc from a1→a2.
+    Uses the standard tangent-based formula (exact for arcs ≤ 90°).
+    Returns: (x0,y0, cp1x,cp1y, cp2x,cp2y, x1,y1)
+    """
+    # Midpoint angle and alpha factor
+    da = a2 - a1
+    alpha = math.sin(da) * (math.sqrt(4 + 3*math.tan(da/2)**2) - 1) / 3
+
+    # Start and end points
+    cos1, sin1 = math.cos(a1), math.sin(a1)
+    cos2, sin2 = math.cos(a2), math.sin(a2)
+
+    x0 = cx + rx*cos1;  y0 = cy - ry*sin1
+    x3 = cx + rx*cos2;  y3 = cy - ry*sin2
+
+    # Tangent vectors (perpendicular to radius, scaled)
+    cp1x = x0 - alpha * rx * sin1
+    cp1y = y0 - alpha * ry * cos1
+    cp2x = x3 + alpha * rx * sin2
+    cp2y = y3 + alpha * ry * cos2
+
+    return x0, y0, cp1x, cp1y, cp2x, cp2y, x3, y3
+
+
 def _arc_path(cx, cy, rx, ry, a1_deg, a2_deg, sw, sharp=False) -> str:
-    """Arc stroke with smooth Bezier approximation."""
-    a1 = math.radians(a1_deg); a2 = math.radians(a2_deg)
+    """
+    Arc stroke — 100% cubic Bezier, zero L commands.
+    Splits arc into ≤90° segments, each approximated by one C command.
+    Mathematically smooth at any scale.
+    """
+    a1 = math.radians(a1_deg)
+    a2 = math.radians(a2_deg)
     span = a2 - a1
     if span < 0: span += 2*math.pi
-    # Use many dense points for smooth curve
-    n = max(16, int(abs(span) * rx / 8))
-    irx = max(3, rx-sw); iry = max(3, ry-sw)
-    outer, inner = [], []
-    for i in range(n+1):
-        t = a1 + span * i / n
-        outer.append((cx + rx*math.cos(t), cy - ry*math.sin(t)))
-        inner.append((cx + irx*math.cos(t), cy - iry*math.sin(t)))
-    inner = list(reversed(inner))
-    pts = outer + inner
-    d = f"M{pts[0][0]:.2f},{pts[0][1]:.2f}"
-    for x,y in pts[1:]: d += f" L{x:.2f},{y:.2f}"
+    if span < 1e-6: return ""
+
+    # Split into segments of ≤90°
+    n_segs = max(1, math.ceil(abs(span) / (math.pi/2)))
+    seg    = span / n_segs
+
+    irx = max(3.0, rx - sw)
+    iry = max(3.0, ry - sw)
+
+    def arc_bezier_pts(r_x, r_y, reversed_dir=False):
+        """Build list of bezier control points for full arc."""
+        pts = []
+        angles = [a1 + seg*i for i in range(n_segs+1)]
+        if reversed_dir: angles = list(reversed(angles))
+        for i in range(len(angles)-1):
+            aa1, aa2 = angles[i], angles[i+1]
+            if reversed_dir: aa1, aa2 = angles[i], angles[i+1]
+            pts.append(_arc_bezier_segment(cx, cy, r_x, r_y, aa1, aa2))
+        return pts
+
+    outer_segs = arc_bezier_pts(rx,  ry,  False)
+    inner_segs = arc_bezier_pts(irx, iry, True)   # reversed for CW winding
+
+    # Start point
+    x0, y0 = outer_segs[0][0], outer_segs[0][1]
+    d = f"M{x0:.3f},{y0:.3f}"
+
+    # Outer arc: C cp1x,cp1y cp2x,cp2y x3,y3
+    for seg_pts in outer_segs:
+        _, _, cp1x, cp1y, cp2x, cp2y, x3, y3 = seg_pts
+        d += f" C{cp1x:.3f},{cp1y:.3f} {cp2x:.3f},{cp2y:.3f} {x3:.3f},{y3:.3f}"
+
+    # Line to inner arc end point
+    ix_end = inner_segs[0][0]
+    iy_end = inner_segs[0][1]
+    d += f" L{ix_end:.3f},{iy_end:.3f}"
+
+    # Inner arc (reversed direction for closed stroke shape)
+    for seg_pts in inner_segs:
+        _, _, cp1x, cp1y, cp2x, cp2y, x3, y3 = seg_pts
+        d += f" C{cp1x:.3f},{cp1y:.3f} {cp2x:.3f},{cp2y:.3f} {x3:.3f},{y3:.3f}"
+
     return d + " Z"
 
 def _drip_path(cx, y, w, h) -> str:
@@ -144,6 +205,9 @@ def stroke_to_path(s: dict) -> str:
     
     elif t == '_drip':
         return _drip_path(p['cx'], p['y'], p['w'], p['h'])
+    
+    elif t == '_decoration':
+        return p.get('path', '')   # pre-placed shape path
     
     return ""
 
@@ -218,9 +282,9 @@ class GlyphDrawer:
         # Override stroke widths from style
         strokes = _scale_stroke_widths(strokes, self.sw)
         
-        # Apply distortion recipe if available
+        # Apply effects + decorations
         if self.recipe:
-            strokes = apply_recipe(strokes, self.recipe, self.adv)
+            strokes = apply_recipe(strokes, self.recipe, self.adv, char=char)
         
         path = strokes_to_svg_path(strokes)
         return path, self.adv
