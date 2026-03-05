@@ -42,8 +42,8 @@ def diag(x1, y1, x2, y2, sw, role='stem'):
 def oval(cx, cy, rx, ry, role='bowl', is_counter=False):
     return {'type':'oval','params':{'cx':cx,'cy':cy,'rx':rx,'ry':ry},'role':role,'is_counter':is_counter}
 
-def arc(cx, cy, rx, ry, a1, a2, sw, role='arc'):
-    return {'type':'arc','params':{'cx':cx,'cy':cy,'rx':rx,'ry':ry,'a1':a1,'a2':a2,'sw':sw},'role':role,'is_counter':False}
+def arc(cx, cy, rx, ry, a1, a2, sw, role='arc', is_counter=False):
+    return {'type':'arc','params':{'cx':cx,'cy':cy,'rx':rx,'ry':ry,'a1':a1,'a2':a2,'sw':sw},'role':role,'is_counter':is_counter}
 
 def bezier(pts, sw, role='curve', closed=True):
     """pts: list of (x,y) control points for cubic bezier chain"""
@@ -132,11 +132,13 @@ def _glyph_C(L,R,W,CX,S,T,sf,fam,adv):
     return [arc(CX,(CAP+BASE)//2, W//2,(BASE-CAP)//2, 35,325, S,'arc')]
 
 def _glyph_D(L,R,W,CX,S,T,sf,fam,adv):
-    rx=W*82//100; ry=(BASE-CAP)//2; cy=(CAP+BASE)//2; cx=L+S
+    # Arc-based bowl: right half only, no left overflow
+    cx=L+S; cy=(CAP+BASE)//2
+    rx=R-cx; ry=(BASE-CAP)//2
     return [
         vbar(L+S//2, CAP, BASE, S, 'stem'),
-        oval(cx, cy, rx, ry, 'bowl'),
-        oval(cx, cy, max(4,rx-S), max(4,ry-S), 'counter', True),
+        arc(cx, cy, rx,       ry,       270, 90,  S, 'bowl'),
+        arc(cx, cy, max(4,rx-S), max(4,ry-S), 90, 270, S, 'counter', True),
     ]
 
 def _glyph_E(L,R,W,CX,S,T,sf,fam,adv):
