@@ -1,3 +1,4 @@
+__VERSION__ = "v7.1-arc-bowls"
 """
 font_skeletons.py — BASE SKELETON ENGINE
 =========================================
