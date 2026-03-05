@@ -1,3 +1,4 @@
+__VERSION__ = "v7.1-bezier-arcs"
 """
 ai_font_geo.py — SVG PATH RENDERER + FONT PIPELINE  v5
 ========================================================
@@ -273,14 +274,9 @@ class GlyphDrawer:
     def draw(self, char: str) -> tuple:
         """Returns (svg_path_string, advance_width)."""
         strokes = get_skeleton(char, self.fam, self.adv)
-        
-        # Override stroke widths from style
         strokes = _scale_stroke_widths(strokes, self.sw)
-        
-        # Apply effects + decorations
         if self.recipe:
             strokes = apply_recipe(strokes, self.recipe, self.adv, char=char)
-        
         path = strokes_to_svg_path(strokes)
         return path, self.adv
 
