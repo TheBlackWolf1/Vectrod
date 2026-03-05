@@ -109,11 +109,10 @@ def _arc_bezier_segment(cx, cy, rx, ry, a1, a2):
     return x0, y0, cp1x, cp1y, cp2x, cp2y, x3, y3
 
 
-def _arc_path(cx, cy, rx, ry, a1_deg, a2_deg, sw, sharp=False) -> str:
+def _arc_path(cx, cy, rx, ry, a1_deg, a2_deg, sw, sharp=False, counter=False) -> str:
     """
-    Arc stroke — 100% cubic Bezier, zero L commands.
-    Splits arc into ≤90° segments, each approximated by one C command.
-    Mathematically smooth at any scale.
+    Arc stroke — pure cubic Bezier, zero L commands.
+    counter=True: reverses winding (CCW) for counter/hole arcs.
     """
     a1 = math.radians(a1_deg)
     a2 = math.radians(a2_deg)
@@ -121,44 +120,38 @@ def _arc_path(cx, cy, rx, ry, a1_deg, a2_deg, sw, sharp=False) -> str:
     if span < 0: span += 2*math.pi
     if span < 1e-6: return ""
 
-    # Split into segments of ≤90°
     n_segs = max(1, math.ceil(abs(span) / (math.pi/2)))
-    seg    = span / n_segs
+    seg_size = span / n_segs
 
     irx = max(3.0, rx - sw)
     iry = max(3.0, ry - sw)
 
-    def arc_bezier_pts(r_x, r_y, reversed_dir=False):
-        """Build list of bezier control points for full arc."""
-        pts = []
-        angles = [a1 + seg*i for i in range(n_segs+1)]
-        if reversed_dir: angles = list(reversed(angles))
-        for i in range(len(angles)-1):
-            aa1, aa2 = angles[i], angles[i+1]
-            if reversed_dir: aa1, aa2 = angles[i], angles[i+1]
-            pts.append(_arc_bezier_segment(cx, cy, r_x, r_y, aa1, aa2))
-        return pts
+    def build_arc_segs(r_x, r_y, start, step, n):
+        segs = []
+        for i in range(n):
+            aa1 = start + step * i
+            aa2 = start + step * (i + 1)
+            segs.append(_arc_bezier_segment(cx, cy, r_x, r_y, aa1, aa2))
+        return segs
 
-    outer_segs = arc_bezier_pts(rx,  ry,  False)
-    inner_segs = arc_bezier_pts(irx, iry, True)   # reversed for CW winding
+    outer_segs = build_arc_segs(rx,  ry,  a1, seg_size, n_segs)
+    # Inner arc runs in REVERSE direction to close the stroke shape
+    inner_segs = build_arc_segs(irx, iry, a2, -seg_size, n_segs)
 
-    # Start point
+    if counter:
+        # Swap outer/inner to flip total winding to CCW
+        outer_segs, inner_segs = inner_segs, outer_segs
+
     x0, y0 = outer_segs[0][0], outer_segs[0][1]
     d = f"M{x0:.3f},{y0:.3f}"
-
-    # Outer arc: C cp1x,cp1y cp2x,cp2y x3,y3
-    for seg_pts in outer_segs:
-        _, _, cp1x, cp1y, cp2x, cp2y, x3, y3 = seg_pts
+    for s in outer_segs:
+        _, _, cp1x, cp1y, cp2x, cp2y, x3, y3 = s
         d += f" C{cp1x:.3f},{cp1y:.3f} {cp2x:.3f},{cp2y:.3f} {x3:.3f},{y3:.3f}"
 
-    # Line to inner arc end point
-    ix_end = inner_segs[0][0]
-    iy_end = inner_segs[0][1]
+    ix_end, iy_end = inner_segs[0][0], inner_segs[0][1]
     d += f" L{ix_end:.3f},{iy_end:.3f}"
-
-    # Inner arc (reversed direction for closed stroke shape)
-    for seg_pts in inner_segs:
-        _, _, cp1x, cp1y, cp2x, cp2y, x3, y3 = seg_pts
+    for s in inner_segs:
+        _, _, cp1x, cp1y, cp2x, cp2y, x3, y3 = s
         d += f" C{cp1x:.3f},{cp1y:.3f} {cp2x:.3f},{cp2y:.3f} {x3:.3f},{y3:.3f}"
 
     return d + " Z"
@@ -201,7 +194,9 @@ def stroke_to_path(s: dict) -> str:
     
     elif t == 'arc':
         return _arc_path(p['cx'], p['cy'], p['rx'], p['ry'],
-                         p['a1'], p['a2'], p['sw'], s.get('sharp', False))
+                         p['a1'], p['a2'], p['sw'],
+                         s.get('sharp', False),
+                         counter=s.get('is_counter', False))
     
     elif t == '_drip':
         return _drip_path(p['cx'], p['y'], p['w'], p['h'])
