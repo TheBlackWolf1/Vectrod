@@ -297,48 +297,116 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     
     combined = ' '.join(parts)
     
-    # fontTools ile çiz
-    # Path rendering with pathops (if available) or winding-correct fallback
-    svg_str = f'<svg xmlns="http://www.w3.org/2000/svg"><path d="{combined}"/></svg>'
+    # ── GLYPH RENDERING: Rasterize → Trace → TTF ───────────────────
+    # Rasterize all SVG subpaths to bitmap, then trace clean outlines.
+    # This automatically unions overlapping strokes, handles winding,
+    # and produces clean single-body glyphs. Works on any platform.
+    # Falls back to pathops → winding if cv2 unavailable.
     
     try:
-        # ── PATHOPS PATH (best quality, Railway'de skia-pathops yüklüyse) ──────
-        # Correct API: SVGPath → pathops.Path (pen protocol) → simplify → TTGlyphPen
-        import pathops
-        from fontTools.pens.cu2quPen import Cu2QuPen
-        
-        ops_path = pathops.Path()
-        svg_obj_ops = SVGPathLib(io.BytesIO(svg_str.encode('utf-8')))
-        svg_obj_ops.draw(ops_path)  # pathops.Path IS a SegmentPen — draw directly into it
-        
-        # THE MAGIC: simplify with EVENODD resolves all overlaps and counter holes
-        # regardless of winding direction — bulletproof
-        pathops.simplify(ops_path, pathops.FillType.EVENODD)
-        
-        # Draw simplified path → quadratic TTF glyph
-        pen = TTGlyphPen(None)
-        cu2qu_pen = Cu2QuPen(pen, max_err=1.0, reverse_direction=False)
-        ops_path.draw(cu2qu_pen)
-        glyph = pen.glyph()
-        return glyph, target_w + 80
+        import cv2 as _cv2
+        import numpy as _np
 
-    except ImportError:
-        # ── WINDING FALLBACK (no pathops — uses correct CW/CCW winding) ────────
-        # Our paths: solid strokes = CW, counter ovals = CCW
-        # reverse_direction=True → font standard: outer=CCW, inner=CW = hole
-        try:
-            from fontTools.pens.cu2quPen import Cu2QuPen
-            pen = TTGlyphPen(None)
-            cu2qu_pen = Cu2QuPen(pen, max_err=1.0, reverse_direction=True)
-            svg_obj = SVGPathLib(io.BytesIO(svg_str.encode('utf-8')))
-            svg_obj.draw(cu2qu_pen)
-            glyph = pen.glyph()
-            return glyph, target_w + 80
-        except Exception as e:
-            raise RuntimeError(f"SVGPath çizim hatası: {e}")
+        # ── Step 1: Rasterize ──────────────────────────────────────────
+        OVERSAMPLE = 3
+        EM = 1000
+        SZ = EM * OVERSAMPLE
+        img = _np.zeros((SZ, SZ), dtype=_np.uint8)
+
+        for raw_d in parts:
+            subpaths = [s.strip() for s in raw_d.split('Z') if s.strip()]
+            for sp in subpaths:
+                nums = re.findall(r'[-+]?\d*\.?\d+', sp)
+                pts_raw = [(float(nums[i]), float(nums[i+1]))
+                           for i in range(0, len(nums)-1, 2) if i+1 < len(nums)]
+                if len(pts_raw) < 3:
+                    continue
+                n = len(pts_raw)
+                area_s = sum(pts_raw[i][0]*pts_raw[(i+1)%n][1] -
+                             pts_raw[(i+1)%n][0]*pts_raw[i][1] for i in range(n)) / 2
+                poly = _np.array([(int(x*OVERSAMPLE), int(y*OVERSAMPLE)) 
+                                  for x, y in pts_raw], _np.int32)
+                _cv2.fillPoly(img, [poly], 255 if area_s < 0 else 0)
+
+        # ── Step 2: Trace clean outlines ──────────────────────────────
+        contours_cv, hierarchy_cv = _cv2.findContours(
+            img, _cv2.RETR_CCOMP, _cv2.CHAIN_APPROX_TC89_KCOS
+        )
+        if not len(contours_cv):
+            raise RuntimeError("rasterize produced empty image")
+
+        h_arr = hierarchy_cv[0]
+
+        # ── Step 3: Write to TTGlyphPen ───────────────────────────────
+        pen = TTGlyphPen(None)
+        wrote = 0
+        for i, c in enumerate(contours_cv):
+            area_px = _cv2.contourArea(c)
+            if area_px < 30:   # skip noise (in pixel units)
+                continue
+            parent = h_arr[i][3]
+            is_hole = parent >= 0
+
+            # Convert pixel → font units
+            # raster: x_px = svg_x * OVERSAMPLE  →  svg_x = x_px / OVERSAMPLE
+            # font:   font_x = svg_x * sx + tx,  font_y = svg_y * sy + ty
+            pts_font = []
+            for pt in c:
+                px, py = int(pt[0][0]), int(pt[0][1])
+                fx = int(round(px / OVERSAMPLE * sx + tx))
+                fy = int(round(py / OVERSAMPLE * sy + ty))
+                pts_font.append((fx, fy))
+
+            if len(pts_font) < 3:
+                continue
+
+            # After Y-flip (sy=-scale), raster outer CCW→CW in raster coords
+            # but OpenCV traces outer contours CCW in image coords (Y-down)
+            # After sy flip → CW in font space. fontTools wants CCW for outer.
+            # Simple: always reverse, fontTools normalizes winding internally.
+            # For holes: also reverse. fontTools pen protocol handles it.
+            pts_font = list(reversed(pts_font))
+
+            pen.moveTo(pts_font[0])
+            for pt in pts_font[1:]:
+                pen.lineTo(pt)
+            pen.closePath()
+            wrote += 1
+
+        if wrote == 0:
+            raise RuntimeError("no contours written to pen")
+        
+        return pen.glyph(), target_w + 80
+
+    except Exception as e_raster:
+        # Raster failed (cv2 not available or error) — use pathops or winding
+        pass_msg = f"raster={type(e_raster).__name__}"
     
-    except Exception as e:
-        raise RuntimeError(f"pathops çizim hatası: {e}")
+    # ── Fallback A: pathops ───────────────────────────────────────────
+    svg_str = f'<svg xmlns="http://www.w3.org/2000/svg"><path d="{combined}"/></svg>'
+    svg_bytes = svg_str.encode('utf-8')
+    try:
+        import pathops
+        ops_path = pathops.Path()
+        SVGPathLib(io.BytesIO(svg_bytes)).draw(ops_path)
+        pathops.simplify(ops_path, pathops.FillType.WINDING)
+        from fontTools.pens.cu2quPen import Cu2QuPen
+        pen = TTGlyphPen(None)
+        ops_path.draw(Cu2QuPen(pen, max_err=0.5, reverse_direction=False))
+        return pen.glyph(), target_w + 80
+    except ImportError:
+        pass
+    except Exception as ep:
+        pass
+
+    # ── Fallback B: direct winding ────────────────────────────────────
+    try:
+        from fontTools.pens.cu2quPen import Cu2QuPen
+        pen = TTGlyphPen(None)
+        SVGPathLib(io.BytesIO(svg_bytes)).draw(Cu2QuPen(pen, max_err=0.5, reverse_direction=True))
+        return pen.glyph(), target_w + 80
+    except Exception as e2:
+        raise RuntimeError(f"all render paths failed: {e2}")
 
 
 def make_empty_glyph():
