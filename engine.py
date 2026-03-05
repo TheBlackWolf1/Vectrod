@@ -279,23 +279,47 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     combined = ' '.join(parts)
     
     # fontTools ile çiz
-    # CRITICAL: reverse_direction=True converts SVG CW→CCW for outer contours
-    # Our CCW counter ovals stay CCW → nonzero winding punches holes correctly
-    svg_str = f'<svg xmlns="http://www.w3.org/2000/svg"><path d="{combined}" fill-rule="nonzero"/></svg>'
+    # Path rendering with pathops (if available) or winding-correct fallback
+    svg_str = f'<svg xmlns="http://www.w3.org/2000/svg"><path d="{combined}"/></svg>'
     
     try:
+        # ── PATHOPS PATH (best quality, Railway'de skia-pathops yüklüyse) ──────
+        # Correct API: SVGPath → pathops.Path (pen protocol) → simplify → TTGlyphPen
+        import pathops
         from fontTools.pens.cu2quPen import Cu2QuPen
+        
+        ops_path = pathops.Path()
+        svg_obj_ops = SVGPathLib(io.BytesIO(svg_str.encode('utf-8')))
+        svg_obj_ops.draw(ops_path)  # pathops.Path IS a SegmentPen — draw directly into it
+        
+        # THE MAGIC: simplify with EVENODD resolves all overlaps and counter holes
+        # regardless of winding direction — bulletproof
+        pathops.simplify(ops_path, pathops.FillType.EVENODD)
+        
+        # Draw simplified path → quadratic TTF glyph
         pen = TTGlyphPen(None)
-        # reverse_direction=True: flips CW→CCW for outer (standard font winding)
-        # Our counter paths are already CCW, so they become CW after reversal
-        # = counter CW inside CCW outer = HOLE (nonzero rule)
-        cu2qu_pen = Cu2QuPen(pen, max_err=1.0, reverse_direction=True)
-        svg_obj = SVGPathLib(io.BytesIO(svg_str.encode('utf-8')))
-        svg_obj.draw(cu2qu_pen)
+        cu2qu_pen = Cu2QuPen(pen, max_err=1.0, reverse_direction=False)
+        ops_path.draw(cu2qu_pen)
         glyph = pen.glyph()
         return glyph, target_w + 80
+
+    except ImportError:
+        # ── WINDING FALLBACK (no pathops — uses correct CW/CCW winding) ────────
+        # Our paths: solid strokes = CW, counter ovals = CCW
+        # reverse_direction=True → font standard: outer=CCW, inner=CW = hole
+        try:
+            from fontTools.pens.cu2quPen import Cu2QuPen
+            pen = TTGlyphPen(None)
+            cu2qu_pen = Cu2QuPen(pen, max_err=1.0, reverse_direction=True)
+            svg_obj = SVGPathLib(io.BytesIO(svg_str.encode('utf-8')))
+            svg_obj.draw(cu2qu_pen)
+            glyph = pen.glyph()
+            return glyph, target_w + 80
+        except Exception as e:
+            raise RuntimeError(f"SVGPath çizim hatası: {e}")
+    
     except Exception as e:
-        raise RuntimeError(f"SVGPath çizim hatası: {e}")
+        raise RuntimeError(f"pathops çizim hatası: {e}")
 
 
 def make_empty_glyph():
