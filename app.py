@@ -534,17 +534,69 @@ Be accurate. Respond with ONLY the JSON."""
 
             print(f"\n[AI-GENERATE] session={sid[:8]} prompt=\"{prompt[:60]}\" font={font_name}")
 
-            from ai_font import generate_ai_font
+            # ── NEW: Skeleton + AI Distortion pipeline ──
+            from ai_font_geo import GlyphDrawer, analyze_prompt as geo_analyze
+            from ai_distortion import get_effect_recipe
+            import base64, math
 
-            def progress(msg, pct=None):
-                print(f"  [AI] {msg}" + (f" ({pct}%)" if pct else ""))
+            gemini_key = os.environ.get('GEMINI_API_KEY', '')
+            print(f"  [AI] Gemini key: {'YES' if gemini_key else 'NO - heuristic fallback'}")
 
-            ttf_path, otf_path = generate_ai_font(
-                prompt=prompt,
-                font_name=font_name,
-                output_dir=out_dir,
-                progress_callback=progress
-            )
+            # Get effect recipe from Gemini or heuristic
+            recipe = get_effect_recipe(prompt, gemini_key)
+            print(f"  [AI] Recipe: {recipe['base_family']} sw={recipe['stroke_weight']} effects={[e['name'] for e in recipe.get('effects',[])]}")
+
+            style = {
+                'family':    recipe['base_family'],
+                'sw':        recipe['stroke_weight'],
+                'condensed': any(e['name']=='condensed' for e in recipe.get('effects',[])),
+                'wide':      any(e['name']=='expanded'  for e in recipe.get('effects',[])),
+            }
+            drawer = GlyphDrawer(style, recipe)
+
+            # Build glyph SVG paths
+            CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?-_/()'
+            glyph_svgs = {}
+            for ch in CHARS:
+                try:
+                    path, adv = drawer.draw(ch)
+                    if path: glyph_svgs[ch] = {'d': path, 'adv': adv}
+                except Exception as ex:
+                    print(f"  [AI] glyph '{ch}' error: {ex}")
+            print(f"  [AI] Built {len(glyph_svgs)} glyphs")
+
+            # Write SVG grid
+            EM = 700; COLS = 10; CELL = EM
+            chars_list = list(glyph_svgs.keys())
+            rows = math.ceil(len(chars_list) / COLS)
+            svg_grid = os.path.join(out_dir, 'ai_input.svg')
+            with open(svg_grid, 'w') as svgf:
+                W = COLS * CELL; H = rows * CELL
+                svgf.write(f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">\n')
+                for i, ch in enumerate(chars_list):
+                    col = i % COLS; row = i // COLS
+                    ox = col * CELL; oy = row * CELL
+                    g = glyph_svgs[ch]
+                    svgf.write(f'  <g id="glyph_{ord(ch)}" transform="translate({ox},{oy})">\n')
+                    svgf.write(f'    <path d="{g["d"]}" fill="black" fill-rule="evenodd"/>\n')
+                    svgf.write(f'  </g>\n')
+                svgf.write('</svg>\n')
+
+            # Convert SVG → TTF/OTF via existing converter
+            from ai_font import generate_ai_font as _legacy_convert
+            def _dummy_progress(msg, pct=None): print(f"  [AI] {msg}")
+
+            # Convert SVG grid → TTF/OTF using engine.py
+            try:
+                from engine import build_font as engine_build_font
+                engine_build_font(svg_grid, font_name, out_dir)
+                ttf_path = os.path.join(out_dir, f"{font_name}_Regular.ttf")
+                otf_path = os.path.join(out_dir, f"{font_name}_Regular.otf")
+                if not os.path.exists(ttf_path): ttf_path = None
+                if not os.path.exists(otf_path): otf_path = None
+            except Exception as conv_err:
+                print(f"  [AI] engine error: {conv_err}, falling back to legacy")
+                ttf_path, otf_path = _legacy_convert(prompt=prompt, font_name=font_name, output_dir=out_dir, progress_callback=_dummy_progress)
 
             if not ttf_path:
                 self.json_resp({'success': False, 'error': 'Font generation failed'}, 500)
@@ -578,26 +630,7 @@ Be accurate. Respond with ONLY the JSON."""
                 except Exception:
                     glyph_count = 83
 
-            # NEW: Skeleton + AI Distortion pipeline
-            # Uses Gemini Brain if key available, else heuristic fallback
-            glyph_svgs = {}
-            try:
-                prompt_text = data.get('prompt', '')
-                gemini_key = os.environ.get('GEMINI_API_KEY', '')
-                from ai_font_geo import GlyphDrawer, analyze_prompt as geo_analyze
-                style = geo_analyze(prompt_text)
-                drawer = GlyphDrawer(style, style.get('_recipe'))
-                all_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?-_()'
-                for ch in all_chars:
-                    try:
-                        path, adv = drawer.draw(ch)
-                        if path:
-                            glyph_svgs[ch] = {'d': path, 'adv': adv}
-                    except Exception:
-                        pass
-                print(f"[AI] glyph_svgs: {len(glyph_svgs)} chars, family={style['family']}, recipe={style.get('_recipe',{}).get('effects',[])}")
-            except Exception as e:
-                print(f"[AI] glyph_svgs error: {e}")
+            # glyph_svgs already built above in new pipeline
 
             self.json_resp({
                 'success': True,
@@ -864,26 +897,7 @@ Be accurate. Respond with ONLY the JSON."""
                 except Exception:
                     glyph_count = 83
 
-            # NEW: Skeleton + AI Distortion pipeline
-            # Uses Gemini Brain if key available, else heuristic fallback
-            glyph_svgs = {}
-            try:
-                prompt_text = data.get('prompt', '')
-                gemini_key = os.environ.get('GEMINI_API_KEY', '')
-                from ai_font_geo import GlyphDrawer, analyze_prompt as geo_analyze
-                style = geo_analyze(prompt_text)
-                drawer = GlyphDrawer(style, style.get('_recipe'))
-                all_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?-_()'
-                for ch in all_chars:
-                    try:
-                        path, adv = drawer.draw(ch)
-                        if path:
-                            glyph_svgs[ch] = {'d': path, 'adv': adv}
-                    except Exception:
-                        pass
-                print(f"[AI] glyph_svgs: {len(glyph_svgs)} chars, family={style['family']}, recipe={style.get('_recipe',{}).get('effects',[])}")
-            except Exception as e:
-                print(f"[AI] glyph_svgs error: {e}")
+            # glyph_svgs already built above in new pipeline
 
             self.json_resp({
                 'success': True,
