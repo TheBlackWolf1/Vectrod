@@ -988,7 +988,7 @@ def main():
 
     print(f"\n{'='*52}")
     print(f"  Vectrod v7.2 — AI Font Generator")
-    print(f"  BUILD: 2026-03-06 v7.6 | baseline-fix-FINAL")
+    print(f"  BUILD: 2026-03-06 v7.9-global-scale-FIXED")
     print(f"{'='*52}")
     print(f"\n  ✓ Open: http://localhost:{port}")
     print(f"  ✓ Sessions auto-delete after {SESSION_TTL//60} min")
