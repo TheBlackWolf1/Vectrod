@@ -473,7 +473,7 @@ footer{border-top:1px solid var(--br);padding:30px 0;text-align:center;margin-to
   </div>
   <div class="font-stage">
     <div class="font-stage-bg"></div>
-    <div class="font-preview-text" id="fontPreview">Aa Bb Cc</div>
+    <div class="font-preview-text" id="fontPreview" style="font-size:72px">Aa Bb Cc</div>
   </div>
   <div class="preview-controls">
     <input class="preview-input" type="text" id="prevInput" value="Aa Bb Cc Dd Ee Ff" oninput="updatePreview(this.value)" placeholder="Type to preview…">
@@ -751,8 +751,11 @@ const F_CAP = 80, F_BASE = 560;   // matches font_skeletons CAP/BASE
 
 function glyphsToSVG(text, glyphs, height=90, color='currentColor', maxWidth=null) {
   if(!glyphs || !Object.keys(glyphs).length) return null;
-  const scale = height / (F_BASE - F_CAP);        // scale so cap-to-base = height
-  const offsetY = -F_CAP * scale;                  // shift so CAP maps to y=0
+  // Font coord: CAP=80 (top), BASE=560 (baseline), range=480 units
+  // Scale so that 480 SVG units = height pixels
+  const scale = height / (F_BASE - F_CAP);
+  // Shift up so y=F_CAP maps to y=0 in output
+  const offsetY = -F_CAP * scale;
   let x = 0;
   const paths = [];
   for(const ch of text) {
@@ -760,16 +763,16 @@ function glyphsToSVG(text, glyphs, height=90, color='currentColor', maxWidth=nul
     const g = glyphs[ch];
     if(!g) { x += 320 * scale; continue; }
     paths.push(
-      `<g transform="translate(${x.toFixed(1)},${offsetY.toFixed(1)}) scale(${scale.toFixed(4)})">`+
+      `<g transform="translate(${x.toFixed(1)},${offsetY.toFixed(1)}) scale(${scale.toFixed(6)})">`+
       `<path d="${g.d}" fill="${color}" fill-rule="nonzero"/>`+
       `</g>`
     );
-    x += g.adv * scale + 2;
+    x += (g.adv || 520) * scale + 2;
   }
   if(!paths.length) return null;
   const W = Math.max(x + 20, 80);
   const dispW = maxWidth && W > maxWidth ? maxWidth : W.toFixed(0);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${dispW}" height="${height}" viewBox="0 0 ${W.toFixed(0)} ${height}">${paths.join('')}</svg>`;
+  const totalH = height * 1.15; return `<svg xmlns="http://www.w3.org/2000/svg" width="${dispW}" height="${totalH.toFixed(0)}" viewBox="0 0 ${W.toFixed(0)} ${totalH.toFixed(0)}">${paths.join('')}</svg>`;
 }
 
 function renderGlyphPreview(text) {
