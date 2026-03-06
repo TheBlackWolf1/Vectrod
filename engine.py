@@ -256,11 +256,17 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
         sx        = scale
         sy        = -scale                          # flip Y: SVG down → font up
 
-        # Paths are in LOCAL cell coords (0-700 range)
-        # tx: shift left margin (SVG_LEFT=44) to font x=0
+        # X: cell left edge → glyph x=0 (no left sidebearing baked in)
+        # Glyph path coords are LOCAL (already relative to cell due to how
+        # collect_groups works — paths are at absolute coords, cell_tx is offset)
+        # Paths use LOCAL coords (relative to cell, 0–700 range)
+        # tx: shift left margin to x=0 (paths start at SVG_LEFT=44)
         tx = -SVG_LEFT * sx
 
-        # ty: baseline at LOCAL y=560 maps to font y=0
+        # ty: LOCAL baseline (y=560 in path coords) → font baseline (y=0)
+        # font_y = (SVG_BASE - svg_local_y) * scale
+        #        = SVG_BASE*scale - svg_local_y*scale
+        #        = ty + svg_local_y*sy   where sy=-scale, ty=SVG_BASE*scale
         ty = SVG_BASE * scale
 
         # Advance width: use actual glyph advance from skeleton (stored in SVG adv)
@@ -282,11 +288,32 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
         tx = -x0 * sx
         ty = ascender + y0 * scale
     
+    # Path koordinat sistemi tespiti: LOCAL (0-700) vs ABSOLUTE (cell_tx+0..700)
+    # Eğer herhangi bir path x koordinatı cell_tx'ten büyükse → ABSOLUTE
+    _is_absolute = False
+    if cell_tx > 10:  # İlk hücre değil
+        import re as _re2
+        for _p in group['paths']:
+            _d = _p.get('d','')
+            _nums = [float(x) for x in _re2.findall(r'[-+]?\d*\.?\d+', _d)]
+            _xs = _nums[0::2]
+            if _xs and min(_xs) > cell_tx * 0.5:
+                _is_absolute = True
+                break
+
     # Tüm path'leri birleştir
     parts = []
     for p in group['paths']:
         d = p.get('d', '').strip()
-        if d:
+        if not d:
+            continue
+        if _is_absolute:
+            # ABSOLUTE → ekstra offset: cell_tx/ty'yi çıkar
+            _atx = tx - cell_tx * sx
+            _aty = ty + cell_ty * scale
+            parts.append(scale_path(d, sx, sy, _atx, _aty))
+        else:
+            # LOCAL → orijinal formül
             parts.append(scale_path(d, sx, sy, tx, ty))
     
     if not parts:
@@ -308,16 +335,19 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
         SZ = SVG_CELL * OVERSAMPLE   # 2800 px
         img = _np.zeros((SZ, SZ), dtype=_np.uint8)
 
-        # Use RAW paths (before scale_path) — still in local SVG coords
-        # group['paths'][i]['d'] has local coords (0..700 range)
+        # Rasterize in LOCAL space — normalize absolute coords if needed
         for p in group['paths']:
             raw_d = p.get('d', '').strip()
             if not raw_d:
                 continue
             for sp in [s.strip() for s in raw_d.split('Z') if s.strip()]:
                 nums = re.findall(r'[-+]?\d*\.?\d+', sp)
-                pts_raw = [(float(nums[i]), float(nums[i+1]))
-                           for i in range(0, len(nums)-1, 2) if i+1 < len(nums)]
+                pts_raw = []
+                for i in range(0, len(nums)-1, 2):
+                    if i+1 < len(nums):
+                        lx = float(nums[i])   - (cell_tx if _is_absolute else 0)
+                        ly = float(nums[i+1]) - (cell_ty if _is_absolute else 0)
+                        pts_raw.append((lx, ly))
                 if len(pts_raw) < 3:
                     continue
                 n = len(pts_raw)
@@ -349,7 +379,6 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
             pts_font = []
             for pt in c:
                 px, py = int(pt[0][0]), int(pt[0][1])
-                # pixel → local SVG → font units (paths already local)
                 svgx = px / OVERSAMPLE
                 svgy = py / OVERSAMPLE
                 fx = int(round(svgx * sx + tx))
