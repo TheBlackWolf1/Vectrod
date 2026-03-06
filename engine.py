@@ -289,58 +289,78 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
         ty = ascender + y0 * scale
     
     # Tüm path'leri birleştir
-    # tx/ty formülü LOCAL coords varsayar (path x=44..476, y=80..560)
-    # Absolute coords için cell_tx/ty'yi kompanse et
     parts = []
     for p in group['paths']:
         d = p.get('d', '').strip()
         if d:
-            # cell offset'i scale_path'e aktar
-            atx = tx - cell_tx * sx
-            aty = ty + cell_ty * scale
-            parts.append(scale_path(d, sx, sy, atx, aty))
+            parts.append(scale_path(d, sx, sy, tx, ty))
     
     if not parts:
         return None, 500
     
     combined = ' '.join(parts)
     
-    # ── GLYPH RENDERING: Rasterize (LOCAL space) → Trace → TTF ────
-    # Key insight: rasterize in LOCAL SVG coords (y=0..700, no negatives)
-    # then map traced pixel coords → font units via the same scale transform.
-    # This avoids negative-y clipping that caused tiny glyphs.
+    # ── GLYPH RENDERING: Rasterize (NORMALIZED space) → Trace → TTF ─
+    # Collect all raw path coords, normalize to [0, SZ] regardless of
+    # original SVG coordinate range (handles y=-30, y=500, y=3000 etc.)
     try:
         import cv2 as _cv2
         import numpy as _np
 
-        # ── Step 1: Rasterize in LOCAL SVG space ──────────────────────
         OVERSAMPLE = 4
-        SVG_CELL   = 700
-        SZ = SVG_CELL * OVERSAMPLE   # 2800 px
-        img = _np.zeros((SZ, SZ), dtype=_np.uint8)
+        SZ = 700 * OVERSAMPLE   # 2800 px
 
-        # Normalize paths to LOCAL cell coords (subtract cell origin)
-        # Works for both LOCAL (cell_tx=0) and ABSOLUTE (cell_tx=col*700) SVG
+        # ── Step 0: Find actual bbox of all paths ─────────────────────
+        all_pts = []
         for p in group['paths']:
             raw_d = p.get('d', '').strip()
             if not raw_d:
                 continue
             for sp in [s.strip() for s in raw_d.split('Z') if s.strip()]:
                 nums = re.findall(r'[-+]?\d*\.?\d+', sp)
-                pts_raw = []
                 for i in range(0, len(nums)-1, 2):
                     if i+1 < len(nums):
-                        pts_raw.append((
-                            float(nums[i])   - cell_tx,
-                            float(nums[i+1]) - cell_ty
-                        ))
+                        all_pts.append((float(nums[i]), float(nums[i+1])))
+
+        if not all_pts:
+            raise RuntimeError("no points found")
+
+        raw_x0 = min(p[0] for p in all_pts)
+        raw_x1 = max(p[0] for p in all_pts)
+        raw_y0 = min(p[1] for p in all_pts)
+        raw_y1 = max(p[1] for p in all_pts)
+        raw_w  = max(raw_x1 - raw_x0, 1.0)
+        raw_h  = max(raw_y1 - raw_y0, 1.0)
+
+        # Scale to fill SZ canvas with 5% padding
+        PAD   = SZ * 0.05
+        INNER = SZ - 2 * PAD
+        norm_scale = INNER / max(raw_w, raw_h)
+        # Center in canvas
+        off_x = PAD + (INNER - raw_w * norm_scale) / 2
+        off_y = PAD + (INNER - raw_h * norm_scale) / 2
+
+        def to_px(x, y):
+            return (int((x - raw_x0) * norm_scale + off_x),
+                    int((y - raw_y0) * norm_scale + off_y))
+
+        # ── Step 1: Rasterize ─────────────────────────────────────────
+        img = _np.zeros((SZ, SZ), dtype=_np.uint8)
+
+        for p in group['paths']:
+            raw_d = p.get('d', '').strip()
+            if not raw_d:
+                continue
+            for sp in [s.strip() for s in raw_d.split('Z') if s.strip()]:
+                nums = re.findall(r'[-+]?\d*\.?\d+', sp)
+                pts_raw = [(float(nums[i]), float(nums[i+1]))
+                           for i in range(0, len(nums)-1, 2) if i+1 < len(nums)]
                 if len(pts_raw) < 3:
                     continue
                 n = len(pts_raw)
                 area_s = sum(pts_raw[i][0]*pts_raw[(i+1)%n][1] -
                              pts_raw[(i+1)%n][0]*pts_raw[i][1] for i in range(n)) / 2
-                poly = _np.array([(int(x*OVERSAMPLE), int(y*OVERSAMPLE))
-                                  for x, y in pts_raw], _np.int32)
+                poly = _np.array([to_px(x, y) for x, y in pts_raw], _np.int32)
                 _cv2.fillPoly(img, [poly], 255 if area_s < 0 else 0)
 
         # ── Step 2: Trace ─────────────────────────────────────────────
@@ -365,10 +385,11 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
             pts_font = []
             for pt in c:
                 px, py = int(pt[0][0]), int(pt[0][1])
-                svgx = px / OVERSAMPLE
-                svgy = py / OVERSAMPLE
-                fx = int(round(svgx * sx + tx))
-                fy = int(round(svgy * sy + ty))
+                # Map normalized pixel coords directly to font units
+                # px=0 → left edge (x=0), px=SZ → right edge (x=target_w)
+                # py=0 → top (ascender), py=SZ → bottom (descender)
+                fx = int(round(px / SZ * target_w))
+                fy = int(round(ascender - py / SZ * (ascender - descender)))
                 pts_font.append((fx, fy))
 
             if len(pts_font) < 3:
