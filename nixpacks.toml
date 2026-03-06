@@ -1,8 +1,5 @@
 [phases.setup]
-nixPkgs = ["python311", "libstdcxx5", "zlib", "libpng", "libjpeg"]
-
-[phases.install]
-cmds = ["pip install -r requirements.txt"]
+nixPkgs = ["python311"]
 
 [start]
 cmd = "python app.py"
