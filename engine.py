@@ -256,15 +256,12 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
         sx        = scale
         sy        = -scale                          # flip Y: SVG down → font up
 
-        # Paths are in ABSOLUTE SVG coords — cell_tx/cell_ty must be included.
-        # tx: so that cell's left margin (cell_tx + SVG_LEFT) maps to font x=0
-        tx = -(cell_tx + SVG_LEFT) * sx
+        # Paths are in LOCAL cell coords (0-700 range)
+        # tx: shift left margin (SVG_LEFT=44) to font x=0
+        tx = -SVG_LEFT * sx
 
-        # ty: so that cell's baseline (cell_ty + SVG_BASE) maps to font y=0
-        # sy is negative: font_y = abs_y * sy + ty
-        # at baseline: (cell_ty + SVG_BASE) * (-scale) + ty = 0
-        # → ty = (cell_ty + SVG_BASE) * scale
-        ty = (cell_ty + SVG_BASE) * scale
+        # ty: baseline at LOCAL y=560 maps to font y=0
+        ty = SVG_BASE * scale
 
         # Advance width: use actual glyph advance from skeleton (stored in SVG adv)
         # Estimate from cell: typical advance ≈ 520/700 of cell width
@@ -340,9 +337,8 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
 
         # ── Step 3: Convert pixel → font units ────────────────────────
         # pixel → SVG local: svgx = px / OVERSAMPLE
-        # SVG local → SVG absolute: abs = local + cell_tx/ty
-        # SVG absolute → font:  font_x = abs_x * sx + tx
-        #                       font_y = abs_y * sy + ty
+        # SVG local → font:  font_x = svgx * sx + tx
+        #                    font_y = svgy * sy + ty
         pen = TTGlyphPen(None)
         wrote = 0
         for i, c in enumerate(contours_cv):
@@ -353,9 +349,9 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
             pts_font = []
             for pt in c:
                 px, py = int(pt[0][0]), int(pt[0][1])
-                # pixel → local SVG → absolute SVG → font
-                svgx = px / OVERSAMPLE + cell_tx
-                svgy = py / OVERSAMPLE + cell_ty
+                # pixel → local SVG → font units (paths already local)
+                svgx = px / OVERSAMPLE
+                svgy = py / OVERSAMPLE
                 fx = int(round(svgx * sx + tx))
                 fy = int(round(svgy * sy + ty))
                 pts_font.append((fx, fy))
