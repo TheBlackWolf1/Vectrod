@@ -571,7 +571,7 @@ Be accurate. Respond with ONLY the JSON."""
             drawer = GlyphDrawer(style, recipe)
 
             # Build glyph SVG paths
-            CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?-_/()'
+            CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?:;-_/()[]+@#&=*%'
             glyph_svgs = {}
             for ch in CHARS:
                 try:

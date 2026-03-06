@@ -86,6 +86,22 @@ def get_skeleton(char: str, family: str, adv: int) -> list:
     fns = _GLYPH_MAP.get(char)
     if fns:
         strokes = fns(L, R, W, CX, S, T, sf, family, adv)
+
+        # ── SCRIPT FAMILY: add entry/exit connectors on lowercase ──────────
+        # Lowercase letters in script/cursive connect to each other via
+        # thin diagonal strokes from the baseline.
+        if family == 'script' and char.islower() and char.isalpha():
+            sw_thin = max(8, S // 3)
+            # Entry: rising stroke from left baseline corner
+            entry = diag(L - sw_thin, BASE + sw_thin,
+                         L + sw_thin * 2, BASE - S * 2,
+                         sw_thin, 'terminal')
+            # Exit: falling stroke to right baseline corner  
+            exit_ = diag(R - sw_thin * 2, BASE - S * 2,
+                         R + sw_thin, BASE + sw_thin,
+                         sw_thin, 'terminal')
+            strokes = [entry] + strokes + [exit_]
+
         return strokes
     # Fallback rectangle
     return [vbar(CX, CAP+S, BASE-S, S*2, 'stem')]

@@ -747,9 +747,9 @@ const EM = 700, BASE_Y = 560;
 
 // Font coord system: CAP=100 (top of letters), BASE=560 (baseline), all Y going DOWN
 // No flip needed — just scale so CAP→0px and BASE→height px
-const F_CAP = 100, F_BASE = 560;
+const F_CAP = 80, F_BASE = 560;   // matches font_skeletons CAP/BASE
 
-function glyphsToSVG(text, glyphs, height=90, color='currentColor') {
+function glyphsToSVG(text, glyphs, height=90, color='currentColor', maxWidth=null) {
   if(!glyphs || !Object.keys(glyphs).length) return null;
   const scale = height / (F_BASE - F_CAP);        // scale so cap-to-base = height
   const offsetY = -F_CAP * scale;                  // shift so CAP maps to y=0
@@ -761,14 +761,15 @@ function glyphsToSVG(text, glyphs, height=90, color='currentColor') {
     if(!g) { x += 320 * scale; continue; }
     paths.push(
       `<g transform="translate(${x.toFixed(1)},${offsetY.toFixed(1)}) scale(${scale.toFixed(4)})">`+
-      `<path d="${g.d}" fill="${color}" fill-rule="evenodd"/>`+
+      `<path d="${g.d}" fill="${color}" fill-rule="nonzero"/>`+
       `</g>`
     );
     x += g.adv * scale + 2;
   }
   if(!paths.length) return null;
   const W = Math.max(x + 20, 80);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W.toFixed(0)}" height="${height}" viewBox="0 0 ${W.toFixed(0)} ${height}">${paths.join('')}</svg>`;
+  const dispW = maxWidth && W > maxWidth ? maxWidth : W.toFixed(0);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${dispW}" height="${height}" viewBox="0 0 ${W.toFixed(0)} ${height}">${paths.join('')}</svg>`;
 }
 
 function renderGlyphPreview(text) {
@@ -837,8 +838,14 @@ function renderCharMap(chars) {
     cell.className = 'char-cell';
     cell.title = ch + ' (U+' + ch.charCodeAt(0).toString(16).toUpperCase().padStart(4,'0') + ')';
     if(currentGlyphs[ch]) {
-      const svg = glyphsToSVG(ch, currentGlyphs, 28, col);
-      if(svg) { cell.innerHTML = svg; cell.style.display='flex'; cell.style.alignItems='center'; cell.style.justifyContent='center'; }
+      const svg = glyphsToSVG(ch, currentGlyphs, 32, col);
+      if(svg) {
+        // Make SVG fit within cell
+        const fitted = svg.replace('<svg ', '<svg style="max-width:100%;height:auto;" ');
+        cell.innerHTML = fitted;
+        cell.style.display='flex'; cell.style.alignItems='center'; cell.style.justifyContent='center';
+        cell.style.overflow='hidden';
+      }
       else cell.textContent = ch;
     } else {
       cell.textContent = ch;
