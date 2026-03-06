@@ -288,33 +288,17 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
         tx = -x0 * sx
         ty = ascender + y0 * scale
     
-    # Path koordinat sistemi tespiti: LOCAL (0-700) vs ABSOLUTE (cell_tx+0..700)
-    # Eğer herhangi bir path x koordinatı cell_tx'ten büyükse → ABSOLUTE
-    _is_absolute = False
-    if cell_tx > 10:  # İlk hücre değil
-        import re as _re2
-        for _p in group['paths']:
-            _d = _p.get('d','')
-            _nums = [float(x) for x in _re2.findall(r'[-+]?\d*\.?\d+', _d)]
-            _xs = _nums[0::2]
-            if _xs and min(_xs) > cell_tx * 0.5:
-                _is_absolute = True
-                break
-
     # Tüm path'leri birleştir
+    # tx/ty formülü LOCAL coords varsayar (path x=44..476, y=80..560)
+    # Absolute coords için cell_tx/ty'yi kompanse et
     parts = []
     for p in group['paths']:
         d = p.get('d', '').strip()
-        if not d:
-            continue
-        if _is_absolute:
-            # ABSOLUTE → ekstra offset: cell_tx/ty'yi çıkar
-            _atx = tx - cell_tx * sx
-            _aty = ty + cell_ty * scale
-            parts.append(scale_path(d, sx, sy, _atx, _aty))
-        else:
-            # LOCAL → orijinal formül
-            parts.append(scale_path(d, sx, sy, tx, ty))
+        if d:
+            # cell offset'i scale_path'e aktar
+            atx = tx - cell_tx * sx
+            aty = ty + cell_ty * scale
+            parts.append(scale_path(d, sx, sy, atx, aty))
     
     if not parts:
         return None, 500
@@ -335,7 +319,8 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
         SZ = SVG_CELL * OVERSAMPLE   # 2800 px
         img = _np.zeros((SZ, SZ), dtype=_np.uint8)
 
-        # Rasterize in LOCAL space — normalize absolute coords if needed
+        # Normalize paths to LOCAL cell coords (subtract cell origin)
+        # Works for both LOCAL (cell_tx=0) and ABSOLUTE (cell_tx=col*700) SVG
         for p in group['paths']:
             raw_d = p.get('d', '').strip()
             if not raw_d:
@@ -345,9 +330,10 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
                 pts_raw = []
                 for i in range(0, len(nums)-1, 2):
                     if i+1 < len(nums):
-                        lx = float(nums[i])   - (cell_tx if _is_absolute else 0)
-                        ly = float(nums[i+1]) - (cell_ty if _is_absolute else 0)
-                        pts_raw.append((lx, ly))
+                        pts_raw.append((
+                            float(nums[i])   - cell_tx,
+                            float(nums[i+1]) - cell_ty
+                        ))
                 if len(pts_raw) < 3:
                     continue
                 n = len(pts_raw)
