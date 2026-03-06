@@ -988,10 +988,24 @@ def main():
 
     print(f"\n{'='*52}")
     print(f"  Vectrod v7.2 — AI Font Generator")
-    print(f"  BUILD: 2026-03-06 | raster+local+special")
+    print(f"  BUILD: 2026-03-06 v7.5 | universal-bbox-scale")
     print(f"{'='*52}")
     print(f"\n  ✓ Open: http://localhost:{port}")
     print(f"  ✓ Sessions auto-delete after {SESSION_TTL//60} min")
+    # Startup self-test
+    try:
+        import sys as _sys; _sys.path.insert(0,'.')
+        from ai_font_geo import GlyphDrawer, analyze_prompt as _ap
+        from engine import draw_glyph as _dg
+        _recipe = _ap("gothic sharp")['_recipe']
+        _d = GlyphDrawer({'family':'serif','sw':58,'condensed':False,'wide':False}, _recipe)
+        _p, _ = _d.draw('H')
+        import re as _re
+        _nums = _re.findall(r'[-+]?\d*\.?\d+', _p)
+        _ys = [float(_nums[i+1]) for i in range(0,len(_nums)-1,2) if i+1<len(_nums)]
+        print(f"  ✓ Self-test: H path y=[{min(_ys):.0f},{max(_ys):.0f}] (should be [36,589])")
+    except Exception as _e:
+        print(f"  ⚠ Self-test failed: {_e}")
     print(f"  ✓ Ctrl+C to stop\n")
 
     server = HTTPServer(('0.0.0.0', port), Handler)

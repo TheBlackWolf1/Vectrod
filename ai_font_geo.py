@@ -114,12 +114,21 @@ def _arc_path(cx, cy, rx, ry, a1_deg, a2_deg, sw, sharp=False, counter=False) ->
     """
     Arc stroke — pure cubic Bezier, zero L commands.
     counter=True: reverses winding (CCW) for counter/hole arcs.
+    Angles in degrees, CW from positive-X axis (SVG convention, Y-down).
+    Span is always taken as the SHORTER path from a1→a2 if < 1 full turn.
     """
-    a1 = math.radians(a1_deg)
-    a2 = math.radians(a2_deg)
+    a1 = math.radians(a1_deg % 360)
+    a2 = math.radians(a2_deg % 360)
     span = a2 - a1
-    if span < 0: span += 2*math.pi
-    if span < 1e-6: return ""
+    # Normalize to [-π, π] range — take the arc that goes CW (positive span)
+    # If span is very small or zero, use full circle
+    if abs(span) < 1e-6:
+        span = 2 * math.pi  # full circle
+    elif span < 0:
+        span += 2 * math.pi  # make CW
+    # Cap at full circle
+    if span > 2 * math.pi - 1e-6:
+        span = 2 * math.pi - 0.001
 
     n_segs = max(1, math.ceil(abs(span) / (math.pi/2)))
     seg_size = span / n_segs

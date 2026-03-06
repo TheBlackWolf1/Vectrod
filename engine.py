@@ -250,43 +250,29 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     SVG_CELL   = 700.0
     SVG_LEFT   =  44.0   # standard left margin in our skeleton (= L constant)
 
-    if ref_height and ref_height > 0 and svg_baseline_y is not None:
-        # Scale: cap height (480 SVG units) maps to font ascender (800 units)
-        scale     = ascender / ref_height          # 800/480 = 1.667
-        sx        = scale
-        sy        = -scale                          # flip Y: SVG down → font up
+    # ── UNIVERSAL SCALING: bbox-based, works for ANY SVG coordinate system ──
+    # AI-generated (y=[80,560]), user SVG (y=[-33,5]), Figma export, Illustrator etc.
+    bb = get_group_bbox(group)
+    if bb is None:
+        return None, 500
+    x0, y0, x1, y1 = bb
+    src_w = x1 - x0
+    src_h = y1 - y0
+    if src_w <= 0 or src_h <= 0:
+        return None, 500
 
-        # X: cell left edge → glyph x=0 (no left sidebearing baked in)
-        # Glyph path coords are LOCAL (already relative to cell due to how
-        # collect_groups works — paths are at absolute coords, cell_tx is offset)
-        # Paths use LOCAL coords (relative to cell, 0–700 range)
-        # tx: shift left margin to x=0 (paths start at SVG_LEFT=44)
-        tx = -SVG_LEFT * sx
+    # Scale glyph height to fill ascender space with 5% padding
+    usable_h = ascender - descender          # 1000 units (800 - (-200))
+    scale    = usable_h * 0.90 / src_h      # 90% of full height = nice cap height
+    sx       = scale
+    sy       = -scale                        # flip Y (SVG down = font up)
 
-        # ty: LOCAL baseline (y=560 in path coords) → font baseline (y=0)
-        # font_y = (SVG_BASE - svg_local_y) * scale
-        #        = SVG_BASE*scale - svg_local_y*scale
-        #        = ty + svg_local_y*sy   where sy=-scale, ty=SVG_BASE*scale
-        ty = SVG_BASE * scale
-
-        # Advance width: use actual glyph advance from skeleton (stored in SVG adv)
-        # Estimate from cell: typical advance ≈ 520/700 of cell width
-        # Advance width: svg_advance(520) scaled to font UPM(1000)
-        target_w  = int(520 / SVG_CELL * 1000)  # ≈ 743
-    else:
-        # Fallback: bbox-based (should not be reached with our fixed metrics)
-        bb = get_group_bbox(group)
-        if bb is None:
-            return None, 500
-        x0, y0, x1, y1 = bb
-        src_w = x1 - x0; src_h = y1 - y0
-        if src_w <= 0 or src_h <= 0:
-            return None, 500
-        scale    = (ascender - descender) / src_h
-        target_w = int(src_w * scale)
-        sx = scale; sy = -scale
-        tx = -x0 * sx
-        ty = ascender + y0 * scale
+    # Center horizontally, place top at ascender
+    glyph_w  = src_w * scale
+    target_w = max(int(glyph_w * 1.15), 300)  # 15% sidebearings
+    side_b   = (target_w - glyph_w) / 2
+    tx       = -x0 * sx + side_b
+    ty       = ascender * 0.95 + y0 * scale  # top of glyph at 95% ascender
     
     # Tüm path'leri birleştir
     parts = []
