@@ -1,3 +1,5 @@
+# engine v7.2
+__ENGINE_VERSION__ = "v7.2-raster-local"
 #!/usr/bin/env python3
 """
 SVG → TTF/OTF Font Engine v2
@@ -269,7 +271,8 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
 
         # Advance width: use actual glyph advance from skeleton (stored in SVG adv)
         # Estimate from cell: typical advance ≈ 520/700 of cell width
-        target_w  = int((SVG_CELL - SVG_LEFT * 2) * scale)
+        # Advance width: svg_advance(520) scaled to font UPM(1000)
+        target_w  = int(520 / SVG_CELL * 1000)  # ≈ 743
     else:
         # Fallback: bbox-based (should not be reached with our fixed metrics)
         bb = get_group_bbox(group)
@@ -297,25 +300,27 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     
     combined = ' '.join(parts)
     
-    # ── GLYPH RENDERING: Rasterize → Trace → TTF ───────────────────
-    # Rasterize all SVG subpaths to bitmap, then trace clean outlines.
-    # This automatically unions overlapping strokes, handles winding,
-    # and produces clean single-body glyphs. Works on any platform.
-    # Falls back to pathops → winding if cv2 unavailable.
-    
+    # ── GLYPH RENDERING: Rasterize (LOCAL space) → Trace → TTF ────
+    # Key insight: rasterize in LOCAL SVG coords (y=0..700, no negatives)
+    # then map traced pixel coords → font units via the same scale transform.
+    # This avoids negative-y clipping that caused tiny glyphs.
     try:
         import cv2 as _cv2
         import numpy as _np
 
-        # ── Step 1: Rasterize ──────────────────────────────────────────
-        OVERSAMPLE = 3
-        EM = 1000
-        SZ = EM * OVERSAMPLE
+        # ── Step 1: Rasterize in LOCAL SVG space ──────────────────────
+        OVERSAMPLE = 4
+        SVG_CELL   = 700
+        SZ = SVG_CELL * OVERSAMPLE   # 2800 px
         img = _np.zeros((SZ, SZ), dtype=_np.uint8)
 
-        for raw_d in parts:
-            subpaths = [s.strip() for s in raw_d.split('Z') if s.strip()]
-            for sp in subpaths:
+        # Use RAW paths (before scale_path) — still in local SVG coords
+        # group['paths'][i]['d'] has local coords (0..700 range)
+        for p in group['paths']:
+            raw_d = p.get('d', '').strip()
+            if not raw_d:
+                continue
+            for sp in [s.strip() for s in raw_d.split('Z') if s.strip()]:
                 nums = re.findall(r'[-+]?\d*\.?\d+', sp)
                 pts_raw = [(float(nums[i]), float(nums[i+1]))
                            for i in range(0, len(nums)-1, 2) if i+1 < len(nums)]
@@ -324,47 +329,42 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
                 n = len(pts_raw)
                 area_s = sum(pts_raw[i][0]*pts_raw[(i+1)%n][1] -
                              pts_raw[(i+1)%n][0]*pts_raw[i][1] for i in range(n)) / 2
-                poly = _np.array([(int(x*OVERSAMPLE), int(y*OVERSAMPLE)) 
+                poly = _np.array([(int(x*OVERSAMPLE), int(y*OVERSAMPLE))
                                   for x, y in pts_raw], _np.int32)
                 _cv2.fillPoly(img, [poly], 255 if area_s < 0 else 0)
 
-        # ── Step 2: Trace clean outlines ──────────────────────────────
+        # ── Step 2: Trace ─────────────────────────────────────────────
         contours_cv, hierarchy_cv = _cv2.findContours(
-            img, _cv2.RETR_CCOMP, _cv2.CHAIN_APPROX_TC89_KCOS
-        )
+            img, _cv2.RETR_CCOMP, _cv2.CHAIN_APPROX_TC89_KCOS)
         if not len(contours_cv):
             raise RuntimeError("rasterize produced empty image")
 
         h_arr = hierarchy_cv[0]
 
-        # ── Step 3: Write to TTGlyphPen ───────────────────────────────
+        # ── Step 3: Convert pixel → font units ────────────────────────
+        # pixel → SVG local: svgx = px / OVERSAMPLE
+        # SVG local → font:  font_x = svgx * sx + tx
+        #                    font_y = svgy * sy + ty
         pen = TTGlyphPen(None)
         wrote = 0
         for i, c in enumerate(contours_cv):
-            area_px = _cv2.contourArea(c)
-            if area_px < 30:   # skip noise (in pixel units)
+            if _cv2.contourArea(c) < 80:
                 continue
-            parent = h_arr[i][3]
-            is_hole = parent >= 0
+            is_hole = h_arr[i][3] >= 0
 
-            # Convert pixel → font units
-            # raster: x_px = svg_x * OVERSAMPLE  →  svg_x = x_px / OVERSAMPLE
-            # font:   font_x = svg_x * sx + tx,  font_y = svg_y * sy + ty
             pts_font = []
             for pt in c:
                 px, py = int(pt[0][0]), int(pt[0][1])
-                fx = int(round(px / OVERSAMPLE * sx + tx))
-                fy = int(round(py / OVERSAMPLE * sy + ty))
+                svgx = px / OVERSAMPLE
+                svgy = py / OVERSAMPLE
+                fx = int(round(svgx * sx + tx))
+                fy = int(round(svgy * sy + ty))
                 pts_font.append((fx, fy))
 
             if len(pts_font) < 3:
                 continue
 
-            # After Y-flip (sy=-scale), raster outer CCW→CW in raster coords
-            # but OpenCV traces outer contours CCW in image coords (Y-down)
-            # After sy flip → CW in font space. fontTools wants CCW for outer.
-            # Simple: always reverse, fontTools normalizes winding internally.
-            # For holes: also reverse. fontTools pen protocol handles it.
+            # Reverse to get correct TTF winding
             pts_font = list(reversed(pts_font))
 
             pen.moveTo(pts_font[0])
@@ -374,14 +374,13 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
             wrote += 1
 
         if wrote == 0:
-            raise RuntimeError("no contours written to pen")
-        
+            raise RuntimeError("no contours written")
+
         return pen.glyph(), target_w + 80
 
     except Exception as e_raster:
-        # Raster failed (cv2 not available or error) — use pathops or winding
-        pass_msg = f"raster={type(e_raster).__name__}"
-    
+        pass_msg = f"raster={type(e_raster).__name__}: {e_raster}"
+
     # ── Fallback A: pathops ───────────────────────────────────────────
     svg_str = f'<svg xmlns="http://www.w3.org/2000/svg"><path d="{combined}"/></svg>'
     svg_bytes = svg_str.encode('utf-8')

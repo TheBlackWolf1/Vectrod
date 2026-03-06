@@ -987,8 +987,8 @@ def main():
     port = int(os.environ.get("PORT", 8080))
 
     print(f"\n{'='*52}")
-    print(f"  VectoFont — SVG to Font Converter")
-    print(f"  Multi-user | Auto-cleanup | v2.0")
+    print(f"  Vectrod v7.2 — AI Font Generator")
+    print(f"  BUILD: 2026-03-06 | raster+local+special")
     print(f"{'='*52}")
     print(f"\n  ✓ Open: http://localhost:{port}")
     print(f"  ✓ Sessions auto-delete after {SESSION_TTL//60} min")
