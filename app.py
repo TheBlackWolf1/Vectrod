@@ -543,66 +543,47 @@ Be accurate. Respond with ONLY the JSON."""
             out_dir = os.path.join(sp, 'output')
             os.makedirs(out_dir, exist_ok=True)
 
-            print(f"\n[AI-GENERATE] v7.1 session={sid[:8]} prompt=\"{prompt[:60]}\" font={font_name}")
-            print(f"  [VERSION] app=v7.1 engine={__import__('engine').__dict__.get('__ENGINE_VERSION__','?')}")
-
-            # ── NEW: Skeleton + AI Distortion pipeline ──
-            from ai_font_geo import GlyphDrawer, analyze_prompt as geo_analyze
-            from ai_distortion import get_effect_recipe
+            import time as _time
             import base64, math
 
+            _ENG_VER = __import__('engine').__dict__.get('__ENGINE_VERSION__', '?')
+            print(f"\n[AI-GENERATE] v8.0 session={sid[:8]} prompt=\"{prompt[:60]}\" font={font_name}")
+            print(f"  [VERSION] app=v8.0 engine={_ENG_VER}")
+
             gemini_key = os.environ.get('GEMINI_API_KEY', '')
-            print(f"  [AI] Gemini key: {'YES' if gemini_key else 'NO - heuristic fallback'}")
+            anthropic_key = os.environ.get('ANTHROPIC_API_KEY', '')
+            print(f"  [API] Claude: {'YES' if anthropic_key else 'NO'} | Gemini: {'YES' if gemini_key else 'NO'}")
 
-            # Get effect recipe from Gemini or heuristic
-            import time as _time
+            # ── Engine v8: AI Font Generator ──────────────────────────
+            from ai_font import generate_ai_font
+
+            def progress_cb(msg, pct=None):
+                pct_str = f" ({pct}%)" if pct is not None else ""
+                print(f"  [AI]{pct_str} {msg}")
+
             _t0 = _time.time()
-            print(f"  [AI] Analyzing prompt with {'Gemini Brain' if gemini_key else 'heuristic engine'}...")
-            recipe = get_effect_recipe(prompt, gemini_key)
-            print(f"  [AI] Recipe ready in {_time.time()-_t0:.1f}s")
-            print(f"  [AI] Recipe: {recipe['base_family']} sw={recipe['stroke_weight']} effects={[e['name'] for e in recipe.get('effects',[])]}")
+            try:
+                ttf_path, otf_path = generate_ai_font(
+                    prompt=prompt,
+                    font_name=font_name,
+                    output_dir=out_dir,
+                    progress_callback=progress_cb,
+                    gemini_key=gemini_key
+                )
+                print(f"  [AI] Completed in {_time.time()-_t0:.1f}s")
+            except Exception as ai_err:
+                print(f"  [AI ERROR] {ai_err}")
+                import traceback; traceback.print_exc()
+                self.json_resp({'success': False, 'error': f'AI generation failed: {ai_err}'}, 500)
+                return
 
-            style = {
-                'family':    recipe['base_family'],
-                'sw':        recipe['stroke_weight'],
-                'condensed': any(e['name']=='condensed' for e in recipe.get('effects',[])),
-                'wide':      any(e['name']=='expanded'  for e in recipe.get('effects',[])),
-            }
-            drawer = GlyphDrawer(style, recipe)
-
-            # Build glyph SVG paths
-            CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?:;-_/()[]+@#&=*%'
-            glyph_svgs = {}
-            for ch in CHARS:
-                try:
-                    path, adv = drawer.draw(ch)
-                    if path: glyph_svgs[ch] = {'d': path, 'adv': adv}
-                except Exception as ex:
-                    print(f"  [AI] glyph '{ch}' error: {ex}")
-            print(f"  [AI] Built {len(glyph_svgs)} glyphs")
-
-            # Write SVG grid
-            EM = 700; COLS = 10; CELL = EM
-            chars_list = list(glyph_svgs.keys())
-            rows = math.ceil(len(chars_list) / COLS)
-            svg_grid = os.path.join(out_dir, 'ai_input.svg')
-            with open(svg_grid, 'w') as svgf:
-                W = COLS * CELL; H = rows * CELL
-                svgf.write(f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">\n')
-                for i, ch in enumerate(chars_list):
-                    col = i % COLS; row = i // COLS
-                    ox = col * CELL; oy = row * CELL
-                    g = glyph_svgs[ch]
-                    svgf.write(f'  <g id="glyph_{ord(ch)}" transform="translate({ox},{oy})">\n')
-                    svgf.write(f'    <path d="{g["d"]}" fill="black" fill-rule="nonzero"/>\n')
-                    svgf.write(f'  </g>\n')
-                svgf.write('</svg>\n')
-
-            # Convert SVG grid → TTF/OTF using engine.py (pathops-ready)
-            from engine import build_font as engine_build_font
-            engine_build_font(svg_grid, font_name, out_dir)
-            ttf_path = os.path.join(out_dir, f"{font_name}_Regular.ttf")
-            otf_path = os.path.join(out_dir, f"{font_name}_Regular.otf")
+            # Dosya adı normalize (engine v8 safe naming kullanır)
+            import re as _re
+            safe_name = _re.sub(r'[^\w]', '_', font_name)
+            if not ttf_path or not os.path.exists(ttf_path):
+                ttf_path = os.path.join(out_dir, f"{safe_name}_Regular.ttf")
+            if not otf_path or not os.path.exists(otf_path):
+                otf_path = os.path.join(out_dir, f"{safe_name}_Regular.otf")
             if not os.path.exists(ttf_path): ttf_path = None
             if not os.path.exists(otf_path): otf_path = None
 
