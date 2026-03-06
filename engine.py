@@ -250,8 +250,7 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     SVG_CELL   = 700.0
     SVG_LEFT   =  44.0   # standard left margin in our skeleton (= L constant)
 
-    # ── UNIVERSAL SCALING: bbox-based, works for ANY SVG coordinate system ──
-    # AI-generated (y=[80,560]), user SVG (y=[-33,5]), Figma export, Illustrator etc.
+    # ── UNIVERSAL SCALING: bbox-based, any SVG coordinate system ──────
     bb = get_group_bbox(group)
     if bb is None:
         return None, 500
@@ -261,18 +260,19 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     if src_w <= 0 or src_h <= 0:
         return None, 500
 
-    # Scale glyph height to fill ascender space with 5% padding
-    usable_h = ascender - descender          # 1000 units (800 - (-200))
-    scale    = usable_h * 0.90 / src_h      # 90% of full height = nice cap height
+    # Scale so glyph fills cap height (baseline=0, cap=800)
+    cap_height = ascender          # 800 font units
+    scale    = cap_height / src_h  # fill exactly cap height
     sx       = scale
-    sy       = -scale                        # flip Y (SVG down = font up)
+    sy       = -scale              # flip Y: SVG-down → font-up
 
-    # Center horizontally, place top at ascender
+    # Place: glyph bottom (y1) → baseline (0), top (y0) → cap (800)
+    tx       = -x0 * sx            # left edge at x=0
+    ty       = y1 * scale          # bottom of SVG → 0 (baseline)
+
+    # Advance width: glyph width + 20% sidebearings
     glyph_w  = src_w * scale
-    target_w = max(int(glyph_w * 1.15), 300)  # 15% sidebearings
-    side_b   = (target_w - glyph_w) / 2
-    tx       = -x0 * sx + side_b
-    ty       = ascender * 0.95 + y0 * scale  # top of glyph at 95% ascender
+    target_w = max(int(glyph_w * 1.20), 300)
     
     # Tüm path'leri birleştir
     parts = []
@@ -330,6 +330,12 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
             return (int((x - raw_x0) * norm_scale + off_x),
                     int((y - raw_y0) * norm_scale + off_y))
 
+        # Precompute for Step 3
+        inner_w = raw_w * norm_scale
+        inner_h = raw_h * norm_scale
+        glyph_w = src_w * scale   # font-space width  
+        cap_h   = ascender        # font-space height (baseline=0, top=800)
+
         # ── Step 1: Rasterize ─────────────────────────────────────────
         img = _np.zeros((SZ, SZ), dtype=_np.uint8)
 
@@ -371,11 +377,13 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
             pts_font = []
             for pt in c:
                 px, py = int(pt[0][0]), int(pt[0][1])
-                # Map normalized pixel coords directly to font units
-                # px=0 → left edge (x=0), px=SZ → right edge (x=target_w)
-                # py=0 → top (ascender), py=SZ → bottom (descender)
-                fx = int(round(px / SZ * target_w))
-                fy = int(round(ascender - py / SZ * (ascender - descender)))
+                # Map pixel coords to font units accounting for padding
+                # Glyph pixels are in [off_x..off_x+inner_w, off_y..off_y+inner_h]
+                # Map this range to [0..target_w, ascender..0]
+                inner_w = raw_w * norm_scale
+                inner_h = raw_h * norm_scale
+                fx = int(round((px - off_x) / inner_w * glyph_w))
+                fy = int(round(ascender - (py - off_y) / inner_h * cap_h))
                 pts_font.append((fx, fy))
 
             if len(pts_font) < 3:
