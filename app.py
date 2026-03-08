@@ -526,14 +526,18 @@ Be accurate. Respond with ONLY the JSON."""
             self.json_resp({'error': str(e)}, 500)
 
     def handle_ai_generate(self):
-        """AI ile prompt'tan font üret"""
+        """
+        Vectrod v2.0 — DNA-based font generation.
+        Pipeline: prompt → Gemini/heuristic DNA → engine routing → TTF/OTF
+        """
         try:
             length = int(self.headers.get('Content-Length', 0))
-            body = self.rfile.read(length)
-            data = json.loads(body.decode('utf-8'))
+            body   = self.rfile.read(length)
+            data   = json.loads(body.decode('utf-8'))
 
-            prompt = data.get('prompt', '').strip()
-            font_name = data.get('font_name', 'AIFont').strip() or 'AIFont'
+            prompt    = data.get('prompt', '').strip()
+            font_name = (data.get('font_name', 'CustomFont') or 'CustomFont').strip()
+            font_name = font_name.replace(' ', '')[:32] or 'CustomFont'
 
             if not prompt:
                 self.json_resp({'success': False, 'error': 'Prompt required'}, 400)
@@ -543,116 +547,87 @@ Be accurate. Respond with ONLY the JSON."""
             out_dir = os.path.join(sp, 'output')
             os.makedirs(out_dir, exist_ok=True)
 
-            print(f"\n[AI-GENERATE] v7.1 session={sid[:8]} prompt=\"{prompt[:60]}\" font={font_name}")
-            print(f"  [VERSION] app=v7.1 engine={__import__('engine').__dict__.get('__ENGINE_VERSION__','?')}")
+            print(f"\n[v2.0-DNA] session={sid[:8]} prompt=\"{prompt[:60]}\" font={font_name}")
 
-            # ── NEW: Skeleton + AI Distortion pipeline ──
-            from ai_font_geo import GlyphDrawer, analyze_prompt as geo_analyze
-            from ai_distortion import get_effect_recipe
-            import base64, math
+            # ── DNA PIPELINE ──────────────────────────────────────────
+            from dna_engine import build_font_from_dna, _route_engine, get_dna
+            import base64 as _b64
 
             gemini_key = os.environ.get('GEMINI_API_KEY', '')
-            print(f"  [AI] Gemini key: {'YES' if gemini_key else 'NO - heuristic fallback'}")
+            print(f"  [DNA] Gemini: {'YES ✨' if gemini_key else 'NO → heuristic'}")
 
-            # Get effect recipe from Gemini or heuristic
-            import time as _time
-            _t0 = _time.time()
-            print(f"  [AI] Analyzing prompt with {'Gemini Brain' if gemini_key else 'heuristic engine'}...")
-            recipe = get_effect_recipe(prompt, gemini_key)
-            print(f"  [AI] Recipe ready in {_time.time()-_t0:.1f}s")
-            print(f"  [AI] Recipe: {recipe['base_family']} sw={recipe['stroke_weight']} effects={[e['name'] for e in recipe.get('effects',[])]}")
+            ttf_path, otf_path, dna, glyph_svgs = build_font_from_dna(
+                prompt    = prompt,
+                font_name = font_name,
+                output_dir= out_dir,
+                gemini_key= gemini_key,
+            )
 
-            style = {
-                'family':    recipe['base_family'],
-                'sw':        recipe['stroke_weight'],
-                'condensed': any(e['name']=='condensed' for e in recipe.get('effects',[])),
-                'wide':      any(e['name']=='expanded'  for e in recipe.get('effects',[])),
-            }
-            drawer = GlyphDrawer(style, recipe)
+            engine_used = _route_engine(dna, prompt)
+            print(f"  [DNA] Engine={engine_used} family={dna['base_family']} sw={dna['stroke_weight']}")
+            print(f"  [DNA] Effects:  {[e['name'] for e in dna.get('effects',[])]}")
+            print(f"  [DNA] Decos:    {[d['shape']+'@'+d['anchor'] for d in dna.get('decorations',[])]}")
 
-            # Build glyph SVG paths
-            CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?:;-_/()[]+@#&=*%'
-            glyph_svgs = {}
-            for ch in CHARS:
-                try:
-                    path, adv = drawer.draw(ch)
-                    if path: glyph_svgs[ch] = {'d': path, 'adv': adv}
-                except Exception as ex:
-                    print(f"  [AI] glyph '{ch}' error: {ex}")
-            print(f"  [AI] Built {len(glyph_svgs)} glyphs")
-
-            # Write SVG grid
-            EM = 700; COLS = 10; CELL = EM
-            chars_list = list(glyph_svgs.keys())
-            rows = math.ceil(len(chars_list) / COLS)
-            svg_grid = os.path.join(out_dir, 'ai_input.svg')
-            with open(svg_grid, 'w') as svgf:
-                W = COLS * CELL; H = rows * CELL
-                svgf.write(f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">\n')
-                for i, ch in enumerate(chars_list):
-                    col = i % COLS; row = i // COLS
-                    ox = col * CELL; oy = row * CELL
-                    g = glyph_svgs[ch]
-                    svgf.write(f'  <g id="glyph_{ord(ch)}" transform="translate({ox},{oy})">\n')
-                    svgf.write(f'    <path d="{g["d"]}" fill="black" fill-rule="nonzero"/>\n')
-                    svgf.write(f'  </g>\n')
-                svgf.write('</svg>\n')
-
-            # Convert SVG grid → TTF/OTF using engine.py (pathops-ready)
-            from engine import build_font as engine_build_font
-            engine_build_font(svg_grid, font_name, out_dir)
-            ttf_path = os.path.join(out_dir, f"{font_name}_Regular.ttf")
-            otf_path = os.path.join(out_dir, f"{font_name}_Regular.otf")
-            if not os.path.exists(ttf_path): ttf_path = None
-            if not os.path.exists(otf_path): otf_path = None
-
-            if not ttf_path:
+            if not ttf_path or not os.path.exists(ttf_path):
                 self.json_resp({'success': False, 'error': 'Font generation failed'}, 500)
                 return
 
+            # ── COLLECT OUTPUT FILES ──────────────────────────────────
             result_files = []
             for fp in [ttf_path, otf_path]:
                 if fp and os.path.exists(fp):
                     fname = os.path.basename(fp)
                     result_files.append({
                         'filename': fname,
-                        'size': os.path.getsize(fp),
-                        'url': f'/download/{sid}/{fname}'
+                        'size':     os.path.getsize(fp),
+                        'url':      f'/download/{sid}/{fname}',
                     })
 
-            import base64
-            font_b64 = None
+            # ── BASE64 FONT FOR LIVE PREVIEW ──────────────────────────
+            font_b64    = None
             glyph_count = 0
             generated_chars = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
-            if ttf_path and os.path.exists(ttf_path):
-                with open(ttf_path, 'rb') as ff:
-                    font_b64 = base64.b64encode(ff.read()).decode('ascii')
-                try:
-                    from fontTools.ttLib import TTFont
-                    tt = TTFont(ttf_path)
-                    glyph_count = len(tt.getGlyphOrder()) - 1
-                    generated_chars = [g for g in tt.getGlyphOrder()
-                                       if g != '.notdef' and len(g) == 1][:62]
-                    tt.close()
-                except Exception:
-                    glyph_count = 83
+            with open(ttf_path, 'rb') as ff:
+                font_b64 = _b64.b64encode(ff.read()).decode('ascii')
 
-            # glyph_svgs already built above in new pipeline
+            try:
+                from fontTools.ttLib import TTFont as _TT
+                tt = _TT(ttf_path)
+                glyph_count = max(0, len(tt.getGlyphOrder()) - 2)  # -notdef -space
+                cmap = tt.getBestCmap() or {}
+                generated_chars = [chr(cp) for cp in sorted(cmap.keys())
+                                   if 32 < cp < 127][:80]
+                tt.close()
+            except Exception:
+                glyph_count = len(glyph_svgs)
+
+            sz_kb = os.path.getsize(ttf_path) // 1024
+            print(f"  [DNA] ✅ {sz_kb}KB | {glyph_count} glyphs | {len(result_files)} files")
 
             self.json_resp({
-                'success': True,
-                'files': result_files,
-                'session': sid,
-                'font_b64': font_b64,
-                'glyph_count': glyph_count,
+                'success':         True,
+                'files':           result_files,
+                'session':         sid,
+                'font_b64':        font_b64,
+                'glyph_count':     glyph_count,
                 'generated_chars': generated_chars,
-                'glyph_svgs': glyph_svgs,
+                'glyph_svgs':      glyph_svgs,
+                # v2.0 extras — DNA transparency for frontend
+                'dna': {
+                    'engine':       engine_used,
+                    'base_family':  dna.get('base_family'),
+                    'stroke_weight':dna.get('stroke_weight'),
+                    'effects':      [e['name'] for e in dna.get('effects', [])],
+                    'decorations':  [d['shape']+'@'+d['anchor']
+                                     for d in dna.get('decorations', [])],
+                    'reasoning':    dna.get('reasoning', ''),
+                },
             })
 
         except Exception as e:
             import traceback
-            print(f"[AI-GENERATE ERROR] {e}\n{traceback.format_exc()}")
+            print(f"[v2.0-DNA ERROR] {e}\n{traceback.format_exc()}")
             self.json_resp({'success': False, 'error': str(e)}, 500)
 
     def handle_convert_auto(self):
