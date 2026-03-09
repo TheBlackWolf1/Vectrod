@@ -580,6 +580,15 @@ Be accurate. Respond with ONLY the JSON."""
                 'size':     os.path.getsize(ttf_path),
                 'url':      f'/download/{sid}/{fname}',
             })
+            # OTF — v3 dna['_otf_path'] içinde taşıyor
+            otf_path = dna.get('_otf_path')
+            if otf_path and os.path.exists(otf_path):
+                ofname = os.path.basename(otf_path)
+                result_files.append({
+                    'filename': ofname,
+                    'size':     os.path.getsize(otf_path),
+                    'url':      f'/download/{sid}/{ofname}',
+                })
 
             # ── BASE64 FONT FOR LIVE PREVIEW ──────────────────────────
             import base64 as _b64

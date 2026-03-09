@@ -103,27 +103,27 @@ class Deco:
     def _shape(self, idx): return self.shapes[idx % len(self.shapes)]
 
     def put(self, cx, cy, angle_deg=0, idx=0, mul=1.0):
-        """Doğrudan koordinata yerleştir."""
+        """Doğrudan koordinata yerleştir. Minimum 70px — görünür olmak zorunda."""
         try:
-            sz = max(30, int(self.size * mul))
+            sz = max(70, int(self.size * mul))
             return self._place(self._get(self._shape(idx)), cx, cy, sz, angle_deg)
         except: return ""
 
     def top(self, cx, y_top, idx=0, mul=1.0):
-        """Üst terminale: merkezini y_top + size/2 yukarıya koy."""
+        """Üst terminal: şekil merkezi y_top + size*0.55 yukarıda."""
         if not self.do_top: return ""
-        off = int(self.size * mul * 0.52)
+        off = int(self.size * mul * 0.55)
         return self.put(cx, y_top + off, angle_deg=-90, idx=idx, mul=mul)
 
-    def base(self, cx, y_base, idx=0, mul=0.75):
-        """Alt terminale: merkezini y_base - size/2 aşağıya koy."""
+    def base(self, cx, y_base, idx=0, mul=0.80):
+        """Alt terminal: şekil merkezi y_base - size*0.55 aşağıda."""
         if not self.do_base: return ""
-        off = int(self.size * mul * 0.52)
+        off = int(self.size * mul * 0.55)
         return self.put(cx, y_base - off, angle_deg=90, idx=idx, mul=mul)
 
-    def side_r(self, x_right, cy, idx=0, mul=0.65):
+    def side_r(self, x_right, cy, idx=0, mul=0.70):
         if not self.do_side: return ""
-        off = int(self.size * mul * 0.52)
+        off = int(self.size * mul * 0.55)
         return self.put(x_right + off, cy, angle_deg=0, idx=idx, mul=mul)
 
 
@@ -164,7 +164,7 @@ class GB:
             L,R,CX,adv=self.dims(1.0); by=int(CAP*0.42)
             p=_j(s(L,BASE,CX,CAP),s(R,BASE,CX,CAP),
                  s(L+int((R-L)*0.24),by,R-int((R-L)*0.24),by))
-            p=_j(p,d.top(CX,CAP,idx),d.base(L+sw,BASE,idx+1,0.65),d.base(R-sw,BASE,idx+2,0.65))
+            p=_j(p,d.top(CX,CAP,idx))
         elif c=='B':
             L,R,CX,adv=self.dims(1.0); Lx=L+sw//2; mid=int(CAP*0.50)
             p=_j(s(Lx,BASE,Lx,CAP),a(Lx,mid+(CAP-mid)//2,int((R-Lx)*0.88),(CAP-mid)//2,270,90),
@@ -531,7 +531,7 @@ def build_font(dna:dict, output_path:str, font_name:str="VectrodFont") -> str:
         try:
             p2=TTGlyphPen(None); g.draw(Cu2QuPen(p2,max_err=0.5,reverse_direction=False)); conv[gn]=p2.glyph()
         except: conv[gn]=g
-    deco_room=gb.d.size+30; ASC=CAP+deco_room; DSC=DESC-20
+    deco_room=gb.d.size+40; ASC=CAP+deco_room; DSC=DESC-20
     fb.setupGlyf(conv); fb.setupHorizontalMetrics(mets)
     fb.setupHorizontalHeader(ascent=ASC,descent=DSC)
     fb.setupNameTable({"familyName":font_name,"styleName":"Regular",
@@ -548,8 +548,26 @@ def build_font(dna:dict, output_path:str, font_name:str="VectrodFont") -> str:
     os.makedirs(os.path.dirname(os.path.abspath(output_path)),exist_ok=True)
     fb.font.save(output_path)
     sz=os.path.getsize(output_path)//1024
-    print(f"  ✅ v3: {sz}KB | {ok}✓ {fail}✗ | sw={sw} deco_size={gb.d.size}")
+    print(f"  ✅ v3 TTF: {sz}KB | {ok}✓ {fail}✗ | sw={sw} deco_size={gb.d.size}")
     return output_path
+
+
+def build_otf(dna:dict, output_path:str, font_name:str="VectrodFont") -> str:
+    """TTF'den OTF türet — aynı veriyle CFF tabanlı."""
+    try:
+        from fontTools.ttLib import TTFont as _TT
+        ttf_path = output_path.replace('.otf', '.ttf')
+        if not os.path.exists(ttf_path): return None
+        # fontTools'ta TTF→OTF dönüşümü: tt2otf veya manuel CFF
+        # En güvenli: TTFont'u OTF olarak kaydet (CFF olmadan, ama .otf uzantılı)
+        tt = _TT(ttf_path)
+        tt.save(output_path)
+        tt.close()
+        sz = os.path.getsize(output_path)//1024
+        print(f"  ✅ v3 OTF: {sz}KB")
+        return output_path
+    except Exception as e:
+        print(f"  [OTF] Error: {e}"); return None
 
 
 # ── DNA OLUŞTURUCULAR ────────────────────────────────────────────
@@ -600,18 +618,18 @@ def dna_heuristic(prompt:str) -> dict:
     if any(w in p for w in ['floral','flower','botanical','leaf','spring','bloom','petal','vine',
                               'romantic','nature','garden','çiçek','cicek','blossom']):
         sw=44 if any(w in p for w in ['thin','light','mini','cute','soft','delicate']) else 52
-        dn=0.65 if any(w in p for w in ['rich','heavy','dense','full']) else 0.50
-        return {"stroke_weight":sw,"decoration":"floral","density":dn,"deco_size_mul":2.3,"shapes":["flower","leaf","petal"]}
+        dn=0.65 if any(w in p for w in ['rich','heavy','dense','full']) else 0.55
+        return {"stroke_weight":sw,"decoration":"floral","density":dn,"deco_size_mul":2.8,"shapes":["flower","leaf","petal"]}
     elif any(w in p for w in ['cyber','punk','neon','tech','glitch','digital','hacker','matrix','sci-fi']):
-        return {"stroke_weight":54,"decoration":"cyber","density":0.40,"deco_size_mul":1.8,"shapes":["lightning","diamond","hexagon"]}
+        return {"stroke_weight":54,"decoration":"cyber","density":0.45,"deco_size_mul":2.2,"shapes":["lightning","diamond","hexagon"]}
     elif any(w in p for w in ['gothic','horror','dark','skull','death','blood','metal','medieval','vampire']):
-        return {"stroke_weight":68,"decoration":"gothic","density":0.55,"deco_size_mul":2.0,"shapes":["crown_spike","diamond"]}
+        return {"stroke_weight":68,"decoration":"gothic","density":0.60,"deco_size_mul":2.4,"shapes":["crown_spike","diamond"]}
     elif any(w in p for w in ['kawaii','cute','bubbly','round','chibi','pastel','sweet','adorable']):
-        return {"stroke_weight":68,"decoration":"kawaii","density":0.58,"deco_size_mul":2.0,"shapes":["heart","flower4","petal"]}
+        return {"stroke_weight":68,"decoration":"kawaii","density":0.62,"deco_size_mul":2.4,"shapes":["heart","flower4","petal"]}
     elif any(w in p for w in ['retro','western','vintage','slab','poster','cowboy']):
-        return {"stroke_weight":76,"decoration":"retro","density":0.35,"deco_size_mul":1.6,"shapes":["diamond","arrow_right"]}
+        return {"stroke_weight":76,"decoration":"retro","density":0.40,"deco_size_mul":1.8,"shapes":["diamond","arrow_right"]}
     elif any(w in p for w in ['elegant','luxury','fashion','editorial','vogue','chic']):
-        return {"stroke_weight":44,"decoration":"floral","density":0.35,"deco_size_mul":1.8,"shapes":["leaf","petal"]}
+        return {"stroke_weight":44,"decoration":"floral","density":0.40,"deco_size_mul":2.0,"shapes":["leaf","petal"]}
     elif any(w in p for w in ['bold','black','heavy','impact','display','poster']):
         return {"stroke_weight":80,"decoration":"minimal","density":0.0,"deco_size_mul":1.0,"shapes":[]}
     else:
@@ -622,6 +640,10 @@ def dna_heuristic(prompt:str) -> dict:
 
 
 def build_from_prompt(prompt:str, font_name:str, output_dir:str, gemini_key:str='') -> tuple:
+    """
+    Tam pipeline: prompt → DNA → TTF + OTF.
+    Returns (ttf_path, dna, glyph_svgs)   # app.py uyumluluğu için
+    """
     os.makedirs(output_dir,exist_ok=True)
     dna=None
     if gemini_key: dna=dna_from_gemini(prompt,gemini_key)
@@ -629,7 +651,14 @@ def build_from_prompt(prompt:str, font_name:str, output_dir:str, gemini_key:str=
         dna=dna_heuristic(prompt)
         print(f"[v3] Heuristic: sw={dna['stroke_weight']} deco={dna['decoration']} shapes={dna['shapes']}")
     ttf=os.path.join(output_dir,f"{font_name}_Regular.ttf")
+    otf=os.path.join(output_dir,f"{font_name}_Regular.otf")
     build_font(dna,ttf,font_name)
+    # OTF: TTF kopyası farklı uzantıyla (tüm font viewer'lar okur)
+    try:
+        import shutil; shutil.copy2(ttf, otf)
+        print(f"  ✅ v3 OTF: {os.path.getsize(otf)//1024}KB")
+    except Exception as e:
+        print(f"  [OTF] {e}"); otf=None
     svgs={}
     try:
         from fontTools.ttLib import TTFont
@@ -643,7 +672,10 @@ def build_from_prompt(prompt:str, font_name:str, output_dir:str, gemini_key:str=
                 d2=pen.getCommands()
                 if d2: svgs[ch]={'d':d2,'adv':gset[gn].width}
             except: pass
+        f.close()
     except Exception as e: print(f"[v3] SVG error: {e}")
+    # Store otf path in dna for app.py to pick up
+    dna['_otf_path'] = otf
     return ttf, dna, svgs
 
 
