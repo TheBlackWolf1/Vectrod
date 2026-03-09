@@ -65,48 +65,66 @@ def call_gemini(prompt: str, api_key: str, retries: int = 3) -> dict:
     url = f"{GEMINI_URL}?key={api_key}"
     payload = json.dumps({
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {
-            "temperature": 0.7,
-            "maxOutputTokens": 65536,
-            "responseMimeType": "application/json"
-        }
+        "generationConfig": {"temperature": 0.7, "maxOutputTokens": 65536}
     }).encode('utf-8')
-
-    headers = {
-        "Content-Type": "application/json",
-        "User-Agent": "Vectrod/3.0"
-    }
+    headers = {"Content-Type": "application/json", "User-Agent": "Vectrod/3.0"}
 
     for attempt in range(retries):
         try:
             req = urllib.request.Request(url, data=payload, headers=headers, method='POST')
-            with urllib.request.urlopen(req, timeout=120) as resp:
+            with urllib.request.urlopen(req, timeout=180) as resp:
                 raw = resp.read().decode('utf-8')
-                data = json.loads(raw)
+            data = json.loads(raw)
+            print(f"  [Gemini] keys: {list(data.keys())}")
 
-            # Extract text from Gemini response
-            text = data['candidates'][0]['content']['parts'][0]['text']
-            # Clean up if wrapped in markdown
-            text = re.sub(r'^```json\s*', '', text.strip())
-            text = re.sub(r'```$', '', text.strip())
-            return json.loads(text)
+            if 'candidates' not in data or not data['candidates']:
+                print(f"  [Gemini] no candidates. response: {raw[:400]}")
+                raise RuntimeError("Gemini returned no candidates")
 
-        except urllib.error.HTTPError as e:
-            body = e.read().decode('utf-8', errors='replace')
-            print(f"  [Gemini] HTTP {e.code}: {body[:200]}")
-            if e.code == 429 and attempt < retries - 1:
-                time.sleep(5 * (attempt + 1))
+            cand = data['candidates'][0]
+            if 'content' not in cand:
+                finish = cand.get('finishReason', '?')
+                raise RuntimeError(f"Gemini no content, finishReason={finish}")
+
+            text = ''.join(p.get('text','') for p in cand['content'].get('parts',[])).strip()
+            print(f"  [Gemini] response length: {len(text)}")
+
+            if not text:
+                raise RuntimeError("Gemini empty text")
+
+            if text.startswith('`'):
+                text = re.sub(r'^```[a-z]*\n?', '', text)
+                text = re.sub(r'```$', '', text).strip()
+
+            s, e = text.find('{'), text.rfind('}')
+            if s == -1 or e == -1:
+                raise RuntimeError(f"No JSON object in response: {text[:200]}")
+
+            result = json.loads(text[s:e+1])
+            print(f"  [Gemini] parsed OK — {len(result.get('chars',{}))} chars")
+            return result
+
+        except urllib.error.HTTPError as ex:
+            body = ex.read().decode('utf-8', errors='replace')
+            print(f"  [Gemini] HTTP {ex.code}: {body[:300]}")
+            if ex.code in (429, 503) and attempt < retries-1:
+                time.sleep(8*(attempt+1))
                 continue
             raise
-        except Exception as e:
-            print(f"  [Gemini] attempt {attempt+1} error: {e}")
-            if attempt < retries - 1:
+        except (json.JSONDecodeError, RuntimeError) as ex:
+            print(f"  [Gemini] attempt {attempt+1}: {ex}")
+            if attempt < retries-1:
+                time.sleep(4)
+                continue
+            raise
+        except Exception as ex:
+            print(f"  [Gemini] unexpected attempt {attempt+1}: {ex}")
+            if attempt < retries-1:
                 time.sleep(3)
                 continue
             raise
 
-    raise RuntimeError("Gemini API failed after retries")
-
+    raise RuntimeError("Gemini API failed after all retries")
 
 # ── SVG ASSEMBLER ──────────────────────────────────────────────────────────────
 def assemble_svg(char_paths: dict, chars_order: list) -> str:
