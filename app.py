@@ -527,8 +527,10 @@ Be accurate. Respond with ONLY the JSON."""
 
     def handle_ai_generate(self):
         """
-        Vectrod v2.0 — DNA-based font generation.
-        Pipeline: prompt → Gemini/heuristic DNA → engine routing → TTF/OTF
+        Vectrod v3.0 — DNA Matrix engine.
+        Pipeline: prompt → Gemini/heuristic DNA → vectrod_v3 → TTF
+        shape_library vektörleri harfin anatomisine göre mühürlenir.
+        Diğer pipeline'lara (SVG upload, convert) dokunulmaz.
         """
         try:
             length = int(self.headers.get('Content-Length', 0))
@@ -547,26 +549,24 @@ Be accurate. Respond with ONLY the JSON."""
             out_dir = os.path.join(sp, 'output')
             os.makedirs(out_dir, exist_ok=True)
 
-            print(f"\n[v2.0-DNA] session={sid[:8]} prompt=\"{prompt[:60]}\" font={font_name}")
+            print(f"\n[v3-DNA] session={sid[:8]} prompt=\"{prompt[:60]}\" font={font_name}")
 
-            # ── DNA PIPELINE ──────────────────────────────────────────
-            from dna_engine import build_font_from_dna, _route_engine, get_dna
+            # ── v3 DNA PIPELINE ───────────────────────────────────────
+            from vectrod_v3 import build_from_prompt as v3_build
             import base64 as _b64
 
             gemini_key = os.environ.get('GEMINI_API_KEY', '')
-            print(f"  [DNA] Gemini: {'YES ✨' if gemini_key else 'NO → heuristic'}")
+            print(f"  [v3] Gemini: {'YES ✨' if gemini_key else 'NO → heuristic'}")
 
-            ttf_path, otf_path, dna, glyph_svgs = build_font_from_dna(
-                prompt    = prompt,
-                font_name = font_name,
-                output_dir= out_dir,
-                gemini_key= gemini_key,
+            ttf_path, dna, glyph_svgs = v3_build(
+                prompt     = prompt,
+                font_name  = font_name,
+                output_dir = out_dir,
+                gemini_key = gemini_key,
             )
 
-            engine_used = _route_engine(dna, prompt)
-            print(f"  [DNA] Engine={engine_used} family={dna['base_family']} sw={dna['stroke_weight']}")
-            print(f"  [DNA] Effects:  {[e['name'] for e in dna.get('effects',[])]}")
-            print(f"  [DNA] Decos:    {[d['shape']+'@'+d['anchor'] for d in dna.get('decorations',[])]}")
+            print(f"  [v3] deco={dna['decoration']} sw={dna['stroke_weight']} "
+                  f"density={dna['density']} shapes={dna['shapes']}")
 
             if not ttf_path or not os.path.exists(ttf_path):
                 self.json_resp({'success': False, 'error': 'Font generation failed'}, 500)
@@ -574,16 +574,15 @@ Be accurate. Respond with ONLY the JSON."""
 
             # ── COLLECT OUTPUT FILES ──────────────────────────────────
             result_files = []
-            for fp in [ttf_path, otf_path]:
-                if fp and os.path.exists(fp):
-                    fname = os.path.basename(fp)
-                    result_files.append({
-                        'filename': fname,
-                        'size':     os.path.getsize(fp),
-                        'url':      f'/download/{sid}/{fname}',
-                    })
+            fname = os.path.basename(ttf_path)
+            result_files.append({
+                'filename': fname,
+                'size':     os.path.getsize(ttf_path),
+                'url':      f'/download/{sid}/{fname}',
+            })
 
             # ── BASE64 FONT FOR LIVE PREVIEW ──────────────────────────
+            import base64 as _b64
             font_b64    = None
             glyph_count = 0
             generated_chars = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
@@ -594,7 +593,7 @@ Be accurate. Respond with ONLY the JSON."""
             try:
                 from fontTools.ttLib import TTFont as _TT
                 tt = _TT(ttf_path)
-                glyph_count = max(0, len(tt.getGlyphOrder()) - 2)  # -notdef -space
+                glyph_count = max(0, len(tt.getGlyphOrder()) - 2)
                 cmap = tt.getBestCmap() or {}
                 generated_chars = [chr(cp) for cp in sorted(cmap.keys())
                                    if 32 < cp < 127][:80]
@@ -603,7 +602,7 @@ Be accurate. Respond with ONLY the JSON."""
                 glyph_count = len(glyph_svgs)
 
             sz_kb = os.path.getsize(ttf_path) // 1024
-            print(f"  [DNA] ✅ {sz_kb}KB | {glyph_count} glyphs | {len(result_files)} files")
+            print(f"  [v3] ✅ {sz_kb}KB | {glyph_count} glyphs")
 
             self.json_resp({
                 'success':         True,
@@ -613,21 +612,20 @@ Be accurate. Respond with ONLY the JSON."""
                 'glyph_count':     glyph_count,
                 'generated_chars': generated_chars,
                 'glyph_svgs':      glyph_svgs,
-                # v2.0 extras — DNA transparency for frontend
+                # v3 DNA transparency for frontend
                 'dna': {
-                    'engine':       engine_used,
-                    'base_family':  dna.get('base_family'),
-                    'stroke_weight':dna.get('stroke_weight'),
-                    'effects':      [e['name'] for e in dna.get('effects', [])],
-                    'decorations':  [d['shape']+'@'+d['anchor']
-                                     for d in dna.get('decorations', [])],
-                    'reasoning':    dna.get('reasoning', ''),
+                    'engine':        'v3',
+                    'decoration':    dna.get('decoration'),
+                    'stroke_weight': dna.get('stroke_weight'),
+                    'density':       dna.get('density'),
+                    'shapes':        dna.get('shapes', []),
+                    'deco_size_mul': dna.get('deco_size_mul'),
                 },
             })
 
         except Exception as e:
             import traceback
-            print(f"[v2.0-DNA ERROR] {e}\n{traceback.format_exc()}")
+            print(f"[v3-DNA ERROR] {e}\n{traceback.format_exc()}")
             self.json_resp({'success': False, 'error': str(e)}, 500)
 
     def handle_convert_auto(self):
