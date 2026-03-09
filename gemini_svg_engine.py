@@ -28,35 +28,20 @@ SPACING = 220  # gruplar arası mesafe
 
 # ── GEMINI PROMPT ─────────────────────────────────────────────────────────────
 def build_gemini_prompt(user_prompt: str, chars: list) -> str:
-    chars_str = ', '.join([f'"{c}"' for c in chars])
-    return f"""You are a professional type designer and SVG expert. Create a complete font based on this style description:
-
-STYLE: "{user_prompt}"
-
-Generate SVG paths for EXACTLY these {len(chars)} characters: {chars_str}
-
-CRITICAL REQUIREMENTS:
-1. Each character must be a FILLED SVG path (not stroked)
-2. Each path must fit within a 200x200 coordinate space (0,0 top-left, 200,200 bottom-right)
-3. Uppercase letters: use ~160px height (baseline at y=170, cap-height at y=10)
-4. Lowercase letters: use ~110px height (baseline at y=170, x-height at y=60)
-5. Digits: same as uppercase
-6. ALL paths must be CLOSED (end with Z)
-7. Use M, L, C, Q, S, Z commands only — no transforms
-8. Make letters visually distinct, readable, and stylistically consistent with: "{user_prompt}"
-9. IMPORTANT: Every letter must look correct and beautiful — not abstract blobs
-
-Return ONLY valid JSON in this exact format, no markdown, no explanation:
-{{
-  "style_name": "short style name",
-  "chars": {{
-    "A": "M100,10 L160,170 L140,170 L100,50 L60,170 L40,170 Z M70,120 L130,120 L120,140 L80,140 Z",
-    "B": "M40,10 L40,170 ...",
-    ...one entry per requested character...
-  }}
-}}
-
-Make EVERY character beautiful and on-style. The font will be used commercially."""
+    chars_str = ', '.join([repr(c) for c in chars])
+    n = len(chars)
+    return (
+        f'You are an SVG font designer. Font style: "{user_prompt}"\n\n'
+        f'Generate SVG paths for {n} characters: {chars_str}\n\n'
+        'Canvas: 200x200. Uppercase/digits: y=10 (top) to y=170 (baseline). '
+        'Lowercase: y=60 (top) to y=170 (baseline).\n'
+        'Paths must be filled, closed (Z), use only M L C Q Z commands.\n\n'
+        'Example for letter A:\n'
+        '"A": "M100,10 L160,170 L140,170 L100,50 L60,170 L40,170 Z M70,120 L130,120 L120,140 L80,140 Z"\n\n'
+        'Return ONLY raw JSON, no markdown, no explanation:\n'
+        '{"style_name": "name", "chars": {"A": "path", "B": "path", ...}}\n\n'
+        f'Include all {n} characters. Make each letter readable and beautiful.'
+    )
 
 
 # ── GEMINI API CALL ───────────────────────────────────────────────────────────
@@ -228,38 +213,42 @@ def build_from_prompt(
     style_name = "custom"
 
     if gemini_key:
-        # ── STEP 1: Ask Gemini for uppercase + digits ──────────────────
-        batch1 = CHARS_UPPERCASE + CHARS_DIGITS
-        print(f"[GeminiSVG] Batch 1: {len(batch1)} chars (A-Z + 0-9)...")
-        try:
-            p1 = build_gemini_prompt(prompt, batch1)
-            r1 = call_gemini(p1, gemini_key)
-            style_name = r1.get('style_name', 'custom')
-            for ch, d in r1.get('chars', {}).items():
-                char_paths[ch] = validate_path(d, ch)
-            print(f"  [GeminiSVG] Batch 1 got {len(r1.get('chars',{}))} chars")
-        except Exception as e:
-            print(f"  [GeminiSVG] Batch 1 error: {e}")
+        # 4 small batches — more reliable than 2 large ones
+        batches = [
+            ('A-M+digits', list('ABCDEFGHIJKLM') + CHARS_DIGITS),
+            ('N-Z',        list('NOPQRSTUVWXYZ')),
+            ('a-m',        list('abcdefghijklm')),
+            ('n-z',        list('nopqrstuvwxyz')),
+        ]
+        for bname, bchars in batches:
+            print(f"[GeminiSVG] Batch {bname}: {len(bchars)} chars...")
+            try:
+                p = build_gemini_prompt(prompt, bchars)
+                r = call_gemini(p, gemini_key)
+                if style_name == 'custom':
+                    style_name = r.get('style_name', 'custom')
+                got = r.get('chars', {})
+                for ch, d in got.items():
+                    char_paths[ch] = validate_path(d, ch)
+                print(f"  [GeminiSVG] got {len(got)} chars")
+            except Exception as e:
+                print(f"  [GeminiSVG] Batch {bname} FAILED: {e}")
+                # For lowercase batches, derive from uppercase
+                if bname in ('a-m', 'n-z'):
+                    for ch in bchars:
+                        if ch not in char_paths:
+                            up = ch.upper()
+                            if up in char_paths:
+                                char_paths[ch] = _scale_path_for_lowercase(char_paths[up])
 
-        # ── STEP 2: Ask Gemini for lowercase ──────────────────────────
-        print(f"[GeminiSVG] Batch 2: {len(CHARS_LOWERCASE)} chars (a-z)...")
-        try:
-            p2 = build_gemini_prompt(prompt, CHARS_LOWERCASE)
-            r2 = call_gemini(p2, gemini_key)
-            for ch, d in r2.get('chars', {}).items():
-                char_paths[ch] = validate_path(d, ch)
-            print(f"  [GeminiSVG] Batch 2 got {len(r2.get('chars',{}))} chars")
-        except Exception as e:
-            print(f"  [GeminiSVG] Batch 2 error: {e}")
-            # Fallback: use uppercase scaled down
-            print("  [GeminiSVG] Using uppercase fallback for lowercase")
-            for ch in CHARS_LOWERCASE:
-                upper = ch.upper()
-                if upper in char_paths:
-                    char_paths[ch] = _scale_path_for_lowercase(char_paths[upper])
 
     else:
         print("[GeminiSVG] No API key — using geometric fallback")
+        char_paths = _geometric_fallback(target_chars)
+
+    # If Gemini totally failed, use geometric fallback so user gets SOMETHING
+    if not char_paths:
+        print("[GeminiSVG] WARNING: Gemini returned nothing — using geometric fallback")
         char_paths = _geometric_fallback(target_chars)
 
     if not char_paths:
