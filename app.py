@@ -527,8 +527,10 @@ Be accurate. Respond with ONLY the JSON."""
 
     def handle_ai_generate(self):
         """
-        Vectrod Gemini SVG Pipeline.
-        Pipeline: prompt → Gemini SVG paths → engine.py → TTF/OTF → kullanıcıya sun
+        Vectrod v3 DNA Pipeline.
+        Prompt → Gemini DNA (stil parametresi) → vectrod_v3 geometri → TTF/OTF
+        Gemini SVG path üretmez — sadece stil kararı verir.
+        vectrod_v3 matematiksel olarak harfleri çizer + shape_library dekorasyonlar.
         """
         try:
             length = int(self.headers.get('Content-Length', 0))
@@ -548,13 +550,13 @@ Be accurate. Respond with ONLY the JSON."""
             os.makedirs(out_dir, exist_ok=True)
 
             gemini_key = os.environ.get('GEMINI_API_KEY', '')
-            print(f"\n[GeminiSVG] session={sid[:8]} prompt=\"{prompt[:60]}\"")
-            print(f"  Gemini key: {'YES ✨' if gemini_key else 'NO → fallback'}")
+            print(f"\n[v3] session={sid[:8]} prompt=\"{prompt[:60]}\"")
+            print(f"  Gemini key: {'YES ✨' if gemini_key else 'NO → heuristic'}")
 
-            # ── GEMINI SVG PIPELINE ───────────────────────────────────
-            from gemini_svg_engine import build_from_prompt as gemini_build
+            # ── VECTROD v3 DNA PIPELINE ───────────────────────────────
+            from vectrod_v3 import build_from_prompt as v3_build
 
-            ttf_path, style_info, glyph_svgs = gemini_build(
+            ttf_path, dna, glyph_svgs = v3_build(
                 prompt     = prompt,
                 font_name  = font_name,
                 output_dir = out_dir,
@@ -573,7 +575,7 @@ Be accurate. Respond with ONLY the JSON."""
                 'size':     os.path.getsize(ttf_path),
                 'url':      f'/download/{sid}/{fname}',
             })
-            otf_path = style_info.get('_otf_path')
+            otf_path = dna.get('_otf_path')
             if otf_path and os.path.exists(otf_path):
                 ofname = os.path.basename(otf_path)
                 result_files.append({
@@ -588,7 +590,7 @@ Be accurate. Respond with ONLY the JSON."""
                 font_b64 = _b64.b64encode(ff.read()).decode('ascii')
 
             glyph_count = 0
-            generated_chars = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+            generated_chars = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
             try:
                 from fontTools.ttLib import TTFont as _TT
                 tt = _TT(ttf_path)
@@ -598,10 +600,21 @@ Be accurate. Respond with ONLY the JSON."""
                                    if 32 < cp < 127][:80]
                 tt.close()
             except Exception:
-                glyph_count = style_info.get('char_count', len(glyph_svgs))
+                glyph_count = len(glyph_svgs)
 
             sz_kb = os.path.getsize(ttf_path) // 1024
-            print(f"  [GeminiSVG] ✅ {sz_kb}KB | {glyph_count} glyphs")
+            print(f"  [v3] ✅ {sz_kb}KB | {glyph_count} glyphs | "
+                  f"sw={dna.get('stroke_weight')} deco={dna.get('decoration')} "
+                  f"shapes={dna.get('shapes')}")
+
+            # Glyph SVG format normalize
+            svgs_out = {}
+            for ch, v in glyph_svgs.items():
+                if isinstance(v, dict):
+                    d = v.get('d',''); adv = v.get('adv', 600)
+                    svgs_out[ch] = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {adv} 1000"><path d="{d}" fill="#333"/></svg>'
+                else:
+                    svgs_out[ch] = v
 
             self.json_resp({
                 'success':         True,
@@ -610,17 +623,20 @@ Be accurate. Respond with ONLY the JSON."""
                 'font_b64':        font_b64,
                 'glyph_count':     glyph_count,
                 'generated_chars': generated_chars,
-                'glyph_svgs':      glyph_svgs,
+                'glyph_svgs':      svgs_out,
                 'dna': {
-                    'engine':     'gemini-svg',
-                    'style_name': style_info.get('style_name', 'custom'),
-                    'char_count': style_info.get('char_count', 0),
+                    'engine':        'vectrod-v3',
+                    'decoration':    dna.get('decoration'),
+                    'stroke_weight': dna.get('stroke_weight'),
+                    'density':       dna.get('density'),
+                    'shapes':        dna.get('shapes', []),
+                    'deco_size_mul': dna.get('deco_size_mul'),
                 },
             })
 
         except Exception as e:
             import traceback
-            print(f"[GeminiSVG ERROR] {e}\n{traceback.format_exc()}")
+            print(f"[v3 ERROR] {e}\n{traceback.format_exc()}")
             self.json_resp({'success': False, 'error': str(e)}, 500)
 
     def handle_convert_auto(self):

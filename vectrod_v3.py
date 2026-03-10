@@ -113,13 +113,13 @@ class Deco:
         """Üst terminal: şekil merkezi y_top + size*0.55 yukarıda."""
         if not self.do_top: return ""
         off = int(self.size * mul * 0.55)
-        return self.put(cx, y_top + off, angle_deg=-90, idx=idx, mul=mul)
+        return self.put(cx, y_top + off, angle_deg=0, idx=idx, mul=mul)
 
     def base(self, cx, y_base, idx=0, mul=0.80):
         """Alt terminal: şekil merkezi y_base - size*0.55 aşağıda."""
         if not self.do_base: return ""
         off = int(self.size * mul * 0.55)
-        return self.put(cx, y_base - off, angle_deg=90, idx=idx, mul=mul)
+        return self.put(cx, y_base - off, angle_deg=0, idx=idx, mul=mul)
 
     def side_r(self, x_right, cy, idx=0, mul=0.70):
         if not self.do_side: return ""
@@ -166,9 +166,12 @@ class GB:
                  s(L+int((R-L)*0.24),by,R-int((R-L)*0.24),by))
             p=_j(p,d.top(CX,CAP,idx))
         elif c=='B':
-            L,R,CX,adv=self.dims(1.0); Lx=L+sw//2; mid=int(CAP*0.50)
-            p=_j(s(Lx,BASE,Lx,CAP),a(Lx,mid+(CAP-mid)//2,int((R-Lx)*0.88),(CAP-mid)//2,270,90),
-                 a(Lx,mid//2,int((R-Lx)*0.94),mid//2,270,90))
+            L,R,CX,adv=self.dims(1.0); Lx=L+sw//2; mid=int(CAP*0.52)
+            top_rx=int((R-Lx)*0.78); top_ry=(CAP-mid)//2
+            bot_rx=int((R-Lx)*0.88); bot_ry=mid//2
+            p=_j(s(Lx,BASE,Lx,CAP),
+                 arc_thick(Lx,mid+top_ry,top_rx,top_ry,270,90,sw),
+                 arc_thick(Lx,bot_ry,    bot_rx,bot_ry,270,90,sw))
             p=_j(p,d.top(Lx,CAP,idx),d.base(Lx,BASE,idx+1,0.8))
         elif c=='C':
             L,R,CX,adv=self.dims(1.1); rx=(R-L)//2-sw//2; ry=CAP//2-sw//2
@@ -240,12 +243,15 @@ class GB:
             p=_j(p,d.top(Lx,CAP,idx),d.base(R,BASE,idx+1,0.7))
         elif c=='S':
             L,R,CX,adv=self.dims(1.0); rx=(R-L)//2-sw//2
-            cyt=int(CAP*0.70); ryt=int(CAP*0.24); cyb=int(CAP*0.30); ryb=int(CAP*0.24)
-            p=_j(a(CX,cyt,rx,ryt,195,355),a(CX,cyb,rx,ryb,15,175))
-            a1r=math.radians(195); tx=CX+rx*math.cos(a1r); ty=cyt+ryt*math.sin(a1r)
-            b2r=math.radians(175); bx=CX+rx*math.cos(b2r); by=cyb+ryb*math.sin(b2r)
-            p=_j(p,d.put(tx,ty+int(d.size*0.52),-90,idx) if d.do_top else "",
-                 d.put(bx,by-int(d.size*0.42),90,idx+1,0.8) if d.do_base else "")
+            cyt=int(CAP*0.68); ryt=int(CAP*0.26); cyb=int(CAP*0.32); ryb=int(CAP*0.26)
+            # Üst: sola açık yay (180°→355°), Alt: sağa açık yay (5°→180°)
+            p=_j(a(CX,cyt,rx,ryt,180,355),a(CX,cyb,rx,ryb,5,180))
+            # Terminal dekorasyonları: üst-sağ ve alt-sol uçlar
+            import math as _m
+            tx=CX+rx*_m.cos(_m.radians(180)); ty=cyt+ryt*_m.sin(_m.radians(180))
+            bx=CX+rx*_m.cos(_m.radians(180)); by=cyb+ryb*_m.sin(_m.radians(180))
+            p=_j(p,d.put(tx,ty+int(d.size*0.55),-90,idx) if d.do_top else "",
+                 d.put(bx,by-int(d.size*0.45),90,idx+1,0.8) if d.do_base else "")
         elif c=='T':
             L,R,CX,adv=self.dims(1.0)
             p=_j(s(CX,BASE,CX,CAP),s(L,CAP,R,CAP))
@@ -359,7 +365,12 @@ class GB:
             p=_j(p,d.top(Lx,XH,idx,0.85))
         elif c=='s':
             L,R,CX,adv=self.dims(0.82); rx=(R-L)//2-sw//2
-            p=_j(a(CX,int(XH*0.70),rx,int(XH*0.24),200,355),a(CX,int(XH*0.30),rx,int(XH*0.24),20,175))
+            # S harfi: üst sola açık yay + alt sağa açık yay
+            # Üst: cy=XH*0.68, sola açık → 0°→180° (soldan sağa, üstte)  
+            # Alt: cy=XH*0.32, sağa açık → 180°→360° (sağdan sola, altta)
+            cyt=int(XH*0.68); ryt=int(XH*0.27)
+            cyb=int(XH*0.32); ryb=int(XH*0.27)
+            p=_j(a(CX,cyt,rx,ryt,0,190),a(CX,cyb,rx,ryb,180,370))
         elif c=='t':
             L,R,CX,adv=self.dims(0.52); W=R-L
             p=_j(s(CX,BASE,CX,int(CAP*0.80)),s(CX-W//2,int(XH*0.68),CX+W//2,int(XH*0.68)))
@@ -399,12 +410,17 @@ class GB:
             p=_j(s(CX,BASE,CX,CAP),s(CX-W//3,BASE,CX+W//2,BASE),s(CX-W//4,int(CAP*0.76),CX,CAP))
             p=_j(p,d.top(CX,CAP,idx,0.85))
         elif c=='2':
-            L,R,CX,adv=self.dims(1.0); acy=int(CAP*0.70); arx=(R-L)//2-sw//2; ary=int(CAP*0.24)
-            a2r=math.radians(345); tx=CX+arx*math.cos(a2r); ty=acy+ary*math.sin(a2r)
-            p=_j(a(CX,acy,arx,ary,215,345),s(tx,ty,L,BASE+sw//2),s(L,BASE,R,BASE))
+            L,R,CX,adv=self.dims(1.0); arx=(R-L)//2-sw//2; ary=int(CAP*0.26)
+            acy=int(CAP*0.72)
+            # Üst yay: sola açık (180°→350°) → aşağı çizgi → alt bar
+            import math as _m
+            a2r=_m.radians(350); tx=CX+arx*_m.cos(a2r); ty=acy+ary*_m.sin(a2r)
+            p=_j(a(CX,acy,arx,ary,180,350),s(tx,ty,L,BASE+sw//2),s(L,BASE,R,BASE))
         elif c=='3':
             L,R,CX,adv=self.dims(1.0); rx=(R-L)//2-sw//2
-            p=_j(a(CX,int(CAP*0.72),rx,int(CAP*0.24),215,340),a(CX,int(CAP*0.28),rx,int(CAP*0.26),20,340))
+            # Üst: sağa açık (180°→355°), Alt: sağa açık (5°→180°)
+            p=_j(a(CX,int(CAP*0.70),rx,int(CAP*0.24),180,355),
+                 a(CX,int(CAP*0.30),rx,int(CAP*0.26),5,180))
         elif c=='4':
             L,R,CX,adv=self.dims(1.0); sx=L+int((R-L)*0.66)
             p=_j(s(L,CAP,sx-sw//2,int(CAP*0.44)),s(L,int(CAP*0.44),R,int(CAP*0.44)),s(sx,BASE,sx,CAP))
@@ -413,8 +429,10 @@ class GB:
             L,R,CX,adv=self.dims(1.0); Lx=L+sw//2
             p=_j(s(L,CAP,R,CAP),s(Lx,int(CAP*0.50),Lx,CAP),a(CX,int(CAP*0.28),(R-L)//2-sw//2,int(CAP*0.26),175,355))
         elif c=='6':
-            L,R,CX,adv=self.dims(1.0); rx=(R-L)//2-sw//2
-            p=_j(oval_donut(CX,int(CAP*0.30),rx,int(CAP*0.28),sw),a(CX,int(CAP*0.62),rx,int(CAP*0.30),178,285))
+            L,R,CX,adv=self.dims(1.0); rx=(R-L)//2-sw//2; ry=int(CAP*0.28)
+            # Alt: tam oval (counter açık), Üst: sola kıvrılan kanca
+            p=_j(oval_donut(CX,int(CAP*0.32),rx,ry,sw),
+                 a(CX,int(CAP*0.60),rx,int(CAP*0.28),90,180))
         elif c=='7':
             L,R,CX,adv=self.dims(1.0)
             p=_j(s(L,CAP,R,CAP),s(R,CAP,L+int((R-L)*0.33),BASE))
@@ -424,7 +442,8 @@ class GB:
             p=_j(oval_donut(CX,int(CAP*0.72),rx,int(CAP*0.22),sw),oval_donut(CX,int(CAP*0.28),rx,int(CAP*0.26),sw))
         elif c=='9':
             L,R,CX,adv=self.dims(1.0); rx=(R-L)//2-sw//2
-            p=_j(oval_donut(CX,int(CAP*0.68),rx,int(CAP*0.26),sw),a(CX,int(CAP*0.38),rx,int(CAP*0.28),355,100))
+            p=_j(oval_donut(CX,int(CAP*0.68),rx,int(CAP*0.26),sw),
+                 a(CX,int(CAP*0.40),rx,int(CAP*0.28),0,270))
 
         # ── NOKTALAMA ─────────────────────────────────────────────
         elif c=='.':
@@ -572,70 +591,140 @@ def build_otf(dna:dict, output_path:str, font_name:str="VectrodFont") -> str:
 
 # ── DNA OLUŞTURUCULAR ────────────────────────────────────────────
 
-GEMINI_PROMPT="""You are Vectrod's type director. Output ONLY valid JSON, no markdown, no explanation.
+GEMINI_PROMPT="""You are Vectrod's creative director and type designer. Analyze the font style request and output ONLY valid JSON — no markdown, no explanation, nothing else.
 
-Given a font style, output this exact DNA:
-{"stroke_weight":44,"decoration":"floral","density":0.5,"deco_size_mul":2.2,"shapes":["flower","leaf","petal"]}
+Output exactly this structure:
+{"stroke_weight":52,"decoration":"floral","density":0.65,"deco_size_mul":2.8,"shapes":["flower","leaf","petal"]}
 
-RULES:
-  stroke_weight: int 44-80 (44=light, 55=regular, 68=bold, 80=heavy)
-  decoration: "floral"|"cyber"|"gothic"|"kawaii"|"retro"|"minimal"
-  density: float 0.2-0.8
-  deco_size_mul: float 1.6-2.8 (size = stroke_weight × this)
-  shapes: 1-3 from: flower,leaf,petal,heart,diamond,lightning,hexagon,crown_spike,gear_tooth,flower4
-  FORBIDDEN: star4,star5,star6,starburst
+PARAMETER GUIDE:
+stroke_weight (int 44-80):
+  44-50 = thin / light / elegant / fashion / luxury
+  51-60 = regular / normal / clean / minimal
+  61-70 = semi-bold / strong / display
+  71-80 = bold / heavy / impact / black / fat
 
-EXAMPLES:
-  cute minimalist floral → {"stroke_weight":44,"decoration":"floral","density":0.5,"deco_size_mul":2.2,"shapes":["flower","leaf","petal"]}
-  cyberpunk neon        → {"stroke_weight":54,"decoration":"cyber","density":0.4,"deco_size_mul":1.8,"shapes":["lightning","diamond","hexagon"]}
-  gothic horror         → {"stroke_weight":68,"decoration":"gothic","density":0.55,"deco_size_mul":2.0,"shapes":["crown_spike","diamond"]}
-  kawaii bubble         → {"stroke_weight":70,"decoration":"kawaii","density":0.6,"deco_size_mul":2.0,"shapes":["heart","flower4"]}
-  minimal clean         → {"stroke_weight":48,"decoration":"minimal","density":0.0,"deco_size_mul":1.0,"shapes":[]}"""
+decoration (pick ONE best match):
+  "floral"  = flowers, botanical, nature, garden, spring, petal, bloom, rose, romantic
+  "cyber"   = cyberpunk, tech, neon, digital, glitch, matrix, sci-fi, hacker, futuristic
+  "gothic"  = gothic, horror, dark, medieval, vampire, skull, death, metal, blackletter
+  "kawaii"  = kawaii, cute, bubbly, sweet, chibi, pastel, adorable, playful, round
+  "retro"   = retro, vintage, western, slab, poster, old, classic, 70s, 80s, grunge
+  "minimal" = minimal, swiss, geometric, clean, modern, corporate, simple, sans
+
+density (float 0.0-0.8):
+  0.0 = no decorations at all
+  0.3 = subtle / sparse decorations
+  0.55 = moderate decorations
+  0.70 = rich / abundant decorations
+  0.80 = maximum decorations — every terminal
+
+deco_size_mul (float 1.6-3.2):
+  Decoration size = stroke_weight × this value.
+  1.6-2.0 = small subtle decorations
+  2.0-2.6 = normal decorations
+  2.6-3.2 = large prominent decorations (use for floral/kawaii)
+
+shapes (list of 1-3, CHOOSE BEST for the style):
+  Floral: "flower" "flower4" "leaf" "petal"
+  Cute:   "heart" "flower4" "petal"
+  Tech:   "lightning" "hexagon" "gear_tooth" "diamond"
+  Gothic: "crown_spike" "diamond"
+  Retro:  "diamond" "gear_tooth"
+  FORBIDDEN — NEVER USE: star4, star5, star6, starburst, starburst_ray
+
+DECISION EXAMPLES (study these carefully):
+  "cute minimalist flower font"        → {"stroke_weight":48,"decoration":"floral","density":0.70,"deco_size_mul":2.8,"shapes":["flower","petal","leaf"]}
+  "botanical garden spring blossom"    → {"stroke_weight":54,"decoration":"floral","density":0.75,"deco_size_mul":3.0,"shapes":["flower","leaf","petal"]}
+  "bold cyberpunk neon display"        → {"stroke_weight":72,"decoration":"cyber","density":0.50,"deco_size_mul":2.2,"shapes":["lightning","hexagon","diamond"]}
+  "dark gothic horror medieval"        → {"stroke_weight":68,"decoration":"gothic","density":0.60,"deco_size_mul":2.4,"shapes":["crown_spike","diamond"]}
+  "kawaii bubbly sweet pastel"         → {"stroke_weight":70,"decoration":"kawaii","density":0.75,"deco_size_mul":2.8,"shapes":["heart","flower4","petal"]}
+  "vintage retro western poster"       → {"stroke_weight":74,"decoration":"retro","density":0.40,"deco_size_mul":2.0,"shapes":["diamond","gear_tooth"]}
+  "elegant luxury fashion thin"        → {"stroke_weight":46,"decoration":"floral","density":0.38,"deco_size_mul":2.0,"shapes":["petal","leaf"]}
+  "clean minimal geometric modern"     → {"stroke_weight":52,"decoration":"minimal","density":0.0,"deco_size_mul":1.0,"shapes":[]}
+  "heavy bold black impact"            → {"stroke_weight":80,"decoration":"minimal","density":0.0,"deco_size_mul":1.0,"shapes":[]}
+  "sci-fi tech futuristic hacker"      → {"stroke_weight":58,"decoration":"cyber","density":0.55,"deco_size_mul":2.3,"shapes":["lightning","gear_tooth","hexagon"]}
+  "cute pink flower kawaii girly"      → {"stroke_weight":62,"decoration":"kawaii","density":0.80,"deco_size_mul":3.0,"shapes":["flower4","heart","petal"]}
+
+Be creative and precise. The JSON must perfectly capture the essence of the requested style."""
 
 
 def dna_from_gemini(prompt:str, api_key:str):
-    import urllib.request, json, re
+    import urllib.request, json, re, time
     url=f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
-    body=json.dumps({"system_instruction":{"parts":[{"text":GEMINI_PROMPT}]},
-                     "contents":[{"parts":[{"text":f"Font style: {prompt}"}]}],
-                     "generationConfig":{"temperature":0.50,"maxOutputTokens":300}}).encode()
-    req=urllib.request.Request(url,data=body,headers={"Content-Type":"application/json"})
-    try:
-        with urllib.request.urlopen(req,timeout=20) as r: data=json.loads(r.read().decode())
-        text=data['candidates'][0]['content']['parts'][0]['text'].strip()
-        text=re.sub(r'^```json\s*|\s*```$','',text,flags=re.MULTILINE).strip()
-        dna=json.loads(text)
-        dna['stroke_weight']=max(44,min(80,int(dna.get('stroke_weight',44))))
-        dna['shapes']=[s for s in dna.get('shapes',[]) if 'star' not in s.lower()]
-        print(f"[Gemini v3] sw={dna['stroke_weight']} deco={dna.get('decoration')} shapes={dna.get('shapes')}")
-        return dna
-    except Exception as e:
-        print(f"[Gemini v3] Error: {e}"); return None
+
+    for attempt in range(3):
+        try:
+            body=json.dumps({
+                "system_instruction":{"parts":[{"text":GEMINI_PROMPT}]},
+                "contents":[{"parts":[{"text":f"Font style: {prompt}"}]}],
+                "generationConfig":{"temperature":0.45,"maxOutputTokens":400}
+            }).encode()
+            req=urllib.request.Request(url,data=body,headers={"Content-Type":"application/json"})
+            with urllib.request.urlopen(req,timeout=25) as r:
+                data=json.loads(r.read().decode())
+
+            if 'candidates' not in data or not data['candidates']:
+                raise RuntimeError(f"No candidates: {str(data)[:200]}")
+
+            text=data['candidates'][0]['content']['parts'][0]['text'].strip()
+            text=re.sub(r'^```json\s*|\s*```$','',text,flags=re.MULTILINE).strip()
+            s,e=text.find('{'),text.rfind('}')
+            if s==-1 or e==-1: raise RuntimeError(f"No JSON in: {text[:100]}")
+            dna=json.loads(text[s:e+1])
+
+            # Validate + clamp all values
+            dna['stroke_weight'] = max(44, min(80, int(dna.get('stroke_weight', 54))))
+            dna['density']       = max(0.0, min(0.8, float(dna.get('density', 0.5))))
+            dna['deco_size_mul'] = max(1.6, min(3.2, float(dna.get('deco_size_mul', 2.2))))
+            dna['decoration']    = dna.get('decoration','floral') if dna.get('decoration') in ('floral','cyber','gothic','kawaii','retro','minimal') else 'floral'
+            # Strip forbidden shapes
+            bad = {'star4','star5','star6','starburst','starburst_ray'}
+            dna['shapes'] = [s for s in dna.get('shapes',[]) if s and s.lower() not in bad][:3]
+            if not dna['shapes']:
+                dna['shapes'] = _def_shapes(dna['decoration'])
+
+            print(f"[Gemini DNA] sw={dna['stroke_weight']} deco={dna['decoration']} "
+                  f"density={dna['density']} shapes={dna['shapes']} mul={dna['deco_size_mul']}")
+            return dna
+
+        except Exception as e:
+            print(f"[Gemini DNA] attempt {attempt+1} failed: {e}")
+            if attempt < 2:
+                time.sleep(3)
+    return None
 
 
 def dna_heuristic(prompt:str) -> dict:
     p=prompt.lower()
+    # Kalınlık modifier — her stil için geçerli
+    is_bold    = any(w in p for w in ['bold','heavy','thick','black','fat','güçlü','kalın'])
+    is_thin    = any(w in p for w in ['thin','light','hair','ultra','delicate','ince','minimal'])
+    sw_mod     = +20 if is_bold else (-10 if is_thin else 0)
+
     if any(w in p for w in ['floral','flower','botanical','leaf','spring','bloom','petal','vine',
                               'romantic','nature','garden','çiçek','cicek','blossom']):
-        sw=44 if any(w in p for w in ['thin','light','mini','cute','soft','delicate']) else 52
-        dn=0.65 if any(w in p for w in ['rich','heavy','dense','full']) else 0.55
+        sw = max(44, min(80, 52 + sw_mod))
+        dn = 0.65 if any(w in p for w in ['rich','heavy','dense','full']) else 0.55
         return {"stroke_weight":sw,"decoration":"floral","density":dn,"deco_size_mul":2.8,"shapes":["flower","leaf","petal"]}
     elif any(w in p for w in ['cyber','punk','neon','tech','glitch','digital','hacker','matrix','sci-fi']):
-        return {"stroke_weight":54,"decoration":"cyber","density":0.45,"deco_size_mul":2.2,"shapes":["lightning","diamond","hexagon"]}
+        sw = max(44, min(80, 58 + sw_mod))
+        return {"stroke_weight":sw,"decoration":"cyber","density":0.45,"deco_size_mul":2.2,"shapes":["lightning","diamond","hexagon"]}
     elif any(w in p for w in ['gothic','horror','dark','skull','death','blood','metal','medieval','vampire']):
-        return {"stroke_weight":68,"decoration":"gothic","density":0.60,"deco_size_mul":2.4,"shapes":["crown_spike","diamond"]}
+        sw = max(44, min(80, 68 + sw_mod))
+        return {"stroke_weight":sw,"decoration":"gothic","density":0.60,"deco_size_mul":2.4,"shapes":["crown_spike","diamond"]}
     elif any(w in p for w in ['kawaii','cute','bubbly','round','chibi','pastel','sweet','adorable']):
-        return {"stroke_weight":68,"decoration":"kawaii","density":0.62,"deco_size_mul":2.4,"shapes":["heart","flower4","petal"]}
+        sw = max(44, min(80, 68 + sw_mod))
+        return {"stroke_weight":sw,"decoration":"kawaii","density":0.62,"deco_size_mul":2.4,"shapes":["heart","flower4","petal"]}
     elif any(w in p for w in ['retro','western','vintage','slab','poster','cowboy']):
-        return {"stroke_weight":76,"decoration":"retro","density":0.40,"deco_size_mul":1.8,"shapes":["diamond","arrow_right"]}
+        sw = max(44, min(80, 76 + sw_mod))
+        return {"stroke_weight":sw,"decoration":"retro","density":0.40,"deco_size_mul":1.8,"shapes":["diamond","arrow_right"]}
     elif any(w in p for w in ['elegant','luxury','fashion','editorial','vogue','chic']):
-        return {"stroke_weight":44,"decoration":"floral","density":0.40,"deco_size_mul":2.0,"shapes":["leaf","petal"]}
+        sw = max(44, min(80, 44 + sw_mod))
+        return {"stroke_weight":sw,"decoration":"floral","density":0.40,"deco_size_mul":2.0,"shapes":["leaf","petal"]}
     elif any(w in p for w in ['bold','black','heavy','impact','display','poster']):
         return {"stroke_weight":80,"decoration":"minimal","density":0.0,"deco_size_mul":1.0,"shapes":[]}
     else:
-        sw=54
-        if any(w in p for w in ['bold','heavy']): sw=72
-        if any(w in p for w in ['thin','light']): sw=44
+        sw = max(44, min(80, 58 + sw_mod))
         return {"stroke_weight":sw,"decoration":"minimal","density":0.0,"deco_size_mul":1.0,"shapes":[]}
 
 
