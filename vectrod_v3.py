@@ -660,6 +660,7 @@ def dna_from_gemini(prompt:str, api_key:str):
     ]
 
     for attempt, base_url in enumerate(MODELS):
+        model_name = base_url.split("/models/")[1]
         url = f"{base_url}?key={api_key}"
         try:
             body=json.dumps({
@@ -669,43 +670,43 @@ def dna_from_gemini(prompt:str, api_key:str):
             }).encode()
             req=urllib.request.Request(url,data=body,headers={"Content-Type":"application/json"})
             with urllib.request.urlopen(req,timeout=25) as r:
-                data=json.loads(r.read().decode())
-
-            model_name = base_url.split("/models/")[1]
-            print(f"[Gemini DNA] Connected: {model_name}")
+                raw=r.read().decode()
+            data=json.loads(raw)
 
             if "error" in data:
-                raise RuntimeError(f"API error: {data['error'].get('message',str(data['error']))[:150]}")
+                print(f"[Gemini DNA] {model_name} API error: {data['error'].get('message','')[:120]}")
+                continue
             if "candidates" not in data or not data["candidates"]:
-                raise RuntimeError(f"No candidates: {str(data)[:200]}")
+                print(f"[Gemini DNA] {model_name} no candidates: {raw[:120]}")
+                continue
 
             text=data["candidates"][0]["content"]["parts"][0]["text"].strip()
             text=re.sub(r'^```json\s*|\s*```$','',text,flags=re.MULTILINE).strip()
             s,e=text.find("{"),text.rfind("}")
-            if s==-1 or e==-1: raise RuntimeError(f"No JSON: {text[:100]}")
+            if s==-1 or e==-1:
+                print(f"[Gemini DNA] {model_name} no JSON: {text[:80]}")
+                continue
             dna=json.loads(text[s:e+1])
 
             dna["stroke_weight"] = max(44, min(80, int(dna.get("stroke_weight", 54))))
             dna["density"]       = max(0.0, min(0.8, float(dna.get("density", 0.5))))
             dna["deco_size_mul"] = max(1.6, min(3.2, float(dna.get("deco_size_mul", 2.2))))
             valid_decos = ("floral","cyber","gothic","kawaii","retro","minimal")
-            dna["decoration"]    = dna.get("decoration","floral") if dna.get("decoration") in valid_decos else "floral"
+            dna["decoration"] = dna.get("decoration","floral") if dna.get("decoration") in valid_decos else "floral"
             bad = {"star4","star5","star6","starburst","starburst_ray"}
             dna["shapes"] = [sh for sh in dna.get("shapes",[]) if sh and sh.lower() not in bad][:3]
             if not dna["shapes"]:
                 dna["shapes"] = _def_shapes(dna["decoration"])
 
-            print(f"[Gemini DNA] ✓ sw={dna['stroke_weight']} deco={dna['decoration']} "
-                  f"density={dna['density']} shapes={dna['shapes']} mul={dna['deco_size_mul']}")
+            print(f"[Gemini DNA] OK {model_name} sw={dna['stroke_weight']} deco={dna['decoration']} density={dna['density']} shapes={dna['shapes']}")
             return dna
 
-        except urllib.error.HTTPError as e:
-            body_err = e.read().decode("utf-8","replace")[:200]
-            print(f"[Gemini DNA] {model_name} → HTTP {e.code}: {body_err}")
+        except urllib.error.HTTPError as ex:
+            body_err = ex.read().decode("utf-8","replace")[:200]
+            print(f"[Gemini DNA] {model_name} HTTP {ex.code}: {body_err}")
             time.sleep(1)
-        except Exception as e:
-            model_name = base_url.split("/models/")[1]
-            print(f"[Gemini DNA] {model_name} → {e}")
+        except Exception as ex:
+            print(f"[Gemini DNA] {model_name} error: {ex}")
             time.sleep(1)
 
     print("[Gemini DNA] All models failed → using heuristic")
