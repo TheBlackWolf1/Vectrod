@@ -13,7 +13,7 @@ CHARS_UPPERCASE = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 CHARS_LOWERCASE = list('abcdefghijklmnopqrstuvwxyz')
 CHARS_DIGITS    = list('0123456789')
 
-ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 CANVAS  = 200
 SPACING = 220
 
@@ -123,37 +123,37 @@ def build_prompt(style: str, chars: list) -> str:
 
 
 # ── ANTHROPIC API CALL ────────────────────────────────────────────────────────
-def call_claude(prompt: str, api_key: str, timeout: int = 120) -> dict:
+def call_gemini(prompt: str, api_key: str, timeout: int = 120) -> dict:
     payload = json.dumps({
-        "model": "claude-haiku-4-5-20251001",
-        "max_tokens": 16000,
-        "system": "You are an SVG font designer. Output ONLY valid JSON with SVG path data. No markdown, no explanation, just the JSON object.",
-        "messages": [{"role": "user", "content": prompt}]
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"temperature": 0.6, "maxOutputTokens": 32768}
     }).encode('utf-8')
 
     headers = {
         "Content-Type": "application/json",
-        "x-api-key": api_key,
-        "anthropic-version": "2023-06-01",
         "User-Agent": "Vectrod/3.0"
     }
 
     for attempt in range(3):
         try:
-            req = urllib.request.Request(ANTHROPIC_URL, data=payload, headers=headers, method='POST')
+            req = urllib.request.Request(f"{GEMINI_URL}?key={api_key}", data=payload, headers=headers, method='POST')
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 raw = resp.read().decode('utf-8')
 
             data = json.loads(raw)
-            print(f"  [Claude] stop={data.get('stop_reason')} usage={data.get('usage')}")
+            print(f"  [Gemini] keys: {list(data.keys())}")
 
-            if 'content' not in data or not data['content']:
-                raise RuntimeError(f"No content: {raw[:200]}")
+            if 'candidates' not in data or not data['candidates']:
+                raise RuntimeError(f"No candidates: {raw[:300]}")
+
+            cand = data['candidates'][0]
+            if 'content' not in cand:
+                raise RuntimeError(f"No content, finishReason={cand.get('finishReason')}")
 
             text = ''.join(
-                b.get('text','') for b in data['content'] if b.get('type') == 'text'
+                p.get('text','') for p in cand['content'].get('parts',[])
             ).strip()
-            print(f"  [Claude] response length: {len(text)}")
+            print(f"  [Gemini] response length: {len(text)}")
 
             if not text:
                 raise RuntimeError("Empty response")
@@ -167,22 +167,22 @@ def call_claude(prompt: str, api_key: str, timeout: int = 120) -> dict:
 
             result = json.loads(text[s:e+1])
             n = len(result.get('chars', {}))
-            print(f"  [Claude] parsed OK — {n} chars, style='{result.get('style_name')}'")
+            print(f"  [Gemini] parsed OK — {n} chars, style='{result.get('style_name')}'")
             return result
 
         except urllib.error.HTTPError as ex:
             body = ex.read().decode('utf-8', errors='replace')
-            print(f"  [Claude] HTTP {ex.code}: {body[:200]}")
+            print(f"  [Gemini] HTTP {ex.code}: {body[:200]}")
             if ex.code in (429, 529, 503) and attempt < 2:
                 time.sleep(15 * (attempt+1)); continue
             raise
         except (json.JSONDecodeError, RuntimeError) as ex:
-            print(f"  [Claude] attempt {attempt+1}: {ex}")
+            print(f"  [Gemini] attempt {attempt+1}: {ex}")
             if attempt < 2:
                 time.sleep(5); continue
             raise
         except Exception as ex:
-            print(f"  [Claude] unexpected {attempt+1}: {ex}")
+            print(f"  [Gemini] unexpected {attempt+1}: {ex}")
             if attempt < 2:
                 time.sleep(3); continue
             raise
@@ -315,10 +315,10 @@ def build_from_prompt(prompt: str, font_name: str, output_dir: str,
     target_chars = CHARS_UPPERCASE + CHARS_LOWERCASE + CHARS_DIGITS
 
     # Anthropic key (gemini_key param kept for backward compat)
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '') or gemini_key
+    api_key = os.environ.get('GEMINI_API_KEY', '') or gemini_key
 
     print(f"\n[AI-Font] prompt=\"{prompt[:80]}\"")
-    print(f"[AI-Font] API: {'Anthropic Claude' if os.environ.get('ANTHROPIC_API_KEY') else 'key from param' if gemini_key else 'NO KEY - fallback'}")
+    print(f"[AI-Font] API: {'Gemini' if api_key else 'NO KEY - fallback'}")
 
     char_paths = {}
     style_name = 'custom'
@@ -332,7 +332,7 @@ def build_from_prompt(prompt: str, font_name: str, output_dir: str,
             print(f"[AI-Font] Requesting {bname} ({len(bchars)} chars)...")
             try:
                 p = build_prompt(prompt, bchars)
-                r = call_claude(p, api_key, timeout=120)
+                r = call_gemini(p, api_key, timeout=120)
                 style_name = r.get('style_name', style_name)
                 got = r.get('chars', {})
                 for ch, d in got.items():
