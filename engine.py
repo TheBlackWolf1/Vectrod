@@ -208,7 +208,7 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     ty = bottom * scale
 
     glyph_w  = src_w * scale
-    target_w = max(int(glyph_w * 1.13), 220)  # SVG spacing — comfortable
+    target_w = max(int(glyph_w * 1.30), 220)  # SVG spacing — comfortable
 
     # Tüm path'leri scale_path ile dönüştür
     parts = []
