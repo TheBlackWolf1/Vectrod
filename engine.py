@@ -177,7 +177,7 @@ def scale_path(d, sx, sy, tx, ty):
 
 
 def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baseline_y=None,
-               global_scale=None, global_bottom=None):
+               global_scale=None, global_bottom=None, svg_advance=None):
     """
     SVG grubunu TTF glyph'e çevir.
     global_scale: tüm fontun ortak scale'i — tüm glyphlar aynı boyutta çıkar.
@@ -208,7 +208,15 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     ty = bottom * scale
 
     glyph_w  = src_w * scale
-    target_w = max(int(glyph_w * 1.30), 220)  # SVG spacing — comfortable
+    if svg_advance is not None:
+        # svg_advance = SVG px cinsinden harf aralığı
+        # src_w = bu harfin SVG px genişliği
+        # glyph_w = bu harfin font units genişliği
+        # Oran: adv_font = (svg_advance / src_w) * glyph_w
+        adv_ratio = svg_advance / src_w if src_w > 0 else 1.30
+        target_w = max(int(glyph_w * adv_ratio), 200)
+    else:
+        target_w = max(int(glyph_w * 1.30), 220)
 
     # Tüm path'leri scale_path ile dönüştür
     parts = []
@@ -290,6 +298,21 @@ def build_font(svg_file, font_name, output_dir,
     groups = sort_groups(groups)
     print(f"      Sıralandı: soldan sağa, yukarıdan aşağıya")
 
+    # ── SVG'den gerçek advance width hesapla ──────────────────────────
+    # Aynı satırdaki ardışık tx farkı = o harfin gerçek genişliği
+    svg_advances = {}
+    for i, g in enumerate(groups):
+        row_i = round(g['ty'] / 50)
+        # Sonraki aynı satırdaki grup
+        for j in range(i+1, len(groups)):
+            if round(groups[j]['ty'] / 50) == row_i:
+                svg_advances[i] = groups[j]['tx'] - g['tx']
+                break
+        else:
+            # Satırın son elemanı — önceki gap'i kullan
+            if i > 0 and (i-1) in svg_advances:
+                svg_advances[i] = svg_advances[i-1]
+
     print("[3/6] Karakterlere atanıyor...")
     n = min(len(groups), len(char_order))
     char_map = {char_order[i]: groups[i] for i in range(n)}
@@ -355,10 +378,12 @@ def build_font(svg_file, font_name, output_dir,
             metrics[gname] = (250, 0)
             continue
         group = char_map[ch]
+        svg_adv_idx = list(char_map.keys()).index(ch)
         try:
             g, adv = draw_glyph(group, ascender, descender,
                                 global_scale=global_scale,
-                                global_bottom=global_bottom)
+                                global_bottom=global_bottom,
+                                svg_advance=svg_advances.get(svg_adv_idx))
             if g is None:
                 raise ValueError("glyph None döndü")
             glyphs[gname]  = g
