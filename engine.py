@@ -208,15 +208,7 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     ty = bottom * scale
 
     glyph_w  = src_w * scale
-    if svg_advance is not None:
-        # svg_advance = SVG px cinsinden harf aralığı
-        # src_w = bu harfin SVG px genişliği
-        # glyph_w = bu harfin font units genişliği
-        # Oran: adv_font = (svg_advance / src_w) * glyph_w
-        adv_ratio = svg_advance / src_w if src_w > 0 else 1.30
-        target_w = max(int(glyph_w * adv_ratio), 200)
-    else:
-        target_w = max(int(glyph_w * 1.30), 220)
+    target_w = max(int(glyph_w * 1.35), 220)
 
     # Tüm path'leri scale_path ile dönüştür
     parts = []
