@@ -916,7 +916,7 @@ body.light-mode .act-n {
         </div>
       </div>
       <div class="prev-stage" id="prevStage" aria-label="Font preview area">
-        <span id="prevSpan" style="font-size:32px">AaBbCcDd 123</span>
+        <span id="prevSpan" style="font-size:32px">AaBbCcDd 123 !?'",.</span>
       </div>
     </div>
     <div class="gallery" id="gallery">
@@ -1077,7 +1077,7 @@ function switchTab(id){
 document.querySelectorAll('.ck input').forEach(cb=>{cb.addEventListener('change',function(){this.closest('.ck').classList.toggle('on',this.checked);});});
 
 // ── Char Order ─────────────────────────────────────────────────────────────────
-const DEFS=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9','.',',','!','?',';',':','\'','"','(',')','–','_','/','@','#','$','%','&','*','+','=',' ','Ç','Ğ','İ','Ö','Ş','Ü','ç','ğ','ı','ö','ş','ü'];
+const DEFS=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9','.',',','!','?',';',':',"'",'"','(',')','-','_','/','\\','@','#','$','%','&','*','+','=',' ','Ç','Ğ','İ','Ö','Ş','Ü','ç','ğ','ı','ö','ş','ü'];
 let chars=[...DEFS],dragSrc=null;
 function renderChars(){
   const el=document.getElementById('charBox');
@@ -1181,9 +1181,9 @@ function copyShareLink(name){
 
 // ── Preview ────────────────────────────────────────────────────────────────────
 async function loadPrev(url){
-  try{const buf=await(await fetch(url)).arrayBuffer();const ff=new FontFace('PreviewFont',buf);await ff.load();document.fonts.add(ff);document.getElementById('prevBox').classList.add('show');document.getElementById('prevInp').value='AaBbCcDd 123';updatePrev();}catch(e){}
+  try{const buf=await(await fetch(url)).arrayBuffer();const ff=new FontFace('PreviewFont',buf);await ff.load();document.fonts.add(ff);document.getElementById('prevBox').classList.add('show');document.getElementById('prevInp').value='AaBbCcDd 123 !?\'",.';updatePrev();}catch(e){}
 }
-function updatePrev(){document.getElementById('prevSpan').textContent=document.getElementById('prevInp').value||'AaBbCcDd 123';}
+function updatePrev(){document.getElementById('prevSpan').textContent=document.getElementById('prevInp').value||'AaBbCcDd 123 !?\'",.';}
 function setSz(px){document.getElementById('prevSpan').style.fontSize=px+'px';document.querySelectorAll('.sz').forEach(b=>b.classList.toggle('on',b.textContent==px));}
 function setPB(bg,fg){const s=document.getElementById('prevStage');s.style.background=bg;s.style.color=fg;}
 

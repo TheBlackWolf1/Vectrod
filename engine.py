@@ -208,7 +208,7 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     ty = bottom * scale
 
     glyph_w  = src_w * scale
-    target_w = max(int(glyph_w * 1.20), 300)
+    target_w = max(int(glyph_w * 1.05), 200)  # SVG spacing — minimal padding
 
     # Tüm path'leri scale_path ile dönüştür
     parts = []
@@ -234,7 +234,7 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
         pathops.simplify(ops_path, pathops.FillType.WINDING)
         pen = TTGlyphPen(None)
         ops_path.draw(Cu2QuPen(pen, max_err=0.5, reverse_direction=False))
-        return pen.glyph(), target_w + 80
+        return pen.glyph(), target_w
     except ImportError:
         pass
     except Exception:
@@ -245,7 +245,7 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
         from fontTools.pens.cu2quPen import Cu2QuPen
         pen = TTGlyphPen(None)
         SVGPathLib(io.BytesIO(svg_bytes)).draw(Cu2QuPen(pen, max_err=0.5, reverse_direction=True))
-        return pen.glyph(), target_w + 80
+        return pen.glyph(), target_w
     except Exception as e2:
         raise RuntimeError(f"all render paths failed: {e2}")
 
