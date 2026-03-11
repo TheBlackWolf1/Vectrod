@@ -239,6 +239,34 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(b'OK')
             return
 
+        if path == '/test-gemini':
+            import urllib.request, json, os as _os
+            key = _os.environ.get('GEMINI_API_KEY', '')
+            lines = [f'GEMINI_API_KEY: {"SET" if key else "MISSING"}', '']
+            models = ['gemini-2.0-flash','gemini-1.5-flash','gemini-1.5-flash-latest','gemini-1.0-pro']
+            working = None
+            for m in models:
+                for ver in ['v1beta','v1']:
+                    url = f'https://generativelanguage.googleapis.com/{ver}/models/{m}:generateContent?key={key}'
+                    try:
+                        body = json.dumps({'contents':[{'parts':[{'text':'say hi'}]}]}).encode()
+                        req = urllib.request.Request(url, data=body, headers={'Content-Type':'application/json'})
+                        with urllib.request.urlopen(req, timeout=10) as r:
+                            d = json.loads(r.read())
+                            txt = d['candidates'][0]['content']['parts'][0]['text'][:30]
+                            lines.append(f'OK {ver}/{m}: {txt}')
+                            if not working: working = f'{ver}/models/{m}:generateContent'
+                    except urllib.error.HTTPError as e:
+                        lines.append(f'FAIL {ver}/{m}: HTTP {e.code}')
+                    except Exception as e:
+                        lines.append(f'FAIL {ver}/{m}: {e}')
+            lines.append(f'\nBEST: {working or "NONE WORKING"}')
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/plain; charset=utf-8')
+            self.end_headers()
+            self.wfile.write('\n'.join(lines).encode('utf-8'))
+            return
+
         if path in ('/', '/index.html'):
             self.serve_static('index.html', 'text/html')
 
