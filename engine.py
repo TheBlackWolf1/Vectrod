@@ -355,6 +355,25 @@ def build_font(svg_file, font_name, output_dir,
         global_bottom = None
         print(f"      Global scale: fallback mode")
 
+    # ── GLOBAL ADVANCE WIDTH ─────────────────────────────────────────
+    # SVG'deki tx gap ortalamasını al → tüm harflere aynı advance ver
+    # Bu sayede W ile I arası AYNI olur
+    if svg_advances and global_scale:
+        # Sadece harf karakterlerinin gap'ini kullan (noktalama hariç)
+        letter_advances = []
+        for i, ch in enumerate(char_order[:len(groups)]):
+            if ch.isalpha() or ch.isdigit():
+                if i in svg_advances and svg_advances[i] > 0:
+                    letter_advances.append(svg_advances[i])
+        if letter_advances:
+            avg_svg_adv = sum(letter_advances) / len(letter_advances)
+            global_advance = max(int(avg_svg_adv * global_scale * 1.08), 400)
+            print(f"      Global advance: avg_svg={avg_svg_adv:.1f}  font_units={global_advance}")
+        else:
+            global_advance = None
+    else:
+        global_advance = None
+
     glyphs  = {}
     metrics = {}
     glyphs['.notdef'] = make_empty_glyph()
@@ -379,7 +398,12 @@ def build_font(svg_file, font_name, output_dir,
             if g is None:
                 raise ValueError("glyph None döndü")
             glyphs[gname]  = g
-            metrics[gname] = (adv, 0)
+            # Global advance: tüm harfler eşit aralıklı
+            # Noktalama/özel karakterler kendi genişliğini korusun
+            if global_advance and (ch.isalpha() or ch.isdigit()):
+                metrics[gname] = (global_advance, 0)
+            else:
+                metrics[gname] = (adv, 0)
             ok += 1
         except Exception as e:
             print(f"      [UYARI] '{ch}' çizilemedi: {e}")
