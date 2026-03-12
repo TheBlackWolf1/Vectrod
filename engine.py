@@ -177,7 +177,7 @@ def scale_path(d, sx, sy, tx, ty):
 
 
 def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baseline_y=None,
-               global_scale=None, global_bottom=None, svg_advance=None):
+               global_scale=None, global_bottom=None):
     """
     SVG grubunu TTF glyph'e çevir.
     global_scale: tüm fontun ortak scale'i — tüm glyphlar aynı boyutta çıkar.
@@ -203,12 +203,13 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     sx = scale
     sy = -scale                # SVG Y aşağı → font Y yukarı
 
-    # baseline: SVG bottom → font 0
-    tx = -x0 * sx
-    ty = bottom * scale
-
     glyph_w  = src_w * scale
-    target_w = max(int(glyph_w * 1.35), 220)
+    target_w = int(glyph_w) + 240  # 120 birim her iki yanda sabit padding
+    side_bearing = (target_w - glyph_w) / 2  # harfi ortala
+
+    # baseline: SVG bottom → font 0
+    tx = side_bearing - x0 * sx  # harfi advance width içinde ortala
+    ty = bottom * scale
 
     # Tüm path'leri scale_path ile dönüştür
     parts = []
@@ -290,20 +291,16 @@ def build_font(svg_file, font_name, output_dir,
     groups = sort_groups(groups)
     print(f"      Sıralandı: soldan sağa, yukarıdan aşağıya")
 
-    # ── SVG'den gerçek advance width hesapla ──────────────────────────
-    # Aynı satırdaki ardışık tx farkı = o harfin gerçek genişliği
-    svg_advances = {}
-    for i, g in enumerate(groups):
-        row_i = round(g['ty'] / 50)
-        # Sonraki aynı satırdaki grup
-        for j in range(i+1, len(groups)):
-            if round(groups[j]['ty'] / 50) == row_i:
-                svg_advances[i] = groups[j]['tx'] - g['tx']
-                break
-        else:
-            # Satırın son elemanı — önceki gap'i kullan
-            if i > 0 and (i-1) in svg_advances:
-                svg_advances[i] = svg_advances[i-1]
+    # ── UNIFORM SLOT WIDTH ──────────────────────────────────────────
+    # SVG viewBox / ilk satır kolon sayısı = her harf için eşit slot
+    try:
+        vb = root.get('viewBox','').split()
+        _svg_w = float(vb[2]) if len(vb)==4 else float(root.get('width','750') or '750')
+        _first_row = round(groups[0]['ty']/50)
+        _cols = sum(1 for g in groups if round(g['ty']/50)==_first_row)
+        svg_slot_w = _svg_w / _cols if _cols > 0 else None
+    except:
+        svg_slot_w = None
 
     print("[3/6] Karakterlere atanıyor...")
     n = min(len(groups), len(char_order))
@@ -355,24 +352,14 @@ def build_font(svg_file, font_name, output_dir,
         global_bottom = None
         print(f"      Global scale: fallback mode")
 
-    # ── GLOBAL ADVANCE WIDTH ─────────────────────────────────────────
-    # SVG'deki tx gap ortalamasını al → tüm harflere aynı advance ver
-    # Bu sayede W ile I arası AYNI olur
-    if svg_advances and global_scale:
-        # Sadece harf karakterlerinin gap'ini kullan (noktalama hariç)
-        letter_advances = []
-        for i, ch in enumerate(char_order[:len(groups)]):
-            if ch.isalpha() or ch.isdigit():
-                if i in svg_advances and svg_advances[i] > 0:
-                    letter_advances.append(svg_advances[i])
-        if letter_advances:
-            avg_svg_adv = sum(letter_advances) / len(letter_advances)
-            global_advance = max(int(avg_svg_adv * global_scale * 1.08), 400)
-            print(f"      Global advance: avg_svg={avg_svg_adv:.1f}  font_units={global_advance}")
-        else:
-            global_advance = None
+    # Uniform advance: SVG slot genişliği × scale
+    if svg_slot_w and global_scale:
+        global_advance = max(int(svg_slot_w * global_scale), 400)
+        print(f"      Uniform advance: slot={svg_slot_w:.1f}px → {global_advance} units")
     else:
         global_advance = None
+
+
 
     glyphs  = {}
     metrics = {}
@@ -389,17 +376,13 @@ def build_font(svg_file, font_name, output_dir,
             metrics[gname] = (250, 0)
             continue
         group = char_map[ch]
-        svg_adv_idx = list(char_map.keys()).index(ch)
         try:
             g, adv = draw_glyph(group, ascender, descender,
                                 global_scale=global_scale,
-                                global_bottom=global_bottom,
-                                svg_advance=svg_advances.get(svg_adv_idx))
+                                global_bottom=global_bottom)
             if g is None:
                 raise ValueError("glyph None döndü")
             glyphs[gname]  = g
-            # Global advance: tüm harfler eşit aralıklı
-            # Noktalama/özel karakterler kendi genişliğini korusun
             if global_advance and (ch.isalpha() or ch.isdigit()):
                 metrics[gname] = (global_advance, 0)
             else:
