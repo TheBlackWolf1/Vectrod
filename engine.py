@@ -204,7 +204,7 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
     sy = -scale
 
     glyph_w  = src_w * scale
-    side_bearing = glyph_w * 0.15
+    side_bearing = 80  # sabit 80 unit her iki yanda
     target_w = int(glyph_w + side_bearing * 2)
 
     tx = side_bearing - x0 * sx
@@ -340,22 +340,7 @@ def build_font(svg_file, font_name, output_dir,
         global_bottom = None
         print(f"      Global scale: fallback mode")
 
-    # Tüm harflerin advance width ortalaması → uniform advance
-    if global_scale:
-        all_adv = []
-        for g in groups[:len(char_order)]:
-            bb = get_group_bbox(g)
-            if bb:
-                w = (bb[2]-bb[0]) * global_scale
-                all_adv.append(w)
-        if all_adv:
-            avg_w = sorted(all_adv)[len(all_adv)//2]  # medyan
-            global_advance = int(avg_w * 1.30)
-            print(f"      Uniform advance: {global_advance} units")
-        else:
-            global_advance = None
-    else:
-        global_advance = None
+
 
 
 
@@ -383,10 +368,7 @@ def build_font(svg_file, font_name, output_dir,
             if g is None:
                 raise ValueError("glyph None döndü")
             glyphs[gname]  = g
-            if global_advance and (ch.isalpha() or ch.isdigit()):
-                metrics[gname] = (global_advance, 0)
-            else:
-                metrics[gname] = (adv, 0)
+            metrics[gname] = (adv, 0)
             ok += 1
         except Exception as e:
             print(f"      [UYARI] '{ch}' çizilemedi: {e}")
