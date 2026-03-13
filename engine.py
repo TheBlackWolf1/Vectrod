@@ -201,14 +201,13 @@ def draw_glyph(group, ascender=800, descender=-200, ref_height=None, svg_baselin
         bottom = y1
 
     sx = scale
-    sy = -scale                # SVG Y aşağı → font Y yukarı
+    sy = -scale
 
     glyph_w  = src_w * scale
-    target_w = int(glyph_w) + 240  # 120 birim her iki yanda sabit padding
-    side_bearing = (target_w - glyph_w) / 2  # harfi ortala
+    side_bearing = glyph_w * 0.15
+    target_w = int(glyph_w + side_bearing * 2)
 
-    # baseline: SVG bottom → font 0
-    tx = side_bearing - x0 * sx  # harfi advance width içinde ortala
+    tx = side_bearing - x0 * sx
     ty = bottom * scale
 
     # Tüm path'leri scale_path ile dönüştür
@@ -291,17 +290,6 @@ def build_font(svg_file, font_name, output_dir,
     groups = sort_groups(groups)
     print(f"      Sıralandı: soldan sağa, yukarıdan aşağıya")
 
-    # ── UNIFORM SLOT WIDTH ──────────────────────────────────────────
-    # SVG viewBox / ilk satır kolon sayısı = her harf için eşit slot
-    try:
-        vb = root.get('viewBox','').split()
-        _svg_w = float(vb[2]) if len(vb)==4 else float(root.get('width','750') or '750')
-        _first_row = round(groups[0]['ty']/50)
-        _cols = sum(1 for g in groups if round(g['ty']/50)==_first_row)
-        svg_slot_w = _svg_w / _cols if _cols > 0 else None
-    except:
-        svg_slot_w = None
-
     print("[3/6] Karakterlere atanıyor...")
     n = min(len(groups), len(char_order))
     char_map = {char_order[i]: groups[i] for i in range(n)}
@@ -352,12 +340,24 @@ def build_font(svg_file, font_name, output_dir,
         global_bottom = None
         print(f"      Global scale: fallback mode")
 
-    # Uniform advance: SVG slot genişliği × scale
-    if svg_slot_w and global_scale:
-        global_advance = max(int(svg_slot_w * global_scale), 400)
-        print(f"      Uniform advance: slot={svg_slot_w:.1f}px → {global_advance} units")
+    # Tüm harflerin advance width ortalaması → uniform advance
+    if global_scale:
+        all_adv = []
+        for g in groups[:len(char_order)]:
+            bb = get_group_bbox(g)
+            if bb:
+                w = (bb[2]-bb[0]) * global_scale
+                all_adv.append(w)
+        if all_adv:
+            avg_w = sorted(all_adv)[len(all_adv)//2]  # medyan
+            global_advance = int(avg_w * 1.30)
+            print(f"      Uniform advance: {global_advance} units")
+        else:
+            global_advance = None
     else:
         global_advance = None
+
+
 
 
 
