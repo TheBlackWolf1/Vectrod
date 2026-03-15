@@ -13,6 +13,11 @@ from engine import build_font, DEFAULT_CHAR_ORDER
 
 # ── Storage ───────────────────────────────────────────────────────────────────
 BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sessions')
+
+# ── Vote Storage (in-memory, resets on restart) ───────────────────────────────
+VOTE_DATA = {'good': 0, 'bad': 0}
+VOTE_LOCK = threading.Lock()
+ADMIN_SECRET = 'vectrod-admin-2024'  # gizli panel şifresi
 os.makedirs(BASE_DIR, exist_ok=True)
 
 SESSION_TTL = 3600  # 1 saat sonra sil
@@ -239,6 +244,41 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(b'OK')
             return
 
+        if path == '/api/vote-count':
+            with VOTE_LOCK:
+                good = VOTE_DATA['good']
+                bad  = VOTE_DATA['bad']
+            self.send_response(200)
+            self.send_header('Content-Type','application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'good':good,'bad':bad}).encode())
+            return
+
+        if path == f'/admin-{ADMIN_SECRET}':
+            with VOTE_LOCK:
+                good = VOTE_DATA['good']
+                bad  = VOTE_DATA['bad']
+            total = good + bad
+            rate  = f'{round(good/total*100)}%' if total else '—'
+            html  = f'''<!DOCTYPE html><html><head><meta charset=UTF-8>
+<title>Vectrod Admin</title>
+<style>body{{background:#020308;color:#eeeaff;font-family:monospace;padding:40px;}}
+h1{{color:#f0c060;margin-bottom:30px}}
+.stat{{background:#06070f;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px;margin:10px 0;display:flex;justify-content:space-between;}}
+.val{{font-size:28px;font-weight:bold;color:#f0c060}}</style></head>
+<body><h1>⚡ Vectrod Vote Stats</h1>
+<div class=stat><span>👍 Good</span><span class=val>{good}</span></div>
+<div class=stat><span>👎 Bad</span><span class=val>{bad}</span></div>
+<div class=stat><span>📊 Total</span><span class=val>{total}</span></div>
+<div class=stat><span>✅ Approval</span><span class=val>{rate}</span></div>
+<p style="margin-top:30px;color:rgba(255,255,255,.3);font-size:11px">⚠️ Resets on server restart. Consider adding a DB for persistence.</p>
+</body></html>'''
+            self.send_response(200)
+            self.send_header('Content-Type','text/html; charset=utf-8')
+            self.end_headers()
+            self.wfile.write(html.encode())
+            return
+
         if path == '/test-gemini':
             import urllib.request, json, os as _os
             key = _os.environ.get('GEMINI_API_KEY', '')
@@ -460,6 +500,8 @@ class Handler(BaseHTTPRequestHandler):
             self.handle_handwriting_process()
         elif path == '/api/handwriting-to-font':
             self.handle_handwriting_to_font()
+        elif path == '/api/vote':
+            self.handle_vote()
         else:
             self.send_error(404)
 
@@ -469,6 +511,26 @@ class Handler(BaseHTTPRequestHandler):
         body = self.rfile.read(length)
         return parse_multipart(body, ctype)
 
+
+    def handle_vote(self):
+        try:
+            length = int(self.headers.get('Content-Length', 0))
+            body = json.loads(self.rfile.read(length))
+            vote_type = body.get('type','')
+            if vote_type in ('good','bad'):
+                with VOTE_LOCK:
+                    VOTE_DATA[vote_type] += 1
+                    good = VOTE_DATA['good']
+                    bad  = VOTE_DATA['bad']
+                total = good + bad
+                self.send_response(200)
+                self.send_header('Content-Type','application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok':True,'good':good,'bad':bad,'total':total}).encode())
+            else:
+                self.send_error(400)
+        except Exception as e:
+            self.send_error(500)
 
     def handle_font_license(self):
         """AI-powered font license checker — Anthropic API"""
