@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset=UTF-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Vectrod Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#020308;color:#eeeaff;font-family:'Outfit',sans-serif;min-height:100vh;padding:32px 20px}
+.wrap{max-width:1000px;margin:0 auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:44px;flex-wrap:wrap;gap:12px}
+.brand{font-size:11px;font-family:'DM Mono',monospace;color:rgba(240,192,96,.5);letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px}
+h1{font-size:26px;font-weight:800;color:#f0c060}
+.ts{font-size:11px;font-family:'DM Mono',monospace;color:rgba(238,234,255,.25);margin-top:4px}
+.topbtns{display:flex;gap:10px}
+.btn-sm{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:9px 16px;color:rgba(238,234,255,.6);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-sm:hover{background:rgba(255,255,255,.08);color:#eeeaff}
+.sec-title{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.14em;color:rgba(240,192,96,.55);text-transform:uppercase;margin-bottom:14px;margin-top:36px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.05)}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.card{background:#06070f;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:24px 20px;transition:border-color .2s}
+.card:hover{border-color:rgba(240,192,96,.15)}
+.clabel{font-size:10px;font-family:'DM Mono',monospace;color:rgba(238,234,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.cval{font-size:40px;font-weight:800;line-height:1;color:#f0c060}
+.csub{font-size:11px;color:rgba(238,234,255,.28);margin-top:8px;font-family:'DM Mono',monospace}
+.cval.green{color:#22dd99}
+.cval.red{color:#ff6060}
+.cval.purple{color:#bb77ff}
+.vote-bar-wrap{background:#06070f;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:24px}
+.bar-track{height:10px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;margin:16px 0 10px}
+.bar-fill{height:100%;background:linear-gradient(90deg,#22dd99,#9944ee);border-radius:100px;transition:width .6s ease}
+.bar-labels{display:flex;justify-content:space-between;font-size:12px;font-family:'DM Mono',monospace;color:rgba(238,234,255,.4)}
+.note{background:rgba(240,192,96,.04);border:1px solid rgba(240,192,96,.1);border-radius:14px;padding:16px 20px;font-size:12px;color:rgba(238,234,255,.35);margin-top:28px;font-family:'DM Mono',monospace;line-height:1.7}
+@media(max-width:500px){.grid3{grid-template-columns:1fr 1fr}.cval{font-size:30px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div>
+      <div class="brand">⚡ Vectrod</div>
+      <h1>Admin Dashboard</h1>
+      <div class="ts">Last updated: {{ts}}</div>
+    </div>
+    <div class="topbtns">
+      <button class="btn-sm" onclick="location.reload()">↻ Refresh</button>
+      <a class="btn-sm" href="/" target="_blank">↗ View Site</a>
+      <a class="btn-sm" href="/admin-login">← Logout</a>
+    </div>
+  </div>
+
+  <div class="sec-title">📊 Site Activity</div>
+  <div class="grid3">
+    <div class="card">
+      <div class="clabel">Page Views</div>
+      <div class="cval purple">{{page_views}}</div>
+      <div class="csub">since last restart</div>
+    </div>
+    <div class="card">
+      <div class="clabel">Fonts Converted</div>
+      <div class="cval">{{converts}}</div>
+      <div class="csub">SVG → TTF/OTF</div>
+    </div>
+    <div class="card">
+      <div class="clabel">AI Fonts Generated</div>
+      <div class="cval">{{ai_gen}}</div>
+      <div class="csub">via Gemini DNA</div>
+    </div>
+  </div>
+
+  <div class="sec-title">👍 User Satisfaction</div>
+  <div class="grid3">
+    <div class="card">
+      <div class="clabel">Good Votes</div>
+      <div class="cval green">{{good}}</div>
+    </div>
+    <div class="card">
+      <div class="clabel">Bad Votes</div>
+      <div class="cval red">{{bad}}</div>
+    </div>
+    <div class="card">
+      <div class="clabel">Approval Rate</div>
+      <div class="cval">{{rate}}</div>
+      <div class="csub">from {{total}} total votes</div>
+    </div>
+  </div>
+  <div class="vote-bar-wrap" style="margin-top:12px">
+    <div style="font-size:13px;font-weight:600;margin-bottom:4px">Vote Distribution</div>
+    <div class="bar-track">
+      <div class="bar-fill" style="width:{{good_pct}}%"></div>
+    </div>
+    <div class="bar-labels">
+      <span>👍 {{good}} good</span>
+      <span>👎 {{bad}} bad</span>
+    </div>
+  </div>
+
+  <div class="note">
+    ⚠️ All stats are in-memory — data resets when Railway restarts the server.<br>
+    Consider adding a lightweight DB (SQLite) for persistent tracking in the future.
+  </div>
+
+</div>
+</body></html>

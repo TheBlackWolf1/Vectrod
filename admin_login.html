@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset=UTF-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Vectrod Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#020308;color:#eeeaff;font-family:'Outfit',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.box{background:#06070f;border:1px solid rgba(240,192,96,.2);border-radius:24px;padding:48px 40px;width:100%;max-width:380px;box-shadow:0 40px 100px rgba(0,0,0,.8),0 0 60px rgba(153,68,238,.08)}
+.logo{font-size:11px;font-family:'DM Mono',monospace;color:rgba(240,192,96,.5);letter-spacing:.16em;text-transform:uppercase;margin-bottom:28px}
+h1{font-size:26px;font-weight:800;color:#f0c060;margin-bottom:6px}
+.sub{font-size:13px;color:rgba(238,234,255,.35);margin-bottom:36px}
+label{font-size:10px;font-family:'DM Mono',monospace;color:rgba(238,234,255,.35);letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:8px}
+input{width:100%;background:#0a0b1a;border:1.5px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 16px;color:#eeeaff;font-family:'Outfit',sans-serif;font-size:14px;margin-bottom:20px;outline:none;transition:border .2s}
+input:focus{border-color:rgba(240,192,96,.35);background:#0d0e20}
+.btn{width:100%;background:linear-gradient(90deg,#f0c060,#c09040);border:none;border-radius:12px;padding:16px;color:#020308;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s;margin-top:4px}
+.btn:hover{opacity:.85}
+.err{background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.25);border-radius:10px;padding:12px 14px;font-size:13px;color:#ff8080;margin-bottom:18px;display:none}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">⚡ Vectrod</div>
+  <h1>Admin Panel</h1>
+  <div class="sub">Restricted access — owner only</div>
+  <div class="err" id="err">Wrong username or password</div>
+  <label>Username</label>
+  <input type="text" id="u" placeholder="Enter username" autocomplete="username">
+  <label>Password</label>
+  <input type="password" id="p" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+  <button class="btn" onclick="login()">Sign In →</button>
+</div>
+<script>
+function login(){
+  var u=document.getElementById('u').value.trim();
+  var p=document.getElementById('p').value;
+  if(!u||!p) return;
+  fetch('/admin-login',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({u:u,p:p})
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.ok) window.location='/vectrod-admin?token='+d.token;
+    else{ document.getElementById('err').style.display='block'; }
+  })
+  .catch(()=>{ document.getElementById('err').style.display='block'; });
+}
+</script>
+</body></html>

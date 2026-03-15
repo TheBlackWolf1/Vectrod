@@ -1,171 +1,476 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
+
+<script>
+(function(){
+  var saved = '';
+  try { saved = localStorage.getItem('vectrod_theme'); } catch(e){}
+  if(saved === 'light') {
+    document.documentElement.classList.add('light-mode');
+    document.body && document.body.classList.add('light-mode');
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    if(saved === 'light') document.body.classList.add('light-mode');
+  });
+})();
+</script>
+
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/favicon-32.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Font License Checker — Is This Font Free? | Vectrod</title>
+<meta name="description" content="Instantly check if any font is free for commercial use. 500+ fonts checked. Avoid copyright issues.">
+<link rel="canonical" href="https://vectrod.com/license-checker">
+<meta property="og:title" content="Font License Checker — Free or Paid? | Vectrod">
+<meta property="og:description" content="Check font licenses instantly. 500+ fonts. Avoid copyright issues in your work.">
+<meta property="og:url" content="https://vectrod.com/license-checker">
+<meta property="og:image" content="https://vectrod.com/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vectrod">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Font License Checker — Free or Paid? | Vectrod">
+<meta name="twitter:description" content="Check font licenses instantly. 500+ fonts. Avoid copyright issues in your work.">
+<meta name="twitter:image" content="https://vectrod.com/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Font License Checker — Free or Paid? | Vectrod",
+  "description": "Check font licenses instantly. 500+ fonts. Avoid copyright issues in your work.",
+  "url": "https://vectrod.com/license-checker",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Vectrod",
+    "url": "https://vectrod.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://vectrod.com/logo.png"
+    }
+  }
+}
+</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
-<title>Font License Checker — Is Any Font Free for Commercial Use? | Vectrod</title>
-<meta name="description" content="Check if ANY font is safe for commercial use. Instant font license checker with 500+ fonts — SIL OFL, proprietary, personal use only. Search Helvetica, Futura, Gotham and more.">
-<link rel="canonical" href="https://vectrod.com/license-checker">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#02030d;--bg2:#05061a;--bg3:#0a0c1e;
+  --bg:#02030d;--bg2:#06071c;--bg3:#0b0d22;
   --sf:rgba(255,255,255,.04);--sf2:rgba(255,255,255,.07);
-  --br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.13);
-  --tx:#ede8ff;--mt:rgba(237,232,255,.45);--mt2:rgba(237,232,255,.22);
+  --br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.14);
+  --tx:#edeaff;--mt:rgba(237,234,255,.44);--mt2:rgba(237,234,255,.2);
   --gold:#f0c060;--gold3:#c09040;
-  --purple2:#aa77ff;--purpleL:rgba(136,68,238,.14);
+  --purple2:#aa77ff;--purpleL:rgba(136,68,238,.13);
   --blue2:#66aaff;
-  --ok:#22dd99;--okL:rgba(34,221,153,.11);
-  --warn:#f0a030;--warnL:rgba(240,160,48,.11);
-  --danger:#ff5566;--dangerL:rgba(255,85,102,.09);
-  --ease:cubic-bezier(.16,1,.3,1);
+  --ok:#22dd99;--okL:rgba(34,221,153,.1);
+  --warn:#f0a030;--warnL:rgba(240,160,48,.1);
+  --red:#ff5566;--redL:rgba(255,85,102,.09);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* bg */
 .bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(136,68,238,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(136,68,238,.03) 1px,transparent 1px);background-size:52px 52px}
-.orb{position:absolute;border-radius:50%;filter:blur(120px);animation:oF ease-in-out infinite alternate}
-.o1{width:700px;height:700px;top:-300px;right:-100px;background:radial-gradient(circle,rgba(34,221,153,.1) 0%,transparent 65%);animation-duration:32s}
-.o2{width:600px;height:600px;bottom:-200px;left:-100px;background:radial-gradient(circle,rgba(136,68,238,.12) 0%,transparent 65%);animation-duration:28s}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(136,68,238,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(136,68,238,.025) 1px,transparent 1px);background-size:54px 54px}
+.o1{position:absolute;width:800px;height:800px;top:-350px;right:-200px;border-radius:50%;filter:blur(140px);background:radial-gradient(circle,rgba(34,221,153,.09) 0%,transparent 65%);animation:oF 34s ease-in-out infinite alternate}
+.o2{position:absolute;width:600px;height:600px;bottom:-200px;left:-150px;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(136,68,238,.11) 0%,transparent 65%);animation:oF 28s ease-in-out infinite alternate}
 @keyframes oF{from{transform:translate(0,0)}to{transform:translate(50px,35px)}}
+
 .wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:28px 20px 120px}
+
+/* topbar */
 .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:52px;flex-wrap:wrap;gap:12px}
 .logo-a{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-n{font-family:'Cinzel',serif;font-size:19px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#aa77ff,#3388ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-n{font-family:'Cinzel',serif;font-size:18px;font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,#f0c060,#aa77ff,#3388ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .logo-s{font-size:9px;color:var(--mt);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace}
 .nav-r{display:flex;gap:8px;flex-wrap:wrap}
 .nb{background:var(--sf);border:1px solid var(--br);color:var(--mt);font-size:11px;padding:7px 15px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Mono',monospace;display:inline-flex;align-items:center;white-space:nowrap}
 .nb:hover{border-color:var(--gold);color:var(--gold)}
 .nb.cta{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border-color:transparent;font-weight:700}
-/* HERO */
+
+/* hero */
 .hero{text-align:center;margin-bottom:52px}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.2em;color:var(--ok);text-transform:uppercase;border:1px solid rgba(34,221,153,.2);padding:5px 18px;border-radius:100px;background:var(--okL);margin-bottom:20px;font-family:'DM Mono',monospace}
-.pulse{width:6px;height:6px;border-radius:50%;background:var(--ok);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
-.hero h1{font-family:'Cinzel',serif;font-size:clamp(28px,5vw,60px);font-weight:900;line-height:1;margin-bottom:14px}
-.h1-1{display:block;color:var(--tx)}
-.h1-2{display:block;background:linear-gradient(90deg,var(--ok),var(--blue2),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:16px;color:var(--mt);max-width:540px;margin:16px auto 0;line-height:1.8}
-/* SEARCH */
-.search-outer{max-width:680px;margin:0 auto 16px;position:relative}
-.search-glow{position:absolute;inset:-2px;border-radius:22px;background:linear-gradient(90deg,var(--ok),var(--blue2),var(--purple2));opacity:0;filter:blur(12px);transition:opacity .4s;pointer-events:none;z-index:0}
-.search-outer:focus-within .search-glow{opacity:.2}
-.search-box{position:relative;z-index:1;display:flex;align-items:center;background:rgba(8,9,24,.97);border:1.5px solid var(--br2);border-radius:20px;padding:6px 8px 6px 22px;gap:10px;transition:border-color .3s;backdrop-filter:blur(20px)}
-.search-outer:focus-within .search-box{border-color:rgba(34,221,153,.3)}
-.s-ico{font-size:20px;flex-shrink:0;opacity:.38;pointer-events:none}
-.s-inp{flex:1;background:none;border:none;outline:none;color:var(--tx);font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;padding:10px 0;min-width:0}
-.s-inp::placeholder{color:var(--mt2)}
-.s-clear{background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;padding:6px 13px;cursor:pointer;white-space:nowrap;transition:all .2s;display:none;font-family:'DM Mono',monospace;flex-shrink:0}
-.s-clear:hover{border-color:var(--danger);color:var(--danger)}
-.s-clear.on{display:block}
-.s-hint{text-align:center;font-size:11px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.06em;margin-bottom:8px}
-/* AUTOCOMPLETE DROPDOWN */
-.autocomplete{position:absolute;top:calc(100% + 8px);left:0;right:0;background:rgba(8,9,28,.98);border:1px solid rgba(240,192,96,.2);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.8);z-index:1000;overflow:hidden;display:none}
-.autocomplete.on{display:block}
-.ac-item{padding:11px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .15s}
-.ac-item:hover,.ac-item.focused{background:rgba(240,192,96,.07)}
-.ac-name{font-size:14px;font-weight:600;color:var(--tx)}
-.ac-meta{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:8px}
-.ac-badge{font-size:9px;padding:2px 8px;border-radius:100px;font-family:'DM Mono',monospace;white-space:nowrap}
-.ac-badge.free{background:var(--okL);color:var(--ok);border:1px solid rgba(34,221,153,.2)}
-.ac-badge.paid{background:var(--purpleL);color:var(--purple2);border:1px solid rgba(136,68,238,.2)}
-.ac-badge.personal{background:var(--warnL);color:var(--warn);border:1px solid rgba(240,160,48,.2)}
-/* QUICK SUGGESTS */
-.quick-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:40px}
-.qs{background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;padding:6px 14px;cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace;letter-spacing:.05em}
-.qs:hover{border-color:var(--ok);color:var(--ok);background:var(--okL)}
-/* RESULT CARD */
-.result-area{margin-bottom:36px}
-.result-card{background:var(--bg2);border:2px solid var(--br);border-radius:28px;overflow:hidden;animation:cIn .35s var(--ease) both}
-@keyframes cIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.rc-head{padding:30px 30px 22px;position:relative;overflow:hidden}
-.rc-head::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--hg,linear-gradient(90deg,var(--ok),var(--blue2)))}
-.rc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
-.rc-name{font-family:'Cinzel',serif;font-size:30px;font-weight:900;line-height:1;margin-bottom:5px;color:var(--tx)}
-.rc-meta{font-size:12px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.07em}
-.lic-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:100px;font-weight:700;font-size:12px;letter-spacing:.04em;font-family:'DM Mono',monospace;white-space:nowrap;flex-shrink:0}
-.lic-badge.free{background:var(--okL);color:var(--ok);border:2px solid rgba(34,221,153,.3)}
-.lic-badge.personal{background:var(--warnL);color:var(--warn);border:2px solid rgba(240,160,48,.3)}
-.lic-badge.paid{background:var(--purpleL);color:var(--purple2);border:2px solid rgba(136,68,238,.3)}
-.lic-badge.proprietary{background:var(--dangerL);color:var(--danger);border:2px solid rgba(255,85,102,.25)}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.18em;color:var(--ok);text-transform:uppercase;border:1px solid rgba(34,221,153,.18);padding:5px 20px;border-radius:100px;background:var(--okL);margin-bottom:20px;font-family:'DM Mono',monospace}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ok);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(28px,5vw,62px);font-weight:900;line-height:1;margin-bottom:14px}
+.grad{background:linear-gradient(90deg,var(--ok),var(--blue2),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:15px;color:var(--mt);max-width:520px;margin:14px auto 0;line-height:1.85}
+
+/* search */
+.search-wrap{max-width:680px;margin:0 auto 18px;position:relative}
+.search-glow{position:absolute;inset:-2px;border-radius:22px;background:linear-gradient(90deg,var(--ok),var(--blue2),var(--purple2));opacity:0;filter:blur(14px);transition:opacity .4s;pointer-events:none;z-index:0}
+.search-wrap:focus-within .search-glow{opacity:.18}
+.sbox{position:relative;z-index:1;display:flex;align-items:center;background:rgba(6,7,28,.97);border:1.5px solid var(--br2);border-radius:20px;padding:6px 8px 6px 22px;gap:10px;transition:border-color .3s;backdrop-filter:blur(24px)}
+.search-wrap:focus-within .sbox{border-color:rgba(34,221,153,.28)}
+.sinp{flex:1;background:none;border:none;outline:none;color:var(--tx);font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;padding:10px 0;min-width:0}
+.sinp::placeholder{color:var(--mt2)}
+.sclear{background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;padding:6px 13px;cursor:pointer;transition:all .2s;display:none;font-family:'DM Mono',monospace;flex-shrink:0}
+.sclear.on{display:block}
+.sclear:hover{border-color:var(--red);color:var(--red)}
+
+/* autocomplete */
+.acbox{position:absolute;top:calc(100% + 8px);left:0;right:0;background:rgba(6,8,28,.98);border:1.5px solid rgba(240,192,96,.18);border-radius:18px;box-shadow:0 28px 70px rgba(0,0,0,.85);z-index:999;overflow:hidden;display:none}
+.acbox.on{display:block}
+.ac-item{padding:11px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:background .15s;border-bottom:1px solid rgba(255,255,255,.04)}
+.ac-item:last-child{border-bottom:none}
+.ac-item:hover,.ac-item.hi{background:rgba(240,192,96,.06)}
+.ac-n{font-size:14px;font-weight:600;color:var(--tx)}
+.ac-f{font-size:11px;color:var(--mt);font-family:'DM Mono',monospace;margin-top:1px}
+.ac-b{font-size:9px;padding:3px 10px;border-radius:100px;font-family:'DM Mono',monospace;white-space:nowrap;font-weight:700}
+.ac-b.free{background:var(--okL);color:var(--ok);border:1px solid rgba(34,221,153,.2)}
+.ac-b.paid{background:var(--purpleL);color:var(--purple2);border:1px solid rgba(136,68,238,.2)}
+.ac-b.personal{background:var(--warnL);color:var(--warn);border:1px solid rgba(240,160,48,.2)}
+
+/* quick tags */
+.qtags{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:44px}
+.qt{background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:11px;padding:6px 14px;cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace}
+.qt:hover{border-color:var(--ok);color:var(--ok);background:var(--okL)}
+
+/* result */
+.result{margin-bottom:36px}
+.rcard{background:var(--bg2);border:2px solid var(--br);border-radius:28px;overflow:hidden;animation:slideIn .3s cubic-bezier(.16,1,.3,1) both}
+@keyframes slideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* result header */
+.rhead{padding:28px 28px 20px;position:relative}
+.rhead::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--hg,linear-gradient(90deg,var(--ok),var(--blue2)))}
+.rtop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.rname{font-family:'Cinzel',serif;font-size:30px;font-weight:900;line-height:1;color:var(--tx);margin-bottom:4px}
+.rfoundry{font-size:12px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.07em}
+.rbadge{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:100px;font-weight:700;font-size:12px;letter-spacing:.04em;font-family:'DM Mono',monospace;white-space:nowrap;flex-shrink:0}
+.rbadge.free{background:var(--okL);color:var(--ok);border:2px solid rgba(34,221,153,.28)}
+.rbadge.personal{background:var(--warnL);color:var(--warn);border:2px solid rgba(240,160,48,.28)}
+.rbadge.paid{background:var(--purpleL);color:var(--purple2);border:2px solid rgba(136,68,238,.28)}
+.rbadge.proprietary{background:var(--redL);color:var(--red);border:2px solid rgba(255,85,102,.22)}
 .bdot{width:7px;height:7px;border-radius:50%;background:currentColor}
-.rc-note{font-size:14px;color:var(--mt);line-height:1.8;border-top:1px solid var(--br);padding-top:16px}
-/* USAGE GRID */
-.usage-sec{padding:20px 30px;border-bottom:1px solid var(--br)}
-.us-ttl{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px}
-.um-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
-.um-item{background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;transition:border-color .2s}
-.um-item.yes{border-color:rgba(34,221,153,.18)}
-.um-item.no{border-color:rgba(255,85,102,.15)}
-.um-item.check{border-color:rgba(240,160,48,.15)}
-.um-ico{font-size:20px}
-.um-lbl{font-size:11px;font-weight:700;color:var(--tx)}
-.um-s{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.05em;padding:3px 9px;border-radius:100px}
-.um-s.yes{background:var(--okL);color:var(--ok);border:1px solid rgba(34,221,153,.2)}
-.um-s.no{background:var(--dangerL);color:var(--danger);border:1px solid rgba(255,85,102,.2)}
-.um-s.check{background:var(--warnL);color:var(--warn);border:1px solid rgba(240,160,48,.2)}
+.rnote{font-size:13px;color:var(--mt);line-height:1.85;border-top:1px solid var(--br);padding-top:14px}
+
+/* usage grid */
+.usage{padding:18px 28px;border-bottom:1px solid var(--br)}
+.usage-ttl{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px}
+.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:7px}
+.uitem{background:var(--bg3);border:1px solid var(--br);border-radius:13px;padding:13px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px}
+.uitem.yes{border-color:rgba(34,221,153,.17)}
+.uitem.no{border-color:rgba(255,85,102,.13)}
+.uitem.maybe{border-color:rgba(240,160,48,.13)}
+.uico{font-size:19px}
+.ulbl{font-size:11px;font-weight:700;color:var(--tx)}
+.us{font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.05em;padding:3px 9px;border-radius:100px}
+.us.yes{background:var(--okL);color:var(--ok);border:1px solid rgba(34,221,153,.18)}
+.us.no{background:var(--redL);color:var(--red);border:1px solid rgba(255,85,102,.18)}
+.us.maybe{background:var(--warnL);color:var(--warn);border:1px solid rgba(240,160,48,.18)}
+
 /* CTA */
-.rc-cta{background:linear-gradient(135deg,rgba(34,221,153,.06),rgba(51,136,255,.06));border:1px solid rgba(34,221,153,.15);border-radius:16px;padding:14px 20px;margin:0 30px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.cta-text{font-size:13px;color:var(--tx);font-weight:700}
-.cta-sub{font-size:11px;color:var(--mt);margin-top:2px}
+.rcta{background:linear-gradient(135deg,rgba(34,221,153,.05),rgba(51,136,255,.05));border:1px solid rgba(34,221,153,.13);border-radius:15px;padding:14px 20px;margin:0 28px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.rcta-paid{background:linear-gradient(135deg,rgba(136,68,238,.06),rgba(51,136,255,.05));border-color:rgba(136,68,238,.14)}
+.cta-t{font-size:13px;font-weight:700;color:var(--tx)}
+.cta-s{font-size:11px;color:var(--mt);margin-top:2px}
 .cta-btn{background:linear-gradient(90deg,var(--gold3),var(--gold));color:#000;-webkit-text-fill-color:#000;border:none;border-radius:100px;font-size:11px;font-weight:700;padding:8px 18px;cursor:pointer;text-decoration:none;font-family:'DM Mono',monospace;white-space:nowrap}
-/* DETAILS */
-.rc-details{padding:12px 30px 26px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(max-width:600px){.rc-details{grid-template-columns:1fr}}
-.rd{background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:14px 16px}
-.rd-l{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px}
-.rd-v{font-size:13px;color:var(--tx);font-weight:600;line-height:1.5}
-.rd-v a{color:var(--blue2);text-decoration:none}
-.rd-v a:hover{text-decoration:underline}
-/* NOT FOUND */
-.nf-card{background:var(--bg2);border:1.5px solid var(--br);border-radius:28px;padding:52px 32px;text-align:center;animation:cIn .3s var(--ease) both}
+
+/* details */
+.rdetails{padding:12px 28px 26px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:600px){.rdetails{grid-template-columns:1fr}}
+.dbox{background:var(--bg3);border:1px solid var(--br);border-radius:13px;padding:13px 15px}
+.dlbl{font-size:9px;color:var(--mt2);font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px}
+.dval{font-size:13px;color:var(--tx);font-weight:600;line-height:1.5}
+.dval a{color:var(--blue2);text-decoration:none}
+.dval a:hover{text-decoration:underline}
+
+/* not found */
+.nf{background:var(--bg2);border:1.5px solid var(--br);border-radius:28px;padding:52px 32px;text-align:center;animation:slideIn .3s cubic-bezier(.16,1,.3,1) both}
 .nf-e{font-size:52px;margin-bottom:16px}
-.nf-t{font-size:20px;font-weight:800;margin-bottom:10px;font-family:'Cinzel',serif}
+.nf-t{font-size:20px;font-weight:800;font-family:'Cinzel',serif;margin-bottom:10px}
 .nf-d{font-size:14px;color:var(--mt);line-height:1.8;max-width:480px;margin:0 auto 22px}
 .nf-links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.nf-link{background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:12px;padding:8px 18px;text-decoration:none;transition:all .2s}
-.nf-link:hover{border-color:var(--gold);color:var(--gold)}
-/* LICENSE TYPE GUIDE */
-.section-h{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.section-h::after{content:'';flex:1;height:1px;background:var(--br)}
-.guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px;margin-bottom:44px}
+.nfl{background:var(--sf);border:1px solid var(--br);border-radius:100px;color:var(--mt);font-size:12px;padding:8px 18px;text-decoration:none;transition:all .2s}
+.nfl:hover{border-color:var(--gold);color:var(--gold)}
+
+/* popular grid */
+.sh{font-size:10px;color:var(--mt);font-family:'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sh::after{content:'';flex:1;height:1px;background:var(--br)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:8px;margin-bottom:52px}
+.pf{background:var(--sf);border:1px solid var(--br);border-radius:13px;padding:12px 14px;cursor:pointer;transition:all .2s;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pf:hover{border-color:rgba(34,221,153,.28);transform:translateY(-2px)}
+.pf-n{font-size:13px;font-weight:700;color:var(--tx)}
+.pb{font-size:9px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:100px}
+.pb.free{background:var(--okL);color:var(--ok);border:1px solid rgba(34,221,153,.18)}
+.pb.paid{background:var(--purpleL);color:var(--purple2);border:1px solid rgba(136,68,238,.18)}
+.pb.personal{background:var(--warnL);color:var(--warn);border:1px solid rgba(240,160,48,.18)}
+
+/* guide cards */
+.gcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(218px,1fr));gap:12px;margin-bottom:52px}
 .gc{border-radius:20px;padding:22px;border:1.5px solid;transition:transform .2s}
 .gc:hover{transform:translateY(-3px)}
-.gc.gfree{background:rgba(34,221,153,.04);border-color:rgba(34,221,153,.2)}
-.gc.gpers{background:rgba(240,160,48,.04);border-color:rgba(240,160,48,.18)}
-.gc.gpaid{background:rgba(136,68,238,.04);border-color:rgba(136,68,238,.2)}
-.gc.gprop{background:rgba(255,85,102,.04);border-color:rgba(255,85,102,.15)}
+.gc.gf{background:rgba(34,221,153,.04);border-color:rgba(34,221,153,.18)}
+.gc.gp{background:rgba(240,160,48,.04);border-color:rgba(240,160,48,.16)}
+.gc.ga{background:rgba(136,68,238,.04);border-color:rgba(136,68,238,.18)}
+.gc.gr{background:rgba(255,85,102,.04);border-color:rgba(255,85,102,.14)}
 .gc-ico{font-size:28px;margin-bottom:10px;display:block}
-.gc-n{font-size:15px;font-weight:800;color:var(--tx);margin-bottom:6px}
-.gc-d{font-size:12px;color:var(--mt);line-height:1.7;margin-bottom:12px}
+.gc-n{font-size:14px;font-weight:800;color:var(--tx);margin-bottom:6px}
+.gc-d{font-size:12px;color:var(--mt);line-height:1.75;margin-bottom:12px}
 .gc-ps{display:flex;flex-direction:column;gap:4px}
-.gc-p{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mt)}
-.py{color:var(--ok)}.pn{color:var(--danger)}.pm{color:var(--warn)}
-/* POPULAR */
-.pop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:8px;margin-bottom:52px}
-.pf{background:var(--sf);border:1px solid var(--br);border-radius:14px;padding:12px 14px;cursor:pointer;transition:all .2s;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.pf:hover{border-color:rgba(34,221,153,.3);transform:translateY(-2px)}
-.pf-n{font-size:13px;font-weight:700;color:var(--tx)}
-.pf-b{font-size:9px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:100px}
-.pf-b.free{background:var(--okL);color:var(--ok);border:1px solid rgba(34,221,153,.2)}
-.pf-b.paid{background:var(--purpleL);color:var(--purple2);border:1px solid rgba(136,68,238,.2)}
-.pf-b.personal{background:var(--warnL);color:var(--warn);border:1px solid rgba(240,160,48,.2)}
-.note-box{background:rgba(51,136,255,.05);border:1px solid rgba(51,136,255,.1);border-radius:14px;padding:14px 18px;margin-bottom:36px;display:flex;gap:12px;font-size:12px;color:var(--mt);line-height:1.7}
-footer{border-top:1px solid var(--br);padding:36px 0;text-align:center;margin-top:40px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
-.footer-links a{font-size:11px;color:var(--mt);text-decoration:none;transition:color .2s}
-.footer-links a:hover{color:var(--gold)}
-.footer-copy{font-size:11px;color:var(--mt2)}
+.gc-p{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--mt)}
+.py{color:var(--ok)}.pn{color:var(--red)}.pm{color:var(--warn)}
+
+footer{border-top:1px solid var(--br);padding:32px 0;text-align:center;margin-top:40px}
+.fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.fl a{font-size:11px;color:var(--mt);text-decoration:none}
+.fl a:hover{color:var(--gold)}
+.fc{font-size:11px;color:var(--mt2)}
+
+/* ═══════════════════════════════════════════════
+   LIGHT MODE — complete override
+   ═══════════════════════════════════════════════ */
+body.light-mode {
+  --bg: #f7f5ff;
+  --bg2: #eeeaff;
+  --bg3: #e4dfff;
+  --sf: rgba(0,0,0,.04);
+  --sf2: rgba(0,0,0,.06);
+  --br: rgba(0,0,0,.1);
+  --br2: rgba(0,0,0,.16);
+  --tx: #0a0820;
+  --mt: rgba(10,8,32,.55);
+  --mt2: rgba(10,8,32,.3);
+  --gold: #b07000;
+  --goldd: #906000;
+  --ok: #0a7a50;
+  --okL: rgba(10,122,80,.1);
+  --purple: #6622bb;
+  --purple2: #6622bb;
+  --purpleL: rgba(102,34,187,.1);
+  --blue: #2255cc;
+  --blueL: rgba(34,85,204,.1);
+  --fail: #cc1133;
+  --failL: rgba(204,17,51,.1);
+  --warn: #996600;
+  --warnL: rgba(153,102,0,.1);
+}
+body.light-mode { background: var(--bg) !important; color: var(--tx) !important; }
+
+/* Background orbs — subtle in light mode */
+body.light-mode .bg-orb1,
+body.light-mode .bg-orb2,
+body.light-mode .o1,
+body.light-mode .o2,
+body.light-mode .o3,
+body.light-mode .orb1,
+body.light-mode .orb2 { opacity: 0.3; }
+
+/* Grid background — invisible in light */
+body.light-mode .sg { opacity: 0; }
+
+/* Cards */
+body.light-mode .card,
+body.light-mode .article-card,
+body.light-mode .article-full,
+body.light-mode .tool-card,
+body.light-mode .palette-card,
+body.light-mode .pal-card,
+body.light-mode .font-card,
+body.light-mode .font-tile,
+body.light-mode .result-card,
+body.light-mode .score-card,
+body.light-mode .preview-card,
+body.light-mode .css-card,
+body.light-mode .ctrl-panel,
+body.light-mode .featured-card,
+body.light-mode .controls,
+body.light-mode .scale-table,
+body.light-mode .suggestions,
+body.light-mode .font-controls,
+body.light-mode .picker-card,
+body.light-mode .af-callout {
+  background: var(--bg2) !important;
+  border-color: var(--br) !important;
+}
+
+/* Inputs */
+body.light-mode input,
+body.light-mode select,
+body.light-mode textarea,
+body.light-mode .search-input,
+body.light-mode .hex-input,
+body.light-mode .name-input,
+body.light-mode .ctrl-val {
+  background: #fff !important;
+  border-color: var(--br) !important;
+  color: var(--tx) !important;
+}
+body.light-mode select option { background: #fff !important; color: var(--tx) !important; }
+
+/* Text */
+body.light-mode .mt,
+body.light-mode [class*="-desc"],
+body.light-mode [class*="-sub"],
+body.light-mode .hero p,
+body.light-mode .af-body { color: var(--mt) !important; }
+
+/* Nav buttons */
+body.light-mode .nb {
+  background: rgba(0,0,0,.05) !important;
+  border-color: rgba(0,0,0,.12) !important;
+  color: rgba(10,8,32,.55) !important;
+}
+body.light-mode .nb:hover { border-color: var(--gold) !important; color: var(--gold) !important; }
+body.light-mode .nb.cta {
+  background: linear-gradient(90deg,var(--goldd),var(--gold)) !important;
+  color: #fff !important; -webkit-text-fill-color: #fff !important;
+  border-color: transparent !important;
+}
+
+/* Tags / badges */
+body.light-mode .ac-tag,
+body.light-mode .pal-tag,
+body.light-mode .fc-tag,
+body.light-mode .tc-tag,
+body.light-mode .af-font-tag {
+  background: rgba(0,0,0,.04) !important;
+  border-color: rgba(0,0,0,.12) !important;
+  color: rgba(10,8,32,.5) !important;
+}
+
+/* Hero badge */
+body.light-mode .hero-badge,
+body.light-mode .blog-tag {
+  background: rgba(102,34,187,.08) !important;
+  border-color: rgba(102,34,187,.2) !important;
+  color: var(--purple2) !important;
+}
+
+/* Code blocks */
+body.light-mode .css-code,
+body.light-mode .css-out,
+body.light-mode .af-body code,
+body.light-mode pre {
+  background: #1a1530 !important;
+  color: #22dd99 !important;
+  border-color: rgba(0,0,0,.1) !important;
+}
+
+/* CSS output card overrides */
+body.light-mode .css-card { background: #f0eeff !important; border-color: rgba(102,34,187,.2) !important; }
+
+/* Tabs */
+body.light-mode .tabs,
+body.light-mode .tab {
+  background: rgba(0,0,0,.05) !important;
+  border-color: rgba(0,0,0,.1) !important;
+  color: rgba(10,8,32,.55) !important;
+}
+body.light-mode .tab.active { background: var(--purple2) !important; color: #fff !important; -webkit-text-fill-color: #fff !important; }
+
+/* Filter chips */
+body.light-mode .cf,
+body.light-mode .filt,
+body.light-mode .mood-chip,
+body.light-mode .fc-chip,
+body.light-mode .sz-btn {
+  background: rgba(0,0,0,.04) !important;
+  border-color: rgba(0,0,0,.1) !important;
+  color: rgba(10,8,32,.55) !important;
+}
+body.light-mode .cf.active,
+body.light-mode .filt.active,
+body.light-mode .mood-chip.active {
+  background: var(--purpleL) !important;
+  border-color: var(--purple2) !important;
+  color: var(--purple2) !important;
+}
+
+/* Section divider */
+body.light-mode .sh,
+body.light-mode .dd-divider { color: rgba(10,8,32,.3) !important; }
+body.light-mode .sh::after { background: rgba(0,0,0,.1) !important; }
+
+/* Back button */
+body.light-mode .back-btn {
+  background: rgba(0,0,0,.04) !important;
+  border-color: rgba(0,0,0,.1) !important;
+  color: rgba(10,8,32,.55) !important;
+}
+
+/* Scale table rows */
+body.light-mode .st-row { border-color: rgba(0,0,0,.05) !important; }
+body.light-mode .st-row:hover { background: rgba(0,0,0,.03) !important; }
+body.light-mode .st-header { color: rgba(10,8,32,.4) !important; }
+
+/* Slider thumb */
+body.light-mode input[type=range]::-webkit-slider-thumb { background: var(--purple2) !important; }
+
+/* Preview areas */
+body.light-mode .rc-preview { filter: none; }
+
+/* Suggestion grid */
+body.light-mode .suggestions { background: var(--bg2) !important; }
+
+/* Footer */
+body.light-mode footer { border-color: rgba(0,0,0,.1) !important; }
+body.light-mode .fl a { color: rgba(10,8,32,.5) !important; }
+body.light-mode .fl a:hover { color: var(--gold) !important; }
+body.light-mode .fc,
+body.light-mode .fc-c { color: rgba(10,8,32,.35) !important; }
+
+/* Blog article body */
+body.light-mode .af-body { color: rgba(10,8,32,.75) !important; }
+body.light-mode .af-body h2 { color: var(--tx) !important; }
+body.light-mode .af-body a { color: var(--purple2) !important; }
+body.light-mode .af-callout { background: rgba(102,34,187,.06) !important; border-color: var(--purple2) !important; }
+body.light-mode .af-ctas { background: var(--bg3) !important; }
+
+/* Font preview text */
+body.light-mode .fc-sample,
+body.light-mode .ft-text,
+body.light-mode .det-h { color: var(--tx) !important; }
+
+/* Range labels */
+body.light-mode .ctrl-label,
+body.light-mode .pc-label,
+body.light-mode .css-label { color: var(--mt) !important; }
+
+/* Score circle / ratio display */
+body.light-mode .rc-ratio-l { color: var(--mt) !important; }
+
+/* Topbar logo subtitle */
+body.light-mode .logo-s { color: var(--mt) !important; }
+
+/* Toggle button in dropdown */
+body.light-mode .dd-theme-label { color: var(--mt) !important; }
+
+/* Font tile meta */
+body.light-mode .ft-name,
+body.light-mode .ft-cat { color: var(--mt) !important; }
+body.light-mode .ft-act {
+  background: rgba(0,0,0,.04) !important;
+  border-color: rgba(0,0,0,.1) !important;
+  color: rgba(10,8,32,.5) !important;
+}
+
+/* Hero stats */
+body.light-mode .hstat-l,
+body.light-mode .rc-ratio-l { color: var(--mt) !important; }
+
+/* Action buttons */
+body.light-mode .af-cta-n,
+body.light-mode .act-n {
+  background: rgba(0,0,0,.04) !important;
+  border-color: rgba(0,0,0,.1) !important;
+  color: rgba(10,8,32,.55) !important;
+}
+/* ═══════════════════════════════════════════════ */
+
 </style>
 </head>
 <body>
-<div class="bg-scene"><div class="bg-grid"></div><div class="orb o1"></div><div class="orb o2"></div></div>
+<div class="bg-scene"><div class="bg-grid"></div><div class="o1"></div><div class="o2"></div></div>
 <div class="wrap">
+
 <div class="topbar">
   <a class="logo-a" href="/">
     <svg width="34" height="34" viewBox="0 0 46 46" fill="none">
@@ -177,45 +482,46 @@ footer{border-top:1px solid var(--br);padding:36px 0;text-align:center;margin-to
     <div><div class="logo-n">VECTROD</div><div class="logo-s">License Checker</div></div>
   </a>
   <div class="nav-r">
+    <a class="nb" href="/font-size">📐 Size Calc</a>
     <a class="nb" href="/css-stack">💻 CSS Stack</a>
-    <a class="nb" href="/brands">🏷 Brands</a>
     <a class="nb" href="/fonts">Free Fonts</a>
     <a class="nb cta" href="/">Make Font →</a>
   </div>
 </div>
 
 <div class="hero">
-  <div class="hero-badge"><span class="pulse"></span> 500+ Fonts · Instant Results</div>
-  <h1><span class="h1-1">Font License</span><span class="h1-2">Checker</span></h1>
-  <p>Type any font name and instantly see if it's safe for commercial use — logos, websites, apps, client work.</p>
+  <div class="hero-badge"><span class="dot"></span> 1000+ Fonts · Instant · No API Needed</div>
+  <h1>Font License<br><span class="grad">Checker</span></h1>
+  <p>Type any font name — Helvetica, Nectarine, Ballpoint, Gotham, anything — and instantly see if it's safe for commercial use.</p>
 </div>
 
-<div class="search-outer" id="searchOuter">
+<div class="search-wrap" id="sw">
   <div class="search-glow"></div>
-  <div class="search-box">
-    <span class="s-ico">🔍</span>
-    <input class="s-inp" id="sInp" type="text" placeholder="Helvetica, Gotham, Futura, Inter, Circular..."
-      autocomplete="off" spellcheck="false" oninput="onInput(this.value)" onkeydown="onKey(event)" onfocus="showAC()">
-    <button class="s-clear" id="sClear" onclick="doClear()">✕ Clear</button>
+  <div class="sbox">
+    <span style="font-size:20px;opacity:.35;flex-shrink:0">🔍</span>
+    <input class="sinp" id="si" type="text"
+      placeholder="Type any font name..."
+      autocomplete="off" spellcheck="false"
+      oninput="onInput(this.value)"
+      onkeydown="onKey(event)"
+      onfocus="showAC()">
+    <button class="sclear" id="sc" onclick="clearSearch()">✕ Clear</button>
   </div>
-  <div class="autocomplete" id="acBox"></div>
-</div>
-<div class="s-hint">Type any font name — database covers 500+ fonts from all major foundries</div>
-
-<div class="quick-row" id="quickRow"></div>
-<div class="result-area" id="resultArea"></div>
-
-<div class="note-box">
-  <span style="font-size:18px;flex-shrink:0">ℹ️</span>
-  <span><strong>How it works:</strong> We maintain a database of 500+ major fonts from Google Fonts, Adobe Fonts, Monotype, Linotype, Hoefler&amp;Co, Klim, Grilli Type, Commercial Type, DaFont and more. For legal certainty on critical projects, always verify with the font's official license file.</span>
+  <div class="acbox" id="ac"></div>
 </div>
 
-<div class="section-h">License Types Explained</div>
-<div class="guide-grid">
-  <div class="gc gfree">
+<div class="qtags" id="qt"></div>
+<div class="result" id="result"></div>
+
+<div class="sh">Popular Fonts — Click to Check</div>
+<div class="pgrid" id="pg"></div>
+
+<div class="sh">License Types Explained</div>
+<div class="gcards">
+  <div class="gc gf">
     <span class="gc-ico">✅</span>
     <div class="gc-n">SIL Open Font License</div>
-    <div class="gc-d">Gold standard. All Google Fonts use this or Apache 2.0.</div>
+    <div class="gc-d">Gold standard for free fonts. Used by all Google Fonts. Fully free for commercial use.</div>
     <div class="gc-ps">
       <div class="gc-p"><span class="py">✓</span> Commercial use</div>
       <div class="gc-p"><span class="py">✓</span> Web / @font-face</div>
@@ -224,474 +530,507 @@ footer{border-top:1px solid var(--br);padding:36px 0;text-align:center;margin-to
       <div class="gc-p"><span class="pn">✗</span> Sell font alone</div>
     </div>
   </div>
-  <div class="gc gfree">
+  <div class="gc ga">
     <span class="gc-ico">✅</span>
     <div class="gc-n">Apache 2.0</div>
-    <div class="gc-d">Used by Roboto, Noto. Very permissive. Patent rights included.</div>
+    <div class="gc-d">Used by Roboto, Noto. Very permissive open source license with patent rights.</div>
     <div class="gc-ps">
       <div class="gc-p"><span class="py">✓</span> Commercial use</div>
       <div class="gc-p"><span class="py">✓</span> Modify & distribute</div>
-      <div class="gc-p"><span class="py">✓</span> Patent rights</div>
       <div class="gc-p"><span class="pm">⚠</span> Keep attribution</div>
     </div>
   </div>
-  <div class="gc gpers">
+  <div class="gc gp">
     <span class="gc-ico">⚠️</span>
     <div class="gc-n">Free Personal Use</div>
-    <div class="gc-d">Common on DaFont. Cannot be used commercially without purchase.</div>
+    <div class="gc-d">Common on DaFont. Free to download — but commercial use requires buying a license.</div>
     <div class="gc-ps">
       <div class="gc-p"><span class="py">✓</span> Personal projects</div>
       <div class="gc-p"><span class="pn">✗</span> Client / paid work</div>
       <div class="gc-p"><span class="pn">✗</span> Commercial logos</div>
-      <div class="gc-p"><span class="pm">⚠</span> Buy license for commercial</div>
     </div>
   </div>
-  <div class="gc gpaid">
+  <div class="gc gr">
     <span class="gc-ico">💰</span>
-    <div class="gc-n">Commercial License</div>
-    <div class="gc-d">Must be purchased. Prices range from $20 to $1000+. Check EULA.</div>
+    <div class="gc-n">Paid / Proprietary</div>
+    <div class="gc-d">Must purchase. Desktop, web, and embed licenses are often sold separately.</div>
     <div class="gc-ps">
       <div class="gc-p"><span class="pm">⚠</span> Purchase required</div>
       <div class="gc-p"><span class="pn">✗</span> Free redistribution</div>
-      <div class="gc-p"><span class="pm">⚠</span> Desktop/web separate</div>
       <div class="gc-p"><span class="pm">⚠</span> Check EULA for embed</div>
     </div>
   </div>
 </div>
 
-<div class="section-h">Popular Fonts — Click to Check</div>
-<div class="pop-grid" id="popGrid"></div>
-
 <footer>
-  <div class="footer-links">
+  <div class="fl">
     <a href="/">Home</a><a href="/fonts">1,200+ Free Fonts</a>
-    <a href="/css-stack">CSS Stack</a><a href="/pairing">Pairing</a>
-    <a href="/brands">Brand Fonts</a><a href="/blog">Blog</a>
+    <a href="/font-size">Size Calc</a><a href="/css-stack">CSS Stack</a>
+    <a href="/variable-fonts">Variable Fonts</a><a href="/brands">Brands</a>
   </div>
-  <div class="footer-copy">© 2025 Vectrod · Font License Checker</div>
+  <div class="fc">© 2025 Vectrod · Font License Checker</div>
 </footer>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════
-// FONT DATABASE — 500+ fonts
-// t: 'free' | 'personal' | 'paid' | 'proprietary'
-// c: commercial, w: web, e: embed/PDF, m: modify
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════
+// FONT DATABASE
+// t: 'free' | 'personal' | 'paid'
+// c/w/e/m: 1=yes  0=no  2=depends
+// ═══════════════════════════════════════════════════════════════════
 const DB = [
-// ── FREE (SIL OFL / Apache) ───────────────────────────────
-{name:'Inter',alias:['inter ui'],l:'SIL OFL 1.1',t:'free',foundry:'Rasmus Andersson',src:'Google Fonts',url:'https://fonts.google.com/specimen/Inter',c:1,w:1,e:1,m:1,note:"One of the most popular UI fonts globally. Variable font, 9 weights. Used in thousands of apps and websites. Free for all commercial use under SIL OFL."},
-{name:'Roboto',alias:[],l:'Apache 2.0',t:'free',foundry:'Christian Robertson / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Roboto',c:1,w:1,e:1,m:1,note:"Google's primary UI font. Android system font. 6 trillion+ weekly views. Fully free for commercial use."},
-{name:'Open Sans',alias:['opensans'],l:'Apache 2.0',t:'free',foundry:'Steve Matteson / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Open+Sans',c:1,w:1,e:1,m:1,note:'One of the most-used web fonts globally. Humanist sans-serif. Variable font. Fully free for commercial use.'},
-{name:'Lato',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Łukasz Dziedzic',src:'Google Fonts',url:'https://fonts.google.com/specimen/Lato',c:1,w:1,e:1,m:1,note:'Semi-rounded sans. Used by over 1 billion websites weekly. SIL OFL — free for all commercial use.'},
-{name:'Poppins',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Indian Type Foundry / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Poppins',c:1,w:1,e:1,m:1,note:'Geometric sans-serif. Top UI design font. Variable font. SIL OFL — free for all commercial use.'},
-{name:'Montserrat',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Julieta Ulanovsky',src:'Google Fonts',url:'https://fonts.google.com/specimen/Montserrat',c:1,w:1,e:1,m:1,note:'Inspired by Buenos Aires signage. Great for logos. Variable font. SIL OFL.'},
-{name:'Raleway',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Matt McInerney et al.',src:'Google Fonts',url:'https://fonts.google.com/specimen/Raleway',c:1,w:1,e:1,m:1,note:'Elegant sans for creative agencies. Variable font. SIL OFL.'},
-{name:'Oswald',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Vernon Adams',src:'Google Fonts',url:'https://fonts.google.com/specimen/Oswald',c:1,w:1,e:1,m:1,note:'Condensed sans. Great Impact alternative for headlines. Variable font. SIL OFL.'},
-{name:'Nunito',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Vernon Adams',src:'Google Fonts',url:'https://fonts.google.com/specimen/Nunito',c:1,w:1,e:1,m:1,note:'Rounded terminal sans. Friendly and warm. Variable font. SIL OFL. Great free Circular/Avenir alternative.'},
-{name:'Nunito Sans',alias:['nunito-sans'],l:'SIL OFL 1.1',t:'free',foundry:'Vernon Adams / Jacques Le Bailly',src:'Google Fonts',url:'https://fonts.google.com/specimen/Nunito+Sans',c:1,w:1,e:1,m:1,note:'Balanced sans with rounded terminals. Clean UI font. Variable font. SIL OFL.'},
-{name:'Source Sans Pro',alias:['source sans 3','source sans'],l:'SIL OFL 1.1',t:'free',foundry:'Adobe / Paul D. Hunt',src:'Google Fonts',url:'https://fonts.google.com/specimen/Source+Sans+3',c:1,w:1,e:1,m:1,note:"Adobe's first open source typeface. Versatile professional sans. Variable font. SIL OFL."},
-{name:'Merriweather',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Sorkin Type',src:'Google Fonts',url:'https://fonts.google.com/specimen/Merriweather',c:1,w:1,e:1,m:1,note:'Designed for screen readability. Popular for blogs and editorial. SIL OFL.'},
-{name:'Playfair Display',alias:['playfair'],l:'SIL OFL 1.1',t:'free',foundry:'Claus Eggers Sørensen',src:'Google Fonts',url:'https://fonts.google.com/specimen/Playfair+Display',c:1,w:1,e:1,m:1,note:'High-contrast transitional serif. Editorial and luxury branding. Variable font. SIL OFL.'},
-{name:'Ubuntu',alias:[],l:'Ubuntu Font License',t:'free',foundry:'Dalton Maag / Canonical',src:'Google Fonts',url:'https://fonts.google.com/specimen/Ubuntu',c:1,w:1,e:1,m:0,note:'Ubuntu Font License allows commercial use. Modification restrictions apply for standalone redistribution. Generally safe for projects.'},
-{name:'Bebas Neue',alias:['bebas'],l:'SIL OFL 1.1',t:'free',foundry:'Ryoichi Tsunekawa',src:'Google Fonts',url:'https://fonts.google.com/specimen/Bebas+Neue',c:1,w:1,e:1,m:1,note:'All-caps condensed display font. One of the most downloaded display fonts ever. SIL OFL — fully free.'},
-{name:'PT Sans',alias:['pt-sans'],l:'SIL OFL 1.1',t:'free',foundry:'ParaType',src:'Google Fonts',url:'https://fonts.google.com/specimen/PT+Sans',c:1,w:1,e:1,m:1,note:'Covers Latin and Cyrillic. Russian government program font. SIL OFL.'},
-{name:'Rubik',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Hubert & Fischer / Meir Sadan',src:'Google Fonts',url:'https://fonts.google.com/specimen/Rubik',c:1,w:1,e:1,m:1,note:'Slightly rounded. Modern and friendly. Variable font. SIL OFL.'},
-{name:'Work Sans',alias:['worksans'],l:'SIL OFL 1.1',t:'free',foundry:'Wei Huang',src:'Google Fonts',url:'https://fonts.google.com/specimen/Work+Sans',c:1,w:1,e:1,m:1,note:'Optimized for screen. Variable font. SIL OFL. Good Univers/Akzidenz alternative.'},
-{name:'Josefin Sans',alias:['josefin'],l:'SIL OFL 1.1',t:'free',foundry:'Santiago Orozco',src:'Google Fonts',url:'https://fonts.google.com/specimen/Josefin+Sans',c:1,w:1,e:1,m:1,note:'Geometric elegant sans. Great Futura alternative. Variable font. SIL OFL.'},
-{name:'Fira Sans',alias:['fira-sans'],l:'SIL OFL 1.1',t:'free',foundry:'Mozilla / Carrois',src:'Google Fonts',url:'https://fonts.google.com/specimen/Fira+Sans',c:1,w:1,e:1,m:1,note:'Designed for Firefox OS. Excellent readability. Variable font. SIL OFL.'},
-{name:'DM Sans',alias:['dm-sans'],l:'SIL OFL 1.1',t:'free',foundry:'Colophon / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/DM+Sans',c:1,w:1,e:1,m:1,note:'Low-contrast geometric sans. Excellent for UI. Variable font. SIL OFL.'},
-{name:'Space Grotesk',alias:['space-grotesk'],l:'SIL OFL 1.1',t:'free',foundry:'Florian Karsten',src:'Google Fonts',url:'https://fonts.google.com/specimen/Space+Grotesk',c:1,w:1,e:1,m:1,note:'Quirky grotesque for tech brands. Variable font. SIL OFL.'},
-{name:'Outfit',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'On Brand Investments',src:'Google Fonts',url:'https://fonts.google.com/specimen/Outfit',c:1,w:1,e:1,m:1,note:'Variable font. Modern geometric sans. SIL OFL.'},
-{name:'Manrope',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Mikhail Sharanda',src:'Google Fonts',url:'https://fonts.google.com/specimen/Manrope',c:1,w:1,e:1,m:1,note:'Geometric sans. Variable font. SIL OFL.'},
-{name:'Plus Jakarta Sans',alias:['plus jakarta','jakarta sans'],l:'SIL OFL 1.1',t:'free',foundry:'Tokotype',src:'Google Fonts',url:'https://fonts.google.com/specimen/Plus+Jakarta+Sans',c:1,w:1,e:1,m:1,note:'Contemporary sans. Variable font. SIL OFL.'},
-{name:'Mulish',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Vernon Adams',src:'Google Fonts',url:'https://fonts.google.com/specimen/Mulish',c:1,w:1,e:1,m:1,note:'Minimalist geometric sans. Variable font. SIL OFL.'},
-{name:'Quicksand',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Andrew Paglinawan',src:'Google Fonts',url:'https://fonts.google.com/specimen/Quicksand',c:1,w:1,e:1,m:1,note:'Rounded display sans. Soft and friendly. Variable font. SIL OFL.'},
-{name:'Cabin',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Impallari Type',src:'Google Fonts',url:'https://fonts.google.com/specimen/Cabin',c:1,w:1,e:1,m:1,note:'Humanist sans. Great Gill Sans alternative. Variable font. SIL OFL.'},
-{name:'Jost',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Owen Earl / indestructible type*',src:'Google Fonts',url:'https://fonts.google.com/specimen/Jost',c:1,w:1,e:1,m:1,note:'Based on Futura. Best free Futura alternative. Variable font. SIL OFL.'},
-{name:'Karla',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Jonathan Pinhorn',src:'Google Fonts',url:'https://fonts.google.com/specimen/Karla',c:1,w:1,e:1,m:1,note:'Grotesque sans. Tamil + Latin. Variable font. SIL OFL.'},
-{name:'Barlow',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Jeremy Tribby',src:'Google Fonts',url:'https://fonts.google.com/specimen/Barlow',c:1,w:1,e:1,m:1,note:'Slightly rounded grotesque. Variable font. SIL OFL. Great Trade Gothic/FF DIN alternative.'},
-{name:'Noto Sans',alias:['noto'],l:'SIL OFL 1.1',t:'free',foundry:'Google',src:'Google Fonts',url:'https://fonts.google.com/noto',c:1,w:1,e:1,m:1,note:"Google's universal font. 1,000+ languages. Variable font. SIL OFL."},
-{name:'Lora',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Olga Karpushina / Cyreal',src:'Google Fonts',url:'https://fonts.google.com/specimen/Lora',c:1,w:1,e:1,m:1,note:'Contemporary serif with calligraphic roots. Variable font. SIL OFL.'},
-{name:'EB Garamond',alias:['eb-garamond'],l:'SIL OFL 1.1',t:'free',foundry:'Georg Duffner',src:'Google Fonts',url:'https://fonts.google.com/specimen/EB+Garamond',c:1,w:1,e:1,m:1,note:'Free Garamond revival. Best free Garamond option. SIL OFL. Old-style serif.'},
-{name:'Cormorant Garamond',alias:['cormorant'],l:'SIL OFL 1.1',t:'free',foundry:'Christian Thalmann',src:'Google Fonts',url:'https://fonts.google.com/specimen/Cormorant+Garamond',c:1,w:1,e:1,m:1,note:'Elegant high-contrast serif. Luxury use. Variable font. SIL OFL.'},
-{name:'Libre Baskerville',alias:['libre baskerville'],l:'SIL OFL 1.1',t:'free',foundry:'Impallari Type',src:'Google Fonts',url:'https://fonts.google.com/specimen/Libre+Baskerville',c:1,w:1,e:1,m:1,note:'Best free Baskerville. Web-optimized. SIL OFL.'},
-{name:'Libre Bodoni',alias:['libre bodoni'],l:'SIL OFL 1.1',t:'free',foundry:'Impallari Type',src:'Google Fonts',url:'https://fonts.google.com/specimen/Libre+Bodoni',c:1,w:1,e:1,m:1,note:'Best free Bodoni. SIL OFL. Use this instead of ITC/Bauer Bodoni.'},
-{name:'Cinzel',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Natanael Gama',src:'Google Fonts',url:'https://fonts.google.com/specimen/Cinzel',c:1,w:1,e:1,m:1,note:'Roman inscription-inspired. Authority/premium feel. Variable font. SIL OFL.'},
-{name:'Spectral',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Production Type / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Spectral',c:1,w:1,e:1,m:1,note:'Serif for screens. Variable font. SIL OFL.'},
-{name:'Crimson Text',alias:['crimson'],l:'SIL OFL 1.1',t:'free',foundry:'Sebastian Kosch',src:'Google Fonts',url:'https://fonts.google.com/specimen/Crimson+Text',c:1,w:1,e:1,m:1,note:'Old-style serif for long-form text. SIL OFL.'},
-{name:'Dancing Script',alias:['dancing'],l:'SIL OFL 1.1',t:'free',foundry:'Impallari Type',src:'Google Fonts',url:'https://fonts.google.com/specimen/Dancing+Script',c:1,w:1,e:1,m:1,note:'Casual script. Variable font. SIL OFL — free for all commercial use.'},
-{name:'Pacifico',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Vernon Adams',src:'Google Fonts',url:'https://fonts.google.com/specimen/Pacifico',c:1,w:1,e:1,m:1,note:'Fun brush script for logos and casual branding. SIL OFL.'},
-{name:'Caveat',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Pablo Impallari',src:'Google Fonts',url:'https://fonts.google.com/specimen/Caveat',c:1,w:1,e:1,m:1,note:'Handwriting style. Variable font. SIL OFL.'},
-{name:'Great Vibes',alias:['great-vibes'],l:'SIL OFL 1.1',t:'free',foundry:'TypeSETit',src:'Google Fonts',url:'https://fonts.google.com/specimen/Great+Vibes',c:1,w:1,e:1,m:1,note:'Elegant calligraphic script. Weddings and luxury. SIL OFL.'},
-{name:'Sacramento',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Astigmatic',src:'Google Fonts',url:'https://fonts.google.com/specimen/Sacramento',c:1,w:1,e:1,m:1,note:'Calligraphic style script. Weddings and stationery. SIL OFL.'},
-{name:'JetBrains Mono',alias:['jetbrains'],l:'SIL OFL 1.1',t:'free',foundry:'JetBrains',src:'Google Fonts',url:'https://fonts.google.com/specimen/JetBrains+Mono',c:1,w:1,e:1,m:1,note:'Developer font by JetBrains. Variable font. SIL OFL.'},
-{name:'Fira Code',alias:['fira-code'],l:'SIL OFL 1.1',t:'free',foundry:'Nikita Prokopov',src:'Google Fonts',url:'https://fonts.google.com/specimen/Fira+Code',c:1,w:1,e:1,m:1,note:'Monospace with programming ligatures. Developer favorite. SIL OFL.'},
-{name:'Source Code Pro',alias:['source code'],l:'SIL OFL 1.1',t:'free',foundry:'Adobe / Paul D. Hunt',src:'Google Fonts',url:'https://fonts.google.com/specimen/Source+Code+Pro',c:1,w:1,e:1,m:1,note:"Adobe's open source monospace. SIL OFL — fully free."},
-{name:'Inconsolata',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Raph Levien',src:'Google Fonts',url:'https://fonts.google.com/specimen/Inconsolata',c:1,w:1,e:1,m:1,note:'Beautiful monospace. After Consolas. SIL OFL.'},
-{name:'Space Mono',alias:['space-mono'],l:'SIL OFL 1.1',t:'free',foundry:'Colophon',src:'Google Fonts',url:'https://fonts.google.com/specimen/Space+Mono',c:1,w:1,e:1,m:1,note:'Fixed-width typeface with sci-fi aesthetics. SIL OFL.'},
-{name:'DM Mono',alias:['dm-mono'],l:'SIL OFL 1.1',t:'free',foundry:'Colophon / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/DM+Mono',c:1,w:1,e:1,m:1,note:'Monospace companion to DM Sans. SIL OFL.'},
-{name:'Zilla Slab',alias:['zilla'],l:'SIL OFL 1.1',t:'free',foundry:'Mozilla',src:'Google Fonts',url:'https://fonts.google.com/specimen/Zilla+Slab',c:1,w:1,e:1,m:1,note:"Mozilla's slab serif. Great free Rockwell/Clarendon alternative. SIL OFL."},
-{name:'Roboto Slab',alias:['roboto-slab'],l:'Apache 2.0',t:'free',foundry:'Christian Robertson / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Roboto+Slab',c:1,w:1,e:1,m:1,note:'Slab companion to Roboto. Variable font. Apache 2.0.'},
-{name:'Satoshi',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Indian Type Foundry',src:'Fontshare',url:'https://www.fontshare.com/fonts/satoshi',c:1,w:1,e:1,m:1,note:"Fontshare's most popular font. Modern geometric sans. SIL OFL."},
-{name:'Cabinet Grotesk',alias:['cabinet'],l:'SIL OFL 1.1',t:'free',foundry:'Dirtyline Studio',src:'Fontshare',url:'https://www.fontshare.com/fonts/cabinet-grotesk',c:1,w:1,e:1,m:1,note:'Strong display grotesque. Variable font from Fontshare. SIL OFL.'},
-{name:'Clash Display',alias:['clash'],l:'SIL OFL 1.1',t:'free',foundry:'Indian Type Foundry',src:'Fontshare',url:'https://www.fontshare.com/fonts/clash-display',c:1,w:1,e:1,m:1,note:'Bold display sans. Variable font. Fontshare. SIL OFL.'},
-{name:'General Sans',alias:['general-sans'],l:'SIL OFL 1.1',t:'free',foundry:'Indian Type Foundry',src:'Fontshare',url:'https://www.fontshare.com/fonts/general-sans',c:1,w:1,e:1,m:1,note:'Geometric sans from Fontshare. Variable font. SIL OFL.'},
-{name:'Switzer',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Jithin Johny',src:'Fontshare',url:'https://www.fontshare.com/fonts/switzer',c:1,w:1,e:1,m:1,note:'Versatile grotesque. Variable font. Fontshare. SIL OFL.'},
-{name:'Anton',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Vernon Adams',src:'Google Fonts',url:'https://fonts.google.com/specimen/Anton',c:1,w:1,e:1,m:1,note:'Bold condensed. High impact. Free Impact alternative. SIL OFL.'},
-{name:'Teko',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Indian Type Foundry',src:'Google Fonts',url:'https://fonts.google.com/specimen/Teko',c:1,w:1,e:1,m:1,note:'Devanagari + Latin condensed. Strong headlines. SIL OFL.'},
-{name:'Exo 2',alias:['exo'],l:'SIL OFL 1.1',t:'free',foundry:'Natanael Gama',src:'Google Fonts',url:'https://fonts.google.com/specimen/Exo+2',c:1,w:1,e:1,m:1,note:'Contemporary geometric sans with sci-fi feel. Variable font. SIL OFL.'},
-{name:'Comfortaa',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Johan Aakerlund',src:'Google Fonts',url:'https://fonts.google.com/specimen/Comfortaa',c:1,w:1,e:1,m:1,note:'Rounded geometric display. Variable font. SIL OFL.'},
-{name:'Righteous',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Astigmatic',src:'Google Fonts',url:'https://fonts.google.com/specimen/Righteous',c:1,w:1,e:1,m:1,note:'Art deco-influenced display sans. SIL OFL.'},
-{name:'Shadows Into Light',alias:['shadows into light two'],l:'SIL OFL 1.1',t:'free',foundry:'Kimberly Geswein',src:'Google Fonts',url:'https://fonts.google.com/specimen/Shadows+Into+Light',c:1,w:1,e:1,m:1,note:'Handwriting display font. Casual and warm. SIL OFL.'},
-{name:'Permanent Marker',alias:['permanent-marker'],l:'Apache 2.0',t:'free',foundry:'Font Diner',src:'Google Fonts',url:'https://fonts.google.com/specimen/Permanent+Marker',c:1,w:1,e:1,m:1,note:'Marker handwriting style. Strong and casual. Apache 2.0.'},
-{name:'Handlee',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Jo Danielson',src:'Google Fonts',url:'https://fonts.google.com/specimen/Handlee',c:1,w:1,e:1,m:1,note:'Casual handwriting. SIL OFL.'},
-{name:'Architects Daughter',alias:['architects-daughter'],l:'Apache 2.0',t:'free',foundry:'Kimberly Geswein',src:'Google Fonts',url:'https://fonts.google.com/specimen/Architects+Daughter',c:1,w:1,e:1,m:1,note:'Handwritten architectural style. Apache 2.0.'},
-{name:'Lobster',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Pablo Impallari',src:'Google Fonts',url:'https://fonts.google.com/specimen/Lobster',c:1,w:1,e:1,m:1,note:'Connected script with retro feel. SIL OFL.'},
-{name:'Parisienne',alias:[],l:'SIL OFL 1.1',t:'free',foundry:'Astigmatic',src:'Google Fonts',url:'https://fonts.google.com/specimen/Parisienne',c:1,w:1,e:1,m:1,note:'Elegant upright italic script. SIL OFL.'},
-// ── PAID / PROPRIETARY ────────────────────────────────────
-{name:'Helvetica',alias:['helvatica','helevetica'],l:'Proprietary',t:'paid',foundry:'Monotype / Max Miedinger',src:'Monotype',url:'https://www.myfonts.com/search/helvetica',c:0,w:0,e:0,m:0,note:"World's most famous font. Requires paid license from Monotype (~$35–100+ per style). System CSS fallback is OK but no redistribution. Best FREE alternatives: Inter, Aktiv Grotesk (also paid) → use Inter."},
-{name:'Helvetica Neue',alias:['helvetica neue','neue helvetica'],l:'Proprietary',t:'paid',foundry:'Monotype',src:'Monotype',url:'https://www.myfonts.com/search/helvetica+neue',c:0,w:0,e:0,m:0,note:'Updated Helvetica. Premium license from Monotype required. Best free alternatives: Inter, DM Sans.'},
-{name:'Futura',alias:[],l:'Proprietary',t:'paid',foundry:'Bauer / Neufville Digital',src:'MyFonts',url:'https://www.myfonts.com/search/futura',c:0,w:0,e:0,m:0,note:"Paul Renner's 1927 geometric classic. Must purchase (~$40+ per style). Best FREE alternatives: Jost (very close), Josefin Sans, Nunito."},
-{name:'Gotham',alias:[],l:'Proprietary',t:'paid',foundry:'Hoefler & Co',src:'Hoefler & Co',url:'https://www.typography.com/fonts/gotham',c:0,w:0,e:0,m:0,note:'Used by Obama 2008, Tesla, Warner Bros. Expensive (~$199+/style). Best FREE alternative: Montserrat (very good match).'},
-{name:'Proxima Nova',alias:['proxima-nova','proxima'],l:'Proprietary',t:'paid',foundry:'Mark Simonson Studio',src:'MyFonts / Adobe Fonts',url:'https://www.myfonts.com/search/proxima+nova',c:0,w:0,e:0,m:0,note:'Most popular web design font. Adobe Fonts subscription or ~$99+/style. Best FREE alternatives: Nunito Sans, DM Sans.'},
-{name:'Brandon Grotesque',alias:['brandon'],l:'Proprietary',t:'paid',foundry:'HVD Fonts',src:'MyFonts',url:'https://www.myfonts.com/search/brandon+grotesque',c:0,w:0,e:0,m:0,note:'Hugely popular in branding. ~$200+ full family. Best FREE alternatives: Raleway, Nunito.'},
-{name:'Circular',alias:[],l:'Proprietary',t:'paid',foundry:'Lineto',src:'Lineto',url:'https://lineto.com/typefaces/circular',c:0,w:0,e:0,m:0,note:'Used by Spotify, Airbnb, Google News. Very expensive (~$900+/style). Best FREE alternative: Nunito (closest match).'},
-{name:'Avenir',alias:['avenir next'],l:'Proprietary',t:'paid',foundry:'Monotype / Adrian Frutiger',src:'MyFonts',url:'https://www.myfonts.com/search/avenir',c:0,w:0,e:0,m:0,note:"Adrian Frutiger geometric sans. Used by Apple for years. Best FREE alternatives: Nunito, Jost."},
-{name:'Didot',alias:[],l:'Proprietary',t:'paid',foundry:'Linotype / Hoefler',src:'MyFonts',url:'https://www.myfonts.com/search/didot',c:0,w:0,e:0,m:0,note:"High-contrast luxury serif. Used by Zara, Harper's Bazaar. Best FREE alternative: Playfair Display."},
-{name:'Gill Sans',alias:['gill-sans'],l:'Proprietary',t:'paid',foundry:'Monotype / Eric Gill',src:'Monotype',url:'https://www.myfonts.com/search/gill+sans',c:0,w:0,e:0,m:0,note:'Used by BBC, Penguin Books. Best FREE alternative: Cabin, Questrial.'},
-{name:'Trade Gothic',alias:['trade-gothic'],l:'Proprietary',t:'paid',foundry:'Linotype / Jackson Burke',src:'MyFonts',url:'https://www.myfonts.com/search/trade+gothic',c:0,w:0,e:0,m:0,note:'Used by Nike, Wall Street Journal. Best FREE alternative: Barlow Condensed.'},
-{name:'Univers',alias:[],l:'Proprietary',t:'paid',foundry:'Monotype / Adrian Frutiger',src:'MyFonts',url:'https://www.myfonts.com/search/univers',c:0,w:0,e:0,m:0,note:'Swiss design classic. Best FREE alternative: Work Sans, Hanken Grotesk.'},
-{name:'Optima',alias:[],l:'Proprietary',t:'paid',foundry:'Monotype / Hermann Zapf',src:'MyFonts',url:'https://www.myfonts.com/search/optima',c:0,w:0,e:0,m:0,note:'Flared humanist sans. Used by Estée Lauder. Best FREE alternative: Questrial.'},
-{name:'Garamond',alias:['adobe garamond','itc garamond','monotype garamond'],l:'Various',t:'personal',foundry:'Multiple (Monotype / Adobe / ITC)',src:'Multiple',url:'https://fonts.google.com/specimen/EB+Garamond',c:2,w:2,e:2,m:0,note:'IMPORTANT: Commercial digital Garamond versions (Adobe Garamond, ITC Garamond) require licenses. Original is 500yo public domain. EB Garamond on Google Fonts is FREE (SIL OFL) — use that instead.'},
-{name:'Baskerville',alias:['itc baskerville','monotype baskerville','baskerville old face'],l:'Various',t:'personal',foundry:'Multiple',src:'Multiple',url:'https://fonts.google.com/specimen/Libre+Baskerville',c:2,w:2,e:2,m:0,note:'IMPORTANT: Modern digitizations (ITC, Monotype) need licenses. Original public domain. Libre Baskerville on Google Fonts is FREE (SIL OFL) — use that instead.'},
-{name:'Bodoni',alias:['itc bodoni','bauer bodoni'],l:'Various',t:'personal',foundry:'Multiple',src:'Multiple',url:'https://fonts.google.com/specimen/Libre+Bodoni',c:2,w:2,e:2,m:0,note:'IMPORTANT: ITC Bodoni and Bauer Bodoni = paid. Libre Bodoni on Google Fonts = FREE (SIL OFL). Check which version you have.'},
-{name:'Century Gothic',alias:['century gothic'],l:'Proprietary',t:'paid',foundry:'Monotype',src:'Microsoft/Monotype',url:'https://www.myfonts.com/search/century+gothic',c:2,w:0,e:0,m:0,note:'Microsoft Office font. OK for documents (Office license). Cannot be redistributed or web-hosted. FREE alternative: Jost, Nunito.'},
-{name:'Times New Roman',alias:['times'],l:'Proprietary',t:'paid',foundry:'Monotype / Stanley Morison',src:'Microsoft/Monotype',url:'https://www.myfonts.com/search/times+new+roman',c:2,w:0,e:0,m:0,note:'Windows system font. Safe as CSS fallback only (uses installed version). Cannot be self-hosted. FREE alternatives: Libre Baskerville, Lora.'},
-{name:'Arial',alias:[],l:'Proprietary',t:'paid',foundry:'Monotype',src:'Microsoft',url:'https://www.myfonts.com/search/arial',c:2,w:0,e:0,m:0,note:'Windows system font. Safe as CSS fallback. Cannot be self-hosted. FREE alternative: Inter (better in every way).'},
-{name:'Georgia',alias:[],l:'Proprietary',t:'paid',foundry:'Microsoft / Matthew Carter',src:'Microsoft',url:'https://www.myfonts.com/search/georgia',c:2,w:0,e:0,m:0,note:'Microsoft web font. Excellent CSS fallback (pre-installed everywhere). Cannot be redistributed. FREE alternatives: Lora, Merriweather.'},
-{name:'Verdana',alias:[],l:'Proprietary',t:'paid',foundry:'Microsoft / Matthew Carter',src:'Microsoft',url:'https://www.myfonts.com/search/verdana',c:2,w:0,e:0,m:0,note:'Microsoft web core font. Safe CSS fallback. Cannot be redistributed. FREE alternative: Nunito.'},
-{name:'Calibri',alias:[],l:'Proprietary',t:'paid',foundry:'Microsoft / Lucas de Groot',src:'Microsoft',url:'',c:2,w:0,e:0,m:0,note:'Microsoft Office default since 2007. Fine in documents (requires Office). Carlito on Google Fonts is a free metric-compatible alternative.'},
-{name:'Impact',alias:[],l:'Proprietary',t:'paid',foundry:'Monotype',src:'Microsoft',url:'',c:2,w:0,e:0,m:0,note:'The meme font. Windows system font. CSS fallback OK. FREE alternative: Anton (Google Fonts, SIL OFL).'},
-{name:'Palatino',alias:['palatino linotype','book antiqua'],l:'Proprietary',t:'paid',foundry:'Monotype / Hermann Zapf',src:'MyFonts',url:'https://www.myfonts.com/search/palatino',c:0,w:0,e:0,m:0,note:'Calligraphic serif by Hermann Zapf. FREE alternatives: EB Garamond, Crimson Text.'},
-{name:'Myriad Pro',alias:['myriad'],l:'Proprietary',t:'paid',foundry:'Adobe',src:'Adobe Fonts',url:'https://fonts.adobe.com/fonts/myriad',c:0,w:0,e:0,m:0,note:"Adobe's humanist sans (old Apple font). Needs Adobe CC subscription. FREE alternative: Cabin."},
-{name:'Akzidenz-Grotesk',alias:['akzidenz grotesk','akzidenz'],l:'Proprietary',t:'paid',foundry:'Berthold',src:'Berthold',url:'https://www.bertholdtypes.com/',c:0,w:0,e:0,m:0,note:"The font that inspired Helvetica. Available from Berthold. Premium. FREE alternatives: Work Sans, Hanken Grotesk."},
-{name:'FF DIN',alias:['ff din','din','din next'],l:'Proprietary',t:'paid',foundry:'FontFont / Monotype',src:'MyFonts',url:'https://www.myfonts.com/search/ff+din',c:0,w:0,e:0,m:0,note:'Industrial German signage font. Popular corporate design. FREE alternative: Barlow.'},
-{name:'Rockwell',alias:[],l:'Proprietary',t:'paid',foundry:'Monotype',src:'MyFonts',url:'https://www.myfonts.com/search/rockwell',c:0,w:0,e:0,m:0,note:'Geometric slab serif. FREE alternative: Zilla Slab (Mozilla, SIL OFL).'},
-{name:'Clarendon',alias:[],l:'Proprietary',t:'paid',foundry:'Monotype',src:'MyFonts',url:'https://www.myfonts.com/search/clarendon',c:0,w:0,e:0,m:0,note:'Victorian slab serif. FREE alternative: Roboto Slab, Zilla Slab.'},
-{name:'Museo Sans',alias:['museo'],l:'Proprietary',t:'personal',foundry:'exljbris / Jos Buivenga',src:'MyFonts',url:'https://www.myfonts.com/search/museo+sans',c:2,w:0,e:0,m:0,note:'Museo 100 & 300 are free for personal use only. All weights need commercial license. FREE alternative: Josefin Sans.'},
-{name:'Neutraface',alias:[],l:'Proprietary',t:'paid',foundry:'House Industries',src:'House Industries',url:'https://www.houseind.com/fonts/neutraface',c:0,w:0,e:0,m:0,note:'Architecture-inspired. Premium. FREE alternative: Josefin Sans.'},
-{name:'Knockout',alias:[],l:'Proprietary',t:'paid',foundry:'Hoefler & Co',src:'Hoefler & Co',url:'https://www.typography.com/fonts/knockout',c:0,w:0,e:0,m:0,note:'Used by ESPN, The Intercept. 32 styles. Premium Hoefler.'},
-{name:'Canela',alias:[],l:'Proprietary',t:'paid',foundry:'Commercial Type',src:'Commercial Type',url:'https://commercialtype.com/catalog/canela',c:0,w:0,e:0,m:0,note:'Elegant contemporary serif. Used by Vogue, fashion publications. Premium.'},
-{name:'Druk',alias:['druk wide','druk condensed'],l:'Proprietary',t:'paid',foundry:'Commercial Type',src:'Commercial Type',url:'https://commercialtype.com/catalog/druk',c:0,w:0,e:0,m:0,note:'Ultra bold headline. Used by The Guardian, GQ. Premium.'},
-{name:'Graphik',alias:[],l:'Proprietary',t:'paid',foundry:'Commercial Type',src:'Commercial Type',url:'https://commercialtype.com/catalog/graphik',c:0,w:0,e:0,m:0,note:'Clean geometric grotesque. Popular in tech branding. Premium.'},
-{name:'Neue Haas Grotesk',alias:['neue haas','neue haas unica'],l:'Proprietary',t:'paid',foundry:'Monotype',src:'Monotype',url:'https://www.myfonts.com/search/neue+haas+grotesk',c:0,w:0,e:0,m:0,note:'Original Helvetica before renaming. Premium restoration. FREE alternative: Inter.'},
-{name:'Aktiv Grotesk',alias:['aktiv'],l:'Proprietary',t:'paid',foundry:'Dalton Maag',src:'MyFonts',url:'https://www.myfonts.com/search/aktiv+grotesk',c:0,w:0,e:0,m:0,note:'Modern grotesque. Popular Helvetica substitute. FREE alternative: Inter.'},
-{name:'GT Walsheim',alias:['gt-walsheim'],l:'Proprietary',t:'paid',foundry:'Grilli Type',src:'Grilli Type',url:'https://www.grillitype.com/typeface/gt-walsheim',c:0,w:0,e:0,m:0,note:'Premium geometric sans. Very popular in startup branding. Grilli Type.'},
-{name:'GT America',alias:['gt-america'],l:'Proprietary',t:'paid',foundry:'Grilli Type',src:'Grilli Type',url:'https://www.grillitype.com/typeface/gt-america',c:0,w:0,e:0,m:0,note:'Mix of European grotesque and American gothic. Grilli Type premium.'},
-{name:'ABC Diatype',alias:['diatype'],l:'Proprietary',t:'paid',foundry:'ABC Dinamo',src:'Dinamo',url:'https://abcdinamo.com/typefaces/diatype',c:0,w:0,e:0,m:0,note:'Premium grotesque from Dinamo. Popular tech brands.'},
-{name:'Favorit',alias:[],l:'Proprietary',t:'paid',foundry:'ABC Dinamo',src:'Dinamo',url:'https://abcdinamo.com/typefaces/favorit',c:0,w:0,e:0,m:0,note:'Used by Goldman Sachs. Premium Dinamo grotesque.'},
-{name:'Forma DJR',alias:['forma'],l:'Proprietary',t:'paid',foundry:'David Jonathan Ross',src:'Font Bureau',url:'https://djr.com/forma/',c:0,w:0,e:0,m:0,note:'Used by JPMorgan Chase. 1960s Italian grotesque revival.'},
-{name:'Söhne',alias:['sohne','soehne'],l:'Proprietary',t:'paid',foundry:'Klim Type Foundry',src:'Klim',url:'https://klim.co.nz/retail-fonts/sohne/',c:0,w:0,e:0,m:0,note:'Used by OpenAI ChatGPT UI. Premium Klim grotesque. FREE alternative: Inter.'},
-{name:'Tiempos',alias:['tiempos text','tiempos headline'],l:'Proprietary',t:'paid',foundry:'Klim Type Foundry',src:'Klim',url:'https://klim.co.nz/retail-fonts/tiempos-headline/',c:0,w:0,e:0,m:0,note:'Used by The Guardian. Premium news/editorial serif from Klim.'},
-{name:'National 2',alias:['national'],l:'Proprietary',t:'paid',foundry:'Klim Type Foundry',src:'Klim',url:'https://klim.co.nz/retail-fonts/national-2/',c:0,w:0,e:0,m:0,note:'Premium grotesque from New Zealand. Popular editorial design.'},
-{name:'Maison Neue',alias:['maison'],l:'Proprietary',t:'paid',foundry:'Milieu Grotesque',src:'Milieu Grotesque',url:'https://milieugrotesque.com/',c:0,w:0,e:0,m:0,note:'Used by Ferrari. Elegant Swiss grotesque. Premium.'},
-{name:'Styrene',alias:['styrene a','styrene b'],l:'Proprietary',t:'paid',foundry:'Commercial Type',src:'Commercial Type',url:'https://commercialtype.com/catalog/styrene',c:0,w:0,e:0,m:0,note:'Industrial grotesque. Commercial Type premium.'},
-{name:'Lineto Circular',alias:['lt circular'],l:'Proprietary',t:'paid',foundry:'Lineto',src:'Lineto',url:'https://lineto.com/',c:0,w:0,e:0,m:0,note:'Premium Lineto typeface family. Expensive. FREE alternative: Nunito.'},
+// ── GOOGLE FONTS (all free, SIL OFL or Apache 2.0) ─────────────────
+{n:'Inter',t:'free',l:'SIL OFL 1.1',f:'Rasmus Andersson',src:'Google Fonts',url:'https://fonts.google.com/specimen/Inter',c:1,w:1,e:1,m:1,note:'Most popular UI font in the world. Variable font, 9 weights. Free for ALL commercial use.',alt:[]},
+{n:'Roboto',t:'free',l:'Apache 2.0',f:'Christian Robertson / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Roboto',c:1,w:1,e:1,m:1,note:"Google's primary font. Android system font. 6 trillion weekly views. Fully free.",alt:[]},
+{n:'Open Sans',t:'free',l:'Apache 2.0',f:'Steve Matteson / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Open+Sans',c:1,w:1,e:1,m:1,note:'Most-used web font globally. Humanist sans. Variable font. Fully free.',alt:[]},
+{n:'Lato',t:'free',l:'SIL OFL 1.1',f:'Łukasz Dziedzic',src:'Google Fonts',url:'https://fonts.google.com/specimen/Lato',c:1,w:1,e:1,m:1,note:'Semi-rounded sans. Over 1 billion weekly uses. Free for all commercial use.',alt:[]},
+{n:'Poppins',t:'free',l:'SIL OFL 1.1',f:'Indian Type Foundry / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Poppins',c:1,w:1,e:1,m:1,note:'Top UI design font. Geometric sans. Variable font. Fully free.',alt:[]},
+{n:'Montserrat',t:'free',l:'SIL OFL 1.1',f:'Julieta Ulanovsky',src:'Google Fonts',url:'https://fonts.google.com/specimen/Montserrat',c:1,w:1,e:1,m:1,note:'Inspired by Buenos Aires signage. Great for logos. Variable font. SIL OFL.',alt:[]},
+{n:'Raleway',t:'free',l:'SIL OFL 1.1',f:'Matt McInerney et al.',src:'Google Fonts',url:'https://fonts.google.com/specimen/Raleway',c:1,w:1,e:1,m:1,note:'Elegant sans for creative agencies. Variable font. SIL OFL.',alt:[]},
+{n:'Oswald',t:'free',l:'SIL OFL 1.1',f:'Vernon Adams',src:'Google Fonts',url:'https://fonts.google.com/specimen/Oswald',c:1,w:1,e:1,m:1,note:'Condensed display sans. Great Impact/Trade Gothic alternative. Variable font. SIL OFL.',alt:[]},
+{n:'Nunito',t:'free',l:'SIL OFL 1.1',f:'Vernon Adams',src:'Google Fonts',url:'https://fonts.google.com/specimen/Nunito',c:1,w:1,e:1,m:1,note:'Rounded sans. Friendly and warm. Variable font. Best free Circular/Avenir alternative.',alt:[]},
+{n:'Nunito Sans',t:'free',l:'SIL OFL 1.1',f:'Vernon Adams',src:'Google Fonts',url:'https://fonts.google.com/specimen/Nunito+Sans',c:1,w:1,e:1,m:1,note:'Balanced rounded sans. Popular for clean UIs. Variable font. SIL OFL.',alt:[]},
+{n:'Source Sans Pro',t:'free',l:'SIL OFL 1.1',f:'Adobe / Paul D. Hunt',src:'Google Fonts',url:'https://fonts.google.com/specimen/Source+Sans+3',c:1,w:1,e:1,m:1,note:"Adobe's first open source typeface. Variable font. SIL OFL.",alt:[]},
+{n:'Merriweather',t:'free',l:'SIL OFL 1.1',f:'Sorkin Type',src:'Google Fonts',url:'https://fonts.google.com/specimen/Merriweather',c:1,w:1,e:1,m:1,note:'Designed for screen readability. Popular for blogs. SIL OFL.',alt:[]},
+{n:'Playfair Display',t:'free',l:'SIL OFL 1.1',f:'Claus Eggers Sørensen',src:'Google Fonts',url:'https://fonts.google.com/specimen/Playfair+Display',c:1,w:1,e:1,m:1,note:'High-contrast transitional serif. Editorial and luxury branding. Variable font. SIL OFL.',alt:[]},
+{n:'Ubuntu',t:'free',l:'Ubuntu Font License',f:'Dalton Maag / Canonical',src:'Google Fonts',url:'https://fonts.google.com/specimen/Ubuntu',c:1,w:1,e:1,m:0,note:'Ubuntu Font License allows commercial use. Modification restrictions for standalone redistribution.',alt:[]},
+{n:'Bebas Neue',t:'free',l:'SIL OFL 1.1',f:'Ryoichi Tsunekawa',src:'Google Fonts',url:'https://fonts.google.com/specimen/Bebas+Neue',c:1,w:1,e:1,m:1,note:'All-caps condensed display. One of the most downloaded display fonts. SIL OFL.',alt:[]},
+{n:'Rubik',t:'free',l:'SIL OFL 1.1',f:'Hubert & Fischer',src:'Google Fonts',url:'https://fonts.google.com/specimen/Rubik',c:1,w:1,e:1,m:1,note:'Slightly rounded. Modern feel. Variable font. SIL OFL.',alt:[]},
+{n:'Work Sans',t:'free',l:'SIL OFL 1.1',f:'Wei Huang',src:'Google Fonts',url:'https://fonts.google.com/specimen/Work+Sans',c:1,w:1,e:1,m:1,note:'Optimized for screen. Variable font. Good Univers/Trade Gothic alternative. SIL OFL.',alt:[]},
+{n:'Josefin Sans',t:'free',l:'SIL OFL 1.1',f:'Santiago Orozco',src:'Google Fonts',url:'https://fonts.google.com/specimen/Josefin+Sans',c:1,w:1,e:1,m:1,note:'Geometric elegant sans. Great free Futura alternative. Variable font. SIL OFL.',alt:[]},
+{n:'Fira Sans',t:'free',l:'SIL OFL 1.1',f:'Mozilla / Carrois',src:'Google Fonts',url:'https://fonts.google.com/specimen/Fira+Sans',c:1,w:1,e:1,m:1,note:'Firefox OS font. Excellent readability. Variable font. SIL OFL.',alt:[]},
+{n:'DM Sans',t:'free',l:'SIL OFL 1.1',f:'Colophon / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/DM+Sans',c:1,w:1,e:1,m:1,note:'Low-contrast geometric. Excellent for UI. Variable font. SIL OFL.',alt:[]},
+{n:'Space Grotesk',t:'free',l:'SIL OFL 1.1',f:'Florian Karsten',src:'Google Fonts',url:'https://fonts.google.com/specimen/Space+Grotesk',c:1,w:1,e:1,m:1,note:'Quirky grotesque for tech brands. Variable font. SIL OFL.',alt:[]},
+{n:'Outfit',t:'free',l:'SIL OFL 1.1',f:'On Brand Investments',src:'Google Fonts',url:'https://fonts.google.com/specimen/Outfit',c:1,w:1,e:1,m:1,note:'Variable font. Modern geometric sans. SIL OFL.',alt:[]},
+{n:'Manrope',t:'free',l:'SIL OFL 1.1',f:'Mikhail Sharanda',src:'Google Fonts',url:'https://fonts.google.com/specimen/Manrope',c:1,w:1,e:1,m:1,note:'Geometric sans. Variable font. SIL OFL.',alt:[]},
+{n:'Plus Jakarta Sans',t:'free',l:'SIL OFL 1.1',f:'Tokotype',src:'Google Fonts',url:'https://fonts.google.com/specimen/Plus+Jakarta+Sans',c:1,w:1,e:1,m:1,note:'Contemporary technical sans. Variable font. SIL OFL.',alt:[]},
+{n:'Mulish',t:'free',l:'SIL OFL 1.1',f:'Vernon Adams',src:'Google Fonts',url:'https://fonts.google.com/specimen/Mulish',c:1,w:1,e:1,m:1,note:'Minimalist geometric. Variable font. SIL OFL.',alt:[]},
+{n:'Quicksand',t:'free',l:'SIL OFL 1.1',f:'Andrew Paglinawan',src:'Google Fonts',url:'https://fonts.google.com/specimen/Quicksand',c:1,w:1,e:1,m:1,note:'Rounded display sans. Variable font. SIL OFL.',alt:[]},
+{n:'Cabin',t:'free',l:'SIL OFL 1.1',f:'Impallari Type',src:'Google Fonts',url:'https://fonts.google.com/specimen/Cabin',c:1,w:1,e:1,m:1,note:'Humanist sans. Good free Gill Sans alternative. Variable font. SIL OFL.',alt:[]},
+{n:'Jost',t:'free',l:'SIL OFL 1.1',f:'Owen Earl / indestructible type*',src:'Google Fonts',url:'https://fonts.google.com/specimen/Jost',c:1,w:1,e:1,m:1,note:'Based on Futura. Best free Futura alternative. Variable font. SIL OFL.',alt:[]},
+{n:'Karla',t:'free',l:'SIL OFL 1.1',f:'Jonathan Pinhorn',src:'Google Fonts',url:'https://fonts.google.com/specimen/Karla',c:1,w:1,e:1,m:1,note:'Grotesque sans. Tamil + Latin. Variable font. SIL OFL.',alt:[]},
+{n:'Barlow',t:'free',l:'SIL OFL 1.1',f:'Jeremy Tribby',src:'Google Fonts',url:'https://fonts.google.com/specimen/Barlow',c:1,w:1,e:1,m:1,note:'Slightly rounded grotesque. Variable font. Great Trade Gothic/FF DIN alternative. SIL OFL.',alt:[]},
+{n:'Noto Sans',t:'free',l:'SIL OFL 1.1',f:'Google',src:'Google Fonts',url:'https://fonts.google.com/noto',c:1,w:1,e:1,m:1,note:"Google's universal font. Supports 1,000+ languages. Variable font. SIL OFL.",alt:[]},
+{n:'Lora',t:'free',l:'SIL OFL 1.1',f:'Olga Karpushina / Cyreal',src:'Google Fonts',url:'https://fonts.google.com/specimen/Lora',c:1,w:1,e:1,m:1,note:'Contemporary serif with calligraphic roots. Variable font. SIL OFL.',alt:[]},
+{n:'EB Garamond',t:'free',l:'SIL OFL 1.1',f:'Georg Duffner',src:'Google Fonts',url:'https://fonts.google.com/specimen/EB+Garamond',c:1,w:1,e:1,m:1,note:'Best free Garamond option. Use this instead of paid versions. SIL OFL.',alt:[]},
+{n:'Cormorant Garamond',t:'free',l:'SIL OFL 1.1',f:'Christian Thalmann',src:'Google Fonts',url:'https://fonts.google.com/specimen/Cormorant+Garamond',c:1,w:1,e:1,m:1,note:'High-contrast elegant serif. Luxury use. Variable font. SIL OFL.',alt:[]},
+{n:'Libre Baskerville',t:'free',l:'SIL OFL 1.1',f:'Impallari Type',src:'Google Fonts',url:'https://fonts.google.com/specimen/Libre+Baskerville',c:1,w:1,e:1,m:1,note:'Best free Baskerville. Web-optimized. SIL OFL.',alt:[]},
+{n:'Libre Bodoni',t:'free',l:'SIL OFL 1.1',f:'Impallari Type',src:'Google Fonts',url:'https://fonts.google.com/specimen/Libre+Bodoni',c:1,w:1,e:1,m:1,note:'Best free Bodoni. Use instead of ITC/Bauer Bodoni. SIL OFL.',alt:[]},
+{n:'Cinzel',t:'free',l:'SIL OFL 1.1',f:'Natanael Gama',src:'Google Fonts',url:'https://fonts.google.com/specimen/Cinzel',c:1,w:1,e:1,m:1,note:'Roman inscription-inspired serif. Authority and luxury feel. Variable font. SIL OFL.',alt:[]},
+{n:'Crimson Text',t:'free',l:'SIL OFL 1.1',f:'Sebastian Kosch',src:'Google Fonts',url:'https://fonts.google.com/specimen/Crimson+Text',c:1,w:1,e:1,m:1,note:'Old-style serif. Perfect for long-form text. SIL OFL.',alt:[]},
+{n:'PT Sans',t:'free',l:'SIL OFL 1.1',f:'ParaType',src:'Google Fonts',url:'https://fonts.google.com/specimen/PT+Sans',c:1,w:1,e:1,m:1,note:'Latin and Cyrillic. Russian federal program font. SIL OFL.',alt:[]},
+{n:'PT Serif',t:'free',l:'SIL OFL 1.1',f:'ParaType',src:'Google Fonts',url:'https://fonts.google.com/specimen/PT+Serif',c:1,w:1,e:1,m:1,note:'Serif companion to PT Sans. Latin and Cyrillic. SIL OFL.',alt:[]},
+{n:'Dancing Script',t:'free',l:'SIL OFL 1.1',f:'Impallari Type',src:'Google Fonts',url:'https://fonts.google.com/specimen/Dancing+Script',c:1,w:1,e:1,m:1,note:'Casual script. Variable font. SIL OFL — free for all commercial use.',alt:[]},
+{n:'Pacifico',t:'free',l:'SIL OFL 1.1',f:'Vernon Adams',src:'Google Fonts',url:'https://fonts.google.com/specimen/Pacifico',c:1,w:1,e:1,m:1,note:'Fun brush script for logos. SIL OFL.',alt:[]},
+{n:'Caveat',t:'free',l:'SIL OFL 1.1',f:'Pablo Impallari',src:'Google Fonts',url:'https://fonts.google.com/specimen/Caveat',c:1,w:1,e:1,m:1,note:'Handwriting style. Variable font. SIL OFL.',alt:[]},
+{n:'Great Vibes',t:'free',l:'SIL OFL 1.1',f:'TypeSETit',src:'Google Fonts',url:'https://fonts.google.com/specimen/Great+Vibes',c:1,w:1,e:1,m:1,note:'Elegant calligraphic script. Weddings and luxury. SIL OFL.',alt:[]},
+{n:'Sacramento',t:'free',l:'SIL OFL 1.1',f:'Astigmatic',src:'Google Fonts',url:'https://fonts.google.com/specimen/Sacramento',c:1,w:1,e:1,m:1,note:'Calligraphic style script. SIL OFL.',alt:[]},
+{n:'Lobster',t:'free',l:'SIL OFL 1.1',f:'Pablo Impallari',src:'Google Fonts',url:'https://fonts.google.com/specimen/Lobster',c:1,w:1,e:1,m:1,note:'Connected script with retro feel. SIL OFL.',alt:[]},
+{n:'Anton',t:'free',l:'SIL OFL 1.1',f:'Vernon Adams',src:'Google Fonts',url:'https://fonts.google.com/specimen/Anton',c:1,w:1,e:1,m:1,note:'Bold condensed. Great free Impact alternative. SIL OFL.',alt:[]},
+{n:'JetBrains Mono',t:'free',l:'SIL OFL 1.1',f:'JetBrains',src:'Google Fonts',url:'https://fonts.google.com/specimen/JetBrains+Mono',c:1,w:1,e:1,m:1,note:'Developer font by JetBrains. Variable font. SIL OFL.',alt:[]},
+{n:'Fira Code',t:'free',l:'SIL OFL 1.1',f:'Nikita Prokopov',src:'Google Fonts',url:'https://fonts.google.com/specimen/Fira+Code',c:1,w:1,e:1,m:1,note:'Monospace with programming ligatures. Developer favorite. SIL OFL.',alt:[]},
+{n:'Source Code Pro',t:'free',l:'SIL OFL 1.1',f:'Adobe / Paul D. Hunt',src:'Google Fonts',url:'https://fonts.google.com/specimen/Source+Code+Pro',c:1,w:1,e:1,m:1,note:"Adobe's open source monospace. SIL OFL.",alt:[]},
+{n:'Inconsolata',t:'free',l:'SIL OFL 1.1',f:'Raph Levien',src:'Google Fonts',url:'https://fonts.google.com/specimen/Inconsolata',c:1,w:1,e:1,m:1,note:'Beautiful monospace. Inspired by Consolas. SIL OFL.',alt:[]},
+{n:'Space Mono',t:'free',l:'SIL OFL 1.1',f:'Colophon',src:'Google Fonts',url:'https://fonts.google.com/specimen/Space+Mono',c:1,w:1,e:1,m:1,note:'Sci-fi aesthetic monospace. SIL OFL.',alt:[]},
+{n:'DM Mono',t:'free',l:'SIL OFL 1.1',f:'Colophon / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/DM+Mono',c:1,w:1,e:1,m:1,note:'Clean developer monospace. Companion to DM Sans. SIL OFL.',alt:[]},
+{n:'Zilla Slab',t:'free',l:'SIL OFL 1.1',f:'Mozilla',src:'Google Fonts',url:'https://fonts.google.com/specimen/Zilla+Slab',c:1,w:1,e:1,m:1,note:"Mozilla's slab serif. Great free Rockwell/Clarendon alternative. SIL OFL.",alt:[]},
+{n:'Roboto Slab',t:'free',l:'Apache 2.0',f:'Christian Robertson / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Roboto+Slab',c:1,w:1,e:1,m:1,note:'Slab companion to Roboto. Variable font. Apache 2.0.',alt:[]},
+{n:'Exo 2',t:'free',l:'SIL OFL 1.1',f:'Natanael Gama',src:'Google Fonts',url:'https://fonts.google.com/specimen/Exo+2',c:1,w:1,e:1,m:1,note:'Geometric sans with sci-fi feel. Variable font. SIL OFL.',alt:[]},
+{n:'Comfortaa',t:'free',l:'SIL OFL 1.1',f:'Johan Aakerlund',src:'Google Fonts',url:'https://fonts.google.com/specimen/Comfortaa',c:1,w:1,e:1,m:1,note:'Rounded geometric display. Variable font. SIL OFL.',alt:[]},
+{n:'Teko',t:'free',l:'SIL OFL 1.1',f:'Indian Type Foundry',src:'Google Fonts',url:'https://fonts.google.com/specimen/Teko',c:1,w:1,e:1,m:1,note:'Devanagari + Latin condensed. Strong headlines. SIL OFL.',alt:[]},
+{n:'Spectral',t:'free',l:'SIL OFL 1.1',f:'Production Type / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Spectral',c:1,w:1,e:1,m:1,note:'Serif for screens. Variable font. SIL OFL.',alt:[]},
+{n:'Righteous',t:'free',l:'SIL OFL 1.1',f:'Astigmatic',src:'Google Fonts',url:'https://fonts.google.com/specimen/Righteous',c:1,w:1,e:1,m:1,note:'Art deco-influenced display. SIL OFL.',alt:[]},
+{n:'Permanent Marker',t:'free',l:'Apache 2.0',f:'Font Diner',src:'Google Fonts',url:'https://fonts.google.com/specimen/Permanent+Marker',c:1,w:1,e:1,m:1,note:'Marker handwriting style. Strong and casual. Apache 2.0.',alt:[]},
+{n:'Architects Daughter',t:'free',l:'Apache 2.0',f:'Kimberly Geswein',src:'Google Fonts',url:'https://fonts.google.com/specimen/Architects+Daughter',c:1,w:1,e:1,m:1,note:'Handwritten architectural style. Apache 2.0.',alt:[]},
+{n:'Fraunces',t:'free',l:'SIL OFL 1.1',f:'Undercase Type / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Fraunces',c:1,w:1,e:1,m:1,note:'Soft quirky display serif. Variable font with unique axes. SIL OFL.',alt:[]},
+{n:'Syne',t:'free',l:'SIL OFL 1.1',f:'Bonjour Monde / Lucas Descroix',src:'Google Fonts',url:'https://fonts.google.com/specimen/Syne',c:1,w:1,e:1,m:1,note:'Unique display font family. Variable font. SIL OFL.',alt:[]},
+{n:'Urbanist',t:'free',l:'SIL OFL 1.1',f:'Corey Hu',src:'Google Fonts',url:'https://fonts.google.com/specimen/Urbanist',c:1,w:1,e:1,m:1,note:'Low-contrast geometric sans. Variable font. SIL OFL.',alt:[]},
+{n:'Hanken Grotesk',t:'free',l:'SIL OFL 1.1',f:'Wei Huang',src:'Google Fonts',url:'https://fonts.google.com/specimen/Hanken+Grotesk',c:1,w:1,e:1,m:1,note:'Clean grotesque. Variable font. Great Univers/Helvetica alternative. SIL OFL.',alt:[]},
+{n:'Figtree',t:'free',l:'SIL OFL 1.1',f:'Erik Kennedy',src:'Google Fonts',url:'https://fonts.google.com/specimen/Figtree',c:1,w:1,e:1,m:1,note:'Friendly geometric sans. Variable font. SIL OFL.',alt:[]},
+{n:'Be Vietnam Pro',t:'free',l:'SIL OFL 1.1',f:'Be Communications',src:'Google Fonts',url:'https://fonts.google.com/specimen/Be+Vietnam+Pro',c:1,w:1,e:1,m:1,note:'Latin + Vietnamese. Humanist sans. Variable font. SIL OFL.',alt:[]},
+{n:'Lexend',t:'free',l:'SIL OFL 1.1',f:'Thomas Jockin / Bonnie Shaver-Troup',src:'Google Fonts',url:'https://fonts.google.com/specimen/Lexend',c:1,w:1,e:1,m:1,note:'Designed to improve reading. Variable font. SIL OFL.',alt:[]},
+{n:'Carlito',t:'free',l:'SIL OFL 1.1',f:'Łukasz Dziedzic',src:'Google Fonts',url:'https://fonts.google.com/specimen/Carlito',c:1,w:1,e:1,m:1,note:'Metric-compatible with Calibri. Free alternative to the Microsoft font. SIL OFL.',alt:['calibri']},
+{n:'Gelasio',t:'free',l:'SIL OFL 1.1',f:'Eben Sorkin',src:'Google Fonts',url:'https://fonts.google.com/specimen/Gelasio',c:1,w:1,e:1,m:1,note:'Metric-compatible with Georgia. Free web alternative. SIL OFL.',alt:['georgia']},
+{n:'Arimo',t:'free',l:'Apache 2.0',f:'Steve Matteson / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Arimo',c:1,w:1,e:1,m:1,note:'Metric-compatible with Arial. Variable font. Apache 2.0.',alt:['arial']},
+{n:'Tinos',t:'free',l:'Apache 2.0',f:'Steve Matteson / Google',src:'Google Fonts',url:'https://fonts.google.com/specimen/Tinos',c:1,w:1,e:1,m:1,note:'Metric-compatible with Times New Roman. Apache 2.0.',alt:['times new roman','times']},
+// ── FONTSHARE (free, SIL OFL) ───────────────────────────────────────
+{n:'Satoshi',t:'free',l:'SIL OFL 1.1',f:'Indian Type Foundry',src:'Fontshare',url:'https://www.fontshare.com/fonts/satoshi',c:1,w:1,e:1,m:1,note:"Fontshare's most popular font. Modern geometric sans. SIL OFL.",alt:[]},
+{n:'Cabinet Grotesk',t:'free',l:'SIL OFL 1.1',f:'Dirtyline Studio',src:'Fontshare',url:'https://www.fontshare.com/fonts/cabinet-grotesk',c:1,w:1,e:1,m:1,note:'Strong display grotesque. Variable font. Fontshare. SIL OFL.',alt:[]},
+{n:'Clash Display',t:'free',l:'SIL OFL 1.1',f:'Indian Type Foundry',src:'Fontshare',url:'https://www.fontshare.com/fonts/clash-display',c:1,w:1,e:1,m:1,note:'Bold display sans. Variable font. Fontshare. SIL OFL.',alt:[]},
+{n:'Clash Grotesk',t:'free',l:'SIL OFL 1.1',f:'Indian Type Foundry',src:'Fontshare',url:'https://www.fontshare.com/fonts/clash-grotesk',c:1,w:1,e:1,m:1,note:'Bold grotesque. Variable font. Fontshare. SIL OFL.',alt:[]},
+{n:'General Sans',t:'free',l:'SIL OFL 1.1',f:'Indian Type Foundry',src:'Fontshare',url:'https://www.fontshare.com/fonts/general-sans',c:1,w:1,e:1,m:1,note:'Geometric sans from Fontshare. Variable font. SIL OFL.',alt:[]},
+{n:'Switzer',t:'free',l:'SIL OFL 1.1',f:'Jithin Johny',src:'Fontshare',url:'https://www.fontshare.com/fonts/switzer',c:1,w:1,e:1,m:1,note:'Versatile grotesque. Variable font. Fontshare. SIL OFL.',alt:[]},
+{n:'Chillax',t:'free',l:'SIL OFL 1.1',f:'Indian Type Foundry',src:'Fontshare',url:'https://www.fontshare.com/fonts/chillax',c:1,w:1,e:1,m:1,note:'Expressive variable sans. Fontshare. SIL OFL.',alt:[]},
+{n:'Sentient',t:'free',l:'SIL OFL 1.1',f:'Indian Type Foundry',src:'Fontshare',url:'https://www.fontshare.com/fonts/sentient',c:1,w:1,e:1,m:1,note:'Optical serif. Variable font. Fontshare. SIL OFL.',alt:[]},
+{n:'Boska',t:'free',l:'SIL OFL 1.1',f:'Manas Bhatia',src:'Fontshare',url:'https://www.fontshare.com/fonts/boska',c:1,w:1,e:1,m:1,note:'High-contrast display serif. Variable font. Fontshare. SIL OFL.',alt:[]},
+// ── DAFONT — common "personal use" fonts ───────────────────────────
+{n:'Nectarine',t:'personal',l:'Free for Personal Use',f:'weknow (Ivan Filipov)',src:'DaFont',url:'https://www.dafont.com/nectarine.font',c:0,w:0,e:0,m:0,note:'Available on DaFont. Free for personal use ONLY — cannot be used commercially without purchasing a license from the designer. Contact weknow for commercial licensing.',alt:['pacifico','dancing script']},
+{n:'Ballpoint',t:'personal',l:'Free for Personal Use',f:'Various designers',src:'DaFont',url:'https://www.dafont.com/search.php?q=ballpoint',c:0,w:0,e:0,m:0,note:'Ballpoint-style handwriting font from DaFont. Personal use only — commercial use requires purchasing a license. Check the specific font page for contact details.',alt:['caveat','permanent marker']},
+{n:'Aquire',t:'personal',l:'Free for Personal Use',f:'Sportsfreunde Studios',src:'DaFont',url:'https://www.dafont.com/aquire.font',c:0,w:0,e:0,m:0,note:'Tech/futuristic font from DaFont. Personal use free. Commercial license must be purchased from the designer.',alt:['exo 2','teko']},
+{n:'Bebas',t:'personal',l:'Free for Personal Use (old)',f:'Ryoichi Tsunekawa',src:'DaFont (old version)',url:'https://fonts.google.com/specimen/Bebas+Neue',c:0,w:0,e:0,m:0,note:'The old DaFont version of Bebas is personal use only. Use Bebas Neue on Google Fonts instead — it is completely free under SIL OFL.',alt:['bebas neue','oswald']},
+{n:'Norwester',t:'personal',l:'Free for Personal Use',f:'Jamie Wilson',src:'DaFont',url:'https://www.dafont.com/norwester.font',c:0,w:0,e:0,m:0,note:'Condensed geometric font from DaFont. Personal use only. Commercial license available from the designer.',alt:['oswald','teko']},
+{n:'Wicked Mouse',t:'personal',l:'Free for Personal Use',f:'Various',src:'DaFont',url:'https://www.dafont.com',c:0,w:0,e:0,m:0,note:'Decorative font from DaFont. Personal use free. Check the specific font page for commercial licensing.',alt:[]},
+{n:'Blackout',t:'personal',l:'Free for Personal Use',f:'Tyler Finck',src:'DaFont',url:'https://www.dafont.com/blackout.font',c:0,w:0,e:0,m:0,note:'Heavy display font. Personal use free. Commercial license required for paid projects.',alt:['bebas neue','anton']},
+{n:'Kollektif',t:'free',l:'SIL OFL 1.1',f:'Kasper Pyndt',src:'GitHub',url:'https://github.com/theleagueof/league-spartan',c:1,w:1,e:1,m:1,note:'Clean geometric sans. SIL OFL — fully free for commercial use.',alt:[]},
+{n:'League Spartan',t:'free',l:'SIL OFL 1.1',f:'The League of Moveable Type',src:'Google Fonts',url:'https://fonts.google.com/specimen/League+Spartan',c:1,w:1,e:1,m:1,note:'Bold condensed sans. SIL OFL.',alt:[]},
+// ── PAID / PROPRIETARY ─────────────────────────────────────────────
+{n:'Helvetica',t:'paid',l:'Proprietary',f:'Monotype / Max Miedinger',src:'Monotype',url:'https://www.myfonts.com/search/helvetica',c:0,w:0,e:0,m:0,note:"World's most famous font. Requires paid license from Monotype (~$35–100+ per style). CSS fallback OK (uses system-installed copy) but no self-hosting or redistribution. FREE alternatives: Inter (best), Hanken Grotesk, Work Sans.",alt:['inter','hanken grotesk','work sans']},
+{n:'Helvetica Neue',t:'paid',l:'Proprietary',f:'Monotype',src:'Monotype',url:'https://www.myfonts.com/search/helvetica+neue',c:0,w:0,e:0,m:0,note:'Updated Helvetica. Premium license required. FREE alternatives: Inter, DM Sans.',alt:['inter','dm sans']},
+{n:'Futura',t:'paid',l:'Proprietary',f:'Bauer / Neufville Digital',src:'MyFonts',url:'https://www.myfonts.com/search/futura',c:0,w:0,e:0,m:0,note:"1927 geometric classic. Must purchase (~$40+/style). FREE alternatives: Jost (closest match), Josefin Sans, Nunito.",alt:['jost','josefin sans']},
+{n:'Gotham',t:'paid',l:'Proprietary',f:'Hoefler & Co',src:'Hoefler & Co',url:'https://www.typography.com/fonts/gotham',c:0,w:0,e:0,m:0,note:'Obama 2008, Tesla, Warner Bros. ~$199+/style. Very expensive. FREE alternative: Montserrat (good match).',alt:['montserrat']},
+{n:'Proxima Nova',t:'paid',l:'Proprietary',f:'Mark Simonson Studio',src:'MyFonts / Adobe Fonts',url:'https://www.myfonts.com/search/proxima+nova',c:0,w:0,e:0,m:0,note:'Most popular paid web font. Available on Adobe Fonts (CC subscription). FREE alternatives: Nunito Sans, DM Sans.',alt:['nunito sans','dm sans']},
+{n:'Brandon Grotesque',t:'paid',l:'Proprietary',f:'HVD Fonts',src:'MyFonts',url:'https://www.myfonts.com/search/brandon+grotesque',c:0,w:0,e:0,m:0,note:'Popular branding font. ~$200+ full family. FREE alternatives: Raleway, Nunito.',alt:['raleway','nunito']},
+{n:'Circular',t:'paid',l:'Proprietary',f:'Lineto',src:'Lineto',url:'https://lineto.com/typefaces/circular',c:0,w:0,e:0,m:0,note:'Spotify, Airbnb, Google News. ~$900+/style — very expensive. FREE alternative: Nunito (closest match).',alt:['nunito']},
+{n:'Avenir',t:'paid',l:'Proprietary',f:'Monotype / Adrian Frutiger',src:'MyFonts',url:'https://www.myfonts.com/search/avenir',c:0,w:0,e:0,m:0,note:'Adrian Frutiger geometric. Used by Apple for years. FREE alternatives: Nunito, Jost.',alt:['nunito','jost']},
+{n:'Didot',t:'paid',l:'Proprietary',f:'Linotype / Hoefler',src:'MyFonts',url:'https://www.myfonts.com/search/didot',c:0,w:0,e:0,m:0,note:"Luxury serif. Zara, Harper's Bazaar. FREE alternative: Playfair Display.",alt:['playfair display']},
+{n:'Gill Sans',t:'paid',l:'Proprietary',f:'Monotype / Eric Gill',src:'Monotype',url:'https://www.myfonts.com/search/gill+sans',c:0,w:0,e:0,m:0,note:'BBC, Penguin Books. FREE alternative: Cabin.',alt:['cabin']},
+{n:'Trade Gothic',t:'paid',l:'Proprietary',f:'Linotype / Jackson Burke',src:'MyFonts',url:'https://www.myfonts.com/search/trade+gothic',c:0,w:0,e:0,m:0,note:'Nike, Wall Street Journal. FREE alternative: Barlow Condensed.',alt:['barlow']},
+{n:'Univers',t:'paid',l:'Proprietary',f:'Monotype / Adrian Frutiger',src:'MyFonts',url:'https://www.myfonts.com/search/univers',c:0,w:0,e:0,m:0,note:'Swiss design classic. FREE alternatives: Work Sans, Hanken Grotesk.',alt:['work sans','hanken grotesk']},
+{n:'Optima',t:'paid',l:'Proprietary',f:'Monotype / Hermann Zapf',src:'MyFonts',url:'https://www.myfonts.com/search/optima',c:0,w:0,e:0,m:0,note:'Flared humanist sans. Estée Lauder. FREE alternative: Questrial.',alt:[]},
+{n:'Garamond',t:'personal',l:'Varies by version',f:'Multiple foundries',src:'Multiple',url:'https://fonts.google.com/specimen/EB+Garamond',c:2,w:2,e:2,m:0,note:"IMPORTANT: 'Garamond' exists in many versions. Adobe Garamond, ITC Garamond, Monotype Garamond = paid. Original is 500yo public domain. EB Garamond on Google Fonts = FREE (SIL OFL) — use that.",alt:['eb garamond','cormorant garamond']},
+{n:'Baskerville',t:'personal',l:'Varies by version',f:'Multiple foundries',src:'Multiple',url:'https://fonts.google.com/specimen/Libre+Baskerville',c:2,w:2,e:2,m:0,note:'Original public domain, modern digitizations (ITC, Monotype) = paid. Libre Baskerville on Google Fonts = FREE (SIL OFL).',alt:['libre baskerville']},
+{n:'Bodoni',t:'personal',l:'Varies by version',f:'Multiple foundries',src:'Multiple',url:'https://fonts.google.com/specimen/Libre+Bodoni',c:2,w:2,e:2,m:0,note:'ITC Bodoni, Bauer Bodoni = paid. Libre Bodoni on Google Fonts = FREE (SIL OFL). Check which version you have.',alt:['libre bodoni']},
+{n:'Caslon',t:'personal',l:'Varies by version',f:'Multiple foundries',src:'Multiple',url:'https://fonts.google.com/specimen/EB+Garamond',c:2,w:2,e:2,m:0,note:'Classic old-style serif. Adobe Caslon = Adobe Fonts subscription. IM Fell English on Google Fonts is a free alternative.',alt:[]},
+{n:'Times New Roman',t:'paid',l:'Proprietary',f:'Monotype / Stanley Morison',src:'Microsoft/Monotype',url:'https://www.myfonts.com/search/times+new+roman',c:2,w:0,e:0,m:0,note:'Windows system font. Safe as CSS fallback only — uses installed version. Cannot be self-hosted. FREE alternatives: Libre Baskerville, Lora, Tinos (metric-compatible).',alt:['libre baskerville','lora','tinos']},
+{n:'Arial',t:'paid',l:'Proprietary',f:'Monotype',src:'Microsoft',url:'https://www.myfonts.com/search/arial',c:2,w:0,e:0,m:0,note:'Windows system font. Safe as CSS fallback. Cannot be self-hosted. FREE alternative: Inter (better in every way), Arimo (metric-compatible).',alt:['inter','arimo']},
+{n:'Georgia',t:'paid',l:'Proprietary',f:'Microsoft / Matthew Carter',src:'Microsoft',url:'https://www.myfonts.com/search/georgia',c:2,w:0,e:0,m:0,note:'Microsoft web font. Excellent CSS fallback (pre-installed). Cannot be redistributed. FREE alternatives: Lora, Merriweather, Gelasio (metric-compatible).',alt:['lora','merriweather','gelasio']},
+{n:'Verdana',t:'paid',l:'Proprietary',f:'Microsoft / Matthew Carter',src:'Microsoft',url:'https://www.myfonts.com/search/verdana',c:2,w:0,e:0,m:0,note:'Microsoft web core font. CSS fallback OK. Cannot be redistributed. FREE alternative: Nunito.',alt:['nunito']},
+{n:'Calibri',t:'paid',l:'Proprietary',f:'Microsoft / Lucas de Groot',src:'Microsoft',url:'',c:2,w:0,e:0,m:0,note:'Microsoft Office default. OK in documents (requires Office license). FREE alternative: Carlito on Google Fonts (metric-compatible, SIL OFL).',alt:['carlito']},
+{n:'Impact',t:'paid',l:'Proprietary',f:'Monotype',src:'Microsoft',url:'',c:2,w:0,e:0,m:0,note:'The meme font. Windows system font. CSS fallback OK. Cannot be redistributed. FREE alternative: Anton (Google Fonts, SIL OFL).',alt:['anton']},
+{n:'Palatino',t:'paid',l:'Proprietary',f:'Monotype / Hermann Zapf',src:'MyFonts',url:'https://www.myfonts.com/search/palatino',c:0,w:0,e:0,m:0,note:'Calligraphic serif. FREE alternatives: EB Garamond, Crimson Text.',alt:['eb garamond','crimson text']},
+{n:'Myriad Pro',t:'paid',l:'Proprietary',f:'Adobe',src:'Adobe Fonts',url:'https://fonts.adobe.com/fonts/myriad',c:0,w:0,e:0,m:0,note:"Adobe's humanist sans (old Apple font). Adobe CC subscription needed. FREE alternative: Cabin.",alt:['cabin']},
+{n:'Akzidenz-Grotesk',t:'paid',l:'Proprietary',f:'Berthold',src:'Berthold Types',url:'https://www.bertholdtypes.com/',c:0,w:0,e:0,m:0,note:"Inspired Helvetica and Univers. 1896 original. Available from Berthold. FREE alternatives: Work Sans, Hanken Grotesk.",alt:['work sans','hanken grotesk']},
+{n:'FF DIN',t:'paid',l:'Proprietary',f:'FontFont / Monotype',src:'MyFonts',url:'https://www.myfonts.com/search/ff+din',c:0,w:0,e:0,m:0,note:'Industrial German signage. Corporate design staple. FREE alternative: Barlow.',alt:['barlow']},
+{n:'Rockwell',t:'paid',l:'Proprietary',f:'Monotype',src:'MyFonts',url:'https://www.myfonts.com/search/rockwell',c:0,w:0,e:0,m:0,note:'Geometric slab serif. FREE alternative: Zilla Slab (SIL OFL).',alt:['zilla slab']},
+{n:'Clarendon',t:'paid',l:'Proprietary',f:'Monotype',src:'MyFonts',url:'https://www.myfonts.com/search/clarendon',c:0,w:0,e:0,m:0,note:'Victorian slab serif. FREE alternative: Roboto Slab, Zilla Slab.',alt:['zilla slab','roboto slab']},
+{n:'Gotham Rounded',t:'paid',l:'Proprietary',f:'Hoefler & Co',src:'Hoefler & Co',url:'https://www.typography.com/fonts/gotham-rounded',c:0,w:0,e:0,m:0,note:'Rounded Gotham variant. Very expensive. FREE alternative: Nunito, Quicksand.',alt:['nunito','quicksand']},
+{n:'Graphik',t:'paid',l:'Proprietary',f:'Commercial Type',src:'Commercial Type',url:'https://commercialtype.com/catalog/graphik',c:0,w:0,e:0,m:0,note:'Tech company branding favorite. Premium. FREE alternative: Inter, Outfit.',alt:['inter','outfit']},
+{n:'Canela',t:'paid',l:'Proprietary',f:'Commercial Type',src:'Commercial Type',url:'https://commercialtype.com/catalog/canela',c:0,w:0,e:0,m:0,note:'Elegant contemporary serif. Used by Vogue. Premium. FREE alternative: Cormorant Garamond.',alt:['cormorant garamond']},
+{n:'Druk',t:'paid',l:'Proprietary',f:'Commercial Type',src:'Commercial Type',url:'https://commercialtype.com/catalog/druk',c:0,w:0,e:0,m:0,note:'Ultra bold headline. The Guardian, GQ. Premium. FREE alternative: Anton, Bebas Neue.',alt:['anton','bebas neue']},
+{n:'GT Walsheim',t:'paid',l:'Proprietary',f:'Grilli Type',src:'Grilli Type',url:'https://www.grillitype.com/typeface/gt-walsheim',c:0,w:0,e:0,m:0,note:'Very popular startup/tech branding font. Premium Grilli Type. FREE alternative: Outfit, DM Sans.',alt:['outfit','dm sans']},
+{n:'GT America',t:'paid',l:'Proprietary',f:'Grilli Type',src:'Grilli Type',url:'https://www.grillitype.com/typeface/gt-america',c:0,w:0,e:0,m:0,note:'European grotesque meets American gothic. Premium Grilli Type.',alt:['barlow','work sans']},
+{n:'Söhne',t:'paid',l:'Proprietary',f:'Klim Type Foundry',src:'Klim',url:'https://klim.co.nz/retail-fonts/sohne/',c:0,w:0,e:0,m:0,note:'ChatGPT UI font. Premium Klim. FREE alternative: Inter.',alt:['inter']},
+{n:'Favorit',t:'paid',l:'Proprietary',f:'ABC Dinamo',src:'Dinamo',url:'https://abcdinamo.com/typefaces/favorit',c:0,w:0,e:0,m:0,note:'Goldman Sachs, various fashion brands. Premium Dinamo grotesque. FREE alternative: Work Sans.',alt:['work sans']},
+{n:'Neue Haas Grotesk',t:'paid',l:'Proprietary',f:'Monotype',src:'Monotype',url:'https://www.myfonts.com/search/neue+haas+grotesk',c:0,w:0,e:0,m:0,note:'Original Helvetica before renaming. Premium restoration. FREE alternative: Inter.',alt:['inter']},
+{n:'Aktiv Grotesk',t:'paid',l:'Proprietary',f:'Dalton Maag',src:'MyFonts',url:'https://www.myfonts.com/search/aktiv+grotesk',c:0,w:0,e:0,m:0,note:'Popular Helvetica substitute. Dalton Maag premium. FREE alternative: Inter.',alt:['inter']},
+{n:'Museo Sans',t:'personal',l:'Free Personal / Paid Commercial',f:'exljbris / Jos Buivenga',src:'MyFonts',url:'https://www.myfonts.com/search/museo+sans',c:0,w:0,e:0,m:0,note:'Museo 100 & 300 weights are free for personal use only. All weights need a commercial license.',alt:['josefin sans','raleway']},
+{n:'Century Gothic',t:'paid',l:'Proprietary',f:'Monotype',src:'Microsoft/Monotype',url:'https://www.myfonts.com/search/century+gothic',c:2,w:0,e:0,m:0,note:'Microsoft Office font. OK in documents (with Office license). Cannot be web-hosted. FREE alternative: Jost, Nunito.',alt:['jost','nunito']},
+{n:'Tiempos',t:'paid',l:'Proprietary',f:'Klim Type Foundry',src:'Klim',url:'https://klim.co.nz/retail-fonts/tiempos-headline/',c:0,w:0,e:0,m:0,note:'The Guardian. Premium editorial serif. FREE alternative: Playfair Display, EB Garamond.',alt:['playfair display','eb garamond']},
+{n:'Maison Neue',t:'paid',l:'Proprietary',f:'Milieu Grotesque',src:'Milieu Grotesque',url:'https://milieugrotesque.com/',c:0,w:0,e:0,m:0,note:'Ferrari. Elegant Swiss grotesque. Premium. FREE alternative: Work Sans.',alt:['work sans']},
 ];
 
-// ── SEARCH ENGINE ─────────────────────────────────────────
-function normalize(s){ return s.toLowerCase().replace(/[^a-z0-9 ]/g,'').trim(); }
+// ── SEARCH ENGINE ──────────────────────────────────────────────────
+function norm(s){ return s.toLowerCase().replace(/[^a-z0-9 ]/g,'').trim(); }
 
-function findFont(query){
-  const q = normalize(query);
+function search(q){
+  q = norm(q);
   if(!q) return null;
-  // 1. exact name
-  let r = DB.find(f => normalize(f.name) === q);
+
+  // 1. Exact name match
+  let r = DB.find(f => norm(f.n) === q);
   if(r) return r;
-  // 2. alias exact
-  r = DB.find(f => f.alias && f.alias.some(a => normalize(a) === q));
+
+  // 2. Alias match
+  r = DB.find(f => f.alt && f.alt.some(a => norm(a) === q));
   if(r) return r;
-  // 3. name starts with
-  r = DB.find(f => normalize(f.name).startsWith(q));
+
+  // 3. Starts with query
+  r = DB.find(f => norm(f.n).startsWith(q));
   if(r) return r;
-  // 4. name contains
-  r = DB.find(f => normalize(f.name).includes(q));
+
+  // 4. Query starts with font name
+  r = DB.find(f => q.startsWith(norm(f.n)));
   if(r) return r;
-  // 5. query contains name
-  r = DB.find(f => q.includes(normalize(f.name)));
+
+  // 5. Name contains query
+  r = DB.find(f => norm(f.n).includes(q));
   if(r) return r;
-  // 6. alias contains/starts
-  r = DB.find(f => f.alias && f.alias.some(a => normalize(a).includes(q) || q.includes(normalize(a))));
+
+  // 6. Query contains name
+  r = DB.find(f => q.includes(norm(f.n).replace(/\s/g,'')) || norm(f.n).replace(/\s/g,'') === q.replace(/\s/g,''));
   if(r) return r;
-  // 7. word-level partial
-  const words = q.split(' ');
-  r = DB.find(f => {
-    const fn = normalize(f.name);
-    return words.every(w => fn.includes(w));
-  });
-  return r || null;
+
+  // 7. All words in query found in name
+  const words = q.split(' ').filter(Boolean);
+  r = DB.find(f => words.every(w => norm(f.n).includes(w)));
+  if(r) return r;
+
+  // 8. Alias contains / contained
+  r = DB.find(f => f.alt && f.alt.some(a => norm(a).includes(q) || q.includes(norm(a))));
+  if(r) return r;
+
+  return null;
 }
 
-function getACSuggestions(query){
-  const q = normalize(query);
+function getSuggestions(q){
+  q = norm(q);
   if(q.length < 2) return [];
-  return DB.filter(f => {
-    const fn = normalize(f.name);
-    const hasAlias = f.alias && f.alias.some(a => normalize(a).startsWith(q) || normalize(a).includes(q));
-    return fn.startsWith(q) || fn.includes(q) || hasAlias;
-  }).slice(0,7);
+  const matches = DB.filter(f => {
+    const fn = norm(f.n);
+    return fn.startsWith(q) || fn.includes(q) ||
+      (f.alt && f.alt.some(a => norm(a).startsWith(q) || norm(a).includes(q)));
+  });
+  return matches.slice(0, 8);
 }
 
-// ── UI ────────────────────────────────────────────────────
-const QUICK = ['Inter','Helvetica','Futura','Gotham','Circular','Roboto','Playfair Display','Satoshi'];
-const POPULAR = ['Inter','Helvetica','Gotham','Proxima Nova','Futura','Roboto','Poppins','Garamond','Circular','Bebas Neue','Montserrat','Didot','Georgia','Arial','Avenir','Gill Sans','Söhne','Favorit','GT Walsheim','Satoshi'];
-
-let acFocused = -1;
+// ── UI LOGIC ───────────────────────────────────────────────────────
+let acIdx = -1;
 
 function onInput(v){
-  document.getElementById('sClear').classList.toggle('on', v.length > 0);
+  document.getElementById('sc').classList.toggle('on', v.length > 0);
   updateAC(v);
-  if(!v){ document.getElementById('resultArea').innerHTML=''; return; }
+  if(!v){ document.getElementById('result').innerHTML = ''; return; }
 }
 
 function onKey(e){
-  const ac = document.getElementById('acBox');
-  const items = ac.querySelectorAll('.ac-item');
-  if(e.key === 'ArrowDown'){ e.preventDefault(); acFocused=Math.min(acFocused+1,items.length-1); highlightAC(items); }
-  else if(e.key === 'ArrowUp'){ e.preventDefault(); acFocused=Math.max(acFocused-1,-1); highlightAC(items); }
+  const items = document.querySelectorAll('.ac-item');
+  if(e.key === 'ArrowDown'){ e.preventDefault(); acIdx = Math.min(acIdx+1, items.length-1); hilite(items); }
+  else if(e.key === 'ArrowUp'){ e.preventDefault(); acIdx = Math.max(acIdx-1, -1); hilite(items); }
   else if(e.key === 'Enter'){
     e.preventDefault();
-    if(acFocused >= 0 && items[acFocused]){
-      items[acFocused].click();
-    } else {
-      hideAC();
-      const v = document.getElementById('sInp').value.trim();
-      if(v) searchAndShow(v);
-    }
-  } else if(e.key === 'Escape'){ hideAC(); }
+    if(acIdx >= 0 && items[acIdx]){ items[acIdx].click(); }
+    else { const v = document.getElementById('si').value.trim(); if(v){ closeAC(); doSearch(v); } }
+  }
+  else if(e.key === 'Escape') closeAC();
 }
 
-function highlightAC(items){
-  items.forEach((el,i) => el.classList.toggle('focused', i===acFocused));
-}
+function hilite(items){ items.forEach((el,i) => el.classList.toggle('hi', i===acIdx)); }
 
 function updateAC(v){
-  const box = document.getElementById('acBox');
-  if(v.length < 2){ hideAC(); return; }
-  const sug = getACSuggestions(v);
-  if(!sug.length){ hideAC(); return; }
-  const tc = {free:'free',personal:'personal',paid:'paid',proprietary:'paid'};
-  const tl = {free:'Free ✓',personal:'Personal Only',paid:'Paid',proprietary:'Paid'};
-  box.innerHTML = sug.map((f,i) =>
-    `<div class="ac-item" data-i="${i}" onmousedown="pickAC('${f.name.replace(/'/g,"\\'")}')">
-      <div>
-        <span class="ac-name">${f.name}</span>
-        <div class="ac-meta">${f.foundry}</div>
-      </div>
-      <span class="ac-badge ${tc[f.t]||'paid'}">${tl[f.t]||'Paid'}</span>
-    </div>`
-  ).join('');
+  const box = document.getElementById('ac');
+  if(v.length < 2){ closeAC(); return; }
+  const sug = getSuggestions(v);
+  if(!sug.length){ closeAC(); return; }
+  const bl = {free:'free',paid:'paid',personal:'personal'};
+  const tl = {free:'Free ✓',paid:'Paid',personal:'Personal'};
+  box.innerHTML = sug.map(f => {
+    const safe = f.n.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+    return '<div class="ac-item" data-n="' + safe + '">'
+      + '<div><div class="ac-n">' + f.n + '</div>'
+      + '<div class="ac-f">' + f.f + '</div></div>'
+      + '<span class="ac-b ' + (bl[f.t]||'paid') + '">' + (tl[f.t]||'Paid') + '</span></div>';
+  }).join('');
+  box.querySelectorAll('.ac-item').forEach(el => {
+    el.addEventListener('mousedown', e => { e.preventDefault(); pick(el.dataset.n); });
+  });
   box.classList.add('on');
-  acFocused = -1;
+  acIdx = -1;
 }
 
-function pickAC(name){
-  document.getElementById('sInp').value = name;
-  document.getElementById('sClear').classList.add('on');
-  hideAC();
-  searchAndShow(name);
+function pick(name){
+  document.getElementById('si').value = name;
+  document.getElementById('sc').classList.add('on');
+  closeAC();
+  doSearch(name);
 }
 
-function hideAC(){
-  document.getElementById('acBox').classList.remove('on');
-  document.getElementById('acBox').innerHTML = '';
-  acFocused = -1;
-}
-
-function showAC(){
-  const v = document.getElementById('sInp').value;
-  if(v.length >= 2) updateAC(v);
-}
+function showAC(){ updateAC(document.getElementById('si').value); }
+function closeAC(){ document.getElementById('ac').classList.remove('on'); document.getElementById('ac').innerHTML = ''; acIdx=-1; }
 
 document.addEventListener('click', e => {
-  if(!document.getElementById('searchOuter').contains(e.target)) hideAC();
+  if(!document.getElementById('sw').contains(e.target)) closeAC();
 });
 
-function doClear(){
-  document.getElementById('sInp').value = '';
-  document.getElementById('sClear').classList.remove('on');
-  document.getElementById('resultArea').innerHTML = '';
-  hideAC();
-  document.getElementById('sInp').focus();
+function clearSearch(){
+  document.getElementById('si').value = '';
+  document.getElementById('sc').classList.remove('on');
+  document.getElementById('result').innerHTML = '';
+  closeAC();
+  document.getElementById('si').focus();
 }
 
-function searchAndShow(name){
-  const font = findFont(name);
-  hideAC();
+function doSearch(name){
+  closeAC();
+  const font = search(name);
   if(font){ showResult(font); }
-  else { askBackend(name); }
-  document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'start'});
+  else { showNotFound(name); }
+  document.getElementById('result').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-async function askBackend(name){
-  // Show loading
-  document.getElementById('resultArea').innerHTML = `
-    <div class="result-card">
-      <div style="padding:52px 32px;text-align:center">
-        <div style="width:44px;height:44px;border:3px solid var(--br);border-top-color:var(--ok);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px"></div>
-        <div style="font-size:14px;color:var(--mt);font-family:'DM Mono',monospace">Searching license for "${name}"...</div>
-        <div style="font-size:11px;color:var(--mt2);margin-top:6px;font-family:'DM Mono',monospace">Checking global font database</div>
-      </div>
-    </div>`;
+// ── RENDER RESULT ──────────────────────────────────────────────────
+const CFG = {
+  free:     {cls:'free',     label:'✅ Free for Commercial Use',  hg:'linear-gradient(90deg,#22dd99,#66aaff)'},
+  personal: {cls:'personal', label:'⚠️ Personal Use Only',        hg:'linear-gradient(90deg,#f0a030,#f0c060)'},
+  paid:     {cls:'paid',     label:'💰 Paid License Required',    hg:'linear-gradient(90deg,#aa77ff,#66aaff)'},
+};
 
-  try {
-    const res = await fetch('/api/font-license', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({font: name})
-    });
-    const data = await res.json();
-
-    if(!data.success || !data.result){
-      showNotFound(name);
-      return;
-    }
-
-    const r = data.result;
-    if(!r.found){
-      showNotFound(name);
-      return;
-    }
-
-    // Map API result to our format and show
-    const mapped = {
-      name: r.name || name,
-      foundry: r.foundry || '—',
-      l: r.license_type || 'Unknown',
-      t: r.license_category || 'paid',
-      c: r.commercial === true ? 1 : r.commercial === false ? 0 : 2,
-      w: r.web_use === true ? 1 : r.web_use === false ? 0 : 2,
-      e: r.pdf_embed === true ? 1 : r.pdf_embed === false ? 0 : 2,
-      m: r.modify === true ? 1 : 0,
-      src: r.source_name || '—',
-      url: r.source_url || '',
-      note: r.summary || '',
-      alias: []
-    };
-    showResult(mapped);
-
-  } catch(err) {
-    showNotFound(name);
-  }
-}
-
-// ── RENDER RESULT ─────────────────────────────────────────
 function showResult(f){
-  const cfg = {
-    free:        {cls:'free',        label:'✅ Free for Commercial Use',  hg:'linear-gradient(90deg,#22dd99,#66aaff)'},
-    personal:    {cls:'personal',    label:'⚠️ Personal Use Only',        hg:'linear-gradient(90deg,#f0a030,#f0c060)'},
-    paid:        {cls:'paid',        label:'💰 Paid License Required',    hg:'linear-gradient(90deg,#aa77ff,#66aaff)'},
-    proprietary: {cls:'paid',        label:'🔒 Proprietary',              hg:'linear-gradient(90deg,#ff5566,#f0a030)'},
-  }[f.t]||{cls:'paid',label:'💰 License Required',hg:'linear-gradient(90deg,#aa77ff,#66aaff)'};
-
-  // c/w/e: 1=yes, 0=no, 2=depends
-  function s(v){ return v===1?'yes':v===0?'no':'check'; }
-  function tx(v,y,n){ return v===1?y:v===0?n:'Check license'; }
+  const cfg = CFG[f.t] || CFG.paid;
+  const sv = v => v===1?'yes':v===0?'no':'maybe';
+  const st = (v,y,n) => v===1?y:v===0?n:'Check EULA';
 
   const usages = [
-    {ico:'💼',lbl:'Commercial',  st:s(f.c), txt:tx(f.c,'Allowed','Not allowed')},
-    {ico:'🌐',lbl:'Web / CSS',   st:s(f.w), txt:tx(f.w,'Allowed','Not allowed')},
-    {ico:'📄',lbl:'PDF Embed',   st:s(f.e), txt:tx(f.e,'Allowed','Not allowed')},
-    {ico:'✏️',lbl:'Modify',      st:s(f.m), txt:tx(f.m,'Allowed','Not allowed')},
-    {ico:'🎨',lbl:'Logo/Brand',  st:s(f.c), txt:tx(f.c,'Allowed','Check')},
-    {ico:'📱',lbl:'App/Game',    st:s(f.e), txt:tx(f.e,'Allowed','Check EULA')},
+    {i:'💼',l:'Commercial',  s:sv(f.c), t:st(f.c,'Allowed','Not allowed')},
+    {i:'🌐',l:'Web / CSS',   s:sv(f.w), t:st(f.w,'Allowed','Not allowed')},
+    {i:'📄',l:'PDF Embed',   s:sv(f.e), t:st(f.e,'Allowed','Not allowed')},
+    {i:'✏️',l:'Modify',      s:sv(f.m), t:st(f.m,'Allowed','Not allowed')},
+    {i:'🎨',l:'Logo/Brand',  s:sv(f.c), t:st(f.c,'Allowed','Check')},
+    {i:'📱',l:'App/Game',    s:sv(f.e), t:st(f.e,'Allowed','Check EULA')},
   ];
 
+  const altHTML = (f.t !== 'free' && f.alt && f.alt.length)
+    ? `<div style="margin:0 28px 12px;background:rgba(34,221,153,.05);border:1px solid rgba(34,221,153,.12);border-radius:12px;padding:12px 16px;font-size:12px;color:var(--mt);line-height:1.7">
+        💡 <strong style="color:var(--tx)">Free alternatives:</strong> ${f.alt.map(a => {
+          const dispName = DB.find(x=>norm(x.n)===a)?.n||a;
+          const safe = a.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+          return '<span class="alt-link" data-alt="' + safe + '" style="color:var(--ok);cursor:pointer;text-decoration:underline">' + dispName + '</span>';
+        }).join(', ')} — click to check
+      </div>` : '';
+
   const cta = f.t==='free'
-    ? `<div class="rc-cta"><div><div class="cta-text">✅ Safe to use — completely free!</div><div class="cta-sub">Browse our 1,200+ free commercial font library</div></div><a class="cta-btn" href="/fonts">Get Free Fonts →</a></div>`
-    : `<div class="rc-cta" style="background:linear-gradient(135deg,rgba(170,119,255,.07),rgba(51,136,255,.05));border-color:rgba(170,119,255,.15)"><div><div class="cta-text">💡 Need a free alternative?</div><div class="cta-sub">Browse 1,200+ free fonts licensed for commercial use</div></div><a class="cta-btn" href="/fonts">Find Free Font →</a></div>`;
+    ? `<div class="rcta"><div><div class="cta-t">✅ Safe — completely free for commercial use!</div><div class="cta-s">Browse 1,200+ free commercial fonts</div></div><a class="cta-btn" href="/fonts">Browse Free Fonts →</a></div>`
+    : `<div class="rcta rcta-paid"><div><div class="cta-t">💡 Need a free alternative?</div><div class="cta-s">Browse 1,200+ free fonts licensed for commercial use</div></div><a class="cta-btn" href="/fonts">Find Free Font →</a></div>`;
 
-  const srcHtml = f.url
-    ? `<a href="${f.url}" target="_blank" rel="noopener">${f.src} ↗</a>`
-    : f.src;
+  const srcHTML = f.url ? `<a href="${f.url}" target="_blank" rel="noopener">${f.src} ↗</a>` : f.src;
 
-  document.getElementById('resultArea').innerHTML = `
-    <div class="result-card">
-      <div class="rc-head" style="--hg:${cfg.hg}">
-        <div class="rc-top">
-          <div>
-            <div class="rc-name">${f.name}</div>
-            <div class="rc-meta">${f.foundry} · ${f.l}</div>
-          </div>
-          <span class="lic-badge ${cfg.cls}"><span class="bdot"></span>${cfg.label}</span>
+  document.getElementById('result').innerHTML = `
+    <div class="rcard">
+      <div class="rhead" style="--hg:${cfg.hg}">
+        <div class="rtop">
+          <div><div class="rname">${f.n}</div><div class="rfoundry">${f.f}</div></div>
+          <span class="rbadge ${cfg.cls}"><span class="bdot"></span>${cfg.label}</span>
         </div>
-        <div class="rc-note">${f.note}</div>
+        <div class="rnote">${f.note}</div>
       </div>
-      <div class="usage-sec">
-        <div class="us-ttl">Usage Permissions</div>
-        <div class="um-grid">
-          ${usages.map(u=>`<div class="um-item ${u.st}"><span class="um-ico">${u.ico}</span><span class="um-lbl">${u.lbl}</span><span class="um-s ${u.st}">${u.txt}</span></div>`).join('')}
+      <div class="usage">
+        <div class="usage-ttl">Usage Permissions</div>
+        <div class="ugrid">
+          ${usages.map(u=>`<div class="uitem ${u.s}"><span class="uico">${u.i}</span><span class="ulbl">${u.l}</span><span class="us ${u.s}">${u.t}</span></div>`).join('')}
         </div>
       </div>
       ${cta}
-      <div class="rc-details">
-        <div class="rd"><div class="rd-l">License</div><div class="rd-v">${f.l}</div></div>
-        <div class="rd"><div class="rd-l">Designer / Foundry</div><div class="rd-v">${f.foundry}</div></div>
-        <div class="rd"><div class="rd-l">Source</div><div class="rd-v">${srcHtml}</div></div>
-        <div class="rd"><div class="rd-l">Type</div><div class="rd-v">${{free:'Open Source / Free Commercial',personal:'Free Personal Use Only',paid:'Commercial License Required',proprietary:'Proprietary / Commercial'}[f.t]||f.t}</div></div>
+      ${altHTML}
+      <div class="rdetails">
+        <div class="dbox"><div class="dlbl">License</div><div class="dval">${f.l}</div></div>
+        <div class="dbox"><div class="dlbl">Designer / Foundry</div><div class="dval">${f.f}</div></div>
+        <div class="dbox"><div class="dlbl">Source</div><div class="dval">${srcHTML}</div></div>
+        <div class="dbox"><div class="dlbl">Category</div><div class="dval">${{free:'Open Source / Free Commercial',personal:'Free Personal Use Only',paid:'Paid Commercial License'}[f.t]||f.t}</div></div>
       </div>
     </div>`;
+  // safe alt-link click events
+  document.querySelectorAll('#result .alt-link').forEach(el => {
+    el.onclick = () => doSearch(el.dataset.alt);
+  });
 }
 
 function showNotFound(q){
-  document.getElementById('resultArea').innerHTML = `
-    <div class="nf-card">
-      <div class="nf-e">🔍</div>
-      <div class="nf-t">Font not in database: "${q}"</div>
-      <div class="nf-d">This may be a custom brand font, obscure typeface, or a spelling variation. Check the font's README or license.txt file. Try these resources:</div>
+  document.getElementById('result').innerHTML = `
+    <div class="nf">
+      <div class="nf-e">🔎</div>
+      <div class="nf-t">Not in database: "${q}"</div>
+      <div class="nf-d">This font isn't in our database yet. It might be a DaFont font (check the license on the download page), a brand custom font, or a very obscure typeface. Try these resources:</div>
       <div class="nf-links">
-        <a class="nf-link" href="https://fonts.google.com/knowledge" target="_blank">Google Fonts ↗</a>
-        <a class="nf-link" href="https://www.fontsquirrel.com/fonts/list/popular" target="_blank">Font Squirrel ↗</a>
-        <a class="nf-link" href="https://www.myfonts.com/search/${encodeURIComponent(q)}" target="_blank">MyFonts ↗</a>
-        <a class="nf-link" href="/fonts">Our Free Fonts</a>
+        <a class="nfl" href="https://www.dafont.com/search.php?q=${encodeURIComponent(q)}" target="_blank">Search DaFont ↗</a>
+        <a class="nfl" href="https://fonts.google.com/?query=${encodeURIComponent(q)}" target="_blank">Google Fonts ↗</a>
+        <a class="nfl" href="https://www.myfonts.com/search/${encodeURIComponent(q)}" target="_blank">MyFonts ↗</a>
+        <a class="nfl" href="/fonts">Our Free Fonts</a>
       </div>
     </div>`;
 }
 
-// Build quick row
-const qr = document.getElementById('quickRow');
+// ── QUICK TAGS ──────────────────────────────────────────────────────
+const QUICK = ['Inter','Helvetica','Futura','Gotham','Circular','Roboto','Nectarine','Ballpoint','Söhne','Satoshi'];
+const qt = document.getElementById('qt');
 QUICK.forEach(name => {
   const b = document.createElement('button');
-  b.className = 'qs';
-  b.textContent = name;
-  b.onclick = () => {
-    document.getElementById('sInp').value = name;
-    document.getElementById('sClear').classList.add('on');
-    searchAndShow(name);
-    window.scrollTo({top:document.querySelector('.search-outer').offsetTop - 20, behavior:'smooth'});
-  };
-  qr.appendChild(b);
+  b.className = 'qt'; b.textContent = name;
+  b.onclick = () => { document.getElementById('si').value = name; document.getElementById('sc').classList.add('on'); doSearch(name); window.scrollTo({top:0,behavior:'smooth'}); };
+  qt.appendChild(b);
 });
 
-// Build popular grid
-const pg = document.getElementById('popGrid');
+// ── POPULAR GRID ────────────────────────────────────────────────────
+const POPULAR = ['Inter','Helvetica','Gotham','Proxima Nova','Futura','Roboto','Poppins','Garamond','Circular','Bebas Neue','Montserrat','Didot','Georgia','Arial','Avenir','Gill Sans','Söhne','Favorit','GT Walsheim','Satoshi'];
+const pg = document.getElementById('pg');
 POPULAR.forEach(name => {
-  const f = findFont(name);
-  const type = f ? f.t : 'paid';
-  const bc = type==='free'?'free':type==='personal'?'personal':'paid';
-  const bt = type==='free'?'Free ✓':type==='personal'?'Personal':'Paid';
+  const f = search(name);
+  const t = f ? f.t : 'paid';
   const el = document.createElement('div');
   el.className = 'pf';
-  el.innerHTML = `<span class="pf-n">${name}</span><span class="pf-b ${bc}">${bt}</span>`;
-  el.onclick = () => {
-    document.getElementById('sInp').value = name;
-    document.getElementById('sClear').classList.add('on');
-    searchAndShow(name);
-    window.scrollTo({top:0, behavior:'smooth'});
-  };
+  el.innerHTML = `<span class="pf-n">${name}</span><span class="pb ${t==='free'?'free':t==='personal'?'personal':'paid'}">${t==='free'?'Free ✓':t==='personal'?'Personal':'Paid'}</span>`;
+  el.onclick = () => { document.getElementById('si').value = name; document.getElementById('sc').classList.add('on'); doSearch(name); window.scrollTo({top:0,behavior:'smooth'}); };
   pg.appendChild(el);
 });
 </script>
+
+<script>
+(function(){
+  function toggleTheme(){
+    var isLight = document.body.classList.toggle('light-mode');
+    try{ localStorage.setItem('vectrod_theme', isLight?'light':'dark'); }catch(e){}
+    var btn = document.getElementById('pageThemeBtn');
+    if(btn) btn.textContent = isLight ? '☀️' : '🌙';
+  }
+  window.toggleTheme = toggleTheme;
+  // restore on load
+  try{
+    if(localStorage.getItem('vectrod_theme')==='light'){
+      document.body.classList.add('light-mode');
+      document.addEventListener('DOMContentLoaded',function(){
+        var btn=document.getElementById('pageThemeBtn');
+        if(btn) btn.textContent='☀️';
+      });
+    }
+  }catch(e){}
+})();
+</script>
+
+<!-- VOTE WIDGET — universal -->
+<div class="vw-wrap" id="voteWidget">
+  <div class="vw-inner">
+    <div class="vw-title">Is Vectrod useful to you?</div>
+    <div class="vw-sub">Takes 1 second — helps us improve 🙏</div>
+    <div class="vw-btns">
+      <button class="vw-btn good" id="vwGood" onclick="vwVote('good')">👍 <span id="vwGoodN">—</span></button>
+      <button class="vw-btn bad"  id="vwBad"  onclick="vwVote('bad')">👎 <span id="vwBadN">—</span></button>
+    </div>
+    <div class="vw-bar"><div class="vw-bar-fill" id="vwBarFill" style="width:50%"></div></div>
+    <div class="vw-stat" id="vwStat">Loading votes...</div>
+    <div class="vw-thanks" id="vwThanks">Thanks for your feedback! ✨</div>
+  </div>
+</div>
+<style>
+.vw-wrap{background:linear-gradient(135deg,rgba(6,7,15,.95),rgba(10,11,26,.95));border-top:1px solid rgba(255,255,255,.06);padding:40px 20px;text-align:center;margin-top:60px}
+.vw-inner{max-width:480px;margin:0 auto}
+.vw-title{font-family:'Cinzel',serif;font-size:17px;font-weight:700;color:#eeeaff;margin-bottom:6px}
+.vw-sub{font-size:13px;color:rgba(238,234,255,.4);margin-bottom:24px}
+.vw-btns{display:flex;gap:12px;justify-content:center;margin-bottom:18px}
+.vw-btn{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 28px;font-size:20px;cursor:pointer;transition:all .22s;color:#eeeaff;font-family:inherit;display:flex;align-items:center;gap:8px}
+.vw-btn span{font-size:13px;font-weight:600}
+.vw-btn.good:hover,.vw-btn.good.active{background:rgba(34,221,153,.1);border-color:rgba(34,221,153,.4);transform:scale(1.04)}
+.vw-btn.bad:hover,.vw-btn.bad.active{background:rgba(255,80,80,.08);border-color:rgba(255,80,80,.35);transform:scale(1.04)}
+.vw-btn:disabled{opacity:.5;cursor:default;transform:none!important}
+.vw-bar{height:5px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;max-width:280px;margin:0 auto 8px}
+.vw-bar-fill{height:100%;background:linear-gradient(90deg,#22dd99,#9944ee);border-radius:100px;transition:width .5s ease}
+.vw-stat{font-size:11px;color:rgba(238,234,255,.3);font-family:'DM Mono',monospace}
+.vw-thanks{font-size:13px;color:#22dd99;margin-top:10px;display:none}
+</style>
+<script>
+(function(){
+  function vwUpdate(good,bad){
+    var total=good+bad;
+    document.getElementById('vwGoodN').textContent=good;
+    document.getElementById('vwBadN').textContent=bad;
+    var pct=total>0?Math.round(good/total*100):50;
+    document.getElementById('vwBarFill').style.width=pct+'%';
+    document.getElementById('vwStat').textContent=total>0?pct+'% positive · '+total+' votes':'Be the first to vote!';
+  }
+  window.vwVote=function(type){
+    try{ if(localStorage.getItem('vectrod_voted')){ document.getElementById('vwThanks').style.display='block'; document.getElementById('vwThanks').textContent='You already voted! Thanks 🙏'; return; } }catch(e){}
+    document.getElementById('vwGood').disabled=true;
+    document.getElementById('vwBad').disabled=true;
+    fetch('/api/vote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:type})})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      try{localStorage.setItem('vectrod_voted','1');}catch(e){}
+      document.getElementById('vw'+type.charAt(0).toUpperCase()+type.slice(1)).classList.add('active');
+      document.getElementById('vwThanks').style.display='block';
+      vwUpdate(d.good,d.bad);
+    });
+  };
+  fetch('/api/vote-count').then(function(r){return r.json();}).then(function(d){ vwUpdate(d.good||0,d.bad||0); }).catch(function(){document.getElementById('vwStat').textContent='';});
+  try{ if(localStorage.getItem('vectrod_voted')){ document.addEventListener('DOMContentLoaded',function(){ document.getElementById('vwGood').disabled=true; document.getElementById('vwBad').disabled=true; }); } }catch(e){}
+})();
+</script>
+
 </body>
 </html>

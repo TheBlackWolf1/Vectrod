@@ -14,10 +14,13 @@ from engine import build_font, DEFAULT_CHAR_ORDER
 # ── Storage ───────────────────────────────────────────────────────────────────
 BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sessions')
 
-# ── Vote Storage (in-memory, resets on restart) ───────────────────────────────
-VOTE_DATA = {'good': 0, 'bad': 0}
-VOTE_LOCK = threading.Lock()
-ADMIN_SECRET = 'vectrod-admin-2024'  # gizli panel şifresi
+# ── Vote + Admin ─────────────────────────────────────────────────────────────
+VOTE_DATA  = {'good': 0, 'bad': 0}
+VOTE_LOCK  = threading.Lock()
+ADMIN_USER = 'vectrod'
+ADMIN_PASS = 'Vectrod2024!'
+SITE_STATS = {'converts': 0, 'ai_generates': 0, 'page_views': 0}
+STATS_LOCK = threading.Lock()
 os.makedirs(BASE_DIR, exist_ok=True)
 
 SESSION_TTL = 3600  # 1 saat sonra sil
@@ -235,6 +238,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = urlparse(self.path).path
+        if not path.startswith('/api') and not path.startswith('/favicon') and path not in ('/health','/robots.txt','/sitemap.xml'):
+            with STATS_LOCK:
+                SITE_STATS['page_views'] += 1
 
         # Railway health check endpoint
         if path == '/health':
@@ -254,29 +260,12 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({'good':good,'bad':bad}).encode())
             return
 
-        if path == f'/admin-{ADMIN_SECRET}':
-            with VOTE_LOCK:
-                good = VOTE_DATA['good']
-                bad  = VOTE_DATA['bad']
-            total = good + bad
-            rate  = f'{round(good/total*100)}%' if total else '—'
-            html  = f'''<!DOCTYPE html><html><head><meta charset=UTF-8>
-<title>Vectrod Admin</title>
-<style>body{{background:#020308;color:#eeeaff;font-family:monospace;padding:40px;}}
-h1{{color:#f0c060;margin-bottom:30px}}
-.stat{{background:#06070f;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px;margin:10px 0;display:flex;justify-content:space-between;}}
-.val{{font-size:28px;font-weight:bold;color:#f0c060}}</style></head>
-<body><h1>⚡ Vectrod Vote Stats</h1>
-<div class=stat><span>👍 Good</span><span class=val>{good}</span></div>
-<div class=stat><span>👎 Bad</span><span class=val>{bad}</span></div>
-<div class=stat><span>📊 Total</span><span class=val>{total}</span></div>
-<div class=stat><span>✅ Approval</span><span class=val>{rate}</span></div>
-<p style="margin-top:30px;color:rgba(255,255,255,.3);font-size:11px">⚠️ Resets on server restart. Consider adding a DB for persistence.</p>
-</body></html>'''
-            self.send_response(200)
-            self.send_header('Content-Type','text/html; charset=utf-8')
-            self.end_headers()
-            self.wfile.write(html.encode())
+        if path == '/vectrod-admin':
+            self.serve_admin_page()
+            return
+
+        if path == '/admin-login':
+            self.serve_admin_login()
             return
 
         if path == '/test-gemini':
@@ -502,6 +491,8 @@ h1{{color:#f0c060;margin-bottom:30px}}
             self.handle_handwriting_to_font()
         elif path == '/api/vote':
             self.handle_vote()
+        elif path == '/admin-login':
+            self.handle_admin_login()
         else:
             self.send_error(404)
 
@@ -511,6 +502,69 @@ h1{{color:#f0c060;margin-bottom:30px}}
         body = self.rfile.read(length)
         return parse_multipart(body, ctype)
 
+
+    def serve_admin_login(self):
+        html = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'admin_login.html'),'r',errors='replace').read() if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)),'admin_login.html')) else '<h1>Login page not found</h1>'
+        self.send_response(200)
+        self.send_header('Content-Type','text/html; charset=utf-8')
+        self.end_headers()
+        self.wfile.write(html.encode())
+
+    def handle_admin_login(self):
+        import hashlib
+        try:
+            length = int(self.headers.get('Content-Length',0))
+            body = json.loads(self.rfile.read(length))
+            u = body.get('u','')
+            p = body.get('p','')
+            if u == ADMIN_USER and p == ADMIN_PASS:
+                token = hashlib.md5(f'{u}{p}vectrod'.encode()).hexdigest()
+                self.send_response(200)
+                self.send_header('Content-Type','application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok':True,'token':token}).encode())
+            else:
+                self.send_response(200)
+                self.send_header('Content-Type','application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok':False}).encode())
+        except:
+            self.send_error(500)
+
+    def serve_admin_page(self):
+        import hashlib
+        from urllib.parse import parse_qs, urlparse as _up2
+        qs = parse_qs(_up2(self.path).query)
+        token = qs.get('token',[''])[0]
+        expected = hashlib.md5(f'{ADMIN_USER}{ADMIN_PASS}vectrod'.encode()).hexdigest()
+        if token != expected:
+            self.send_response(302)
+            self.send_header('Location','/admin-login')
+            self.end_headers()
+            return
+        with VOTE_LOCK:
+            good = VOTE_DATA['good']
+            bad  = VOTE_DATA['bad']
+        with STATS_LOCK:
+            converts   = SITE_STATS['converts']
+            ai_gen     = SITE_STATS['ai_generates']
+            page_views = SITE_STATS['page_views']
+        total = good + bad
+        rate  = str(round(good/total*100))+'%' if total else 'no votes yet'
+        good_pct = round(good/total*100) if total else 50
+        ts = time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())
+        html = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'admin_dashboard.html'),'r',errors='replace').read()
+        html = html.replace('{{good}}',str(good)).replace('{{bad}}',str(bad))
+        html = html.replace('{{total}}',str(total)).replace('{{rate}}',rate)
+        html = html.replace('{{good_pct}}',str(good_pct))
+        html = html.replace('{{converts}}',str(converts))
+        html = html.replace('{{ai_gen}}',str(ai_gen))
+        html = html.replace('{{page_views}}',str(page_views))
+        html = html.replace('{{ts}}',ts)
+        self.send_response(200)
+        self.send_header('Content-Type','text/html; charset=utf-8')
+        self.end_headers()
+        self.wfile.write(html.encode())
 
     def handle_vote(self):
         try:
@@ -616,6 +670,7 @@ Be accurate. Respond with ONLY the JSON."""
             self.json_resp({'error': str(e)}, 500)
 
     def handle_ai_generate(self):
+        with STATS_LOCK: SITE_STATS['ai_generates'] += 1
         """
         Vectrod v3 DNA Pipeline.
         Prompt → Gemini DNA (stil parametresi) → vectrod_v3 geometri → TTF/OTF
@@ -919,6 +974,7 @@ Be accurate. Respond with ONLY the JSON."""
             self.json_resp({'success': False, 'error': str(e)}, 500)
 
     def handle_convert(self):
+        with STATS_LOCK: SITE_STATS['converts'] += 1
         try:
             fields, files = self.read_body()
 

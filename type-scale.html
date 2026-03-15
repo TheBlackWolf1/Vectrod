@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<script>
+(function(){
+  var saved = '';
+  try { saved = localStorage.getItem('vectrod_theme'); } catch(e){}
+  if(saved === 'light') {
+    document.documentElement.classList.add('light-mode');
+    document.body && document.body.classList.add('light-mode');
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    if(saved === 'light') document.body.classList.add('light-mode');
+  });
+})();
+</script>
+
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/favicon-32.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
@@ -87,6 +106,248 @@ footer{border-top:1px solid var(--br);padding:28px 0;text-align:center;margin-to
 .fl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
 .fl a{font-size:11px;color:var(--mt);text-decoration:none}.fl a:hover{color:var(--gold)}
 .fc{font-size:11px;color:var(--mt2)}
+
+/* ═══════════════════════════════════════════════
+   LIGHT MODE — complete override
+   ═══════════════════════════════════════════════ */
+body.light-mode {
+  --bg: #f7f5ff;
+  --bg2: #eeeaff;
+  --bg3: #e4dfff;
+  --sf: rgba(0,0,0,.04);
+  --sf2: rgba(0,0,0,.06);
+  --br: rgba(0,0,0,.1);
+  --br2: rgba(0,0,0,.16);
+  --tx: #0a0820;
+  --mt: rgba(10,8,32,.55);
+  --mt2: rgba(10,8,32,.3);
+  --gold: #b07000;
+  --goldd: #906000;
+  --ok: #0a7a50;
+  --okL: rgba(10,122,80,.1);
+  --purple: #6622bb;
+  --purple2: #6622bb;
+  --purpleL: rgba(102,34,187,.1);
+  --blue: #2255cc;
+  --blueL: rgba(34,85,204,.1);
+  --fail: #cc1133;
+  --failL: rgba(204,17,51,.1);
+  --warn: #996600;
+  --warnL: rgba(153,102,0,.1);
+}
+body.light-mode { background: var(--bg) !important; color: var(--tx) !important; }
+
+/* Background orbs — subtle in light mode */
+body.light-mode .bg-orb1,
+body.light-mode .bg-orb2,
+body.light-mode .o1,
+body.light-mode .o2,
+body.light-mode .o3,
+body.light-mode .orb1,
+body.light-mode .orb2 { opacity: 0.3; }
+
+/* Grid background — invisible in light */
+body.light-mode .sg { opacity: 0; }
+
+/* Cards */
+body.light-mode .card,
+body.light-mode .article-card,
+body.light-mode .article-full,
+body.light-mode .tool-card,
+body.light-mode .palette-card,
+body.light-mode .pal-card,
+body.light-mode .font-card,
+body.light-mode .font-tile,
+body.light-mode .result-card,
+body.light-mode .score-card,
+body.light-mode .preview-card,
+body.light-mode .css-card,
+body.light-mode .ctrl-panel,
+body.light-mode .featured-card,
+body.light-mode .controls,
+body.light-mode .scale-table,
+body.light-mode .suggestions,
+body.light-mode .font-controls,
+body.light-mode .picker-card,
+body.light-mode .af-callout {
+  background: var(--bg2) !important;
+  border-color: var(--br) !important;
+}
+
+/* Inputs */
+body.light-mode input,
+body.light-mode select,
+body.light-mode textarea,
+body.light-mode .search-input,
+body.light-mode .hex-input,
+body.light-mode .name-input,
+body.light-mode .ctrl-val {
+  background: #fff !important;
+  border-color: var(--br) !important;
+  color: var(--tx) !important;
+}
+body.light-mode select option { background: #fff !important; color: var(--tx) !important; }
+
+/* Text */
+body.light-mode .mt,
+body.light-mode [class*="-desc"],
+body.light-mode [class*="-sub"],
+body.light-mode .hero p,
+body.light-mode .af-body { color: var(--mt) !important; }
+
+/* Nav buttons */
+body.light-mode .nb {
+  background: rgba(0,0,0,.05) !important;
+  border-color: rgba(0,0,0,.12) !important;
+  color: rgba(10,8,32,.55) !important;
+}
+body.light-mode .nb:hover { border-color: var(--gold) !important; color: var(--gold) !important; }
+body.light-mode .nb.cta {
+  background: linear-gradient(90deg,var(--goldd),var(--gold)) !important;
+  color: #fff !important; -webkit-text-fill-color: #fff !important;
+  border-color: transparent !important;
+}
+
+/* Tags / badges */
+body.light-mode .ac-tag,
+body.light-mode .pal-tag,
+body.light-mode .fc-tag,
+body.light-mode .tc-tag,
+body.light-mode .af-font-tag {
+  background: rgba(0,0,0,.04) !important;
+  border-color: rgba(0,0,0,.12) !important;
+  color: rgba(10,8,32,.5) !important;
+}
+
+/* Hero badge */
+body.light-mode .hero-badge,
+body.light-mode .blog-tag {
+  background: rgba(102,34,187,.08) !important;
+  border-color: rgba(102,34,187,.2) !important;
+  color: var(--purple2) !important;
+}
+
+/* Code blocks */
+body.light-mode .css-code,
+body.light-mode .css-out,
+body.light-mode .af-body code,
+body.light-mode pre {
+  background: #1a1530 !important;
+  color: #22dd99 !important;
+  border-color: rgba(0,0,0,.1) !important;
+}
+
+/* CSS output card overrides */
+body.light-mode .css-card { background: #f0eeff !important; border-color: rgba(102,34,187,.2) !important; }
+
+/* Tabs */
+body.light-mode .tabs,
+body.light-mode .tab {
+  background: rgba(0,0,0,.05) !important;
+  border-color: rgba(0,0,0,.1) !important;
+  color: rgba(10,8,32,.55) !important;
+}
+body.light-mode .tab.active { background: var(--purple2) !important; color: #fff !important; -webkit-text-fill-color: #fff !important; }
+
+/* Filter chips */
+body.light-mode .cf,
+body.light-mode .filt,
+body.light-mode .mood-chip,
+body.light-mode .fc-chip,
+body.light-mode .sz-btn {
+  background: rgba(0,0,0,.04) !important;
+  border-color: rgba(0,0,0,.1) !important;
+  color: rgba(10,8,32,.55) !important;
+}
+body.light-mode .cf.active,
+body.light-mode .filt.active,
+body.light-mode .mood-chip.active {
+  background: var(--purpleL) !important;
+  border-color: var(--purple2) !important;
+  color: var(--purple2) !important;
+}
+
+/* Section divider */
+body.light-mode .sh,
+body.light-mode .dd-divider { color: rgba(10,8,32,.3) !important; }
+body.light-mode .sh::after { background: rgba(0,0,0,.1) !important; }
+
+/* Back button */
+body.light-mode .back-btn {
+  background: rgba(0,0,0,.04) !important;
+  border-color: rgba(0,0,0,.1) !important;
+  color: rgba(10,8,32,.55) !important;
+}
+
+/* Scale table rows */
+body.light-mode .st-row { border-color: rgba(0,0,0,.05) !important; }
+body.light-mode .st-row:hover { background: rgba(0,0,0,.03) !important; }
+body.light-mode .st-header { color: rgba(10,8,32,.4) !important; }
+
+/* Slider thumb */
+body.light-mode input[type=range]::-webkit-slider-thumb { background: var(--purple2) !important; }
+
+/* Preview areas */
+body.light-mode .rc-preview { filter: none; }
+
+/* Suggestion grid */
+body.light-mode .suggestions { background: var(--bg2) !important; }
+
+/* Footer */
+body.light-mode footer { border-color: rgba(0,0,0,.1) !important; }
+body.light-mode .fl a { color: rgba(10,8,32,.5) !important; }
+body.light-mode .fl a:hover { color: var(--gold) !important; }
+body.light-mode .fc,
+body.light-mode .fc-c { color: rgba(10,8,32,.35) !important; }
+
+/* Blog article body */
+body.light-mode .af-body { color: rgba(10,8,32,.75) !important; }
+body.light-mode .af-body h2 { color: var(--tx) !important; }
+body.light-mode .af-body a { color: var(--purple2) !important; }
+body.light-mode .af-callout { background: rgba(102,34,187,.06) !important; border-color: var(--purple2) !important; }
+body.light-mode .af-ctas { background: var(--bg3) !important; }
+
+/* Font preview text */
+body.light-mode .fc-sample,
+body.light-mode .ft-text,
+body.light-mode .det-h { color: var(--tx) !important; }
+
+/* Range labels */
+body.light-mode .ctrl-label,
+body.light-mode .pc-label,
+body.light-mode .css-label { color: var(--mt) !important; }
+
+/* Score circle / ratio display */
+body.light-mode .rc-ratio-l { color: var(--mt) !important; }
+
+/* Topbar logo subtitle */
+body.light-mode .logo-s { color: var(--mt) !important; }
+
+/* Toggle button in dropdown */
+body.light-mode .dd-theme-label { color: var(--mt) !important; }
+
+/* Font tile meta */
+body.light-mode .ft-name,
+body.light-mode .ft-cat { color: var(--mt) !important; }
+body.light-mode .ft-act {
+  background: rgba(0,0,0,.04) !important;
+  border-color: rgba(0,0,0,.1) !important;
+  color: rgba(10,8,32,.5) !important;
+}
+
+/* Hero stats */
+body.light-mode .hstat-l,
+body.light-mode .rc-ratio-l { color: var(--mt) !important; }
+
+/* Action buttons */
+body.light-mode .af-cta-n,
+body.light-mode .act-n {
+  background: rgba(0,0,0,.04) !important;
+  border-color: rgba(0,0,0,.1) !important;
+  color: rgba(10,8,32,.55) !important;
+}
+/* ═══════════════════════════════════════════════ */
+
 </style>
 </head>
 <body>
@@ -312,5 +573,86 @@ function copyTailwind() {
 
 update();
 </script>
+
+<script>
+(function(){
+  function toggleTheme(){
+    var isLight = document.body.classList.toggle('light-mode');
+    try{ localStorage.setItem('vectrod_theme', isLight?'light':'dark'); }catch(e){}
+    var btn = document.getElementById('pageThemeBtn');
+    if(btn) btn.textContent = isLight ? '☀️' : '🌙';
+  }
+  window.toggleTheme = toggleTheme;
+  // restore on load
+  try{
+    if(localStorage.getItem('vectrod_theme')==='light'){
+      document.body.classList.add('light-mode');
+      document.addEventListener('DOMContentLoaded',function(){
+        var btn=document.getElementById('pageThemeBtn');
+        if(btn) btn.textContent='☀️';
+      });
+    }
+  }catch(e){}
+})();
+</script>
+
+<!-- VOTE WIDGET — universal -->
+<div class="vw-wrap" id="voteWidget">
+  <div class="vw-inner">
+    <div class="vw-title">Is Vectrod useful to you?</div>
+    <div class="vw-sub">Takes 1 second — helps us improve 🙏</div>
+    <div class="vw-btns">
+      <button class="vw-btn good" id="vwGood" onclick="vwVote('good')">👍 <span id="vwGoodN">—</span></button>
+      <button class="vw-btn bad"  id="vwBad"  onclick="vwVote('bad')">👎 <span id="vwBadN">—</span></button>
+    </div>
+    <div class="vw-bar"><div class="vw-bar-fill" id="vwBarFill" style="width:50%"></div></div>
+    <div class="vw-stat" id="vwStat">Loading votes...</div>
+    <div class="vw-thanks" id="vwThanks">Thanks for your feedback! ✨</div>
+  </div>
+</div>
+<style>
+.vw-wrap{background:linear-gradient(135deg,rgba(6,7,15,.95),rgba(10,11,26,.95));border-top:1px solid rgba(255,255,255,.06);padding:40px 20px;text-align:center;margin-top:60px}
+.vw-inner{max-width:480px;margin:0 auto}
+.vw-title{font-family:'Cinzel',serif;font-size:17px;font-weight:700;color:#eeeaff;margin-bottom:6px}
+.vw-sub{font-size:13px;color:rgba(238,234,255,.4);margin-bottom:24px}
+.vw-btns{display:flex;gap:12px;justify-content:center;margin-bottom:18px}
+.vw-btn{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 28px;font-size:20px;cursor:pointer;transition:all .22s;color:#eeeaff;font-family:inherit;display:flex;align-items:center;gap:8px}
+.vw-btn span{font-size:13px;font-weight:600}
+.vw-btn.good:hover,.vw-btn.good.active{background:rgba(34,221,153,.1);border-color:rgba(34,221,153,.4);transform:scale(1.04)}
+.vw-btn.bad:hover,.vw-btn.bad.active{background:rgba(255,80,80,.08);border-color:rgba(255,80,80,.35);transform:scale(1.04)}
+.vw-btn:disabled{opacity:.5;cursor:default;transform:none!important}
+.vw-bar{height:5px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;max-width:280px;margin:0 auto 8px}
+.vw-bar-fill{height:100%;background:linear-gradient(90deg,#22dd99,#9944ee);border-radius:100px;transition:width .5s ease}
+.vw-stat{font-size:11px;color:rgba(238,234,255,.3);font-family:'DM Mono',monospace}
+.vw-thanks{font-size:13px;color:#22dd99;margin-top:10px;display:none}
+</style>
+<script>
+(function(){
+  function vwUpdate(good,bad){
+    var total=good+bad;
+    document.getElementById('vwGoodN').textContent=good;
+    document.getElementById('vwBadN').textContent=bad;
+    var pct=total>0?Math.round(good/total*100):50;
+    document.getElementById('vwBarFill').style.width=pct+'%';
+    document.getElementById('vwStat').textContent=total>0?pct+'% positive · '+total+' votes':'Be the first to vote!';
+  }
+  window.vwVote=function(type){
+    try{ if(localStorage.getItem('vectrod_voted')){ document.getElementById('vwThanks').style.display='block'; document.getElementById('vwThanks').textContent='You already voted! Thanks 🙏'; return; } }catch(e){}
+    document.getElementById('vwGood').disabled=true;
+    document.getElementById('vwBad').disabled=true;
+    fetch('/api/vote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:type})})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      try{localStorage.setItem('vectrod_voted','1');}catch(e){}
+      document.getElementById('vw'+type.charAt(0).toUpperCase()+type.slice(1)).classList.add('active');
+      document.getElementById('vwThanks').style.display='block';
+      vwUpdate(d.good,d.bad);
+    });
+  };
+  fetch('/api/vote-count').then(function(r){return r.json();}).then(function(d){ vwUpdate(d.good||0,d.bad||0); }).catch(function(){document.getElementById('vwStat').textContent='';});
+  try{ if(localStorage.getItem('vectrod_voted')){ document.addEventListener('DOMContentLoaded',function(){ document.getElementById('vwGood').disabled=true; document.getElementById('vwBad').disabled=true; }); } }catch(e){}
+})();
+</script>
+
 </body>
 </html>

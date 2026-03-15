@@ -689,5 +689,64 @@ function reset(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
+
+<!-- VOTE WIDGET — universal -->
+<div class="vw-wrap" id="voteWidget">
+  <div class="vw-inner">
+    <div class="vw-title">Is Vectrod useful to you?</div>
+    <div class="vw-sub">Takes 1 second — helps us improve 🙏</div>
+    <div class="vw-btns">
+      <button class="vw-btn good" id="vwGood" onclick="vwVote('good')">👍 <span id="vwGoodN">—</span></button>
+      <button class="vw-btn bad"  id="vwBad"  onclick="vwVote('bad')">👎 <span id="vwBadN">—</span></button>
+    </div>
+    <div class="vw-bar"><div class="vw-bar-fill" id="vwBarFill" style="width:50%"></div></div>
+    <div class="vw-stat" id="vwStat">Loading votes...</div>
+    <div class="vw-thanks" id="vwThanks">Thanks for your feedback! ✨</div>
+  </div>
+</div>
+<style>
+.vw-wrap{background:linear-gradient(135deg,rgba(6,7,15,.95),rgba(10,11,26,.95));border-top:1px solid rgba(255,255,255,.06);padding:40px 20px;text-align:center;margin-top:60px}
+.vw-inner{max-width:480px;margin:0 auto}
+.vw-title{font-family:'Cinzel',serif;font-size:17px;font-weight:700;color:#eeeaff;margin-bottom:6px}
+.vw-sub{font-size:13px;color:rgba(238,234,255,.4);margin-bottom:24px}
+.vw-btns{display:flex;gap:12px;justify-content:center;margin-bottom:18px}
+.vw-btn{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 28px;font-size:20px;cursor:pointer;transition:all .22s;color:#eeeaff;font-family:inherit;display:flex;align-items:center;gap:8px}
+.vw-btn span{font-size:13px;font-weight:600}
+.vw-btn.good:hover,.vw-btn.good.active{background:rgba(34,221,153,.1);border-color:rgba(34,221,153,.4);transform:scale(1.04)}
+.vw-btn.bad:hover,.vw-btn.bad.active{background:rgba(255,80,80,.08);border-color:rgba(255,80,80,.35);transform:scale(1.04)}
+.vw-btn:disabled{opacity:.5;cursor:default;transform:none!important}
+.vw-bar{height:5px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;max-width:280px;margin:0 auto 8px}
+.vw-bar-fill{height:100%;background:linear-gradient(90deg,#22dd99,#9944ee);border-radius:100px;transition:width .5s ease}
+.vw-stat{font-size:11px;color:rgba(238,234,255,.3);font-family:'DM Mono',monospace}
+.vw-thanks{font-size:13px;color:#22dd99;margin-top:10px;display:none}
+</style>
+<script>
+(function(){
+  function vwUpdate(good,bad){
+    var total=good+bad;
+    document.getElementById('vwGoodN').textContent=good;
+    document.getElementById('vwBadN').textContent=bad;
+    var pct=total>0?Math.round(good/total*100):50;
+    document.getElementById('vwBarFill').style.width=pct+'%';
+    document.getElementById('vwStat').textContent=total>0?pct+'% positive · '+total+' votes':'Be the first to vote!';
+  }
+  window.vwVote=function(type){
+    try{ if(localStorage.getItem('vectrod_voted')){ document.getElementById('vwThanks').style.display='block'; document.getElementById('vwThanks').textContent='You already voted! Thanks 🙏'; return; } }catch(e){}
+    document.getElementById('vwGood').disabled=true;
+    document.getElementById('vwBad').disabled=true;
+    fetch('/api/vote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:type})})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      try{localStorage.setItem('vectrod_voted','1');}catch(e){}
+      document.getElementById('vw'+type.charAt(0).toUpperCase()+type.slice(1)).classList.add('active');
+      document.getElementById('vwThanks').style.display='block';
+      vwUpdate(d.good,d.bad);
+    });
+  };
+  fetch('/api/vote-count').then(function(r){return r.json();}).then(function(d){ vwUpdate(d.good||0,d.bad||0); }).catch(function(){document.getElementById('vwStat').textContent='';});
+  try{ if(localStorage.getItem('vectrod_voted')){ document.addEventListener('DOMContentLoaded',function(){ document.getElementById('vwGood').disabled=true; document.getElementById('vwBad').disabled=true; }); } }catch(e){}
+})();
+</script>
+
 </body>
 </html>
