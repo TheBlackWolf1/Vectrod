@@ -1,104 +1,102 @@
 <!DOCTYPE html>
 <html><head>
-<meta charset=UTF-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>Vectrod Admin Dashboard</title>
+<meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>Vectrod Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#020308;color:#eeeaff;font-family:'Outfit',sans-serif;min-height:100vh;padding:32px 20px}
-.wrap{max-width:1000px;margin:0 auto}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:44px;flex-wrap:wrap;gap:12px}
-.brand{font-size:11px;font-family:'DM Mono',monospace;color:rgba(240,192,96,.5);letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px}
-h1{font-size:26px;font-weight:800;color:#f0c060}
-.ts{font-size:11px;font-family:'DM Mono',monospace;color:rgba(238,234,255,.25);margin-top:4px}
-.topbtns{display:flex;gap:10px}
-.btn-sm{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:9px 16px;color:rgba(238,234,255,.6);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;text-decoration:none;transition:all .2s}
-.btn-sm:hover{background:rgba(255,255,255,.08);color:#eeeaff}
-.sec-title{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.14em;color:rgba(240,192,96,.55);text-transform:uppercase;margin-bottom:14px;margin-top:36px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.05)}
-.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.card{background:#06070f;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:24px 20px;transition:border-color .2s}
-.card:hover{border-color:rgba(240,192,96,.15)}
-.clabel{font-size:10px;font-family:'DM Mono',monospace;color:rgba(238,234,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
-.cval{font-size:40px;font-weight:800;line-height:1;color:#f0c060}
-.csub{font-size:11px;color:rgba(238,234,255,.28);margin-top:8px;font-family:'DM Mono',monospace}
-.cval.green{color:#22dd99}
-.cval.red{color:#ff6060}
-.cval.purple{color:#bb77ff}
-.vote-bar-wrap{background:#06070f;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:24px}
-.bar-track{height:10px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;margin:16px 0 10px}
-.bar-fill{height:100%;background:linear-gradient(90deg,#22dd99,#9944ee);border-radius:100px;transition:width .6s ease}
-.bar-labels{display:flex;justify-content:space-between;font-size:12px;font-family:'DM Mono',monospace;color:rgba(238,234,255,.4)}
-.note{background:rgba(240,192,96,.04);border:1px solid rgba(240,192,96,.1);border-radius:14px;padding:16px 20px;font-size:12px;color:rgba(238,234,255,.35);margin-top:28px;font-family:'DM Mono',monospace;line-height:1.7}
-@media(max-width:500px){.grid3{grid-template-columns:1fr 1fr}.cval{font-size:30px}}
-</style>
-</head>
-<body>
-<div class="wrap">
+body{background:#020308;color:#eeeaff;font-family:'Outfit',sans-serif;min-height:100vh;padding:28px 16px 60px}
+.wrap{max-width:1060px;margin:0 auto}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:14px}
+.brand{font-size:10px;font-family:'DM Mono',monospace;color:rgba(240,192,96,.45);letter-spacing:.18em;text-transform:uppercase;margin-bottom:5px}
+h1{font-size:28px;font-weight:800;color:#f0c060;line-height:1}
+.ts{font-size:11px;font-family:'DM Mono',monospace;color:rgba(238,234,255,.22);margin-top:5px}
+.topbtns{display:flex;gap:8px;flex-wrap:wrap}
+.tbtn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:9px 16px;color:rgba(238,234,255,.55);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;text-decoration:none;transition:all .2s}
+.tbtn:hover{background:rgba(255,255,255,.08);color:#eeeaff}
+.tbtn.gold{border-color:rgba(240,192,96,.3);color:#f0c060}
+.sec{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.15em;color:rgba(240,192,96,.5);text-transform:uppercase;margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.05)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.card{background:#06070f;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:22px 20px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .2s}
+.card:hover{border-color:rgba(240,192,96,.15)}.card:hover::before{opacity:1}
+.card.gold::before{background:linear-gradient(90deg,#f0c060,#c09040)}
+.card.green::before{background:linear-gradient(90deg,#22dd99,#11bb77)}
+.card.red::before{background:linear-gradient(90deg,#ff6060,#cc3333)}
+.card.purple::before{background:linear-gradient(90deg,#9944ee,#bb77ff)}
+.clabel{font-size:10px;font-family:'DM Mono',monospace;color:rgba(238,234,255,.28);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.cval{font-size:38px;font-weight:800;line-height:1;color:#f0c060}
+.cval.g{color:#22dd99}.cval.r{color:#ff6060}.cval.p{color:#bb77ff}
+.csub{font-size:11px;color:rgba(238,234,255,.25);margin-top:8px;font-family:'DM Mono',monospace}
+.vbar-card{background:#06070f;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:24px 22px;margin-top:12px}
+.bar-track{height:10px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;margin:12px 0 10px}
+.bar-fill{height:100%;background:linear-gradient(90deg,#22dd99,#9944ee);border-radius:100px}
+.bar-labels{display:flex;justify-content:space-between;font-size:12px;font-family:'DM Mono',monospace;color:rgba(238,234,255,.35)}
+.chart-wrap{background:#06070f;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:22px;overflow-x:auto}
+.chart{display:flex;align-items:flex-end;gap:5px;height:90px;min-width:280px}
+.bcol{display:flex;flex-direction:column;align-items:center;flex:1;min-width:20px}
+.bseg{width:100%;border-radius:3px 3px 0 0;min-height:2px}
+.bdate{font-size:7px;font-family:'DM Mono',monospace;color:rgba(238,234,255,.2);transform:rotate(-45deg);white-space:nowrap;margin-top:5px;transform-origin:top center}
+.table-wrap{background:#06070f;border:1px solid rgba(255,255,255,.07);border-radius:18px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead tr{background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)}
+th{padding:13px 14px;text-align:left;font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.1em;color:rgba(238,234,255,.3);text-transform:uppercase;font-weight:400}
+td{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.04);font-family:'DM Mono',monospace;font-size:12px}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.02)}
+td:first-child{color:rgba(238,234,255,.45)}
+.note{background:rgba(240,192,96,.03);border:1px solid rgba(240,192,96,.1);border-radius:14px;padding:14px 18px;font-size:12px;color:rgba(238,234,255,.3);margin-top:24px;font-family:'DM Mono',monospace;line-height:1.7}
+@media(max-width:600px){.grid{grid-template-columns:1fr 1fr}.cval{font-size:28px}.topbar{flex-direction:column}}
+</style></head>
+<body><div class="wrap">
 
-  <div class="topbar">
-    <div>
-      <div class="brand">⚡ Vectrod</div>
-      <h1>Admin Dashboard</h1>
-      <div class="ts">Last updated: {{ts}}</div>
-    </div>
-    <div class="topbtns">
-      <button class="btn-sm" onclick="location.reload()">↻ Refresh</button>
-      <a class="btn-sm" href="/" target="_blank">↗ View Site</a>
-      <a class="btn-sm" href="/admin-login">← Logout</a>
-    </div>
+<div class="topbar">
+  <div>
+    <div class="brand">⚡ Vectrod</div>
+    <h1>Admin Dashboard</h1>
+    <div class="ts">Updated: {{ts}} · SQLite — data survives restarts</div>
   </div>
-
-  <div class="sec-title">📊 Site Activity</div>
-  <div class="grid3">
-    <div class="card">
-      <div class="clabel">Page Views</div>
-      <div class="cval purple">{{page_views}}</div>
-      <div class="csub">since last restart</div>
-    </div>
-    <div class="card">
-      <div class="clabel">Fonts Converted</div>
-      <div class="cval">{{converts}}</div>
-      <div class="csub">SVG → TTF/OTF</div>
-    </div>
-    <div class="card">
-      <div class="clabel">AI Fonts Generated</div>
-      <div class="cval">{{ai_gen}}</div>
-      <div class="csub">via Gemini DNA</div>
-    </div>
+  <div class="topbtns">
+    <button class="tbtn gold" onclick="location.reload()">↻ Refresh</button>
+    <a class="tbtn" href="/" target="_blank">↗ Live Site</a>
+    <a class="tbtn" href="/admin-login">← Logout</a>
   </div>
-
-  <div class="sec-title">👍 User Satisfaction</div>
-  <div class="grid3">
-    <div class="card">
-      <div class="clabel">Good Votes</div>
-      <div class="cval green">{{good}}</div>
-    </div>
-    <div class="card">
-      <div class="clabel">Bad Votes</div>
-      <div class="cval red">{{bad}}</div>
-    </div>
-    <div class="card">
-      <div class="clabel">Approval Rate</div>
-      <div class="cval">{{rate}}</div>
-      <div class="csub">from {{total}} total votes</div>
-    </div>
-  </div>
-  <div class="vote-bar-wrap" style="margin-top:12px">
-    <div style="font-size:13px;font-weight:600;margin-bottom:4px">Vote Distribution</div>
-    <div class="bar-track">
-      <div class="bar-fill" style="width:{{good_pct}}%"></div>
-    </div>
-    <div class="bar-labels">
-      <span>👍 {{good}} good</span>
-      <span>👎 {{bad}} bad</span>
-    </div>
-  </div>
-
-  <div class="note">
-    ⚠️ All stats are in-memory — data resets when Railway restarts the server.<br>
-    Consider adding a lightweight DB (SQLite) for persistent tracking in the future.
-  </div>
-
 </div>
-</body></html>
+
+<div class="sec">📊 All Time Stats</div>
+<div class="grid">
+  <div class="card purple"><div class="clabel">Page Views</div><div class="cval p">{{page_views}}</div><div class="csub">total page loads</div></div>
+  <div class="card gold"><div class="clabel">Fonts Converted</div><div class="cval">{{converts}}</div><div class="csub">SVG → TTF / OTF</div></div>
+  <div class="card gold"><div class="clabel">AI Fonts</div><div class="cval">{{ai_gen}}</div><div class="csub">Gemini DNA pipeline</div></div>
+  <div class="card green"><div class="clabel">👍 Good Votes</div><div class="cval g">{{good}}</div><div class="csub">satisfied users</div></div>
+  <div class="card red"><div class="clabel">👎 Bad Votes</div><div class="cval r">{{bad}}</div><div class="csub">needs improvement</div></div>
+  <div class="card gold"><div class="clabel">Approval Rate</div><div class="cval">{{rate}}</div><div class="csub">{{total}} total votes</div></div>
+</div>
+
+<div class="vbar-card">
+  <div style="font-size:13px;font-weight:600;color:rgba(238,234,255,.6)">Vote Distribution</div>
+  <div class="bar-track"><div class="bar-fill" style="width:{{good_pct}}%"></div></div>
+  <div class="bar-labels"><span>👍 {{good}} positive</span><span>👎 {{bad}} negative</span></div>
+</div>
+
+<div class="sec">📈 Page Views — Last 14 Days</div>
+<div class="chart-wrap">
+  <div class="chart">{{pv_chart}}</div>
+</div>
+
+<div class="sec">📅 Daily Breakdown — Last 14 Days</div>
+<div class="table-wrap">
+  <table>
+    <thead><tr>
+      <th>Date</th><th>Views</th><th>Converts</th><th>AI Fonts</th>
+      <th style="color:rgba(34,221,153,.5)">👍 Good</th>
+      <th style="color:rgba(255,96,96,.5)">👎 Bad</th>
+    </tr></thead>
+    <tbody>{{daily_rows}}</tbody>
+  </table>
+</div>
+
+<div class="note">✅ SQLite storage — data persists across Railway restarts and deploys.<br>
+Login: <strong>Black Wolf</strong> / <strong>Vectrod@BW#2024!</strong> · DB: vectrod_stats.db</div>
+
+</div></body></html>

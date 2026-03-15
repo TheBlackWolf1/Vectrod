@@ -14,13 +14,72 @@ from engine import build_font, DEFAULT_CHAR_ORDER
 # ── Storage ───────────────────────────────────────────────────────────────────
 BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sessions')
 
-# ── Vote + Admin ─────────────────────────────────────────────────────────────
-VOTE_DATA  = {'good': 0, 'bad': 0}
-VOTE_LOCK  = threading.Lock()
-ADMIN_USER = 'vectrod'
-ADMIN_PASS = 'Vectrod2024!'
-SITE_STATS = {'converts': 0, 'ai_generates': 0, 'page_views': 0}
-STATS_LOCK = threading.Lock()
+# ── Vote + Admin + SQLite ────────────────────────────────────────────────────
+import sqlite3
+ADMIN_USER = 'Black Wolf'
+ADMIN_PASS = 'Vectrod@BW#2024!'
+DB_PATH    = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vectrod_stats.db')
+DB_LOCK    = threading.Lock()
+
+def db_init():
+    with DB_LOCK:
+        conn = sqlite3.connect(DB_PATH)
+        conn.execute('''CREATE TABLE IF NOT EXISTS stats (
+            key TEXT PRIMARY KEY,
+            value INTEGER DEFAULT 0
+        )''')
+        conn.execute('''CREATE TABLE IF NOT EXISTS votes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            type TEXT,
+            ts INTEGER
+        )''')
+        conn.execute('''CREATE TABLE IF NOT EXISTS daily (
+            date TEXT PRIMARY KEY,
+            page_views INTEGER DEFAULT 0,
+            converts INTEGER DEFAULT 0,
+            ai_generates INTEGER DEFAULT 0,
+            votes_good INTEGER DEFAULT 0,
+            votes_bad INTEGER DEFAULT 0
+        )''')
+        for key in ('page_views','converts','ai_generates'):
+            conn.execute('INSERT OR IGNORE INTO stats VALUES (?,0)',(key,))
+        conn.commit()
+        conn.close()
+
+def db_inc(key):
+    today = time.strftime('%Y-%m-%d')
+    with DB_LOCK:
+        conn = sqlite3.connect(DB_PATH)
+        conn.execute('INSERT OR IGNORE INTO stats VALUES (?,0)',(key,))
+        conn.execute('UPDATE stats SET value=value+1 WHERE key=?',(key,))
+        conn.execute('INSERT OR IGNORE INTO daily(date) VALUES (?)',(today,))
+        conn.execute(f'UPDATE daily SET {key}={key}+1 WHERE date=?',(today,))
+        conn.commit()
+        conn.close()
+
+def db_get_stats():
+    with DB_LOCK:
+        conn = sqlite3.connect(DB_PATH)
+        rows = conn.execute('SELECT key,value FROM stats').fetchall()
+        votes = conn.execute('SELECT type,COUNT(*) FROM votes GROUP BY type').fetchall()
+        daily = conn.execute('SELECT * FROM daily ORDER BY date DESC LIMIT 14').fetchall()
+        conn.close()
+    stats = {r[0]:r[1] for r in rows}
+    vstats = {r[0]:r[1] for r in votes}
+    return stats, vstats, daily
+
+def db_add_vote(vtype):
+    today = time.strftime('%Y-%m-%d')
+    col = 'votes_good' if vtype=='good' else 'votes_bad'
+    with DB_LOCK:
+        conn = sqlite3.connect(DB_PATH)
+        conn.execute('INSERT INTO votes(type,ts) VALUES (?,?)',(vtype,int(time.time())))
+        conn.execute('INSERT OR IGNORE INTO daily(date) VALUES (?)',(today,))
+        conn.execute(f'UPDATE daily SET {col}={col}+1 WHERE date=?',(today,))
+        conn.commit()
+        conn.close()
+
+db_init()
 os.makedirs(BASE_DIR, exist_ok=True)
 
 SESSION_TTL = 3600  # 1 saat sonra sil
@@ -238,9 +297,10 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = urlparse(self.path).path
-        if not path.startswith('/api') and not path.startswith('/favicon') and path not in ('/health','/robots.txt','/sitemap.xml'):
-            with STATS_LOCK:
-                SITE_STATS['page_views'] += 1
+        _skip = ('/health','/robots.txt','/sitemap.xml','/vectrod-admin','/admin-login','/test-gemini')
+        _real_page = not path.startswith('/api') and not path.startswith('/favicon') and not path.startswith('/download') and path not in _skip
+        if _real_page:
+            threading.Thread(target=db_inc, args=('page_views',), daemon=True).start()
 
         # Railway health check endpoint
         if path == '/health':
@@ -251,9 +311,9 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         if path == '/api/vote-count':
-            with VOTE_LOCK:
-                good = VOTE_DATA['good']
-                bad  = VOTE_DATA['bad']
+            _, vstats, _ = db_get_stats()
+            good = vstats.get('good',0)
+            bad  = vstats.get('bad',0)
             self.send_response(200)
             self.send_header('Content-Type','application/json')
             self.end_headers()
@@ -316,6 +376,16 @@ class Handler(BaseHTTPRequestHandler):
 
         elif path == '/blog':
             self.serve_static('blog.html', 'text/html')
+        elif path == '/blog/best-free-fonts-for-logos':
+            self.serve_static('blog-logos.html', 'text/html')
+        elif path == '/blog/how-to-create-your-own-font':
+            self.serve_static('blog-create-font.html', 'text/html')
+        elif path == '/blog/google-fonts-alternatives':
+            self.serve_static('blog-gf-alternatives.html', 'text/html')
+        elif path == '/blog/font-pairing-guide':
+            self.serve_static('blog-pairing.html', 'text/html')
+        elif path == '/blog/free-fonts-commercial-use':
+            self.serve_static('blog-commercial.html', 'text/html')
 
         elif path == '/brands':
             self.serve_static('brands.html', 'text/html')
@@ -542,25 +612,43 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header('Location','/admin-login')
             self.end_headers()
             return
-        with VOTE_LOCK:
-            good = VOTE_DATA['good']
-            bad  = VOTE_DATA['bad']
-        with STATS_LOCK:
-            converts   = SITE_STATS['converts']
-            ai_gen     = SITE_STATS['ai_generates']
-            page_views = SITE_STATS['page_views']
-        total = good + bad
-        rate  = str(round(good/total*100))+'%' if total else 'no votes yet'
+        stats, vstats, daily = db_get_stats()
+        good       = vstats.get('good',0)
+        bad        = vstats.get('bad',0)
+        converts   = stats.get('converts',0)
+        ai_gen     = stats.get('ai_generates',0)
+        page_views = stats.get('page_views',0)
+        total    = good + bad
+        rate     = str(round(good/total*100))+'%' if total else '—'
         good_pct = round(good/total*100) if total else 50
-        ts = time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())
+        ts       = time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())
+        # Build daily table rows + chart
+        daily_rows = ''
+        pv_vals = []
+        for row in daily:
+            date,pv,cv,ai,vg,vb = row[0],row[1],row[2],row[3],row[4],row[5]
+            daily_rows += f'<tr><td>{date}</td><td>{pv}</td><td>{cv}</td><td>{ai}</td><td style="color:#22dd99">{vg}</td><td style="color:#ff6060">{vb}</td></tr>'
+            pv_vals.append((date, pv))
+        # Build mini bar chart
+        pv_chart = ''
+        if pv_vals:
+            max_pv = max(v for _,v in pv_vals) or 1
+            for date, pv in reversed(pv_vals):
+                h = max(4, int(pv / max_pv * 80))
+                short_date = date[5:]  # MM-DD
+                pv_chart += f'<div class="bcol"><div class="bseg" style="height:{h}px;background:rgba(153,68,238,.6)" title="{date}: {pv} views"></div><div class="bdate">{short_date}</div></div>'
+        else:
+            pv_chart = '<div style="color:rgba(238,234,255,.2);font-size:12px;font-family:DM Mono,monospace;padding:20px">No data yet</div>'
         html = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'admin_dashboard.html'),'r',errors='replace').read()
         html = html.replace('{{good}}',str(good)).replace('{{bad}}',str(bad))
+        html = html.replace('{{pv_chart}}', pv_chart)
         html = html.replace('{{total}}',str(total)).replace('{{rate}}',rate)
         html = html.replace('{{good_pct}}',str(good_pct))
         html = html.replace('{{converts}}',str(converts))
         html = html.replace('{{ai_gen}}',str(ai_gen))
         html = html.replace('{{page_views}}',str(page_views))
         html = html.replace('{{ts}}',ts)
+        html = html.replace('{{daily_rows}}',daily_rows or '<tr><td colspan=6 style="text-align:center;color:rgba(238,234,255,.3);padding:20px">No data yet</td></tr>')
         self.send_response(200)
         self.send_header('Content-Type','text/html; charset=utf-8')
         self.end_headers()
@@ -572,15 +660,14 @@ class Handler(BaseHTTPRequestHandler):
             body = json.loads(self.rfile.read(length))
             vote_type = body.get('type','')
             if vote_type in ('good','bad'):
-                with VOTE_LOCK:
-                    VOTE_DATA[vote_type] += 1
-                    good = VOTE_DATA['good']
-                    bad  = VOTE_DATA['bad']
-                total = good + bad
+                db_add_vote(vote_type)
+                _, vstats, _ = db_get_stats()
+                good = vstats.get('good',0)
+                bad  = vstats.get('bad',0)
                 self.send_response(200)
                 self.send_header('Content-Type','application/json')
                 self.end_headers()
-                self.wfile.write(json.dumps({'ok':True,'good':good,'bad':bad,'total':total}).encode())
+                self.wfile.write(json.dumps({'ok':True,'good':good,'bad':bad,'total':good+bad}).encode())
             else:
                 self.send_error(400)
         except Exception as e:
@@ -670,7 +757,7 @@ Be accurate. Respond with ONLY the JSON."""
             self.json_resp({'error': str(e)}, 500)
 
     def handle_ai_generate(self):
-        with STATS_LOCK: SITE_STATS['ai_generates'] += 1
+        threading.Thread(target=db_inc, args=('ai_generates',), daemon=True).start()
         """
         Vectrod v3 DNA Pipeline.
         Prompt → Gemini DNA (stil parametresi) → vectrod_v3 geometri → TTF/OTF
@@ -974,7 +1061,7 @@ Be accurate. Respond with ONLY the JSON."""
             self.json_resp({'success': False, 'error': str(e)}, 500)
 
     def handle_convert(self):
-        with STATS_LOCK: SITE_STATS['converts'] += 1
+        threading.Thread(target=db_inc, args=('converts',), daemon=True).start()
         try:
             fields, files = self.read_body()
 
