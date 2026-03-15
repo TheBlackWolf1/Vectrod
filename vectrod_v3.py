@@ -652,19 +652,19 @@ def dna_from_gemini(prompt:str, api_key:str):
     import urllib.request, json, re, time
 
     MODELS = [
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
-        "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent",
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
-        "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent",
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent",
+        ("v1beta", "gemini-2.0-flash-exp"),
+        ("v1beta", "gemini-2.0-flash-lite"),
+        ("v1beta", "gemini-1.5-flash-002"),
+        ("v1beta", "gemini-1.5-flash-8b"),
+        ("v1",     "gemini-1.5-flash-latest"),
     ]
 
-    for attempt, base_url in enumerate(MODELS):
-        model_name = base_url.split("/models/")[1]
-        url = f"{base_url}?key={api_key}"
+    for attempt, (ver, model_id) in enumerate(MODELS):
+        model_name = model_id
+        url = f"https://generativelanguage.googleapis.com/{ver}/models/{model_id}:generateContent?key={api_key}"
         try:
             body=json.dumps({
-                "system_instruction":{"parts":[{"text":GEMINI_PROMPT}]},
+                "systemInstruction":{"parts":[{"text":GEMINI_PROMPT}]},
                 "contents":[{"parts":[{"text":f"Font style: {prompt}"}]}],
                 "generationConfig":{"temperature":0.45,"maxOutputTokens":400}
             }).encode()
