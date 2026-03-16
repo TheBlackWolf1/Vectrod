@@ -470,8 +470,12 @@ def get_shape(name: str) -> str:
     """Get a shape path by name. Returns unit-scale CW path."""
     entry = SHAPES.get(name)
     if not entry:
-        print(f"[Shape] Unknown: '{name}', using star5")
-        entry = SHAPES['star5']
+        # Safe fallback — never use stars
+        safe = {'floral':'flower','cyber':'diamond','gothic':'crown_spike',
+                'kawaii':'heart','retro':'diamond','minimal':'petal'}
+        fallback = 'flower'
+        print(f"[Shape] Unknown: '{name}', using {fallback}")
+        entry = SHAPES[fallback]
     fn = entry[0]
     return fn()
 
