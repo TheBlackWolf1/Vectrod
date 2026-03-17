@@ -140,28 +140,66 @@ def _def_shapes(deco):
 
 class GB:
     def __init__(self, dna):
-        self.sw  = max(44, min(80, int(dna.get('stroke_weight', 44))))
-        self.dna = dna
-        self.d   = Deco(dna)
-        SB       = max(55, self.sw + 20)
+        self.sw   = max(44, min(80, int(dna.get('stroke_weight', 44))))
+        self.dna  = dna
+        self.d    = Deco(dna)
+        self.deco = dna.get('decoration','minimal')
+
+        # ── STİL PARAMETRELERİ ──────────────────────────────────────
+        # Her stil için farklı geometri karakteri
+        style_cfg = {
+            'floral':  {'sb_mul':1.30, 'w_mul':0.78, 'round':0.92, 'xh_mul':0.72, 'slant':0.0 },
+            'kawaii':  {'sb_mul':1.45, 'w_mul':0.85, 'round':1.00, 'xh_mul':0.78, 'slant':0.0 },
+            'cyber':   {'sb_mul':1.00, 'w_mul':0.82, 'round':0.40, 'xh_mul':0.65, 'slant':0.08},
+            'gothic':  {'sb_mul':1.10, 'w_mul':0.70, 'round':0.55, 'xh_mul':0.68, 'slant':0.0 },
+            'retro':   {'sb_mul':1.20, 'w_mul':0.88, 'round':0.70, 'xh_mul':0.70, 'slant':0.0 },
+            'minimal': {'sb_mul':1.15, 'w_mul':0.75, 'round':0.60, 'xh_mul':0.66, 'slant':0.0 },
+        }
+        cfg = style_cfg.get(self.deco, style_cfg['minimal'])
+        self.round  = cfg['round']    # 1.0=tam yuvarlak, 0.4=keskin
+        self.slant  = cfg['slant']    # italic eğim (cyber için)
+        xh_r        = cfg['xh_mul']
+        self._XH    = int(CAP * xh_r) # stil bazlı x-height
+
+        SB = max(50, int(self.sw * cfg['sb_mul']))
         self.SB  = SB
-        W        = int(CAP * 0.72)
-        self.W0  = W   # base width
+        W  = int(CAP * 0.72 * cfg['w_mul'])
+        self.W0  = W
 
     def dims(self, wf=1.0):
         SB=self.SB; W=int(self.W0*wf)
         L=SB; R=SB+W; CX=(L+R)//2; adv=W+2*SB
         return L,R,CX,adv
 
+    def _arc(self, cx, cy, rx, ry, a1, a2, sw_override=None):
+        """Stil bazlı yay — round<1 ise köşeleri kırpılmış arc."""
+        sw = sw_override or self.sw
+        r  = self.round
+        if r >= 0.85:
+            return arc_thick(cx, cy, rx, ry, a1, a2, sw)
+        # Köşeli stil: yay açılarını daralt, düz çizgilerle tamamla
+        mid = (a1 + a2) / 2
+        span = (a2 - a1) * r
+        return arc_thick(cx, cy, rx, ry, mid - span/2, mid + span/2, sw)
+
+    def _slant_x(self, x, y):
+        """Cyber/italic için x koordinatını y'ye göre kaydır."""
+        return x + int(y * self.slant)
+
     def build(self, c, idx=0):
-        sw=self.sw; d=self.d
-        s=lambda x1,y1,x2,y2,w=None: stroke(x1,y1,x2,y2,w or sw)
-        a=lambda cx,cy,rx,ry,a1,a2: arc_thick(cx,cy,rx,ry,a1,a2,sw)
+        sw=self.sw; d=self.d; XH=self._XH
+        s=lambda x1,y1,x2,y2,w=None: stroke(
+            self._slant_x(x1,y1), y1,
+            self._slant_x(x2,y2), y2, w or sw)
+        a=lambda cx,cy,rx,ry,a1,a2: self._arc(cx,cy,rx,ry,a1,a2)
         o=lambda cx,cy,rx,ry: oval_donut(cx,cy,rx,ry,sw)
 
         # ── UPPERCASE ──────────────────────────────────────────────
         if c=='A':
-            L,R,CX,adv=self.dims(1.0); by=int(CAP*0.42)
+            L,R,CX,adv=self.dims(1.0)
+            # Stil bazlı crossbar yüksekliği: kawaii=alçak, cyber=yüksek
+            by_pct = {'kawaii':0.36,'floral':0.40,'retro':0.44,'cyber':0.50,'gothic':0.48,'minimal':0.44}
+            by=int(CAP*by_pct.get(self.deco,0.42))
             p=_j(s(L,BASE,CX,CAP),s(R,BASE,CX,CAP),
                  s(L+int((R-L)*0.24),by,R-int((R-L)*0.24),by))
             p=_j(p,d.top(CX,CAP,idx))
@@ -191,7 +229,8 @@ class GB:
             p=_j(s(Lx,BASE,Lx,CAP),s(Lx,CAP,R,CAP),s(Lx,mid,R-int((R-L)*0.18),mid))
             p=_j(p,d.top(Lx,CAP,idx),d.base(Lx,BASE,idx+1,0.75))
         elif c=='G':
-            L,R,CX,adv=self.dims(1.1); rx=(R-L)//2-sw//2; ry=CAP//2-sw//2
+            wf = {'kawaii':1.20,'floral':1.12,'cyber':0.88,'gothic':0.95,'retro':1.05,'minimal':1.0}.get(self.deco,1.1)
+            L,R,CX,adv=self.dims(wf); rx=(R-L)//2-sw//2; ry=CAP//2-sw//2
             p=_j(a(CX,CAP//2,rx,ry,15,325),s(CX,CAP//2,CX+rx,CAP//2))
             a1r=math.radians(15); tx=CX+rx*math.cos(a1r); ty=CAP//2+ry*math.sin(a1r)
             p=_j(p,d.put(tx,ty+int(d.size*0.52),-90,idx) if d.do_top else "")
@@ -217,16 +256,24 @@ class GB:
             p=_j(s(Lx,BASE,Lx,CAP),s(Lx,BASE,R,BASE))
             p=_j(p,d.top(Lx,CAP,idx),d.side_r(R,BASE,idx+1,0.65))
         elif c=='M':
-            L,R,CX,adv=self.dims(1.28)
+            wf = {'kawaii':1.35,'floral':1.28,'cyber':1.18,'gothic':1.22,'retro':1.30,'minimal':1.25}.get(self.deco,1.28)
+            L,R,CX,adv=self.dims(wf)
+            # V çukurunun derinliği: kawaii=sığ, cyber=derin
+            v_pct = {'kawaii':0.52,'floral':0.42,'cyber':0.25,'gothic':0.35,'retro':0.40,'minimal':0.38}.get(self.deco,0.38)
             p=_j(s(L+sw//2,BASE,L+sw//2,CAP),s(R-sw//2,BASE,R-sw//2,CAP),
-                 s(L+sw,CAP,CX,int(CAP*0.38)),s(R-sw,CAP,CX,int(CAP*0.38)))
+                 s(L+sw,CAP,CX,int(CAP*v_pct)),s(R-sw,CAP,CX,int(CAP*v_pct)))
             p=_j(p,d.top(L+sw//2,CAP,idx),d.top(R-sw//2,CAP,idx+1))
         elif c=='N':
             L,R,CX,adv=self.dims(1.0)
             p=_j(s(L+sw//2,BASE,L+sw//2,CAP),s(R-sw//2,BASE,R-sw//2,CAP),s(L+sw,CAP,R-sw,BASE))
             p=_j(p,d.top(L+sw//2,CAP,idx),d.top(R-sw//2,CAP,idx+1))
         elif c=='O':
-            L,R,CX,adv=self.dims(1.1); rx=(R-L)//2-sw//2; ry=CAP//2-sw//2
+            wf = {'kawaii':1.20,'floral':1.10,'retro':1.05,'cyber':0.85,'gothic':0.90,'minimal':1.0}.get(self.deco,1.1)
+            L,R,CX,adv=self.dims(wf)
+            rx=(R-L)//2-sw//2
+            # Cyber: tall narrow, Kawaii: wide round
+            ry_mul = {'kawaii':0.52,'floral':0.48,'cyber':0.56,'gothic':0.52,'retro':0.48,'minimal':0.50}.get(self.deco,0.50)
+            ry=int(CAP*ry_mul)-sw//2
             p=o(CX,CAP//2,rx,ry)
             p=_j(p,d.top(CX,CAP//2+ry+sw//2,idx,0.85))
         elif c=='P':
@@ -348,7 +395,11 @@ class GB:
             p=_j(s(Lx,BASE,Lx,XH),a(acx,XH,W//3,int(XH*0.30),180,0),s(acx+W//3,BASE,acx+W//3,XH))
             p=_j(p,d.top(Lx,XH,idx,0.85))
         elif c=='o':
-            L,R,CX,adv=self.dims(0.88); rx=(R-L)//2-sw//2; ry=XH//2-sw//4
+            wf = {'kawaii':1.05,'floral':0.92,'cyber':0.78,'gothic':0.82,'retro':0.90,'minimal':0.88}.get(self.deco,0.88)
+            L,R,CX,adv=self.dims(wf)
+            rx=(R-L)//2-sw//2
+            ry_m = {'kawaii':0.56,'floral':0.52,'cyber':0.60,'gothic':0.56,'retro':0.52,'minimal':0.50}.get(self.deco,0.52)
+            ry=int(XH*ry_m)-sw//4
             p=oval_donut(CX,XH//2,rx,ry,sw)
             p=_j(p,d.top(CX,XH//2+ry+sw//2,idx,0.80))
         elif c=='p':
