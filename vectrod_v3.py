@@ -702,23 +702,27 @@ Be creative and precise. The JSON must perfectly capture the essence of the requ
 def dna_from_gemini(prompt:str, api_key:str):
     import urllib.request, json, re, time
 
+    # Her model için hem URL hem de payload formatı farklı olabilir
     MODELS = [
-        ("v1beta", "gemini-2.0-flash-exp"),
-        ("v1beta", "gemini-2.0-flash-lite"),
-        ("v1beta", "gemini-1.5-flash-002"),
-        ("v1beta", "gemini-1.5-flash-8b"),
-        ("v1",     "gemini-1.5-flash-latest"),
+        ("v1beta", "gemini-2.0-flash",        "systemInstruction"),
+        ("v1",     "gemini-2.0-flash",        "systemInstruction"),
+        ("v1beta", "gemini-1.5-flash",        "systemInstruction"),
+        ("v1",     "gemini-1.5-flash",        "systemInstruction"),
+        ("v1beta", "gemini-1.5-flash-latest", "system_instruction"),
+        ("v1",     "gemini-1.5-flash-latest", "system_instruction"),
+        ("v1beta", "gemini-pro",              "system_instruction"),
     ]
 
-    for attempt, (ver, model_id) in enumerate(MODELS):
+    for attempt, (ver, model_id, sys_key) in enumerate(MODELS):
         model_name = model_id
         url = f"https://generativelanguage.googleapis.com/{ver}/models/{model_id}:generateContent?key={api_key}"
         try:
-            body=json.dumps({
-                "systemInstruction":{"parts":[{"text":GEMINI_PROMPT}]},
+            payload = {
+                sys_key: {"parts":[{"text":GEMINI_PROMPT}]},
                 "contents":[{"parts":[{"text":f"Font style: {prompt}"}]}],
                 "generationConfig":{"temperature":0.45,"maxOutputTokens":400}
-            }).encode()
+            }
+            body = json.dumps(payload).encode()
             req=urllib.request.Request(url,data=body,headers={"Content-Type":"application/json"})
             with urllib.request.urlopen(req,timeout=25) as r:
                 raw=r.read().decode()
