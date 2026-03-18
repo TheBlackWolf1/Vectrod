@@ -847,7 +847,7 @@ if __name__=='__main__':
     prompt  = sys.argv[1] if len(sys.argv)>1 else 'cute minimalist floral'
     name    = sys.argv[2] if len(sys.argv)>2 else 'VectrodV3'
     out_dir = sys.argv[3] if len(sys.argv)>3 else '/tmp/v3_out'
-    api_key = os.environ.get('GEMINI_API_KEY','')
+    api_key = os.environ.get('Vectrod AI DNA','') or os.environ.get('GEMINI_API_KEY','')
     ttf,dna,svgs = build_from_prompt(prompt,name,out_dir,api_key)
     print(f"\nDNA: {json.dumps(dna,indent=2)}")
     print(f"TTF: {ttf}  ({os.path.getsize(ttf)//1024}KB)")

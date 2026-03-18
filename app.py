@@ -330,7 +330,7 @@ class Handler(BaseHTTPRequestHandler):
 
         if path == '/test-gemini':
             import urllib.request, json, os as _os
-            key = _os.environ.get('GEMINI_API_KEY', '')
+            key = _os.environ.get('Vectrod AI DNA', '') or _os.environ.get('GEMINI_API_KEY', '')
             lines = [f'GEMINI_API_KEY: {"SET" if key else "MISSING"}', '']
             models = ['gemini-2.0-flash','gemini-1.5-flash','gemini-1.5-flash-latest','gemini-1.0-pro']
             working = None
@@ -781,7 +781,7 @@ Be accurate. Respond with ONLY the JSON."""
             out_dir = os.path.join(sp, 'output')
             os.makedirs(out_dir, exist_ok=True)
 
-            gemini_key = os.environ.get('GEMINI_API_KEY', '')
+            gemini_key = os.environ.get('Vectrod AI DNA', '') or os.environ.get('GEMINI_API_KEY', '')
             print(f"\n[v3] session={sid[:8]} prompt=\"{prompt[:60]}\"")
             print(f"  Gemini key: {'YES ✨' if gemini_key else 'NO → heuristic'}")
 
