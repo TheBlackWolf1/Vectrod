@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){var s=localStorage.getItem('vectrod_theme');if(s==='light'){document.documentElement.classList.add('light-mode');}})()</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<title>AI Image Upscaler — Free 4K Enhancer | Vectrod</title>
+<meta name="description" content="Upscale any image to 4K for free. AI-powered sharpening, denoising, and color enhancement. No signup required.">
+<link rel="canonical" href="https://vectrod.com/upscale">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-281FJFCNEX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-281FJFCNEX');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020308;--bg2:#06070f;--bg3:#0a0b1a;--sf:rgba(255,255,255,.04);--br:rgba(255,255,255,.08);--br2:rgba(255,255,255,.13);--tx:#eeeaff;--mt:rgba(238,234,255,.44);--mt2:rgba(238,234,255,.2);--gold:#f0c060;--ok:#22dd99;--okL:rgba(34,221,153,.1);--purple:#9944ee;--purple2:#bb77ff;--blue:#4488ff}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(153,68,238,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(153,68,238,.03) 1px,transparent 1px);background-size:56px 56px}
+.o1{position:absolute;width:800px;height:800px;top:-300px;right:-200px;border-radius:50%;filter:blur(140px);background:radial-gradient(circle,rgba(153,68,238,.12) 0%,transparent 65%)}
+.o2{position:absolute;width:600px;height:600px;bottom:-200px;left:-100px;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(34,221,153,.07) 0%,transparent 65%)}
+.wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:40px 20px 100px}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:48px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ok);background:var(--okL);border:1px solid rgba(34,221,153,.2);border-radius:100px;padding:5px 14px;margin-bottom:20px}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(28px,5vw,52px);font-weight:900;line-height:1.1;margin-bottom:14px}
+.hero h1 span{background:linear-gradient(90deg,var(--gold),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:16px;color:var(--mt);max-width:540px;margin:0 auto;line-height:1.7}
+
+/* MAIN CARD */
+.card{background:var(--bg2);border:1.5px solid var(--br);border-radius:24px;overflow:hidden;margin-bottom:20px}
+
+/* DROP ZONE */
+.drop{border:2px dashed rgba(153,68,238,.3);border-radius:18px;padding:60px 28px;text-align:center;cursor:pointer;transition:all .3s;margin:24px;background:rgba(153,68,238,.03);position:relative}
+.drop:hover,.drop.drag{border-color:rgba(153,68,238,.6);background:rgba(153,68,238,.06)}
+.drop-ico{font-size:48px;margin-bottom:16px;display:block}
+.drop-title{font-size:18px;font-weight:700;margin-bottom:6px}
+.drop-sub{font-size:13px;color:var(--mt)}
+.drop-sub span{color:var(--purple2);font-weight:600}
+input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* OPTIONS */
+.opts{padding:0 24px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.opt-group{background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:16px}
+.opt-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--mt2);text-transform:uppercase;margin-bottom:10px;display:block}
+.opt-btns{display:flex;gap:6px;flex-wrap:wrap}
+.opt-btn{background:var(--sf);border:1px solid var(--br);border-radius:8px;padding:7px 12px;font-size:12px;font-family:'DM Mono',monospace;color:var(--mt);cursor:pointer;transition:all .2s}
+.opt-btn:hover{border-color:rgba(153,68,238,.4);color:var(--tx)}
+.opt-btn.active{background:rgba(153,68,238,.15);border-color:rgba(153,68,238,.5);color:var(--purple2)}
+select{width:100%;background:var(--sf);border:1px solid var(--br);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--tx);font-family:'Outfit',sans-serif;outline:none;cursor:pointer}
+select option{background:var(--bg2)}
+
+/* ENHANCE BTN */
+.enhance-wrap{padding:0 24px 24px}
+.btn-enhance{width:100%;padding:18px;background:linear-gradient(90deg,var(--gold),rgba(153,68,238,.8),var(--ok));background-size:200% auto;border:none;border-radius:16px;color:#fff;-webkit-text-fill-color:#fff;font-family:'Cinzel',serif;font-size:18px;font-weight:700;letter-spacing:.08em;cursor:pointer;transition:all .4s;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(240,192,96,.2)}
+.btn-enhance:hover:not(:disabled){background-position:right center;box-shadow:0 12px 48px rgba(240,192,96,.35)}
+.btn-enhance:disabled{opacity:.5;cursor:not-allowed}
+.btn-enhance .shine{position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.15) 50%,transparent 60%);transform:translateX(-100%);transition:transform .5s}
+.btn-enhance:hover .shine{transform:translateX(100%)}
+
+/* PROGRESS */
+.progress-wrap{padding:0 24px 16px;display:none}
+.prog-bar{height:4px;background:var(--bg3);border-radius:100px;overflow:hidden;margin-bottom:10px}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));border-radius:100px;width:0%;transition:width .3s ease}
+.prog-text{font-size:12px;font-family:'DM Mono',monospace;color:var(--mt);text-align:center}
+
+/* RESULT */
+.result{display:none;padding:24px;border-top:1px solid var(--br)}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:gap}
+.result-title{font-family:'Cinzel',serif;font-size:16px;font-weight:700;color:var(--ok)}
+.btn-dl{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,var(--ok),rgba(34,221,153,.7));border:none;border-radius:100px;padding:10px 22px;color:#020308;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;transition:opacity .2s}
+.btn-dl:hover{opacity:.85}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.img-box{border:1px solid var(--br);border-radius:14px;overflow:hidden;background:#000;position:relative}
+.img-box img{width:100%;height:auto;display:block;max-height:360px;object-fit:contain}
+.img-label{position:absolute;top:10px;left:10px;font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:100px}
+.img-label.before{background:rgba(255,80,80,.2);color:#ff8080;border:1px solid rgba(255,80,80,.3)}
+.img-label.after{background:rgba(34,221,153,.15);color:var(--ok);border:1px solid rgba(34,221,153,.3)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:16px}
+.stat-item{background:var(--bg3);border:1px solid var(--br);border-radius:12px;padding:14px;text-align:center}
+.stat-val{font-size:20px;font-weight:800;color:var(--gold);font-family:'DM Mono',monospace}
+.stat-lbl{font-size:10px;color:var(--mt2);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+
+/* FEATURES */
+.features{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:24px}
+.feat{background:var(--bg2);border:1px solid var(--br);border-radius:18px;padding:22px}
+.feat-ico{font-size:28px;margin-bottom:12px}
+.feat-title{font-size:14px;font-weight:700;margin-bottom:6px}
+.feat-desc{font-size:12px;color:var(--mt);line-height:1.65}
+
+@media(max-width:600px){.compare{grid-template-columns:1fr}.opts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-grid"></div><div class="o1"></div><div class="o2"></div></div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">✨ Vectrod Vision</div>
+    <h1>AI Image <span>Upscaler</span><br>& 4K Enhancer</h1>
+    <p>Upload any blurry or low-res image. Our engine sharpens, denoises, and upscales it up to 4K — free, no signup.</p>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="card">
+    <!-- DROP ZONE -->
+    <div class="drop" id="drop" ondragover="ev.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="onDrop(event)">
+      <input type="file" accept="image/*" id="fileInput" onchange="onFile(this.files[0])">
+      <span class="drop-ico">🖼️</span>
+      <div class="drop-title">Drop your image here</div>
+      <div class="drop-sub">or <span>browse files</span> · JPG, PNG, WEBP · Max 20MB</div>
+    </div>
+
+    <!-- OPTIONS -->
+    <div class="opts">
+      <div class="opt-group">
+        <span class="opt-label">Scale</span>
+        <div class="opt-btns">
+          <button class="opt-btn" onclick="setScale(2)" data-scale="2">2×</button>
+          <button class="opt-btn active" onclick="setScale(4)" data-scale="4">4×</button>
+          <button class="opt-btn" onclick="setScale(6)" data-scale="6">6×</button>
+          <button class="opt-btn" onclick="setScale(8)" data-scale="8">8×</button>
+        </div>
+      </div>
+      <div class="opt-group">
+        <span class="opt-label">Output Format</span>
+        <select id="fmtSel">
+          <option value="PNG">PNG (lossless)</option>
+          <option value="JPEG">JPEG (smaller)</option>
+          <option value="WEBP">WEBP (best ratio)</option>
+        </select>
+      </div>
+      <div class="opt-group">
+        <span class="opt-label">Sharpen</span>
+        <div class="opt-btns">
+          <button class="opt-btn" onclick="setSharpen(80)" data-sh="80">Soft</button>
+          <button class="opt-btn active" onclick="setSharpen(160)" data-sh="160">Normal</button>
+          <button class="opt-btn" onclick="setSharpen(260)" data-sh="260">Strong</button>
+        </div>
+      </div>
+      <div class="opt-group">
+        <span class="opt-label">Denoise</span>
+        <div class="opt-btns">
+          <button class="opt-btn" onclick="setDenoise(0)" data-dn="0">Off</button>
+          <button class="opt-btn active" onclick="setDenoise(5)" data-dn="5">Auto</button>
+          <button class="opt-btn" onclick="setDenoise(12)" data-dn="12">Strong</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUTTON -->
+    <div class="enhance-wrap">
+      <button class="btn-enhance" id="enhBtn" onclick="enhance()" disabled>
+        <span class="shine"></span>
+        ✨ Enhance & Upscale
+      </button>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-wrap" id="progWrap">
+      <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+      <div class="prog-text" id="progText">Analyzing image...</div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="result" id="result">
+      <div class="result-header">
+        <div class="result-title">✅ Enhancement Complete</div>
+        <a class="btn-dl" id="dlBtn" href="#" download>⬇ Download</a>
+      </div>
+      <div class="compare">
+        <div class="img-box">
+          <span class="img-label before">Before</span>
+          <img id="imgBefore" src="" alt="Original">
+        </div>
+        <div class="img-box">
+          <span class="img-label after">After — Enhanced</span>
+          <img id="imgAfter" src="" alt="Enhanced">
+        </div>
+      </div>
+      <div class="stats-grid" id="statsGrid"></div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features">
+    <div class="feat"><div class="feat-ico">🔬</div><div class="feat-title">Lanczos Upscaling</div><div class="feat-desc">The gold standard of image resizing — iterative 2× steps for maximum sharpness at any scale.</div></div>
+    <div class="feat"><div class="feat-ico">✂️</div><div class="feat-title">Unsharp Masking</div><div class="feat-desc">Professional sharpening used in Photoshop and Lightroom. Recovers edge detail without halos.</div></div>
+    <div class="feat"><div class="feat-ico">🎨</div><div class="feat-title">CLAHE Enhancement</div><div class="feat-desc">Contrast Limited Adaptive Histogram Equalization — local contrast boost without washing out highlights.</div></div>
+    <div class="feat"><div class="feat-ico">🔇</div><div class="feat-title">Non-local Denoising</div><div class="feat-desc">Smart noise removal that preserves edges and textures — unlike simple blur filters.</div></div>
+    <div class="feat"><div class="feat-ico">🌈</div><div class="feat-title">Color Vibrancy</div><div class="feat-desc">Saturation and contrast boost that makes colors pop without looking artificial.</div></div>
+    <div class="feat"><div class="feat-ico">⚡</div><div class="feat-title">Fast Processing</div><div class="feat-desc">OpenCV + Pillow optimized pipeline. Most images process in under 3 seconds.</div></div>
+  </div>
+
+</div>
+
+<script>
+let selectedFile = null;
+let scale = 4;
+let sharpen = 160;
+let denoise = 5;
+
+function setScale(v){
+  scale=v;
+  document.querySelectorAll('[data-scale]').forEach(b=>b.classList.toggle('active',+b.dataset.scale===v));
+}
+function setSharpen(v){
+  sharpen=v;
+  document.querySelectorAll('[data-sh]').forEach(b=>b.classList.toggle('active',+b.dataset.sh===v));
+}
+function setDenoise(v){
+  denoise=v;
+  document.querySelectorAll('[data-dn]').forEach(b=>b.classList.toggle('active',+b.dataset.dn===v));
+}
+
+function onDrop(e){
+  e.preventDefault();
+  document.getElementById('drop').classList.remove('drag');
+  const f = e.dataTransfer.files[0];
+  if(f && f.type.startsWith('image/')) onFile(f);
+}
+
+function onFile(f){
+  if(!f) return;
+  selectedFile = f;
+  // Show preview in before
+  const url = URL.createObjectURL(f);
+  document.getElementById('imgBefore').src = url;
+  document.getElementById('drop').querySelector('.drop-title').textContent = f.name;
+  document.getElementById('drop').querySelector('.drop-sub').textContent = (f.size/1024).toFixed(0)+'KB · Click to change';
+  document.getElementById('enhBtn').disabled = false;
+  document.getElementById('result').style.display = 'none';
+}
+
+function setProgress(pct, text){
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progText').textContent = text;
+}
+
+async function enhance(){
+  if(!selectedFile) return;
+  const btn = document.getElementById('enhBtn');
+  btn.disabled = true;
+  document.getElementById('progWrap').style.display = 'block';
+  document.getElementById('result').style.display = 'none';
+
+  const steps = [
+    [15, 'Reading image...'],
+    [35, 'Analyzing quality...'],
+    [55, 'Applying denoising...'],
+    [70, 'Upscaling with Lanczos...'],
+    [85, 'Sharpening & color boost...'],
+    [95, 'Finalizing output...'],
+  ];
+  let si = 0;
+  const ticker = setInterval(()=>{
+    if(si < steps.length){ setProgress(...steps[si]); si++; }
+  }, 400);
+
+  try {
+    const fd = new FormData();
+    fd.append('image', selectedFile);
+    fd.append('scale', scale);
+    fd.append('format', document.getElementById('fmtSel').value);
+    fd.append('sharpen', sharpen);
+    fd.append('denoise', denoise);
+
+    const res = await fetch('/api/upscale', {method:'POST', body:fd});
+    const d = await res.json();
+    clearInterval(ticker);
+
+    if(!d.success){ throw new Error(d.error||'Unknown error'); }
+
+    setProgress(100, 'Done!');
+    setTimeout(()=>{ document.getElementById('progWrap').style.display='none'; }, 800);
+
+    // Show result
+    const mime = d.mime;
+    const src = `data:${mime};base64,${d.image_b64}`;
+    document.getElementById('imgAfter').src = src;
+
+    // Download button
+    const dlBtn = document.getElementById('dlBtn');
+    dlBtn.href = src;
+    dlBtn.download = `vectrod_${scale}x_enhanced.${d.ext}`;
+
+    // Stats
+    const s = d.stats;
+    document.getElementById('statsGrid').innerHTML = [
+      [s.output_w+'×'+s.output_h, 'Output Size'],
+      [s.actual_scale+'×', 'Scale Factor'],
+      [s.output_kb+' KB', 'File Size'],
+      [s.elapsed_sec+'s', 'Process Time'],
+      [s.was_blurry?'Yes':'No', 'Was Blurry'],
+      [s.was_noisy?'Yes':'No', 'Was Noisy'],
+    ].map(([v,l])=>`<div class="stat-item"><div class="stat-val">${v}</div><div class="stat-lbl">${l}</div></div>`).join('');
+
+    document.getElementById('result').style.display = 'block';
+    btn.disabled = false;
+
+  } catch(err) {
+    clearInterval(ticker);
+    setProgress(0, '❌ Error: '+err.message);
+    setTimeout(()=>{ document.getElementById('progWrap').style.display='none'; }, 3000);
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>

@@ -431,6 +431,8 @@ class Handler(BaseHTTPRequestHandler):
             self.serve_static('handwriting-font.html', 'text/html')
         elif path == '/ai-font-generator':
             self.serve_static('ai-font-generator.html', 'text/html')
+        elif path == '/upscale':
+            self.serve_static('upscale.html', 'text/html')
 
         elif path == '/sitemap.xml':
             self.serve_static('sitemap.xml', 'application/xml')
@@ -559,6 +561,8 @@ class Handler(BaseHTTPRequestHandler):
             self.handle_handwriting_process()
         elif path == '/api/handwriting-to-font':
             self.handle_handwriting_to_font()
+        elif path == '/api/upscale':
+            self.handle_upscale()
         elif path == '/api/vote':
             self.handle_vote()
         elif path == '/admin-login':
@@ -653,6 +657,57 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header('Content-Type','text/html; charset=utf-8')
         self.end_headers()
         self.wfile.write(html.encode())
+
+    def handle_upscale(self):
+        """Image upscaler endpoint — OpenCV + Pillow Lanczos 4K"""
+        try:
+            length = int(self.headers.get('Content-Length', 0))
+            ctype  = self.headers.get('Content-Type', '')
+            body   = self.rfile.read(length)
+            fields = parse_multipart(body, ctype)
+
+            img_data = fields.get('image')
+            if not img_data:
+                self.json_resp({'success': False, 'error': 'No image uploaded'}, 400)
+                return
+
+            # Options
+            scale     = float(fields.get('scale', [4.0])[0] if isinstance(fields.get('scale'), list) else fields.get('scale', 4.0))
+            fmt       = str(fields.get('format', ['PNG'])[0] if isinstance(fields.get('format'), list) else fields.get('format', 'PNG')).upper()
+            denoise_s = int(fields.get('denoise', [5])[0] if isinstance(fields.get('denoise'), list) else fields.get('denoise', 5))
+            sharpen   = int(fields.get('sharpen', [160])[0] if isinstance(fields.get('sharpen'), list) else fields.get('sharpen', 160))
+
+            if isinstance(img_data, list): img_data = img_data[0]
+            scale = max(1.5, min(8.0, scale))
+
+            print(f"[Upscale] {len(img_data)//1024}KB → {scale}x {fmt}")
+
+            from upscaler import upscale_image
+            out_bytes, stats = upscale_image(
+                image_bytes=img_data,
+                scale=scale,
+                denoise_strength=denoise_s,
+                sharpen_amount=sharpen,
+                output_format=fmt,
+                max_output_px=4096,
+            )
+
+            print(f"[Upscale] {stats['original_w']}x{stats['original_h']} → {stats['output_w']}x{stats['output_h']} | {stats['output_kb']}KB | {stats['elapsed_sec']}s")
+
+            import base64
+            b64 = base64.b64encode(out_bytes).decode()
+            self.json_resp({
+                'success': True,
+                'image_b64': b64,
+                'mime': stats['mime'],
+                'ext': stats['ext'],
+                'stats': stats,
+            })
+
+        except Exception as e:
+            print(f"[Upscale] ERROR: {e}")
+            import traceback; traceback.print_exc()
+            self.json_resp({'success': False, 'error': str(e)}, 500)
 
     def handle_vote(self):
         try:
