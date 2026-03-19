@@ -18,10 +18,10 @@ def analyze_image(img_np):
     return {
         'sharpness': float(lap_var),
         'noise': float(noise),
-        'width': w,
-        'height': h,
-        'is_blurry': lap_var < 100,
-        'is_noisy': noise > 8,
+        'width': int(w),
+        'height': int(h),
+        'is_blurry': bool(lap_var < 100),
+        'is_noisy': bool(noise > 8),
     }
 
 def denoise(img_np, strength=7):
@@ -162,18 +162,18 @@ def upscale_image(
     elapsed = time.time() - t0
 
     stats = {
-        'original_w': orig_w,
-        'original_h': orig_h,
-        'output_w': final_w,
-        'output_h': final_h,
+        'original_w': int(orig_w),
+        'original_h': int(orig_h),
+        'output_w': int(final_w),
+        'output_h': int(final_h),
         'actual_scale': round(final_w / orig_w, 2),
-        'original_kb': len(image_bytes) // 1024,
-        'output_kb': len(out_bytes) // 1024,
+        'original_kb': int(len(image_bytes) // 1024),
+        'output_kb': int(len(out_bytes) // 1024),
         'elapsed_sec': round(elapsed, 2),
-        'was_blurry': info['is_blurry'],
-        'was_noisy': info['is_noisy'],
-        'sharpness_score': round(info['sharpness'], 1),
-        'mime': mime,
-        'ext': ext,
+        'was_blurry': 'Yes' if info['is_blurry'] else 'No',
+        'was_noisy': 'Yes' if info['is_noisy'] else 'No',
+        'sharpness_score': round(float(info['sharpness']), 1),
+        'mime': str(mime),
+        'ext': str(ext),
     }
     return out_bytes, stats
