@@ -5,3 +5,5 @@ numpy>=1.24.0
 opencv-python-headless>=4.8.0
 scipy>=1.10.0
 skia-pathops
+onnxruntime>=1.16.0
+onnx>=1.14.0
