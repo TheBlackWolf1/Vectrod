@@ -664,21 +664,21 @@ class Handler(BaseHTTPRequestHandler):
             length = int(self.headers.get('Content-Length', 0))
             ctype  = self.headers.get('Content-Type', '')
             body   = self.rfile.read(length)
-            fields = parse_multipart(body, ctype)
+            fields, files = parse_multipart(body, ctype)
 
-            img_data = fields.get('image')
-            if not img_data:
+            # Image comes as file upload
+            img_entry = files.get('image')
+            if not img_entry:
                 self.json_resp({'success': False, 'error': 'No image uploaded'}, 400)
                 return
+            img_data = img_entry['data']
 
-            # Options
-            scale     = float(fields.get('scale', [4.0])[0] if isinstance(fields.get('scale'), list) else fields.get('scale', 4.0))
-            fmt       = str(fields.get('format', ['PNG'])[0] if isinstance(fields.get('format'), list) else fields.get('format', 'PNG')).upper()
-            denoise_s = int(fields.get('denoise', [5])[0] if isinstance(fields.get('denoise'), list) else fields.get('denoise', 5))
-            sharpen   = int(fields.get('sharpen', [160])[0] if isinstance(fields.get('sharpen'), list) else fields.get('sharpen', 160))
-
-            if isinstance(img_data, list): img_data = img_data[0]
-            scale = max(1.5, min(8.0, scale))
+            # Options from fields
+            scale     = float(fields.get('scale', 4.0))
+            fmt       = str(fields.get('format', 'PNG')).upper()
+            denoise_s = int(fields.get('denoise', 5))
+            sharpen   = int(fields.get('sharpen', 160))
+            scale     = max(1.5, min(8.0, scale))
 
             print(f"[Upscale] {len(img_data)//1024}KB → {scale}x {fmt}")
 
