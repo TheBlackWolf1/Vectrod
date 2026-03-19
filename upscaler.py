@@ -14,11 +14,15 @@ def _get_session():
     if _sess is not None: return _sess
     with _sess_lock:
         if _sess is not None: return _sess
-        if not os.path.exists(_MODEL_PATH): _build_model(_MODEL_PATH)
-        import onnxruntime as ort
-        opts = ort.SessionOptions()
-        opts.intra_op_num_threads = 2
-        _sess = ort.InferenceSession(_MODEL_PATH, sess_options=opts)
+        try:
+            if not os.path.exists(_MODEL_PATH): _build_model(_MODEL_PATH)
+            import onnxruntime as ort
+            opts = ort.SessionOptions()
+            opts.intra_op_num_threads = 2
+            _sess = ort.InferenceSession(_MODEL_PATH, sess_options=opts)
+        except Exception as e:
+            print(f"[SRCNN] ONNX not available: {e} — AI enhancement disabled")
+            _sess = None
     return _sess
 
 def _build_model(path):
@@ -61,6 +65,8 @@ def _build_model(path):
 def _srcnn_channel(ch_np):
     """Tek kanal SRCNN enhancement — AI residual learning."""
     sess = _get_session()
+    if sess is None:
+        raise RuntimeError("ONNX session not available")
     x = ch_np.astype(np.float32)/255.0
     x = x[np.newaxis,np.newaxis,:,:]
     y = sess.run(['Y'],{'X':x})[0][0,0]

@@ -785,9 +785,13 @@ class Handler(BaseHTTPRequestHandler):
             })
 
         except Exception as e:
+            import traceback
+            err_detail = traceback.format_exc()
             print(f"[Upscale] ERROR: {e}")
-            import traceback; traceback.print_exc()
-            self.json_resp({'success': False, 'error': str(e)}, 500)
+            print(err_detail)
+            # str(e) boş olabilir — type adını da ekle
+            err_msg = f"{type(e).__name__}: {e}" if str(e) else type(e).__name__
+            self.json_resp({'success': False, 'error': err_msg}, 500)
 
     def handle_feedback(self):
         try:
