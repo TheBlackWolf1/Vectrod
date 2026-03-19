@@ -762,7 +762,9 @@ class Handler(BaseHTTPRequestHandler):
 
             print(f"[Upscale] {len(img_data)//1024}KB → {scale}x {fmt}")
 
+            print(f"[Upscale] importing upscaler...")
             from upscaler import upscale_image
+            print(f"[Upscale] calling upscale_image...")
             out_bytes, stats = upscale_image(
                 image_bytes=img_data,
                 scale=scale,
@@ -771,6 +773,7 @@ class Handler(BaseHTTPRequestHandler):
                 output_format=fmt,
                 max_output_px=4096,
             )
+            print(f"[Upscale] done, encoding base64...")
 
             print(f"[Upscale] {stats['original_w']}x{stats['original_h']} → {stats['output_w']}x{stats['output_h']} | {stats['output_kb']}KB | {stats['elapsed_sec']}s")
 

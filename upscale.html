@@ -270,33 +270,35 @@ async function enhance(){
     fd.append('denoise', denoise);
 
     const res = await fetch('/api/upscale', {method:'POST', body:fd});
-    const d = await res.json();
+    let d;
+    try { d = await res.json(); } catch(e) {
+      throw new Error('Server returned non-JSON (status '+res.status+')');
+    }
     clearInterval(ticker);
 
-    if(!d.success){ throw new Error(d.error||'Unknown error'); }
+    if(!d.success){ throw new Error(d.error || 'Server error '+res.status); }
 
     setProgress(100, 'Done!');
     setTimeout(()=>{ document.getElementById('progWrap').style.display='none'; }, 800);
 
     // Show result
-    const mime = d.mime;
-    const src = `data:${mime};base64,${d.image_b64}`;
+    const src = `data:${d.mime};base64,${d.image_b64}`;
     document.getElementById('imgAfter').src = src;
 
-    // Download button
     const dlBtn = document.getElementById('dlBtn');
     dlBtn.href = src;
     dlBtn.download = `vectrod_${scale}x_enhanced.${d.ext}`;
 
-    // Stats
+    // Stats — was_blurry/was_noisy are already strings from server
     const s = d.stats;
     document.getElementById('statsGrid').innerHTML = [
       [s.output_w+'×'+s.output_h, 'Output Size'],
       [s.actual_scale+'×', 'Scale Factor'],
       [s.output_kb+' KB', 'File Size'],
       [s.elapsed_sec+'s', 'Process Time'],
-      [s.was_blurry?'Yes':'No', 'Was Blurry'],
-      [s.was_noisy?'Yes':'No', 'Was Noisy'],
+      [s.was_blurry, 'Was Blurry'],
+      [s.was_noisy, 'Was Noisy'],
+      [s.ai_enhanced||'—', 'AI Enhanced'],
     ].map(([v,l])=>`<div class="stat-item"><div class="stat-val">${v}</div><div class="stat-lbl">${l}</div></div>`).join('');
 
     document.getElementById('result').style.display = 'block';
@@ -304,8 +306,8 @@ async function enhance(){
 
   } catch(err) {
     clearInterval(ticker);
-    setProgress(0, '❌ Error: '+err.message);
-    setTimeout(()=>{ document.getElementById('progWrap').style.display='none'; }, 3000);
+    setProgress(0, '❌ ' + err.message);
+    setTimeout(()=>{ document.getElementById('progWrap').style.display='none'; }, 5000);
     btn.disabled = false;
   }
 }
