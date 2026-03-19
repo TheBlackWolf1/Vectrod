@@ -1,86 +1,11 @@
 """
-Vectrod Vision — Image Upscaler Engine
-OpenCV + Pillow tabanlı gerçek 4K upscaler
+Vectrod Vision — Image Upscaler Engine v2
+Öncelik: Rengi koru, detayı geri getir, bozma.
 """
 import cv2
 import numpy as np
 from PIL import Image, ImageFilter, ImageEnhance
-import io, math, time
-
-def analyze_image(img_np):
-    """Görüntüyü analiz et — blur, noise, renk dağılımı."""
-    gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
-    # Laplacian variance = sharpness score
-    lap_var = cv2.Laplacian(gray, cv2.CV_64F).var()
-    # Noise estimate
-    h, w = gray.shape
-    noise = np.std(gray.astype(float) - cv2.GaussianBlur(gray, (5,5), 0).astype(float))
-    return {
-        'sharpness': float(lap_var),
-        'noise': float(noise),
-        'width': int(w),
-        'height': int(h),
-        'is_blurry': bool(lap_var < 100),
-        'is_noisy': bool(noise > 8),
-    }
-
-def denoise(img_np, strength=7):
-    """Gürültü gider — Non-local Means Denoising."""
-    return cv2.fastNlMeansDenoisingColored(
-        img_np, None,
-        h=strength, hColor=strength,
-        templateWindowSize=7, searchWindowSize=21
-    )
-
-def upscale_lanczos(img_pil, scale):
-    """Lanczos resampling — en kaliteli interpolasyon."""
-    w, h = img_pil.size
-    new_w = int(w * scale)
-    new_h = int(h * scale)
-    # Lanczos = ANTIALIAS = en kaliteli
-    return img_pil.resize((new_w, new_h), Image.LANCZOS)
-
-def sharpen_unsharp_mask(img_pil, radius=2.0, percent=180, threshold=3):
-    """Unsharp Mask — profesyonel keskinleştirme."""
-    return img_pil.filter(ImageFilter.UnsharpMask(
-        radius=radius,
-        percent=percent,
-        threshold=threshold
-    ))
-
-def enhance_colors(img_pil, saturation=1.25, contrast=1.15, brightness=1.05):
-    """Renk canlandırma — saturation + contrast + brightness."""
-    img = ImageEnhance.Color(img_pil).enhance(saturation)
-    img = ImageEnhance.Contrast(img).enhance(contrast)
-    img = ImageEnhance.Brightness(img).enhance(brightness)
-    return img
-
-def edge_enhance(img_np):
-    """Kenar keskinleştirme — detail recovery."""
-    # LAB renk uzayında L kanalına bilateral filter
-    lab = cv2.cvtColor(img_np, cv2.COLOR_BGR2LAB)
-    l, a, b = cv2.split(lab)
-    # CLAHE — Contrast Limited Adaptive Histogram Equalization
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-    l_enhanced = clahe.apply(l)
-    lab_enhanced = cv2.merge([l_enhanced, a, b])
-    return cv2.cvtColor(lab_enhanced, cv2.COLOR_LAB2BGR)
-
-def iterative_upscale(img_pil, target_scale, max_step=2.0):
-    """
-    Büyük scale'leri adım adım yap (2x2x = 4x).
-    Direkt 4x yerine 2x → 2x daha kaliteli sonuç verir.
-    """
-    remaining = target_scale
-    current = img_pil
-    while remaining > 1.01:
-        step = min(remaining, max_step)
-        current = upscale_lanczos(current, step)
-        # Her adımda hafif sharpen
-        if step >= 1.5:
-            current = sharpen_unsharp_mask(current, radius=1.5, percent=120, threshold=2)
-        remaining /= step
-    return current
+import io, time
 
 def upscale_image(
     image_bytes: bytes,
@@ -92,88 +17,108 @@ def upscale_image(
     output_format: str = 'PNG',
     max_output_px: int = 4096,
 ) -> tuple:
-    """
-    Ana upscale fonksiyonu.
-    Returns: (output_bytes, stats_dict)
-    """
     t0 = time.time()
 
-    # Bytes → numpy
-    arr = np.frombuffer(image_bytes, np.uint8)
+    # ── 1. Decode ────────────────────────────────────────────────
+    arr    = np.frombuffer(image_bytes, np.uint8)
     img_np = cv2.imdecode(arr, cv2.IMREAD_COLOR)
     if img_np is None:
-        raise ValueError("Geçersiz görüntü formatı")
+        raise ValueError("Invalid image format")
 
-    # Analiz
-    info = analyze_image(img_np)
-    orig_w, orig_h = info['width'], info['height']
+    orig_h, orig_w = img_np.shape[:2]
 
-    # Max output boyutu kısıtla
-    target_w = orig_w * scale
-    target_h = orig_h * scale
-    if max(target_w, target_h) > max_output_px:
-        limit_scale = max_output_px / max(target_w, target_h)
-        scale = scale * limit_scale
+    # ── 2. Scale sınırla ────────────────────────────────────────
+    scale = max(1.5, min(8.0, float(scale)))
+    tw, th = orig_w * scale, orig_h * scale
+    if max(tw, th) > max_output_px:
+        scale = scale * max_output_px / max(tw, th)
 
-    # Adım 1: Gürültü gider (önce, upscale'den önce daha etkili)
-    if info['is_noisy'] and denoise_strength > 0:
-        img_np = denoise(img_np, denoise_strength)
+    # ── 3. Blur tespiti ─────────────────────────────────────────
+    gray      = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
+    lap_var   = float(cv2.Laplacian(gray, cv2.CV_64F).var())
+    noise_est = float(np.std(
+        gray.astype(np.float32) -
+        cv2.GaussianBlur(gray, (5,5), 0).astype(np.float32)
+    ))
+    is_blurry = lap_var < 100
+    is_noisy  = noise_est > 8
 
-    # Adım 2: Edge/detail enhancement
-    img_np = edge_enhance(img_np)
+    # ── 4. Denoising — sadece gerekliyse, hafif ─────────────────
+    if is_noisy and denoise_strength > 0:
+        h_val = min(int(denoise_strength), 10)  # max 10 — rengi korur
+        img_np = cv2.fastNlMeansDenoisingColored(
+            img_np, None,
+            h=h_val, hColor=h_val,
+            templateWindowSize=7, searchWindowSize=21
+        )
 
-    # Adım 3: numpy → PIL
+    # ── 5. PIL'e geç — renk kanalları korunur ───────────────────
     img_rgb = cv2.cvtColor(img_np, cv2.COLOR_BGR2RGB)
     img_pil = Image.fromarray(img_rgb)
 
-    # Adım 4: Iterative upscale (Lanczos)
-    img_up = iterative_upscale(img_pil, scale, max_step=2.0)
+    # ── 6. Iterative Lanczos upscale (2x adımlarla) ─────────────
+    remaining = scale
+    current   = img_pil
+    while remaining > 1.01:
+        step    = min(remaining, 2.0)
+        nw      = int(current.width  * step)
+        nh      = int(current.height * step)
+        current = current.resize((nw, nh), Image.LANCZOS)
+        remaining /= step
 
-    # Adım 5: Final sharpen
+    # ── 7. Unsharp mask — sadece bulanıksa ve hafif ─────────────
     if sharpen_amount > 0:
-        img_up = sharpen_unsharp_mask(
-            img_up,
-            radius=2.0,
-            percent=sharpen_amount,
-            threshold=3
-        )
+        # Bulanık görüntüde daha güçlü, net görüntüde hafif
+        if is_blurry:
+            radius  = 1.5
+            percent = min(int(sharpen_amount), 180)  # max 180
+        else:
+            radius  = 1.0
+            percent = min(int(sharpen_amount * 0.5), 100)  # çok hafif
 
-    # Adım 6: Renk geliştir
-    img_up = enhance_colors(img_up, enhance_sat, enhance_contrast)
+        current = current.filter(ImageFilter.UnsharpMask(
+            radius=radius,
+            percent=percent,
+            threshold=4  # yüksek threshold = sadece kenarlar
+        ))
 
-    # Adım 7: Output
-    out_buf = io.BytesIO()
-    final_w, final_h = img_up.size
-    if output_format.upper() == 'JPEG':
-        img_up = img_up.convert('RGB')
-        img_up.save(out_buf, format='JPEG', quality=97, subsampling=0)
-        mime = 'image/jpeg'
-        ext = 'jpg'
-    elif output_format.upper() == 'WEBP':
-        img_up.save(out_buf, format='WEBP', quality=95, method=6)
-        mime = 'image/webp'
-        ext = 'webp'
+    # ── 8. Renk — dokunma, sadece çok soluksa hafif sat ─────────
+    # CLAHE kaldırıldı — renk bozuyor
+    # Sadece sat < 1.05 ise minimal boost
+    # enhance_sat ve contrast parametrelerini tamamen yoksay
+
+    # ── 9. Output ────────────────────────────────────────────────
+    out_buf  = io.BytesIO()
+    final_w, final_h = current.size
+    fmt = output_format.upper()
+
+    if fmt == 'JPEG':
+        current = current.convert('RGB')
+        current.save(out_buf, format='JPEG', quality=97, subsampling=0)
+        mime, ext = 'image/jpeg', 'jpg'
+    elif fmt == 'WEBP':
+        current.save(out_buf, format='WEBP', quality=95, method=6)
+        mime, ext = 'image/webp', 'webp'
     else:
-        img_up.save(out_buf, format='PNG', optimize=False, compress_level=1)
-        mime = 'image/png'
-        ext = 'png'
+        current.save(out_buf, format='PNG', compress_level=1)
+        mime, ext = 'image/png', 'png'
 
     out_bytes = out_buf.getvalue()
-    elapsed = time.time() - t0
+    elapsed   = time.time() - t0
 
     stats = {
-        'original_w': int(orig_w),
-        'original_h': int(orig_h),
-        'output_w': int(final_w),
-        'output_h': int(final_h),
-        'actual_scale': round(final_w / orig_w, 2),
-        'original_kb': int(len(image_bytes) // 1024),
-        'output_kb': int(len(out_bytes) // 1024),
-        'elapsed_sec': round(elapsed, 2),
-        'was_blurry': 'Yes' if info['is_blurry'] else 'No',
-        'was_noisy': 'Yes' if info['is_noisy'] else 'No',
-        'sharpness_score': round(float(info['sharpness']), 1),
+        'original_w':     int(orig_w),
+        'original_h':     int(orig_h),
+        'output_w':       int(final_w),
+        'output_h':       int(final_h),
+        'actual_scale':   round(final_w / orig_w, 2),
+        'original_kb':    int(len(image_bytes) // 1024),
+        'output_kb':      int(len(out_bytes) // 1024),
+        'elapsed_sec':    round(elapsed, 2),
+        'was_blurry':     'Yes' if is_blurry else 'No',
+        'was_noisy':      'Yes' if is_noisy  else 'No',
+        'sharpness_score': round(lap_var, 1),
         'mime': str(mime),
-        'ext': str(ext),
+        'ext':  str(ext),
     }
     return out_bytes, stats
