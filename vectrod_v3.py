@@ -702,24 +702,49 @@ Be creative and precise. The JSON must perfectly capture the essence of the requ
 def dna_from_gemini(prompt:str, api_key:str):
     import urllib.request, json, re, time
 
-    # v1beta 404 veriyor — sadece v1 kullan, system prompt'u contents'e göm
-    MODELS = [
-        "gemini-2.0-flash",
-        "gemini-1.5-flash",
-        "gemini-1.5-pro",
-        "gemini-1.0-pro",
+    # Tüm kombinasyonları dene — hangisi çalışıyorsa o
+    ATTEMPTS = [
+        # (ver, model, payload_format)
+        # v1beta — system_instruction (alt çizgili, eski format)
+        ("v1beta", "gemini-1.5-flash-latest",  "si_old"),
+        ("v1beta", "gemini-1.5-pro-latest",    "si_old"),
+        ("v1beta", "gemini-1.5-flash",         "si_old"),
+        ("v1beta", "gemini-1.5-pro",           "si_old"),
+        ("v1beta", "gemini-2.0-flash-latest",  "si_old"),
+        # v1 — system instruction yok, role-based
+        ("v1",     "gemini-1.5-flash-latest",  "role"),
+        ("v1",     "gemini-1.5-pro-latest",    "role"),
+        ("v1",     "gemini-1.5-flash",         "role"),
+        ("v1",     "gemini-1.5-pro",           "role"),
+        ("v1",     "gemini-2.0-flash-latest",  "role"),
+        # v1beta — systemInstruction (camelCase, yeni format)
+        ("v1beta", "gemini-1.5-flash-latest",  "si_new"),
+        ("v1beta", "gemini-1.5-pro-latest",    "si_new"),
     ]
 
-    for attempt, model_id in enumerate(MODELS):
-        model_name = model_id
-        url = f"https://generativelanguage.googleapis.com/v1/models/{model_id}:generateContent?key={api_key}"
+    for attempt, (ver, model_id, fmt) in enumerate(ATTEMPTS):
+        model_name = f"{ver}/{model_id}"
+        url = f"https://generativelanguage.googleapis.com/{ver}/models/{model_id}:generateContent?key={api_key}"
         try:
-            # v1 API: system instruction yok, prompt'u contents'e göm
-            full_prompt = GEMINI_PROMPT + "\n\nUser request: Font style: " + prompt
-            payload = {
-                "contents":[{"parts":[{"text": full_prompt}]}],
-                "generationConfig":{"temperature":0.45,"maxOutputTokens":400}
-            }
+            user_text = f"Font style request: {prompt}"
+            if fmt == "si_old":
+                payload = {
+                    "system_instruction": {"parts": [{"text": GEMINI_PROMPT}]},
+                    "contents": [{"parts": [{"text": user_text}]}],
+                    "generationConfig": {"temperature": 0.45, "maxOutputTokens": 400}
+                }
+            elif fmt == "si_new":
+                payload = {
+                    "systemInstruction": {"parts": [{"text": GEMINI_PROMPT}]},
+                    "contents": [{"parts": [{"text": user_text}]}],
+                    "generationConfig": {"temperature": 0.45, "maxOutputTokens": 400}
+                }
+            else:  # role-based
+                full = GEMINI_PROMPT + "\n\n" + user_text
+                payload = {
+                    "contents": [{"role": "user", "parts": [{"text": full}]}],
+                    "generationConfig": {"temperature": 0.45, "maxOutputTokens": 400}
+                }
             body = json.dumps(payload).encode()
             req=urllib.request.Request(url,data=body,headers={"Content-Type":"application/json"})
             with urllib.request.urlopen(req,timeout=25) as r:
