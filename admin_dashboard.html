@@ -151,14 +151,23 @@ td:first-child{color:rgba(238,234,255,.4)}
 <script>
 async function fbAction(id, action, token){
   const el = document.getElementById('fb'+id);
-  if(action==='delete' && !confirm('Delete this message?')) return;
-  await fetch('/api/feedback-action',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({id, action, token})
-  });
-  if(action==='delete') el.style.display='none';
-  else el.style.background='transparent';
+  if(action==='delete'){
+    if(!confirm('Delete this message permanently?')) return;
+    await fetch('/api/feedback-action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,action,token})});
+    el.style.opacity='0';
+    el.style.transition='opacity 0.3s';
+    setTimeout(()=>el.remove(), 300);
+  } else if(action==='read'){
+    await fetch('/api/feedback-action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,action,token})});
+    // Sadece görsel değişiklik — eleman kalmaya devam eder
+    el.style.background='transparent';
+    el.style.opacity='0.6';
+    const badge = document.querySelector('.unread-badge');
+    if(badge){
+      let n = parseInt(badge.textContent) - 1;
+      badge.textContent = Math.max(0,n) + ' unread';
+    }
+  }
 }
 </script>
 </body></html>
