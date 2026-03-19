@@ -744,6 +744,48 @@ function showList() {
 })();
 </script>
 
+
+<!-- FEEDBACK WIDGET -->
+<div style="background:rgba(6,7,15,.95);border-top:1px solid rgba(255,255,255,.06);padding:36px 20px 40px">
+  <div style="max-width:540px;margin:0 auto">
+    <div style="font-family:'Cinzel',serif;font-size:16px;font-weight:700;color:#eeeaff;margin-bottom:6px;text-align:center">Share Your Feedback</div>
+    <div style="font-size:13px;color:rgba(238,234,255,.4);margin-bottom:20px;text-align:center">Got a suggestion or found an issue? We read every message.</div>
+    <!-- Honeypot -->
+    <input name="website" type="text" style="display:none" tabindex="-1" autocomplete="off" id="fbHoney">
+    <input id="fbName" type="text" placeholder="Your name (optional)" style="width:100%;background:#0a0b1a;border:1.5px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;color:#eeeaff;font-family:inherit;font-size:13px;margin-bottom:10px;outline:none;box-sizing:border-box" onfocus="this.style.borderColor='rgba(153,68,238,.4)'" onblur="this.style.borderColor='rgba(255,255,255,.08)'">
+    <textarea id="fbMsg" placeholder="Your message, suggestion or bug report..." rows="3" style="width:100%;background:#0a0b1a;border:1.5px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;color:#eeeaff;font-family:inherit;font-size:13px;margin-bottom:10px;outline:none;resize:vertical;box-sizing:border-box" onfocus="this.style.borderColor='rgba(153,68,238,.4)'" onblur="this.style.borderColor='rgba(255,255,255,.08)'"></textarea>
+    <button onclick="sendFeedback()" style="width:100%;background:linear-gradient(90deg,rgba(153,68,238,.7),rgba(153,68,238,.4));border:1px solid rgba(153,68,238,.4);border-radius:12px;padding:13px;color:#eeeaff;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Send Feedback →</button>
+    <div id="fbStatus" style="font-size:12px;text-align:center;margin-top:10px;min-height:18px"></div>
+  </div>
+</div>
+<script>
+function sendFeedback(){
+  var honey = document.getElementById('fbHoney').value;
+  var name  = document.getElementById('fbName').value.trim();
+  var msg   = document.getElementById('fbMsg').value.trim();
+  var status = document.getElementById('fbStatus');
+  if(honey) return; // bot
+  if(msg.length < 10){ status.style.color='#ff8080'; status.textContent='Please write at least 10 characters.'; return; }
+  status.style.color='rgba(238,234,255,.4)'; status.textContent='Sending...';
+  fetch('/api/feedback',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name:name, message:msg, page:window.location.pathname, website:honey})
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.ok){
+      status.style.color='#22dd99'; status.textContent='✓ Thank you! We got your message.';
+      document.getElementById('fbMsg').value='';
+      document.getElementById('fbName').value='';
+    } else {
+      status.style.color='#ff8080'; status.textContent='Error: '+( d.error||'Try again');
+    }
+  })
+  .catch(()=>{ status.style.color='#ff8080'; status.textContent='Network error. Try again.'; });
+}
+</script>
+
 <!-- VOTE WIDGET — universal -->
 <div class="vw-wrap" id="voteWidget">
   <div class="vw-inner">

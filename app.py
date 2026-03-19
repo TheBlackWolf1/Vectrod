@@ -39,14 +39,30 @@ def db_init():
             converts INTEGER DEFAULT 0,
             ai_generates INTEGER DEFAULT 0,
             votes_good INTEGER DEFAULT 0,
-            votes_bad INTEGER DEFAULT 0
+            votes_bad INTEGER DEFAULT 0,
+            unique_ips INTEGER DEFAULT 0
         )''')
-        for key in ('page_views','converts','ai_generates'):
+        conn.execute('''CREATE TABLE IF NOT EXISTS feedback (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            message TEXT,
+            page TEXT,
+            ip TEXT,
+            ts INTEGER,
+            read INTEGER DEFAULT 0,
+            deleted INTEGER DEFAULT 0
+        )''')
+        conn.execute('''CREATE TABLE IF NOT EXISTS unique_visitors (
+            date TEXT,
+            ip TEXT,
+            PRIMARY KEY (date, ip)
+        )''')
+        for key in ('page_views','converts','ai_generates','unique_visitors'):
             conn.execute('INSERT OR IGNORE INTO stats VALUES (?,0)',(key,))
         conn.commit()
         conn.close()
 
-def db_inc(key):
+def db_inc(key, ip=None):
     today = time.strftime('%Y-%m-%d')
     with DB_LOCK:
         conn = sqlite3.connect(DB_PATH)
@@ -54,6 +70,41 @@ def db_inc(key):
         conn.execute('UPDATE stats SET value=value+1 WHERE key=?',(key,))
         conn.execute('INSERT OR IGNORE INTO daily(date) VALUES (?)',(today,))
         conn.execute(f'UPDATE daily SET {key}={key}+1 WHERE date=?',(today,))
+        # Unique visitor tracking
+        if key == 'page_views' and ip:
+            row = conn.execute('INSERT OR IGNORE INTO unique_visitors(date,ip) VALUES (?,?)',(today,ip)).rowcount
+            if row:  # yeni IP bugün ilk kez
+                conn.execute('INSERT OR IGNORE INTO stats VALUES (?,0)',('unique_visitors',))
+                conn.execute('UPDATE stats SET value=value+1 WHERE key=?',('unique_visitors',))
+                conn.execute('UPDATE daily SET unique_ips=unique_ips+1 WHERE date=?',(today,))
+        conn.commit()
+        conn.close()
+
+def db_add_feedback(name, message, page, ip):
+    with DB_LOCK:
+        conn = sqlite3.connect(DB_PATH)
+        conn.execute('INSERT INTO feedback(name,message,page,ip,ts) VALUES (?,?,?,?,?)',
+                     (name[:100], message[:2000], page[:100], ip, int(time.time())))
+        conn.commit()
+        conn.close()
+
+def db_get_feedback(include_deleted=False):
+    with DB_LOCK:
+        conn = sqlite3.connect(DB_PATH)
+        q = 'SELECT id,name,message,page,ip,ts,read FROM feedback WHERE deleted=0 ORDER BY ts DESC'
+        rows = conn.execute(q).fetchall()
+        unread = conn.execute('SELECT COUNT(*) FROM feedback WHERE deleted=0 AND read=0').fetchone()[0]
+        conn.close()
+    return rows, int(unread)
+
+def db_feedback_action(fid, action):
+    # action: 'read' | 'delete'
+    with DB_LOCK:
+        conn = sqlite3.connect(DB_PATH)
+        if action == 'read':
+            conn.execute('UPDATE feedback SET read=1 WHERE id=?',(fid,))
+        elif action == 'delete':
+            conn.execute('UPDATE feedback SET deleted=1 WHERE id=?',(fid,))
         conn.commit()
         conn.close()
 
@@ -300,7 +351,8 @@ class Handler(BaseHTTPRequestHandler):
         _skip = ('/health','/robots.txt','/sitemap.xml','/vectrod-admin','/admin-login','/test-gemini')
         _real_page = not path.startswith('/api') and not path.startswith('/favicon') and not path.startswith('/download') and path not in _skip
         if _real_page:
-            threading.Thread(target=db_inc, args=('page_views',), daemon=True).start()
+            _ip = self.headers.get('X-Forwarded-For', self.client_address[0]).split(',')[0].strip()
+            threading.Thread(target=db_inc, args=('page_views', _ip), daemon=True).start()
 
         # Railway health check endpoint
         if path == '/health':
@@ -565,6 +617,10 @@ class Handler(BaseHTTPRequestHandler):
             self.handle_upscale()
         elif path == '/api/vote':
             self.handle_vote()
+        elif path == '/api/feedback':
+            self.handle_feedback()
+        elif path == '/api/feedback-action':
+            self.handle_feedback_action()
         elif path == '/admin-login':
             self.handle_admin_login()
         else:
@@ -617,32 +673,53 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             return
         stats, vstats, daily = db_get_stats()
+        feedbacks, unread = db_get_feedback()
         good       = vstats.get('good',0)
         bad        = vstats.get('bad',0)
         converts   = stats.get('converts',0)
         ai_gen     = stats.get('ai_generates',0)
         page_views = stats.get('page_views',0)
+        unique_vis = stats.get('unique_visitors',0)
         total    = good + bad
         rate     = str(round(good/total*100))+'%' if total else '—'
         good_pct = round(good/total*100) if total else 50
         ts       = time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())
+        import hashlib
+        admin_token = hashlib.md5(f'{ADMIN_USER}{ADMIN_PASS}vectrod'.encode()).hexdigest()
         # Build daily table rows + chart
         daily_rows = ''
         pv_vals = []
         for row in daily:
-            date,pv,cv,ai,vg,vb = row[0],row[1],row[2],row[3],row[4],row[5]
-            daily_rows += f'<tr><td>{date}</td><td>{pv}</td><td>{cv}</td><td>{ai}</td><td style="color:#22dd99">{vg}</td><td style="color:#ff6060">{vb}</td></tr>'
+            date = row[0]; pv=row[1]; cv=row[2]; ai=row[3]; vg=row[4]; vb=row[5]
+            uip = row[6] if len(row)>6 else 0
+            daily_rows += f'<tr><td>{date}</td><td>{pv}</td><td>{uip}</td><td>{cv}</td><td>{ai}</td><td style="color:#22dd99">{vg}</td><td style="color:#ff6060">{vb}</td></tr>'
             pv_vals.append((date, pv))
-        # Build mini bar chart
+        # Build bar chart
         pv_chart = ''
         if pv_vals:
             max_pv = max(v for _,v in pv_vals) or 1
             for date, pv in reversed(pv_vals):
                 h = max(4, int(pv / max_pv * 80))
-                short_date = date[5:]  # MM-DD
-                pv_chart += f'<div class="bcol"><div class="bseg" style="height:{h}px;background:rgba(153,68,238,.6)" title="{date}: {pv} views"></div><div class="bdate">{short_date}</div></div>'
+                pv_chart += f'<div class="bcol"><div class="bseg" style="height:{h}px;background:rgba(153,68,238,.6)" title="{date}: {pv}"></div><div class="bdate">{date[5:]}</div></div>'
         else:
             pv_chart = '<div style="color:rgba(238,234,255,.2);font-size:12px;font-family:DM Mono,monospace;padding:20px">No data yet</div>'
+        # Build feedback HTML
+        fb_html = ''
+        for row in feedbacks[:50]:
+            fid,fname,fmsg,fpage,fip,fts,fread = row
+            fdate = time.strftime('%Y-%m-%d %H:%M',time.gmtime(fts))
+            bg = 'rgba(240,192,96,.04)' if not fread else 'transparent'
+            bold = 'font-weight:700' if not fread else ''
+            fb_html += f'''<div class="fb-item" id="fb{fid}" style="background:{bg}">
+  <div class="fb-meta"><span class="fb-name" style="{bold}">{fname}</span><span class="fb-page">{fpage}</span><span class="fb-date">{fdate}</span><span class="fb-ip">{fip}</span></div>
+  <div class="fb-msg">{fmsg}</div>
+  <div class="fb-actions">
+    <button onclick="fbAction({fid},'read','{admin_token}')" class="fb-btn read">✓ Mark Read</button>
+    <button onclick="fbAction({fid},'delete','{admin_token}')" class="fb-btn del">🗑 Delete</button>
+  </div>
+</div>'''
+        if not feedbacks:
+            fb_html = '<div style="text-align:center;padding:32px;color:rgba(238,234,255,.25);font-family:DM Mono,monospace;font-size:12px">No feedback yet</div>'
         html = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'admin_dashboard.html'),'r',errors='replace').read()
         html = html.replace('{{good}}',str(good)).replace('{{bad}}',str(bad))
         html = html.replace('{{pv_chart}}', pv_chart)
@@ -651,8 +728,11 @@ class Handler(BaseHTTPRequestHandler):
         html = html.replace('{{converts}}',str(converts))
         html = html.replace('{{ai_gen}}',str(ai_gen))
         html = html.replace('{{page_views}}',str(page_views))
+        html = html.replace('{{unique_vis}}',str(unique_vis))
         html = html.replace('{{ts}}',ts)
-        html = html.replace('{{daily_rows}}',daily_rows or '<tr><td colspan=6 style="text-align:center;color:rgba(238,234,255,.3);padding:20px">No data yet</td></tr>')
+        html = html.replace('{{unread_count}}',str(unread))
+        html = html.replace('{{fb_html}}',fb_html)
+        html = html.replace('{{daily_rows}}',daily_rows or '<tr><td colspan=7 style="text-align:center;color:rgba(238,234,255,.3);padding:20px">No data yet</td></tr>')
         self.send_response(200)
         self.send_header('Content-Type','text/html; charset=utf-8')
         self.end_headers()
@@ -708,6 +788,49 @@ class Handler(BaseHTTPRequestHandler):
             print(f"[Upscale] ERROR: {e}")
             import traceback; traceback.print_exc()
             self.json_resp({'success': False, 'error': str(e)}, 500)
+
+    def handle_feedback(self):
+        try:
+            length = int(self.headers.get('Content-Length',0))
+            body   = json.loads(self.rfile.read(length))
+            name   = body.get('name','').strip()[:80]
+            msg    = body.get('message','').strip()[:2000]
+            page   = body.get('page','').strip()[:100]
+            honey  = body.get('website','')  # honeypot
+
+            # Spam kontrol
+            if honey:  # bot honeypot dolduruyor
+                self.json_resp({'ok':True})  # sessizce kabul et
+                return
+            if not msg or len(msg) < 10:
+                self.json_resp({'ok':False,'error':'Message too short'},400)
+                return
+            if not name:
+                name = 'Anonymous'
+
+            ip = self.headers.get('X-Forwarded-For', self.client_address[0]).split(',')[0].strip()
+            db_add_feedback(name, msg, page, ip)
+            self.json_resp({'ok':True})
+        except Exception as e:
+            self.json_resp({'ok':False,'error':str(e)},500)
+
+    def handle_feedback_action(self):
+        import hashlib
+        try:
+            length = int(self.headers.get('Content-Length',0))
+            body   = json.loads(self.rfile.read(length))
+            token  = body.get('token','')
+            expected = hashlib.md5(f'{ADMIN_USER}{ADMIN_PASS}vectrod'.encode()).hexdigest()
+            if token != expected:
+                self.json_resp({'ok':False,'error':'Unauthorized'},401)
+                return
+            fid    = int(body.get('id',0))
+            action = body.get('action','')
+            if fid and action in ('read','delete'):
+                db_feedback_action(fid, action)
+            self.json_resp({'ok':True})
+        except Exception as e:
+            self.json_resp({'ok':False,'error':str(e)},500)
 
     def handle_vote(self):
         try:
