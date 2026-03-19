@@ -108,6 +108,20 @@ def upscale_image(image_bytes, scale=4.0, denoise_strength=5,
 
     orig_h, orig_w = img_np.shape[:2]
     scale = max(1.5, min(8.0, float(scale)))
+
+    # RAM koruması: input çok büyükse önce küçült
+    # Max input: 1200px — üzerinde downscale et
+    MAX_INPUT = 1200
+    if max(orig_w, orig_h) > MAX_INPUT:
+        shrink = MAX_INPUT / max(orig_w, orig_h)
+        new_w = int(orig_w * shrink)
+        new_h = int(orig_h * shrink)
+        img_np = cv2.resize(img_np, (new_w, new_h), interpolation=cv2.INTER_AREA)
+        orig_h, orig_w = img_np.shape[:2]
+        print(f"[Upscaler] Input shrunk to {orig_w}x{orig_h} for RAM safety")
+
+    # Max output: 2048px (Railway free tier ~512MB RAM)
+    max_output_px = min(int(max_output_px), 2048)
     if max(orig_w*scale, orig_h*scale) > max_output_px:
         scale *= max_output_px / max(orig_w*scale, orig_h*scale)
 
